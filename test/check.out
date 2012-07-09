@@ -1,0 +1,259 @@
+Fiends and Fortunes
+          |  1,000's  |  1,000's  |  1,000's  |  1,000's  |   100's   |           |           |    Maps   
+Treasure  |    of     |    of     |    of     |    of     |    of     |           |           |     or    
+  Type    |  Copper   |  Silver   | Electrum  |   Gold    | Platinum  |   Gems    |  Jewelry  |   Magic   
+----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------
+    A     |  1-6:25%  |  1-6:30%  |  1-6:35%  |  1-10:40% |  1-4:25%  |  4-40:60% |  3-30:50% | any 3: 30%
+    B     |  1-8:50%  |  1-6:25%  |  1-4:25%  |  1-3:25%  |    nil    |  1-8:30%  |  1-4:20%  | 1 sword, armor or misc weapon: 10%
+    C     |  1-12:20% |  1-6:30%  |  1-4:10%  |    nil    |    nil    |  1-6:25%  |  1-3:20%  | any 2: 10%
+    D     |  1-8:10%  |  1-12:15% |  1-8:15%  |  1-6:50%  |    nil    |  1-10:30% |  1-6:25%  | any 2, 1 potion: 15%
+    E     |  1-10: 5% |  1-12:25% |  1-6:25%  |  1-8:25%  |    nil    |  1-12:15% |  1-8:10%  | any 3, 1 scroll: 25%
+    F     |    nil    |  1-20:10% |  1-12:15% |  1-10:40% |  1-8:35%  |  3-30:20% |  1-10:10% | any 3 except sword or misc weapon, 1 potion, 1 scroll: 30%
+    G     |    nil    |    nil    |    nil    | 10-40:50% |  1-20:50% |  5-20:30% |  1-10:25% | any 4, 1 scroll: 35%
+    H     |  5-30:25% | 1-100:40% | 10-40:40% | 10-60:55% |  5-50:25% | 1-100:50% | 10-40:50% | any 4, 1 potion, 1 scroll: 15%
+    I     |    nil    |    nil    |    nil    |    nil    |  3-18:30% |  2-20:55% |  1-12:50% | any 1: 15%
+    J     |  3-24 per |    nil    |    nil    |    nil    |    nil    |    nil    |    nil    |    nil   
+    K     |    nil    |  3-18 per |    nil    |    nil    |    nil    |    nil    |    nil    |    nil   
+    L     |    nil    |    nil    |  2-12 per |    nil    |    nil    |    nil    |    nil    |    nil   
+    M     |    nil    |    nil    |    nil    |  2-8 per  |    nil    |    nil    |    nil    |    nil   
+    N     |    nil    |    nil    |    nil    |    nil    |  1-6 per  |    nil    |    nil    |    nil   
+    O     |  1-4:25%  |  1-3:20%  |    nil    |    nil    |    nil    |    nil    |    nil    |    nil   
+    P     |    nil    |  1-6:30%  |  1-2:25%  |    nil    |    nil    |    nil    |    nil    |    nil   
+    Q     |    nil    |    nil    |    nil    |    nil    |    nil    |  1-4:50%  |    nil    |    nil   
+    R     |    nil    |    nil    |    nil    |  2-8:40%  | 10-60:50% |  4-32:55% |  1-12:45% |    nil   
+    S     |    nil    |    nil    |    nil    |    nil    |    nil    |    nil    |    nil    | 2-8 potions: 40%
+    T     |    nil    |    nil    |    nil    |    nil    |    nil    |    nil    |    nil    | 1-4 scrolls: 50%
+    U     |    nil    |    nil    |    nil    |    nil    |    nil    | 10-80:90% |  5-30:80% | 1 ring, 1 rod/staff/wand, 1 misc magic, 1 armor/shield, 1 sword, 1 misc weapon: 70%
+    V     |    nil    |    nil    |    nil    |    nil    |    nil    |    nil    |    nil    | 2 rings, 2 rod/staff/wands, 2 misc magics, 2 armor/shields, 2 swords, 2 misc weapons: 85%
+    W     |    nil    |    nil    |    nil    |  5-30:60% |  1-8:15%  | 10-80:60% |  5-40:50% | 1 map: 55%
+    X     |    nil    |    nil    |    nil    |    nil    |    nil    |    nil    |    nil    | 1 misc magic, 1 potion: 60%
+    Y     |    nil    |    nil    |    nil    |  2-12:70% |    nil    |    nil    |    nil    |    nil   
+    Z     |  1-3:20%  |  1-4:25%  |  1-4:25%  |  1-4:30%  |  1-6:30%  | 10-60:55% |  5-30:50% | any 3 magic: 50%
+false map to treasure of (no treasure) in nearby labyrinth to the northeast
+Treasure type A: 1000 copper, 1000 silver, 1000 electrum, 1000 gold, 100 platinum, 4 gems, 3 pieces of jewelry, 3 maps (total 8095 gp)
+  Gems: --------------------------------
+     1  very small ornamental stone (rank +7: 10 gp)
+     2  very small ornamental stone (rank +7: 10 gp)
+     3  very small ornamental stone (rank +7: 10 gp)
+     4  very small ornamental stone (rank +7: 10 gp)
+  Jewelry: -----------------------------
+     1  ivory anklet (workmanship +12: 2000 gp)
+     2  ivory anklet (workmanship +12: 2000 gp)
+     3  ivory anklet (workmanship +12: 2000 gp)
+  Maps: --------------------------------
+     1  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+     2  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+     3  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+Treasure type B: 1000 copper, 1000 silver, 1000 electrum, 1000 gold, 1 gem, 1 piece of jewelry, 1 magic item (total 3565 gp)
+  Gems: --------------------------------
+     1  very small ornamental stone (rank +7: 10 gp)
+  Jewelry: -----------------------------
+     1  ivory anklet (workmanship +12: 2000 gp)
+  Magic Items: -------------------------
+     1  longsword +1
+Treasure type C: 1000 copper, 1000 silver, 1000 electrum, 1 gem, 1 piece of jewelry, 2 maps (total 2565 gp)
+  Gems: --------------------------------
+     1  very small ornamental stone (rank +7: 10 gp)
+  Jewelry: -----------------------------
+     1  ivory anklet (workmanship +12: 2000 gp)
+  Maps: --------------------------------
+     1  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+     2  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+Treasure type D: 1000 copper, 1000 silver, 1000 electrum, 1000 gold, 1 gem, 1 piece of jewelry, 2 maps, 1 magic item (total 3565 gp)
+  Gems: --------------------------------
+     1  very small ornamental stone (rank +7: 10 gp)
+  Jewelry: -----------------------------
+     1  ivory anklet (workmanship +12: 2000 gp)
+  Maps: --------------------------------
+     1  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+     2  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+  Magic Items: -------------------------
+     1  animal control potion
+Treasure type E: 1000 copper, 1000 silver, 1000 electrum, 1000 gold, 1 gem, 1 piece of jewelry, 3 maps, 1 magic item (total 3565 gp)
+  Gems: --------------------------------
+     1  very small ornamental stone (rank +7: 10 gp)
+  Jewelry: -----------------------------
+     1  ivory anklet (workmanship +12: 2000 gp)
+  Maps: --------------------------------
+     1  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+     2  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+     3  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+  Magic Items: -------------------------
+     1  illusionist scroll (1 spell)
+            level 1: audible glamer
+Treasure type F: 1000 silver, 1000 electrum, 1000 gold, 100 platinum, 3 gems, 1 piece of jewelry, 3 maps, 2 magic items (total 4080 gp)
+  Gems: --------------------------------
+     1  very small ornamental stone (rank +7: 10 gp)
+     2  very small ornamental stone (rank +7: 10 gp)
+     3  very small ornamental stone (rank +7: 10 gp)
+  Jewelry: -----------------------------
+     1  ivory anklet (workmanship +12: 2000 gp)
+  Maps: --------------------------------
+     1  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+     2  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+     3  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+  Magic Items: -------------------------
+     1  animal control potion
+     2  illusionist scroll (1 spell)
+            level 1: audible glamer
+Treasure type G: 10000 gold, 100 platinum, 5 gems, 1 piece of jewelry, 4 maps, 1 magic item (total 12550 gp)
+  Gems: --------------------------------
+     1  very small ornamental stone (rank +7: 10 gp)
+     2  very small ornamental stone (rank +7: 10 gp)
+     3  very small ornamental stone (rank +7: 10 gp)
+     4  very small ornamental stone (rank +7: 10 gp)
+     5  very small ornamental stone (rank +7: 10 gp)
+  Jewelry: -----------------------------
+     1  ivory anklet (workmanship +12: 2000 gp)
+  Maps: --------------------------------
+     1  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+     2  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+     3  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+     4  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+  Magic Items: -------------------------
+     1  illusionist scroll (1 spell)
+            level 1: audible glamer
+Treasure type H: 5000 copper, 1000 silver, 10000 electrum, 10000 gold, 500 platinum, 1 gem, 10 pieces of jewelry, 4 maps, 2 magic items (total 37585 gp)
+  Gems: --------------------------------
+     1  very small ornamental stone (rank +7: 10 gp)
+  Jewelry: -----------------------------
+     1  ivory anklet (workmanship +12: 2000 gp)
+     2  ivory anklet (workmanship +12: 2000 gp)
+     3  ivory anklet (workmanship +12: 2000 gp)
+     4  ivory anklet (workmanship +12: 2000 gp)
+     5  ivory anklet (workmanship +12: 2000 gp)
+     6  ivory anklet (workmanship +12: 2000 gp)
+     7  ivory anklet (workmanship +12: 2000 gp)
+     8  ivory anklet (workmanship +12: 2000 gp)
+     9  ivory anklet (workmanship +12: 2000 gp)
+    10  ivory anklet (workmanship +12: 2000 gp)
+  Maps: --------------------------------
+     1  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+     2  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+     3  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+     4  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+  Magic Items: -------------------------
+     1  animal control potion
+     2  illusionist scroll (1 spell)
+            level 1: audible glamer
+Treasure type I: 300 platinum, 2 gems, 1 piece of jewelry, 1 map (total 3520 gp)
+  Gems: --------------------------------
+     1  very small ornamental stone (rank +7: 10 gp)
+     2  very small ornamental stone (rank +7: 10 gp)
+  Jewelry: -----------------------------
+     1  ivory anklet (workmanship +12: 2000 gp)
+  Maps: --------------------------------
+     1  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+Treasure type J: 3 copper (total 3 cp)
+Treasure type K: 3 silver (total 30 cp)
+Treasure type L: 2 electrum (total 1 gp)
+Treasure type M: 2 gold (total 2 gp)
+Treasure type N: 1 platinum (total 5 gp)
+Treasure type O: 1000 copper, 1000 silver (total 55 gp)
+Treasure type P: 1000 silver, 1000 electrum (total 550 gp)
+Treasure type Q: 1 gem (total 10 gp)
+  Gems: --------------------------------
+     1  very small ornamental stone (rank +7: 10 gp)
+Treasure type R: 2000 gold, 1000 platinum, 4 gems, 1 piece of jewelry (total 9040 gp)
+  Gems: --------------------------------
+     1  very small ornamental stone (rank +7: 10 gp)
+     2  very small ornamental stone (rank +7: 10 gp)
+     3  very small ornamental stone (rank +7: 10 gp)
+     4  very small ornamental stone (rank +7: 10 gp)
+  Jewelry: -----------------------------
+     1  ivory anklet (workmanship +12: 2000 gp)
+Treasure type S: 2 magic items (total 0 cp)
+  Magic Items: -------------------------
+     1  animal control potion
+     2  animal control potion
+Treasure type T: 1 magic item (total 0 cp)
+  Magic Items: -------------------------
+     1  illusionist scroll (1 spell)
+            level 1: audible glamer
+Treasure type U: 10 gems, 5 pieces of jewelry, 6 magic items (total 10100 gp)
+  Gems: --------------------------------
+     1  very small ornamental stone (rank +7: 10 gp)
+     2  very small ornamental stone (rank +7: 10 gp)
+     3  very small ornamental stone (rank +7: 10 gp)
+     4  very small ornamental stone (rank +7: 10 gp)
+     5  very small ornamental stone (rank +7: 10 gp)
+     6  very small ornamental stone (rank +7: 10 gp)
+     7  very small ornamental stone (rank +7: 10 gp)
+     8  very small ornamental stone (rank +7: 10 gp)
+     9  very small ornamental stone (rank +7: 10 gp)
+    10  very small ornamental stone (rank +7: 10 gp)
+  Jewelry: -----------------------------
+     1  ivory anklet (workmanship +12: 2000 gp)
+     2  ivory anklet (workmanship +12: 2000 gp)
+     3  ivory anklet (workmanship +12: 2000 gp)
+     4  ivory anklet (workmanship +12: 2000 gp)
+     5  ivory anklet (workmanship +12: 2000 gp)
+  Magic Items: -------------------------
+     1  ring of contrariness
+     2  rod of absorption
+     3  alchemy jug
+     4  chain mail +1 (human sized)
+     5  longsword +1
+     6  (2) arrow +1
+Treasure type V: 12 magic items (total 0 cp)
+  Magic Items: -------------------------
+     1  ring of contrariness
+     2  ring of contrariness
+     3  rod of absorption
+     4  rod of absorption
+     5  alchemy jug
+     6  alchemy jug
+     7  chain mail +1 (human sized)
+     8  chain mail +1 (human sized)
+     9  longsword +1
+    10  longsword +1
+    11  (2) arrow +1
+    12  (2) arrow +1
+Treasure type W: 5000 gold, 100 platinum, 10 gems, 5 pieces of jewelry, 1 map (total 15600 gp)
+  Gems: --------------------------------
+     1  very small ornamental stone (rank +7: 10 gp)
+     2  very small ornamental stone (rank +7: 10 gp)
+     3  very small ornamental stone (rank +7: 10 gp)
+     4  very small ornamental stone (rank +7: 10 gp)
+     5  very small ornamental stone (rank +7: 10 gp)
+     6  very small ornamental stone (rank +7: 10 gp)
+     7  very small ornamental stone (rank +7: 10 gp)
+     8  very small ornamental stone (rank +7: 10 gp)
+     9  very small ornamental stone (rank +7: 10 gp)
+    10  very small ornamental stone (rank +7: 10 gp)
+  Jewelry: -----------------------------
+     1  ivory anklet (workmanship +12: 2000 gp)
+     2  ivory anklet (workmanship +12: 2000 gp)
+     3  ivory anklet (workmanship +12: 2000 gp)
+     4  ivory anklet (workmanship +12: 2000 gp)
+     5  ivory anklet (workmanship +12: 2000 gp)
+  Maps: --------------------------------
+     1  false map to treasure of (no treasure) in nearby labyrinth to the northeast
+Treasure type X: 2 magic items (total 0 cp)
+  Magic Items: -------------------------
+     1  alchemy jug
+     2  animal control potion
+Treasure type Y: 2000 gold (total 2000 gp)
+Treasure type Z: 1000 copper, 1000 silver, 1000 electrum, 1000 gold, 100 platinum, 10 gems, 5 pieces of jewelry, 3 magic items (total 12155 gp)
+  Gems: --------------------------------
+     1  very small ornamental stone (rank +7: 10 gp)
+     2  very small ornamental stone (rank +7: 10 gp)
+     3  very small ornamental stone (rank +7: 10 gp)
+     4  very small ornamental stone (rank +7: 10 gp)
+     5  very small ornamental stone (rank +7: 10 gp)
+     6  very small ornamental stone (rank +7: 10 gp)
+     7  very small ornamental stone (rank +7: 10 gp)
+     8  very small ornamental stone (rank +7: 10 gp)
+     9  very small ornamental stone (rank +7: 10 gp)
+    10  very small ornamental stone (rank +7: 10 gp)
+  Jewelry: -----------------------------
+     1  ivory anklet (workmanship +12: 2000 gp)
+     2  ivory anklet (workmanship +12: 2000 gp)
+     3  ivory anklet (workmanship +12: 2000 gp)
+     4  ivory anklet (workmanship +12: 2000 gp)
+     5  ivory anklet (workmanship +12: 2000 gp)
+  Magic Items: -------------------------
+     1  animal control potion
+     2  animal control potion
+     3  animal control potion
+

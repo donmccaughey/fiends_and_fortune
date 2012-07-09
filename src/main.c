@@ -1,0 +1,318 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "Boolean.h"
+#include "Character.h"
+#include "coinage.h"
+#include "Dice.h"
+#include "Gem.h"
+#include "Jewelry.h"
+#include "MagicItem.h"
+#include "Treasure.h"
+#include "TreasureMap.h"
+#include "TreasureType.h"
+#import "Dungeon.h"
+
+
+static void check(FILE *out, char const *constantNumber);
+
+static void enumerateTreasureItems(struct Treasure *treasure, FILE *out);
+
+static void generateCharacter(struct Dice *dice, 
+                              FILE *out, 
+                              char const *methodName);
+
+static void generateEachTreasure(struct Dice *dice, FILE *out);
+
+static void generateMap(struct Dice *dice, FILE *out);
+
+static void generateMagicItems(struct Dice *dice, FILE *out, int count);
+
+static void generateRandomDungeon(struct Dice *dice, FILE *out);
+
+static void generateTreasureType(struct Dice *dice, FILE *out, char letter);
+
+static void generateTreasureTypeTable(FILE *out);
+
+static uint32_t nextConstantNumber(struct Dice *dice);
+
+static void usage(int argc, char *argv[]);
+
+
+static void check(FILE *out, char const *constantNumber)
+{
+  struct Dice fakeDice;
+  
+  fakeDice.state[0] = (unsigned short) strtoul(constantNumber, NULL, 10);
+  fakeDice.nextRandomNumber = nextConstantNumber;
+  
+  generateTreasureTypeTable(out);
+  generateMap(&fakeDice, out);
+  generateEachTreasure(&fakeDice, out);
+}
+
+
+static void enumerateTreasureItems(struct Treasure *treasure, FILE *out)
+{
+  if (treasure->gemsCount) {
+    fprintf(out, "  Gems: --------------------------------\n");
+    for (int i = 0; i < treasure->gemsCount; ++i) {
+      fprintf(out, "    %2i  %s\n", i + 1, treasure->gems[i].trueDescription);
+    }
+  }
+  
+  if (treasure->jewelryCount) {
+    fprintf(out, "  Jewelry: -----------------------------\n");
+    for (int i = 0; i < treasure->jewelryCount; ++i) {
+      fprintf(out, "    %2i  %s\n", 
+              i + 1, treasure->jewelry[i].trueDescription);
+    }
+  }
+  
+  if (treasure->mapsCount) {
+    fprintf(out, "  Maps: --------------------------------\n");
+    for (int i = 0; i < treasure->mapsCount; ++i) {
+      fprintf(out, "    %2i  %s\n", i + 1, treasure->maps[i].trueDescription);
+    }
+  }
+  
+  if (treasure->magicItemsCount) {
+    fprintf(out, "  Magic Items: -------------------------\n");
+    for (int i = 0; i < treasure->magicItemsCount; ++i) {
+      fprintf(out, "    %2i  %s\n", 
+              i + 1, treasure->magicItems[i].trueDescription);
+      if (treasure->magicItems[i].trueDetails) {
+        int j = 0;
+        while (treasure->magicItems[i].trueDetails[j]) {
+          fprintf(out, "            %s\n", 
+                  treasure->magicItems[i].trueDetails[j]);
+          ++j;
+        }
+      }
+    }
+  }
+}
+
+
+static void generateCharacter(struct Dice *dice, 
+                              FILE *out, 
+                              char const *methodName)
+{
+  enum CharacteristicGenerationMethod method = SimpleCharacteristicGenerationMethod;
+  uint32_t specialCharacteristics = STRENGTH;
+  if (0 == strcasecmp("method1", methodName)) {
+    method = CharacteristicGenerationMethod1;
+  } else if (0 == strcasecmp("method2", methodName)) {
+    method = CharacteristicGenerationMethod2;
+  } else if (0 == strcasecmp("method3", methodName)) {
+    method = CharacteristicGenerationMethod3;
+  } else if (0 == strcasecmp("method4", methodName)) {
+    method = CharacteristicGenerationMethod4;
+  } else if (0 == strcasecmp("general", methodName)) {
+    method = GeneralCharacteristicGenerationMethod;
+  } else if (0 == strcasecmp("special", methodName)) {
+    method = SpecialCharacteristicGenerationMethod;
+  }
+  
+  int *characteristics = generateCharacteristics(dice, method, specialCharacteristics);
+  if (   method == CharacteristicGenerationMethod1
+      || method == CharacteristicGenerationMethod2)
+  {
+    fprintf(out, "Character (%s): -------------------------\n", methodName);
+    for (int i = 0; i < 6; ++i) {
+      fprintf(out, "  %2i) %i\n", i + 1, characteristics[i]);
+    }
+  } else if (method == CharacteristicGenerationMethod4) {
+    fprintf(out, "Possible Characters (%s): -------------------------\n", methodName);
+    fprintf(out, "                 %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n", 
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
+    fprintf(out, "                 %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s\n", 
+            "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--");
+    fprintf(out, "  Strength:      %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n", 
+            characteristics[0], characteristics[0 + 6], characteristics[0 + 12], 
+            characteristics[0 + 18], characteristics[0 + 24], characteristics[0 + 30], 
+            characteristics[0 + 36], characteristics[0 + 42], characteristics[0 + 48], 
+            characteristics[0 + 54], characteristics[0 + 60], characteristics[0 + 66]);
+    fprintf(out, "  Intelligence:  %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n", 
+            characteristics[1], characteristics[1 + 6], characteristics[1 + 12], 
+            characteristics[1 + 18], characteristics[1 + 24], characteristics[1 + 30], 
+            characteristics[1 + 36], characteristics[1 + 42], characteristics[1 + 48], 
+            characteristics[1 + 54], characteristics[1 + 60], characteristics[1 + 66]);
+    fprintf(out, "  Wisdom:        %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n", 
+            characteristics[2], characteristics[2 + 6], characteristics[2 + 12], 
+            characteristics[2 + 18], characteristics[2 + 24], characteristics[2 + 30], 
+            characteristics[2 + 36], characteristics[2 + 42], characteristics[2 + 48], 
+            characteristics[2 + 54], characteristics[2 + 60], characteristics[2 + 66]);
+    fprintf(out, "  Dexterity:     %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n", 
+            characteristics[3], characteristics[3 + 6], characteristics[3 + 12], 
+            characteristics[3 + 18], characteristics[3 + 24], characteristics[3 + 30], 
+            characteristics[3 + 36], characteristics[3 + 42], characteristics[3 + 48], 
+            characteristics[3 + 54], characteristics[3 + 60], characteristics[3 + 66]);
+    fprintf(out, "  Constitution:  %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n", 
+            characteristics[4], characteristics[4 + 6], characteristics[4 + 12], 
+            characteristics[4 + 18], characteristics[4 + 24], characteristics[4 + 30], 
+            characteristics[4 + 36], characteristics[4 + 42], characteristics[4 + 48], 
+            characteristics[4 + 54], characteristics[4 + 60], characteristics[4 + 66]);
+    fprintf(out, "  Charisma:      %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n", 
+            characteristics[5], characteristics[5 + 6], characteristics[5 + 12], 
+            characteristics[5 + 18], characteristics[5 + 24], characteristics[5 + 30], 
+            characteristics[5 + 36], characteristics[5 + 42], characteristics[5 + 48], 
+            characteristics[5 + 54], characteristics[5 + 60], characteristics[5 + 66]);
+  } else {
+    fprintf(out, "Character (%s): -------------------------\n", methodName);
+    fprintf(out, "  Strength:     %2i\n", characteristics[0]);
+    fprintf(out, "  Intelligence: %2i\n", characteristics[1]);
+    fprintf(out, "  Wisdom:       %2i\n", characteristics[2]);
+    fprintf(out, "  Dexterity:    %2i\n", characteristics[3]);
+    fprintf(out, "  Constitution: %2i\n", characteristics[4]);
+    fprintf(out, "  Charisma:     %2i\n", characteristics[5]);
+  }
+  free(characteristics);
+}
+
+
+static void generateRandomDungeon(struct Dice *dice, FILE *out)
+{
+  struct Dungeon dungeon;
+  initializeDungeon(&dungeon);
+  generateDungeon(&dungeon, dice);
+
+  graphDungeonUsingText(&dungeon, out);
+
+  finalizeDungeon(&dungeon);
+}
+
+
+static void generateEachTreasure(struct Dice *dice, FILE *out)
+{
+  for (char letter = 'A'; letter <= 'Z'; ++letter) {
+    generateTreasureType(dice, out, letter);
+  }
+}
+
+
+static void generateMap(struct Dice *dice, FILE *out)
+{
+  struct TreasureMap treasureMap;
+  initializeTreasureMap(&treasureMap);
+  generateTreasureMap(&treasureMap, dice);
+  fprintf(out, "%s\n", treasureMap.trueDescription);
+  enumerateTreasureItems(&treasureMap.treasure, out);
+  finalizeTreasureMap(&treasureMap);
+}
+
+
+static void generateMagicItems(struct Dice *dice, FILE *out, int count)
+{
+  struct MagicItem magicItem;
+  
+  fprintf(out, "Magic Items:\n");
+  for (int i = 0; i < count; ++i) {
+    generateMagicItem(&magicItem, dice, ANY_MAGIC_ITEM);
+    fprintf(out, "  %4i %s\n", (i + 1), magicItem.trueDescription);
+  }
+  fprintf(out, "\n");
+}
+
+
+static void generateTreasureType(struct Dice *dice, FILE *out, char letter)
+{
+  struct Treasure treasure;
+  int individualCount;
+  
+  fprintf(out, "Treasure type %c: ", letter);
+  
+  if (letter >= 'J' && letter <= 'N') {
+    individualCount = roll(dice, "1D10");
+  } else {
+    individualCount = 0;
+  }
+  
+  initializeTreasure(&treasure);
+  generateTreasure(treasureTypeByLetter(letter), 
+                   &treasure, dice, individualCount);
+  
+  char *description = describeTreasure(&treasure);
+  int value_cp = treasureValue_cp(&treasure);
+  char *value_gp = goldFormat_cp(value_cp);
+  fprintf(out, "%s (total %s)\n", description, value_gp);
+  free(value_gp);
+  free(description);
+  enumerateTreasureItems(&treasure, out);
+  
+  finalizeTreasure(&treasure);
+}
+
+
+static void generateTreasureTypeTable(FILE *out)
+{
+  for (char letter = 'A'; letter <= 'Z'; ++letter) {
+    struct TreasureType *treasureType = treasureTypeByLetter(letter);
+    char *description = describeTreasureType(treasureType, letter == 'A');
+    fprintf(out, "%s", description);
+  }
+}
+
+int main(int argc, char *argv[])
+{
+  FILE *out = stdout;
+  struct Dice dice;
+  
+  initializeDice(&dice);
+  
+  fprintf(out, "Fiends and Fortunes\n");
+  
+  if (argc < 2) {
+    usage(argc, argv);
+  } else if (strcasecmp(argv[1], "character") == 0) {
+    generateCharacter(&dice, out, (argc >= 3) ? argv[2] : "simple");
+  } else if (strcasecmp(argv[1], "check") == 0) {
+    check(out, (argc >= 3) ? argv[2] : "0");
+  } else if (strcasecmp(argv[1], "dungeon") == 0) {
+    generateRandomDungeon(&dice, out);
+  } else if (strcasecmp(argv[1], "each") == 0) {
+    generateEachTreasure(&dice, out);
+  } else if (strcasecmp(argv[1], "magic") == 0) {
+    int count = 10;
+    if (argc >= 3) {
+      count = (int) strtol(argv[2], NULL, 10);
+    }
+    generateMagicItems(&dice, out, count);
+  } else if (strcasecmp(argv[1], "map") == 0) {
+    generateMap(&dice, out);
+  } else if (strcasecmp(argv[1], "table") == 0) {
+    generateTreasureTypeTable(out);
+  } else if (argv[1][0] >= 'A' && argv[1][0] <= 'Z' && argv[1][1] == '\0') {
+    generateTreasureType(&dice, out, argv[1][0]);
+  } else if (argv[1][0] >= 'a' && argv[1][0] <= 'z' && argv[1][1] == '\0') {
+    char letter = argv[1][0] - 'a' + 'A';
+    generateTreasureType(&dice, out, letter);
+  } else {
+    usage(argc, argv);
+  }
+  
+  fprintf(out, "\n");
+  return EXIT_SUCCESS;
+}
+
+
+static uint32_t nextConstantNumber(struct Dice *dice)
+{
+  return dice->state[0];
+}
+
+
+static void usage(int argc, char *argv[])
+{
+  fprintf(stderr, "Usage: %s ACTION\n", argv[0]);
+  fprintf(stderr, "\n");
+  fprintf(stderr, "Available actions:\n");
+  fprintf(stderr, "   character  Generate a character\n");
+  fprintf(stderr, "   check      Run tests\n");
+  fprintf(stderr, "   dungeon    Generate a random dungeon\n");
+  fprintf(stderr, "   each       Generate one of each treasure\n");
+  fprintf(stderr, "   map        Generate one treasure map\n");
+  fprintf(stderr, "   table      Generate the treasure type table\n");
+  fprintf(stderr, "   LETTER     Generate the treasure type for LETTER (A-Z)\n");
+}

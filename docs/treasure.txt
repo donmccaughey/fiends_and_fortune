@@ -1,0 +1,262 @@
+Coins
+=====
+conversions
+-----------
+10 copper pieces = 1 silver piece
+20 silver pieces = 1 gold piece
+2 electrum pieces = 1 gold piece
+1 gold piece = 1 gold piece
+1 platinum piece = 5 gold pieces
+
+conversions to gold pieces
+--------------------------
+1 copper piece = 0.005 gold pieces
+1 silver piece = 0.05 gold pieces
+1 electrum piece = 0.5 gold pieces
+1 gold piece = 1 gold piece
+1 platinum piece = 5 gold pieces
+
+conversions to copper pieces
+----------------------------
+1 copper piece = 1 copper piece
+1 silver piece = 10 copper pieces
+1 electrum piece = 100 copper pieces
+1 gold piece = 200 copper pieces
+1 platinum piece = 1000 copper pieces
+
+
+
+Gems
+====
+value
+rank        base value
+1               1 sp = 0.05 gp = 10 cp
+2               5 sp = 0.25 gp = 50 cp
+3               10 sp = 0.5 gp = 100 cp
+4               1 gp                    
+5               5                       
+6               10
+7               50
+8               100
+9               500
+10              1000
+11              5000
+12              10000
+13              25000
+14              50000
+15              100000
+16              250000
+17              500000
+18              1000000
+
+
+value
+rank            description
+6               ornamental stone
+7               semi-precious stone
+8               fancy stone
+9               precious stone
+10              gem stone
+11              jewel stone
+
+
+value
+rank mod        size
+-2              very small
+-1              small
+0               average
++1              large
++2              very large
++3              huge
+
+
+Maps Or Magic
+=============
+A: 30% 3 any
+B: 10% 1 sword, armor or misc weapon
+C: 10% 2 any
+D: 15% 2 any, 1 potion
+E: 25% 3 any, 1 scroll
+F: 30% 3 non-weapon, 1 potion, 1 scroll
+G: 35% 4 any, 1 scroll
+H: 15% 4 any, 1 potion, 1 scroll
+I: 15% 1 any
+
+S: 40% 2-8 potions
+T: 50% 1-4 scrolls
+U: 70% 1 ring, 1 rod, 1 misc magic, 1 armor, 1 sword, 1 misc weapon
+V: 85% 2 ring, 2 rod, 2 misc magic, 2 armor, 2 sword, 2 misc weapon
+W: 55% 1 map
+X: 60% 1 misc magic, 1 potion
+
+Z: 50% 3 any magic
+
+
+Combined Hoard Treasures
+========================
+01-20
+  generateMonetaryTreasure_1to2_CopperAndSilver()
+  --
+  generateMagicTreasure_1to5_ItemAndPotions()
+
+21-40
+  generateMonetaryTreasure_6to10_Gold()
+  --
+  generateMagicTreasure_1to5_ItemAndPotions()
+41-55
+  generateMonetaryTreasure_3to5_Electrum()
+  generateMonetaryTreasure_6to10_Gold()
+  --
+  generateMagicTreasure_1to5_ItemAndPotions()
+  generateMagicTreasure_15to18_PotionsAndScrolls()
+56-65
+  generateMonetaryTreasure_1to2_CopperAndSilver()
+  generateMonetaryTreasure_3to5_Electrum()
+  generateMonetaryTreasure_6to10_Gold()
+  --
+  generateMagicTreasure_9to12_SwordArmorAndWeapon()
+  generateMagicTreasure_13to14_ThreeItems()
+66-75
+  generateMonetaryTreasure_6to10_Gold()
+  generateMonetaryTreasure_11to12_Platinum()
+  --
+  generateMagicTreasure_6to8_TwoItems()
+  generateMagicTreasure_15to18_PotionsAndScrolls()
+76-80
+  generateMonetaryTreasure_3to5_Electrum()
+  generateMonetaryTreasure_6to10_Gold()
+  generateMonetaryTreasure_11to12_Platinum()
+  generateMonetaryTreasure_16to17_Jewelry()
+  --
+  generateMagicTreasure_1to5_ItemAndPotions()
+  generateMagicTreasure_9to12_SwordArmorAndWeapon()
+81-85
+  generateMonetaryTreasure_1to2_CopperAndSilver()
+  generateMonetaryTreasure_3to5_Electrum()
+  generateMonetaryTreasure_6to10_Gold()
+  generateMonetaryTreasure_11to12_Platinum()
+  generateMonetaryTreasure_13to15_Gems()
+  generateMonetaryTreasure_16to17_Jewelry()
+  --
+  map to generateMagicTreasure_1to5_ItemAndPotions()
+86-90
+  generateMonetaryTreasure_1to2_CopperAndSilver()
+  generateMonetaryTreasure_3to5_Electrum()
+  generateMonetaryTreasure_6to10_Gold()
+  generateMonetaryTreasure_11to12_Platinum()
+  generateMonetaryTreasure_13to15_Gems()
+  generateMonetaryTreasure_16to17_Jewelry()
+  --
+  map to generateMagicTreasure_19_FourItems()
+91-96
+  map to generateMonetaryTreasure_1to2_CopperAndSilver(), 
+         generateMonetaryTreasure_3to5_Electrum()
+  --
+  generateMagicTreasure_20_FiveItems()
+97-00
+  map to generateMonetaryTreasure_11to12_Platinum(), 
+         generateMonetaryTreasure_13to15_Gems()
+  --
+  generateMagicTreasure_15to18_PotionsAndScrolls()
+  generateMagicTreasure_20_FiveItems()
+
+
+Magic Item Generation
+=====================
+
+struct Common {
+int percent;
+int experiencePoints;
+int saleValue_gp;
+ClassRestrictions classRestrictions;
+GenerateFunction generate;
+};
+
+
+struct XMiscMagicItem {
+int percent;
+char const *name;
+int experiencePoints;
+int saleValue_gp;
+ClassRestrictions classRestrictions;
+GenerateFunction generate;
+};
+
+struct ArmorOrShield {
+int percent;
+char const *name;
+Boolean isArmor;
+int experiencePoints;
+int saleValue_gp;
+}
+
+struct ArtifactOrRelic {
+int percent;
+char const *name;
+>>> int experiencePoints; (always 0)
+int saleValue_gp;
+GenerateFunction generate;
+}
+
+struct MiscWeapon {
+int percent;
+char const *name;
+char const *quantity;
+int experiencePoints;
+int saleValue_gp;
+}
+
+struct Potion {
+int percent;
+char const *name;
+char const *experiencePoints;
+char const *saleValue_gp;
+ClassRestrictions classRestrictions;
+} 
+
+struct Ring {
+int percent;
+char const *name;
+Boolean limitedCharges;
+>>> char const *quantity; (always 1)
+char const *experiencePoints;
+char const *saleValue_gp;
+ClassRestrictions classRestrictions;
+}
+
+struct RodStaffOrWand {
+int percent;
+char const *name;
+>>> char const *quantity; (always 1)
+int experiencePoints;
+int saleValue_gp;
+ClassRestrictions classRestrictions;
+} 
+
+struct Scroll {
+int percent;
+char const *name;
+>>> char const *quantity; (always 1)
+Boolean isSpellScroll;
+int spellCount;
+char const *magicUserSpellLevelRange;
+char const *clericalSpellLevelRange;
+int experiencePoints;
+int saleValue_gp;
+}
+
+struct Sword {
+int percent;
+char const *nameFormat;
+>>> char const *quantity; (always 1)
+int experiencePoints;
+int saleValue_gp;
+}
+
+
+struct (Magic Item) {
+int percent;
+PossibleMagicItems possibleMagicItems;
+enum MagicItemType type;
+GenerateFunction generate;
+} 
