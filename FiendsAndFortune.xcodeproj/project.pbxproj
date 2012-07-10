@@ -26,6 +26,9 @@
 		D4783B4115ABE18A004E7F2C /* Dungeon.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B2715ABDFF0004E7F2C /* Dungeon.c */; };
 		D4783B4215ABE198004E7F2C /* heap.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B3415ABE10B004E7F2C /* heap.c */; };
 		D4783B4315ABE19B004E7F2C /* unexpected.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B3615ABE10B004E7F2C /* unexpected.c */; };
+		D4783B4915ABE7E5004E7F2C /* Tiles.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B4815ABE7E5004E7F2C /* Tiles.c */; };
+		D4783B4A15ABE7F7004E7F2C /* Tiles.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B4815ABE7E5004E7F2C /* Tiles.c */; };
+		D4783B4C15ABEB32004E7F2C /* TilesTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B4B15ABEB32004E7F2C /* TilesTest.c */; };
 		D4F73462140EF4380096618F /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D4F73461140EF4380096618F /* main.c */; };
 /* End PBXBuildFile section */
 
@@ -91,6 +94,11 @@
 		D4783B3715ABE10B004E7F2C /* unexpected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unexpected.h; sourceTree = "<group>"; };
 		D4783B3B15ABE155004E7F2C /* DungeonTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DungeonTest.c; sourceTree = "<group>"; };
 		D4783B3D15ABE155004E7F2C /* DiceTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DiceTest.c; sourceTree = "<group>"; };
+		D4783B4415ABE484004E7F2C /* TileType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TileType.h; sourceTree = "<group>"; };
+		D4783B4615ABE561004E7F2C /* Tile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
+		D4783B4715ABE698004E7F2C /* Tiles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tiles.h; sourceTree = "<group>"; };
+		D4783B4815ABE7E5004E7F2C /* Tiles.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Tiles.c; sourceTree = "<group>"; };
+		D4783B4B15ABEB32004E7F2C /* TilesTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TilesTest.c; sourceTree = "<group>"; };
 		D4F244A114181FF5003BDED5 /* check */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = check; sourceTree = "<group>"; };
 		D4F244A31418207C003BDED5 /* check.out */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = check.out; sourceTree = "<group>"; };
 		D4F7344F140EF3E00096618F /* FiendsAndFortune */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FiendsAndFortune; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -159,8 +167,12 @@
 		D4783B2615ABDFF0004E7F2C /* Dungeons */ = {
 			isa = PBXGroup;
 			children = (
-				D4783B2715ABDFF0004E7F2C /* Dungeon.c */,
 				D4783B2815ABDFF0004E7F2C /* Dungeon.h */,
+				D4783B2715ABDFF0004E7F2C /* Dungeon.c */,
+				D4783B4615ABE561004E7F2C /* Tile.h */,
+				D4783B4715ABE698004E7F2C /* Tiles.h */,
+				D4783B4815ABE7E5004E7F2C /* Tiles.c */,
+				D4783B4415ABE484004E7F2C /* TileType.h */,
 			);
 			path = Dungeons;
 			sourceTree = "<group>";
@@ -197,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				D4783B3B15ABE155004E7F2C /* DungeonTest.c */,
+				D4783B4B15ABEB32004E7F2C /* TilesTest.c */,
 			);
 			path = Dungeons;
 			sourceTree = "<group>";
@@ -356,6 +369,8 @@
 				D4783B4115ABE18A004E7F2C /* Dungeon.c in Sources */,
 				D4783B4215ABE198004E7F2C /* heap.c in Sources */,
 				D4783B4315ABE19B004E7F2C /* unexpected.c in Sources */,
+				D4783B4915ABE7E5004E7F2C /* Tiles.c in Sources */,
+				D4783B4C15ABEB32004E7F2C /* TilesTest.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -376,6 +391,7 @@
 				D4783B3015ABE063004E7F2C /* Dice.c in Sources */,
 				D4783B3815ABE10B004E7F2C /* heap.c in Sources */,
 				D4783B3915ABE10B004E7F2C /* unexpected.c in Sources */,
+				D4783B4A15ABE7F7004E7F2C /* Tiles.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

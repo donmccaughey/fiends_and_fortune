@@ -1,5 +1,5 @@
 #include <assert.h>
-#include <Game/Dice.h>
+#include "Dice.h"
 
 
 void diceTest(void);

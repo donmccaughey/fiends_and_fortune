@@ -4,6 +4,7 @@
 
 void diceTest(void);
 void dungeonTest(void);
+void tilesTest(void);
 
 
 int main (int argc, const char *argv[])
@@ -13,7 +14,7 @@ int main (int argc, const char *argv[])
   
   diceTest();
   dungeonTest();
+  tilesTest();
 
   return EXIT_SUCCESS;
 }
-
