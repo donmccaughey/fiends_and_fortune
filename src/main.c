@@ -31,6 +31,8 @@ static void generateMagicItems(struct Dice *dice, FILE *out, int count);
 
 static void generateRandomDungeon(struct Dice *dice, FILE *out);
 
+static void generateSampleDungeon(struct Dice *dice, FILE *out);
+
 static void generateTreasureType(struct Dice *dice, FILE *out, char letter);
 
 static void generateTreasureTypeTable(FILE *out);
@@ -50,6 +52,7 @@ static void check(FILE *out, char const *constantNumber)
   generateTreasureTypeTable(out);
   generateMap(&fakeDice, out);
   generateEachTreasure(&fakeDice, out);
+  generateSampleDungeon(&fakeDice, out);
 }
 
 
@@ -213,6 +216,17 @@ static void generateMagicItems(struct Dice *dice, FILE *out, int count)
     fprintf(out, "  %4i %s\n", (i + 1), magicItem.trueDescription);
   }
   fprintf(out, "\n");
+}
+
+
+
+static void generateSampleDungeon(struct Dice *dice, FILE *out)
+{
+  struct Dungeon dungeon;
+  initializeDungeon(&dungeon);
+  generateDungeon(&dungeon, dice);
+  graphDungeonUsingText(&dungeon, out);
+  finalizeDungeon(&dungeon);
 }
 
 
