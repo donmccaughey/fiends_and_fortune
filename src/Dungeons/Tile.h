@@ -2,14 +2,13 @@
 #define DUNGEONS_TILE_H_INCLUDED
 
 
+#include "Point.h"
 #include "TileType.h"
 
 
 struct Tile {
+  struct Point point;
   enum TileType type;
-  int x;
-  int y;
-  int z;
 };
 
 

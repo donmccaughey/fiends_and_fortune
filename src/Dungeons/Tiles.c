@@ -37,13 +37,13 @@ static int compareTilesByCoordinate(void const *item1, void const *item2)
   struct Tile const *tile1 = item1;
   struct Tile const *tile2 = item2;
 
-  if (tile1->z != tile2->z) {
-    return tile1->z - tile2->z;
+  if (tile1->point.z != tile2->point.z) {
+    return tile1->point.z - tile2->point.z;
   }
-  if (tile1->y != tile2->y) {
-    return tile1->y - tile2->y;
+  if (tile1->point.y != tile2->point.y) {
+    return tile1->point.y - tile2->point.y;
   }
-  return tile1->x - tile2->x;
+  return tile1->point.x - tile2->point.x;
 }
 
 
@@ -55,7 +55,7 @@ void finalizeTiles(struct Tiles *tiles)
 
 struct Tile *findTileInTilesAt(struct Tiles *tiles, int x, int y, int z)
 {
-  struct Tile tile = { .x = x, .y = y, .z = z };
+  struct Tile tile = { .point = { x, y, z} };
 
   struct Tile *tileInTiles = bsearch(&tile, tiles->tiles, tiles->count, sizeof(struct Tile), compareTilesByCoordinate);
   return tileInTiles ? tileInTiles : NULL;

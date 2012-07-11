@@ -33,10 +33,8 @@ static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, int y, in
   assert(NULL == findTileInTilesAt(&dungeon->tiles, x, y, z));
 
   struct Tile tile = {
+    .point = { x, y, z },
     .type = EmptyTileType,
-    .x = x,
-    .y = y,
-    .z = z,
   };
   addTileToTiles(&dungeon->tiles, &tile);
 }
@@ -50,17 +48,17 @@ void finalizeDungeon(struct Dungeon *dungeon)
 
 static void gatherStatistics(struct Tile *tile, struct DungeonStatistics *statistics)
 {
-  if (tile->x < statistics->minX) {
-    statistics->minX = tile->x;
+  if (tile->point.x < statistics->minX) {
+    statistics->minX = tile->point.x;
   }
-  if (tile->x > statistics->maxX) {
-    statistics->maxX = tile->x;
+  if (tile->point.x > statistics->maxX) {
+    statistics->maxX = tile->point.x;
   }
-  if (tile->y < statistics->minY) {
-    statistics->minY = tile->y;
+  if (tile->point.y < statistics->minY) {
+    statistics->minY = tile->point.y;
   }
-  if (tile->y > statistics->maxY) {
-    statistics->maxY = tile->y;
+  if (tile->point.y > statistics->maxY) {
+    statistics->maxY = tile->point.y;
   }
   
   ++statistics->tileCount;

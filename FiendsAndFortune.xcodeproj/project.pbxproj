@@ -104,6 +104,7 @@
 		D4F7344F140EF3E00096618F /* FiendsAndFortune */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FiendsAndFortune; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4F73461140EF4380096618F /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		D4F73465140EF55C0096618F /* FiendsAndFortune.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; path = FiendsAndFortune.1; sourceTree = "<group>"; };
+		D4F73465140EF55C00966190 /* Point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Point.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +168,7 @@
 		D4783B2615ABDFF0004E7F2C /* Dungeons */ = {
 			isa = PBXGroup;
 			children = (
+				D4F73465140EF55C00966190 /* Point.h */,
 				D4783B2815ABDFF0004E7F2C /* Dungeon.h */,
 				D4783B2715ABDFF0004E7F2C /* Dungeon.c */,
 				D4783B4615ABE561004E7F2C /* Tile.h */,
