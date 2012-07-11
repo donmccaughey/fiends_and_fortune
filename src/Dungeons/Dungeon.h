@@ -13,7 +13,6 @@ struct Tile;
 
 
 struct Dungeon {
-  struct Tile *mainEntrance;
   struct Tiles tiles;
 };
 

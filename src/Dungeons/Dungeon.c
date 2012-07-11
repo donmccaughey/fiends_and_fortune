@@ -2,9 +2,7 @@
 
 #include <assert.h>
 #include <string.h>
-#include <stdlib.h>
 #include "Dice.h"
-#include "heap.h"
 #include "Tile.h"
 
 
@@ -24,7 +22,6 @@
 
 
 static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, int y, int z);
-static void addTileToDungeon(struct Dungeon *dungeon, struct Tile *tile);
 static void gatherStatistics(struct Tile *tile, struct DungeonStatistics *statistics);
 static void printHorizontalBorder(FILE *out, int x1, int x2);
 static void printHorizontalScale(FILE *out, int x1, int x2);
@@ -33,20 +30,15 @@ static enum TileType tileTypeAt(struct Dungeon *dungeon, int x, int y, int z);
 
 static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, int y, int z)
 {
+  assert(NULL == findTileInTilesAt(&dungeon->tiles, x, y, z));
+
   struct Tile tile = {
     .type = EmptyTileType,
     .x = x,
     .y = y,
     .z = z,
   };
-  addTileToDungeon(dungeon, &tile);
-}
-
-
-static void addTileToDungeon(struct Dungeon *dungeon, struct Tile *tile)
-{
-  assert(NULL == findTileInTilesAt(&dungeon->tiles, tile->x, tile->y, tile->z));
-  addTileToTiles(&dungeon->tiles, tile);
+  addTileToTiles(&dungeon->tiles, &tile);
 }
 
 
