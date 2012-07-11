@@ -56,6 +56,16 @@ void finalizeTiles(struct Tiles *tiles)
 }
 
 
+struct Tile *findTileInTilesAt(struct Tiles *tiles, int x, int y, int z)
+{
+  struct Tile equivalent = { .x = x, .y = y, .z = z };
+  struct Tile *tile = &equivalent;
+
+  struct Tile **tileInTiles = bsearch(&tile, tiles->tiles, tiles->count, sizeof(struct Tile *), tiles->compare);
+  return tileInTiles ? *tileInTiles : NULL;
+}
+
+
 void initializeTiles(struct Tiles *tiles)
 {
   memset(tiles, 0, sizeof(struct Tiles));

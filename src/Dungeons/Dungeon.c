@@ -42,7 +42,7 @@ static struct Tile *addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, i
 
 static void addTileToDungeon(struct Dungeon *dungeon, struct Tile *tile)
 {
-  assert(NULL == findTileInDungeonAt(dungeon, tile->x, tile->y, tile->z));
+  assert(NULL == findTileInTilesAt(&dungeon->tiles, tile->x, tile->y, tile->z));
   addTileToTiles(&dungeon->tiles, tile);
 }
 
@@ -64,16 +64,6 @@ void finalizeDungeon(struct Dungeon *dungeon)
     free(dungeon->tiles.tiles[i]);
   }
   finalizeTiles(&dungeon->tiles);
-}
-
-
-struct Tile *findTileInDungeonAt(struct Dungeon *dungeon, int x, int y, int z)
-{
-  struct Tile equivalent = { .x = x, .y = y, .z = z };
-  struct Tile *tile = &equivalent;
-
-  struct Tile **tileInDungeon = bsearch(&tile, dungeon->tiles.tiles, dungeon->tiles.count, sizeof(struct Tile *), dungeon->tiles.compare);
-  return tileInDungeon ? *tileInDungeon : NULL;
 }
 
 
@@ -397,6 +387,6 @@ static void printHorizontalScale(FILE *out, int x1, int x2)
 
 static enum TileType tileTypeAt(struct Dungeon *dungeon, int x, int y, int z)
 {
-  struct Tile *tile = findTileInDungeonAt(dungeon, x, y, z);
+  struct Tile *tile = findTileInTilesAt(&dungeon->tiles, x, y, z);
   return tile ? tile->type : SolidTileType;
 }

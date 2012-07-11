@@ -27,8 +27,6 @@ struct DungeonStatistics {
 
 void finalizeDungeon(struct Dungeon *dungeon);
 
-struct Tile *findTileInDungeonAt(struct Dungeon *dungeon, int x, int y, int z);
-
 void gatherDungeonStatistics(struct Dungeon *dungeon, struct DungeonStatistics *statistics);
 
 void generateDungeon(struct Dungeon *dungeon, struct Dice *dice);

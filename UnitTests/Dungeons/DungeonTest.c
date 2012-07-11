@@ -35,14 +35,13 @@ static void generateDungeonTest(void)
   assert(14 == statistics.maxY);
   assert(113 == statistics.tileCount);
 
-  struct Tile *tile = findTileInDungeonAt(&dungeon, 0, 0, 1);
+  struct Tile *tile = findTileInTilesAt(&dungeon.tiles, 0, 0, 1);
   assert(tile == dungeon.mainEntrance);
 
-  tile = findTileInDungeonAt(&dungeon, 0, 1, 1);
-//  assert(tile == dungeon.mainEntrance->north);
+  tile = findTileInTilesAt(&dungeon.tiles, 0, 1, 1);
   assert(tile);
 
-  tile = findTileInDungeonAt(&dungeon, -1, -8, 1);
+  tile = findTileInTilesAt(&dungeon.tiles, -1, -8, 1);
   assert( ! tile);
 
   finalizeDungeon(&dungeon);
