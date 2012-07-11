@@ -47,24 +47,6 @@ void addTileToDungeon(struct Dungeon *dungeon, struct Tile *tile)
 }
 
 
-int compareTilesByCoordinate(void const *item1, void const *item2)
-{
-  struct Tile *const *pointer1 = item1;
-  struct Tile *const *pointer2 = item2;
-  
-  struct Tile *tile1 = *pointer1;
-  struct Tile *tile2 = *pointer2;
-  
-  if (tile1->z != tile2->z) {
-    return tile1->z - tile2->z;
-  }
-  if (tile1->y != tile2->y) {
-    return tile1->y - tile2->y;
-  }
-  return tile1->x - tile2->x;
-}
-
-
 static struct Tile *createTile(enum TileType type, int x, int y, int z)
 {
   struct Tile *tile = CALLOC_OR_DIE(1, sizeof(struct Tile));
@@ -400,7 +382,7 @@ void graphDungeonUsingText(struct Dungeon *dungeon, FILE *out)
 void initializeDungeon(struct Dungeon *dungeon)
 {
   memset(dungeon, 0, sizeof(struct Dungeon));
-  initializeTiles(&dungeon->tiles, compareTilesByCoordinate);
+  initializeTiles(&dungeon->tiles);
 }
 
 

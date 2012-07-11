@@ -25,7 +25,7 @@ void addTileToTiles(struct Tiles *tiles, struct Tile *tile);
 
 void finalizeTiles(struct Tiles *tiles);
 
-void initializeTiles(struct Tiles *tiles, CompareFunction compare);
+void initializeTiles(struct Tiles *tiles);
 
 Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile *tile);
 

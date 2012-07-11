@@ -27,8 +27,6 @@ struct DungeonStatistics {
 
 void addTileToDungeon(struct Dungeon *dungeon, struct Tile *tile);
 
-int compareTilesByCoordinate(void const *item1, void const *item2);
-
 void finalizeDungeon(struct Dungeon *dungeon);
 
 struct Tile *findTileInDungeonAt(struct Dungeon *dungeon, int x, int y, int z);

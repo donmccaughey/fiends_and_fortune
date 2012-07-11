@@ -19,7 +19,7 @@ static void addTileToTilesTest(void)
 {
   struct Tiles tiles;
   
-  initializeTiles(&tiles, compareTilesByCoordinate);
+  initializeTiles(&tiles);
   
   assert(0 == tiles.capacity);
   assert(0 == tiles.count);

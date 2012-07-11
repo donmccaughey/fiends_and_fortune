@@ -7,6 +7,7 @@
 
 
 static void appendTileToTiles(struct Tiles *tiles, struct Tile *tile);
+static int compareTilesByCoordinate(void const *item1, void const *item2);
 
 
 void addTileToTiles(struct Tiles *tiles, struct Tile *tile)
@@ -31,17 +32,35 @@ static void appendTileToTiles(struct Tiles *tiles, struct Tile *tile)
 }
 
 
+static int compareTilesByCoordinate(void const *item1, void const *item2)
+{
+  struct Tile *const *pointer1 = item1;
+  struct Tile *const *pointer2 = item2;
+
+  struct Tile *tile1 = *pointer1;
+  struct Tile *tile2 = *pointer2;
+
+  if (tile1->z != tile2->z) {
+    return tile1->z - tile2->z;
+  }
+  if (tile1->y != tile2->y) {
+    return tile1->y - tile2->y;
+  }
+  return tile1->x - tile2->x;
+}
+
+
 void finalizeTiles(struct Tiles *tiles)
 {
   free(tiles->tiles);
 }
 
 
-void initializeTiles(struct Tiles *tiles, CompareFunction compare)
+void initializeTiles(struct Tiles *tiles)
 {
   memset(tiles, 0, sizeof(struct Tiles));
   tiles->tiles = CALLOC_OR_DIE(0, sizeof(struct Tile *));
-  tiles->compare = compare;
+  tiles->compare = compareTilesByCoordinate;
 }
 
 
