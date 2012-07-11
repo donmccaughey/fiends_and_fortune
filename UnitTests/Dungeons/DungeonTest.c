@@ -23,7 +23,6 @@ static void generateDungeonTest(void)
   initializeDungeon(&dungeon);
 
   generateDungeon(&dungeon, &dice);
-  assert(dungeon.mainEntrance);
   assert(113 == dungeon.tiles.count);
 
   struct DungeonStatistics statistics;
@@ -36,7 +35,7 @@ static void generateDungeonTest(void)
   assert(113 == statistics.tileCount);
 
   struct Tile *tile = findTileInTilesAt(&dungeon.tiles, 0, 0, 1);
-  assert(tile == dungeon.mainEntrance);
+  assert(tile);
 
   tile = findTileInTilesAt(&dungeon.tiles, 0, 1, 1);
   assert(tile);

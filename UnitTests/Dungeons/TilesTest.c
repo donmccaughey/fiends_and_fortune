@@ -29,32 +29,32 @@ static void addTileToTilesTest(void)
   
   assert(tiles.capacity > 0);
   assert(1 == tiles.count);
-  assert(tiles.tiles[0] == &tile1);
+  assert(tiles.tiles[0].x == tile1.x);
   
   struct Tile tile2 = { .x = 1 };
   addTileToTiles(&tiles, &tile2);
   
   assert(2 == tiles.count);
-  assert(tiles.tiles[1] == &tile2);
+  assert(tiles.tiles[1].x == tile2.x);
   
   struct Tile tile3 = { .x = -1 };
   addTileToTiles(&tiles, &tile3);
   
   assert(3 == tiles.count);
-  assert(tiles.tiles[0] == &tile3);
-  assert(tiles.tiles[1] == &tile1);
-  assert(tiles.tiles[2] == &tile2);
+  assert(tiles.tiles[0].x == tile3.x);
+  assert(tiles.tiles[1].x == tile1.x);
+  assert(tiles.tiles[2].x == tile2.x);
   
   Boolean found = removeTileFromTiles(&tiles, &tile1);
   assert(found);
   assert(2 == tiles.count);
-  assert(tiles.tiles[0] == &tile3);
-  assert(tiles.tiles[1] == &tile2);
+  assert(tiles.tiles[0].x == tile3.x);
+  assert(tiles.tiles[1].x == tile2.x);
   
   found = removeTileFromTiles(&tiles, &tile2);
   assert(found);
   assert(1 == tiles.count);
-  assert(tiles.tiles[0] == &tile3);
+  assert(tiles.tiles[0].x == tile3.x);
   
   found = removeTileFromTiles(&tiles, &tile3);
   assert(found);

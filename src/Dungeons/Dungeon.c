@@ -23,20 +23,23 @@
 #define VWALL_SOLID "|:::"
 
 
-static struct Tile *addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, int y, int z);
+static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, int y, int z);
 static void addTileToDungeon(struct Dungeon *dungeon, struct Tile *tile);
-static struct Tile *createTile(enum TileType type, int x, int y, int z);
 static void gatherStatistics(struct Tile *tile, struct DungeonStatistics *statistics);
 static void printHorizontalBorder(FILE *out, int x1, int x2);
 static void printHorizontalScale(FILE *out, int x1, int x2);
 static enum TileType tileTypeAt(struct Dungeon *dungeon, int x, int y, int z);
 
 
-static struct Tile *addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, int y, int z)
+static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, int y, int z)
 {
-  struct Tile *tile = createTile(EmptyTileType, x, y, z);
-  addTileToDungeon(dungeon, tile);
-  return tile;
+  struct Tile tile = {
+    .type = EmptyTileType,
+    .x = x,
+    .y = y,
+    .z = z,
+  };
+  addTileToDungeon(dungeon, &tile);
 }
 
 
@@ -47,22 +50,8 @@ static void addTileToDungeon(struct Dungeon *dungeon, struct Tile *tile)
 }
 
 
-static struct Tile *createTile(enum TileType type, int x, int y, int z)
-{
-  struct Tile *tile = CALLOC_OR_DIE(1, sizeof(struct Tile));
-  tile->type = type;
-  tile->x = x;
-  tile->y = y;
-  tile->z = z;
-  return tile;
-}
-
-
 void finalizeDungeon(struct Dungeon *dungeon)
 {
-  for (size_t i = 0; i < dungeon->tiles.count; ++i) {
-    free(dungeon->tiles.tiles[i]);
-  }
   finalizeTiles(&dungeon->tiles);
 }
 
@@ -90,14 +79,14 @@ void gatherDungeonStatistics(struct Dungeon *dungeon, struct DungeonStatistics *
 {
   memset(statistics, 0, sizeof(struct DungeonStatistics));
   for (size_t i = 0; i < dungeon->tiles.count; ++i) {
-    gatherStatistics(dungeon->tiles.tiles[i], statistics);
+    gatherStatistics(&dungeon->tiles.tiles[i], statistics);
   }
 }
 
 
 void generateDungeon(struct Dungeon *dungeon, struct Dice *dice)
 {
-  dungeon->mainEntrance = addNewEmptyTileToDungeonAt(dungeon, 0, 0, 1);
+  addNewEmptyTileToDungeonAt(dungeon, 0, 0, 1);
   addNewEmptyTileToDungeonAt(dungeon, 0, 1, 1);
 
   /* entry chamber */
@@ -283,7 +272,7 @@ void graphDungeonUsingText(struct Dungeon *dungeon, FILE *out)
   int x2 = statistics.maxX + 2;
   int y1 = statistics.maxY + 1;
   int y2 = statistics.minY - 2;
-  int z = dungeon->mainEntrance->z;
+  int z = 1;
   
   // top border
   printHorizontalScale(out, x1, x2);
