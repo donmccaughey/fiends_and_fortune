@@ -18,7 +18,7 @@ enum TreasureMapType {
 };
 
 
-char const *treasureTypes[] = {
+static char const *treasureMapTypes[] = {
   "treasure",
   "monetary treasure",
   "magic treasure",
@@ -390,7 +390,7 @@ void generateTreasureMap(struct TreasureMap *treasureMap, struct Dice *dice)
     ASPRINTF_OR_DIE(&treasureMap->trueDescription,
                     "%smap to %s of %s %i miles to the %s, %s",
                     (treasureMap->isFalse ? "false " : ""), 
-                    treasureTypes[treasureMapType],
+                    treasureMapTypes[treasureMapType],
                     describeTreasure(&treasureMap->treasure),
                     miles,
                     compassDirections[compassDirection],
@@ -399,7 +399,7 @@ void generateTreasureMap(struct TreasureMap *treasureMap, struct Dice *dice)
     ASPRINTF_OR_DIE(&treasureMap->trueDescription,
                     "%smap to %s of %s in nearby labyrinth to the %s",
                     (treasureMap->isFalse ? "false " : ""),  
-                    treasureTypes[treasureMapType],
+                    treasureMapTypes[treasureMapType],
                     describeTreasure(&treasureMap->treasure),
                     compassDirections[compassDirection]);
   }
