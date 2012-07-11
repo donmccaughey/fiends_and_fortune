@@ -32,10 +32,6 @@ void initializeTiles(struct Tiles *tiles);
 
 void initializeTileIndex(struct Tiles *index, CompareFunction compare);
 
-struct Tile *popTile(struct Tiles *stack);
-
-void pushTile(struct Tiles *stack, struct Tile *tile);
-
 Boolean removeTileFromTileIndex(struct Tiles *index, struct Tile *tile);
 
 

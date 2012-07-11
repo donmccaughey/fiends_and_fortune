@@ -51,18 +51,6 @@ void initializeTileIndex(struct Tiles *index, CompareFunction compare)
 }
 
 
-struct Tile *popTile(struct Tiles *stack)
-{
-  return stack->count ? stack->tiles[--stack->count] : NULL;
-}
-
-
-void pushTile(struct Tiles *stack, struct Tile *tile)
-{
-  appendTileToTiles(stack, tile);
-}
-
-
 Boolean removeTileFromTileIndex(struct Tiles *index, struct Tile *tile)
 {
   struct Tile **found = bsearch(&tile, index->tiles, index->count, sizeof(struct Tile *), index->compare);
