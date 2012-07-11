@@ -11,9 +11,6 @@ struct Tile;
 
 typedef int (*CompareFunction)(void const *, void const *);
 
-/* return TRUE to stop graph traversal */
-typedef Boolean (*VisitFunction)(struct Tile *tile, void *context);
-
 
 struct Tiles
 {
