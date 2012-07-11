@@ -10,10 +10,6 @@ struct Tile {
   int x;
   int y;
   int z;
-  struct Tile *north;
-  struct Tile *south;
-  struct Tile *east;
-  struct Tile *west;
 };
 
 

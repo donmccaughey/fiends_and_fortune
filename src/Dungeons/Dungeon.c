@@ -43,35 +43,6 @@ static struct Tile *addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, i
 void addTileToDungeon(struct Dungeon *dungeon, struct Tile *tile)
 {
   assert(NULL == findTileInDungeonAt(dungeon, tile->x, tile->y, tile->z));
-
-  struct Tile *north = findTileInDungeonAt(dungeon, tile->x, tile->y + 1, tile->z);
-  if (north) {
-    assert( ! north->south);
-    tile->north = north;
-    north->south = tile;
-  }
-  
-  struct Tile *south = findTileInDungeonAt(dungeon, tile->x, tile->y - 1, tile->z);
-  if (south) {
-    assert( ! south->north);
-    tile->south = south;
-    south->north = tile;
-  }
-  
-  struct Tile *east = findTileInDungeonAt(dungeon, tile->x + 1, tile->y, tile->z);
-  if (east) {
-    assert( ! east->west);
-    tile->east = east;
-    east->west = tile;
-  }
-  
-  struct Tile *west = findTileInDungeonAt(dungeon, tile->x - 1, tile->y, tile->z);
-  if (west) {
-    assert( ! west->east);
-    tile->west = west;
-    west->east = tile;
-  }
-
   addTileToTileIndex(&dungeon->index, tile);
 }
 
@@ -105,18 +76,11 @@ static struct Tile *createTile(enum TileType type, int x, int y, int z)
 }
 
 
-void destroyTileGraph(struct Tile *tile)
-{
-  if ( ! tile) {
-    return;
-  }  
-  visitTiles(tile, NULL, freeTileOnVisit);
-}
-
-
 void finalizeDungeon(struct Dungeon *dungeon)
 {
-  destroyTileGraph(dungeon->mainEntrance);
+  for (size_t i = 0; i < dungeon->index.count; ++i) {
+    freeTileOnVisit(dungeon->index.tiles[i], NULL);
+  }
   finalizeTiles(&dungeon->index);
 }
 
@@ -164,7 +128,9 @@ static Boolean gatherStatisticsOnVisit(struct Tile *tile, void *statisticsContex
 void gatherDungeonStatistics(struct Dungeon *dungeon, struct DungeonStatistics *statistics)
 {
   memset(statistics, 0, sizeof(struct DungeonStatistics));
-  visitTiles(dungeon->mainEntrance, statistics, gatherStatisticsOnVisit);
+  for (size_t i = 0; i < dungeon->index.count; ++i) {
+    gatherStatisticsOnVisit(dungeon->index.tiles[i], statistics);
+  }
 }
 
 

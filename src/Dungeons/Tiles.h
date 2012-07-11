@@ -38,7 +38,5 @@ void pushTile(struct Tiles *stack, struct Tile *tile);
 
 Boolean removeTileFromTileIndex(struct Tiles *index, struct Tile *tile);
 
-Boolean visitTiles(struct Tile *tile, void *context, VisitFunction visit);
-
 
 #endif /* #ifndef DUNGEONS_TILES_H_INCLUDED */

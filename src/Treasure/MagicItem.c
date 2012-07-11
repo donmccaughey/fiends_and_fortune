@@ -9,6 +9,7 @@
 #include "coinage.h"
 #include "Dice.h"
 #include "heap.h"
+#include "unexpected.h"
 
 
 typedef void(*GenerateFunction)(struct MagicItem *magicItem, struct Dice *dice);
@@ -515,7 +516,7 @@ static void generateHornOfValhalla(struct MagicItem *magicItem,
   magicItem->experiencePoints = 1000 * multiplier;
   magicItem->trueValue_cp = 15000 * CP_PER_GP * multiplier;
   
-  char const *alignment;
+  char const *alignment = NULL;
   dieRoll = roll(dice, "1d100");
   if (dieRoll <= 50) {
     dieRoll = roll(dice, "1d8");
@@ -528,6 +529,7 @@ static void generateHornOfValhalla(struct MagicItem *magicItem,
       case 6: alignment = "chaotic evil"; break;
       case 7: alignment = "chaotic"; break;
       case 8: alignment = "chaotic good"; break;
+      default: UNEXPECTED("1d8 die roll is %i", dieRoll); break;
     }
     ASPRINTF_OR_DIE(&magicItem->trueDescription, "%s horn of Valhalla (%s)", 
                     type, alignment);
@@ -1188,7 +1190,7 @@ static void generateOrbOfDragonkind(struct MagicItem *magicItem,
                                     struct Dice *dice)
 {
   int dieRoll = roll(dice, "1d8");
-  char const *type;
+  char const *type = NULL;
   switch (dieRoll) {
     case 1: type = "hatchling"; break;
     case 2: type = "wyrmkin"; break;
@@ -1198,6 +1200,7 @@ static void generateOrbOfDragonkind(struct MagicItem *magicItem,
     case 6: type = "fire drake"; break;
     case 7: type = "elder wyrm"; break;
     case 8: type = "eternal grand dragon"; break;
+    default: UNEXPECTED("1d8 die roll is %i", dieRoll); break;
   }
   magicItem->experiencePoints = 0;
   magicItem->trueValue_cp = dieRoll * 10000 * CP_PER_GP;
