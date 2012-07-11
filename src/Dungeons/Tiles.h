@@ -9,15 +9,11 @@
 struct Tile;
 
 
-typedef int (*CompareFunction)(void const *, void const *);
-
-
 struct Tiles
 {
   struct Tile **tiles;
   size_t capacity;
   size_t count;
-  CompareFunction compare;
 };
 
 

@@ -13,7 +13,7 @@ static int compareTilesByCoordinate(void const *item1, void const *item2);
 void addTileToTiles(struct Tiles *tiles, struct Tile *tile)
 {
   appendTileToTiles(tiles, tile);
-  qsort(tiles->tiles, tiles->count, sizeof(struct Tile *), tiles->compare);
+  qsort(tiles->tiles, tiles->count, sizeof(struct Tile *), compareTilesByCoordinate);
 }
 
 
@@ -61,7 +61,7 @@ struct Tile *findTileInTilesAt(struct Tiles *tiles, int x, int y, int z)
   struct Tile equivalent = { .x = x, .y = y, .z = z };
   struct Tile *tile = &equivalent;
 
-  struct Tile **tileInTiles = bsearch(&tile, tiles->tiles, tiles->count, sizeof(struct Tile *), tiles->compare);
+  struct Tile **tileInTiles = bsearch(&tile, tiles->tiles, tiles->count, sizeof(struct Tile *), compareTilesByCoordinate);
   return tileInTiles ? *tileInTiles : NULL;
 }
 
@@ -70,13 +70,12 @@ void initializeTiles(struct Tiles *tiles)
 {
   memset(tiles, 0, sizeof(struct Tiles));
   tiles->tiles = CALLOC_OR_DIE(0, sizeof(struct Tile *));
-  tiles->compare = compareTilesByCoordinate;
 }
 
 
 Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile *tile)
 {
-  struct Tile **found = bsearch(&tile, tiles->tiles, tiles->count, sizeof(struct Tile *), tiles->compare);
+  struct Tile **found = bsearch(&tile, tiles->tiles, tiles->count, sizeof(struct Tile *), compareTilesByCoordinate);
   if ( ! found) {
     return FALSE;
   }
