@@ -25,8 +25,6 @@ struct DungeonStatistics {
   size_t tileCount;
 };
 
-void addTileToDungeon(struct Dungeon *dungeon, struct Tile *tile);
-
 void finalizeDungeon(struct Dungeon *dungeon);
 
 struct Tile *findTileInDungeonAt(struct Dungeon *dungeon, int x, int y, int z);

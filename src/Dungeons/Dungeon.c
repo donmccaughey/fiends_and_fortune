@@ -24,6 +24,7 @@
 
 
 static struct Tile *addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, int y, int z);
+static void addTileToDungeon(struct Dungeon *dungeon, struct Tile *tile);
 static struct Tile *createTile(enum TileType type, int x, int y, int z);
 static Boolean freeTileOnVisit(struct Tile *tile, void *unused);
 static Boolean gatherStatisticsOnVisit(struct Tile *tile, void *statisticsContext);
@@ -40,7 +41,7 @@ static struct Tile *addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, i
 }
 
 
-void addTileToDungeon(struct Dungeon *dungeon, struct Tile *tile)
+static void addTileToDungeon(struct Dungeon *dungeon, struct Tile *tile)
 {
   assert(NULL == findTileInDungeonAt(dungeon, tile->x, tile->y, tile->z));
   addTileToTiles(&dungeon->tiles, tile);
