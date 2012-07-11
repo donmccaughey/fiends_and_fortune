@@ -1,5 +1,5 @@
-#ifndef TREASURE_MAP_H_INCLUDED
-#define TREASURE_MAP_H_INCLUDED
+#ifndef TREASURE_TREASUREMAP_H_INCLUDED
+#define TREASURE_TREASUREMAP_H_INCLUDED
 
 
 #include "Boolean.h"
@@ -23,4 +23,4 @@ void generateTreasureMap(struct TreasureMap *treasureMap, struct Dice *dice);
 void initializeTreasureMap(struct TreasureMap *treasureMap);
 
 
-#endif /* #ifndef TREASURE_MAP_H_INCLUDED */
+#endif /* #ifndef TREASURE_TREASUREMAP_H_INCLUDED */

@@ -142,7 +142,7 @@ static void generateCombinedHoard(struct Treasure *treasure,
     generateMonetaryTreasure_11to12_Platinum(treasure, dice);
     generateMonetaryTreasure_13to15_Gems(treasure, dice);
     generateMonetaryTreasure_16to17_Jewelry(treasure, dice);
-    /* TODO: map to map to generateMagicTreasure_19_FourItems() */
+    /* TODO: map to generateMagicTreasure_19_FourItems() */
   } else if (dieRoll <= 96) {
     /* TODO: map to generateMonetaryTreasure_1to2_CopperAndSilver(), 
                     generateMonetaryTreasure_3to5_Electrum() */
@@ -340,19 +340,20 @@ static void generateMonetaryTreasure_16to17_Jewelry(struct Treasure *treasure,
 
 void generateTreasureMap(struct TreasureMap *treasureMap, struct Dice *dice)
 {
-  enum TreasureMapType type;
+  enum TreasureMapType treasureMapType;
   int dieRoll = roll(dice, "1d100");
   if (dieRoll <= 5) {
-    type = FalseMap;
+    treasureMapType = FalseMap;
     treasureMap->isFalse = TRUE;
+    /* TODO: generate description of false treasure */
   } else if (dieRoll <= 70) {
-    type = MapToMonetaryTreasure;
+    treasureMapType = MapToMonetaryTreasure;
     generateMonetaryTreasure(&treasureMap->treasure, dice);
   } else if (dieRoll <= 90) {
-    type = MapToMagicTreasure;
+    treasureMapType = MapToMagicTreasure;
     generateMagicTreasure(&treasureMap->treasure, dice);
   } else {
-    type = MapToCombinedHoard;
+    treasureMapType = MapToCombinedHoard;
     generateCombinedHoard(&treasureMap->treasure, dice);
   }
   
@@ -368,8 +369,7 @@ void generateTreasureMap(struct TreasureMap *treasureMap, struct Dice *dice)
     miles = roll(dice, "1D10") * 50;
   }
   
-  int compassDirection = roll(dice, "1D8");
-  char *distance;
+  int compassDirection = roll(dice, "1D8-1");
   if (miles) {
     char const *disposition;
     dieRoll = roll(dice, "1D100");
@@ -387,20 +387,22 @@ void generateTreasureMap(struct TreasureMap *treasureMap, struct Dice *dice)
       disposition = "secreted in a town";
     }
     
-    ASPRINTF_OR_DIE(&distance, "%smap to %s of %s %i miles to the %s, %s", 
+    ASPRINTF_OR_DIE(&treasureMap->trueDescription,
+                    "%smap to %s of %s %i miles to the %s, %s",
                     (treasureMap->isFalse ? "false " : ""), 
-                    treasureTypes[type],
+                    treasureTypes[treasureMapType],
                     describeTreasure(&treasureMap->treasure),
-                    miles, compassDirections[compassDirection], disposition);
+                    miles,
+                    compassDirections[compassDirection],
+                    disposition);
   } else {
-    ASPRINTF_OR_DIE(&distance, "%smap to %s of %s in nearby labyrinth to the %s", 
+    ASPRINTF_OR_DIE(&treasureMap->trueDescription,
+                    "%smap to %s of %s in nearby labyrinth to the %s",
                     (treasureMap->isFalse ? "false " : ""),  
-                    treasureTypes[type], 
+                    treasureTypes[treasureMapType],
                     describeTreasure(&treasureMap->treasure),
                     compassDirections[compassDirection]);
   }
-  
-  treasureMap->trueDescription = distance;
 }
 
 
