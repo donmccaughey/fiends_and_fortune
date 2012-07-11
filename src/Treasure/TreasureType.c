@@ -695,7 +695,7 @@ static void generateTreasureGems(struct Treasure *treasure,
       treasure->gemsCount = roll(dice, treasure->type->gems.amount);
       treasure->gems = CALLOC_OR_DIE(treasure->gemsCount, sizeof(struct Gem));
       for (int i = 0; i < treasure->gemsCount; ++i) {
-        intializeGem(&treasure->gems[i]);
+        initializeGem(&treasure->gems[i]);
         generateGem(&treasure->gems[i], dice);
       }
     }

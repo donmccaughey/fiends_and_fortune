@@ -1,5 +1,5 @@
-#ifndef GEM_H_INCLUDED
-#define GEM_H_INCLUDED
+#ifndef TREASURE_GEM_H_INCLUDED
+#define TREASURE_GEM_H_INCLUDED
 
 
 struct Dice;
@@ -41,7 +41,7 @@ int gemValue_cp(struct Gem *gem);
 
 void generateGem(struct Gem *gem, struct Dice *dice);
 
-void intializeGem(struct Gem *gem);
+void initializeGem(struct Gem *gem);
 
 
-#endif /* #ifndef GEM_H_INCLUDED */
+#endif /* #ifndef TREASURE_GEM_H_INCLUDED */

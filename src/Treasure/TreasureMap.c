@@ -316,7 +316,7 @@ static void generateMonetaryTreasure_13to15_Gems(struct Treasure *treasure,
   treasure->gems = REALLOC_OR_DIE(treasure->gems, newSize);
   for (int i = 0; i < count; ++i) {
     int j = treasure->gemsCount + i;
-    intializeGem(&treasure->gems[j]);
+    initializeGem(&treasure->gems[j]);
     generateGem(&treasure->gems[j], dice);
   }
   treasure->gemsCount += count;

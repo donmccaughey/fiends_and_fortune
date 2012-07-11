@@ -192,7 +192,7 @@ void generateGem(struct Gem *gem, struct Dice *dice)
 }
 
 
-void intializeGem(struct Gem *gem)
+void initializeGem(struct Gem *gem)
 {
   memset(gem, 0, sizeof(struct Gem));
 }
