@@ -21,15 +21,13 @@ struct Tiles
 };
 
 
-void addTileToTileIndex(struct Tiles *index, struct Tile *tile);
+void addTileToTiles(struct Tiles *tiles, struct Tile *tile);
 
 void finalizeTiles(struct Tiles *tiles);
 
-void initializeTiles(struct Tiles *tiles);
+void initializeTiles(struct Tiles *tiles, CompareFunction compare);
 
-void initializeTileIndex(struct Tiles *index, CompareFunction compare);
-
-Boolean removeTileFromTileIndex(struct Tiles *index, struct Tile *tile);
+Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile *tile);
 
 
 #endif /* #ifndef DUNGEONS_TILES_H_INCLUDED */

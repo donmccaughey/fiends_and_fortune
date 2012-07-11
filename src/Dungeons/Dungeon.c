@@ -43,7 +43,7 @@ static struct Tile *addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, i
 void addTileToDungeon(struct Dungeon *dungeon, struct Tile *tile)
 {
   assert(NULL == findTileInDungeonAt(dungeon, tile->x, tile->y, tile->z));
-  addTileToTileIndex(&dungeon->index, tile);
+  addTileToTiles(&dungeon->tiles, tile);
 }
 
 
@@ -78,10 +78,10 @@ static struct Tile *createTile(enum TileType type, int x, int y, int z)
 
 void finalizeDungeon(struct Dungeon *dungeon)
 {
-  for (size_t i = 0; i < dungeon->index.count; ++i) {
-    freeTileOnVisit(dungeon->index.tiles[i], NULL);
+  for (size_t i = 0; i < dungeon->tiles.count; ++i) {
+    freeTileOnVisit(dungeon->tiles.tiles[i], NULL);
   }
-  finalizeTiles(&dungeon->index);
+  finalizeTiles(&dungeon->tiles);
 }
 
 
@@ -90,8 +90,8 @@ struct Tile *findTileInDungeonAt(struct Dungeon *dungeon, int x, int y, int z)
   struct Tile equivalent = { .x = x, .y = y, .z = z };
   struct Tile *tile = &equivalent;
 
-  struct Tile **tileInIndex = bsearch(&tile, dungeon->index.tiles, dungeon->index.count, sizeof(struct Tile *), dungeon->index.compare);
-  return tileInIndex ? *tileInIndex : NULL;
+  struct Tile **tileInDungeon = bsearch(&tile, dungeon->tiles.tiles, dungeon->tiles.count, sizeof(struct Tile *), dungeon->tiles.compare);
+  return tileInDungeon ? *tileInDungeon : NULL;
 }
 
 
@@ -128,8 +128,8 @@ static Boolean gatherStatisticsOnVisit(struct Tile *tile, void *statisticsContex
 void gatherDungeonStatistics(struct Dungeon *dungeon, struct DungeonStatistics *statistics)
 {
   memset(statistics, 0, sizeof(struct DungeonStatistics));
-  for (size_t i = 0; i < dungeon->index.count; ++i) {
-    gatherStatisticsOnVisit(dungeon->index.tiles[i], statistics);
+  for (size_t i = 0; i < dungeon->tiles.count; ++i) {
+    gatherStatisticsOnVisit(dungeon->tiles.tiles[i], statistics);
   }
 }
 
@@ -400,7 +400,7 @@ void graphDungeonUsingText(struct Dungeon *dungeon, FILE *out)
 void initializeDungeon(struct Dungeon *dungeon)
 {
   memset(dungeon, 0, sizeof(struct Dungeon));
-  initializeTileIndex(&dungeon->index, compareTilesByCoordinate);
+  initializeTiles(&dungeon->tiles, compareTilesByCoordinate);
 }
 
 

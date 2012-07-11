@@ -9,10 +9,10 @@
 static void appendTileToTiles(struct Tiles *tiles, struct Tile *tile);
 
 
-void addTileToTileIndex(struct Tiles *index, struct Tile *tile)
+void addTileToTiles(struct Tiles *tiles, struct Tile *tile)
 {
-  appendTileToTiles(index, tile);
-  qsort(index->tiles, index->count, sizeof(struct Tile *), index->compare);
+  appendTileToTiles(tiles, tile);
+  qsort(tiles->tiles, tiles->count, sizeof(struct Tile *), tiles->compare);
 }
 
 
@@ -37,29 +37,23 @@ void finalizeTiles(struct Tiles *tiles)
 }
 
 
-void initializeTiles(struct Tiles *tiles)
+void initializeTiles(struct Tiles *tiles, CompareFunction compare)
 {
   memset(tiles, 0, sizeof(struct Tiles));
   tiles->tiles = CALLOC_OR_DIE(0, sizeof(struct Tile *));
+  tiles->compare = compare;
 }
 
 
-void initializeTileIndex(struct Tiles *index, CompareFunction compare)
+Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile *tile)
 {
-  initializeTiles(index);
-  index->compare = compare;
-}
-
-
-Boolean removeTileFromTileIndex(struct Tiles *index, struct Tile *tile)
-{
-  struct Tile **found = bsearch(&tile, index->tiles, index->count, sizeof(struct Tile *), index->compare);
+  struct Tile **found = bsearch(&tile, tiles->tiles, tiles->count, sizeof(struct Tile *), tiles->compare);
   if ( ! found) {
     return FALSE;
   }
   struct Tile **tail = found + 1;
-  struct Tile **end = index->tiles + index->count;
+  struct Tile **end = tiles->tiles + tiles->count;
   memmove(found, tail, (end - tail) * sizeof(struct Tile *));
-  --index->count;
+  --tiles->count;
   return TRUE;
 }

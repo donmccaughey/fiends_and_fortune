@@ -24,8 +24,7 @@ static void generateDungeonTest(void)
 
   generateDungeon(&dungeon, &dice);
   assert(dungeon.mainEntrance);
-//  printf("dungeon has %lu tiles\n", dungeon.index.count);
-  assert(113 == dungeon.index.count);
+  assert(113 == dungeon.tiles.count);
 
   struct DungeonStatistics statistics;
   gatherDungeonStatistics(&dungeon, &statistics);

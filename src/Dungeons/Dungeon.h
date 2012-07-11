@@ -14,7 +14,7 @@ struct Tile;
 
 struct Dungeon {
   struct Tile *mainEntrance;
-  struct Tiles index;
+  struct Tiles tiles;
 };
 
 struct DungeonStatistics {

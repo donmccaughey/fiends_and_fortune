@@ -6,60 +6,60 @@
 
 void tilesTest(void);
 
-static void tilesIndexTest(void);
+static void addTileToTilesTest(void);
 
 
 void tilesTest(void)
 {
-  tilesIndexTest();
+  addTileToTilesTest();
 }
 
 
-static void tilesIndexTest(void)
+static void addTileToTilesTest(void)
 {
-  struct Tiles index;
+  struct Tiles tiles;
   
-  initializeTileIndex(&index, compareTilesByCoordinate);
+  initializeTiles(&tiles, compareTilesByCoordinate);
   
-  assert(0 == index.capacity);
-  assert(0 == index.count);
-  assert(index.tiles);
+  assert(0 == tiles.capacity);
+  assert(0 == tiles.count);
+  assert(tiles.tiles);
   
   struct Tile tile1 = { .x = 0 };
-  addTileToTileIndex(&index, &tile1);
+  addTileToTiles(&tiles, &tile1);
   
-  assert(index.capacity > 0);
-  assert(1 == index.count);
-  assert(index.tiles[0] == &tile1);
+  assert(tiles.capacity > 0);
+  assert(1 == tiles.count);
+  assert(tiles.tiles[0] == &tile1);
   
   struct Tile tile2 = { .x = 1 };
-  addTileToTileIndex(&index, &tile2);
+  addTileToTiles(&tiles, &tile2);
   
-  assert(2 == index.count);
-  assert(index.tiles[1] == &tile2);
+  assert(2 == tiles.count);
+  assert(tiles.tiles[1] == &tile2);
   
   struct Tile tile3 = { .x = -1 };
-  addTileToTileIndex(&index, &tile3);
+  addTileToTiles(&tiles, &tile3);
   
-  assert(3 == index.count);
-  assert(index.tiles[0] == &tile3);
-  assert(index.tiles[1] == &tile1);
-  assert(index.tiles[2] == &tile2);
+  assert(3 == tiles.count);
+  assert(tiles.tiles[0] == &tile3);
+  assert(tiles.tiles[1] == &tile1);
+  assert(tiles.tiles[2] == &tile2);
   
-  Boolean found = removeTileFromTileIndex(&index, &tile1);
+  Boolean found = removeTileFromTiles(&tiles, &tile1);
   assert(found);
-  assert(2 == index.count);
-  assert(index.tiles[0] == &tile3);
-  assert(index.tiles[1] == &tile2);
+  assert(2 == tiles.count);
+  assert(tiles.tiles[0] == &tile3);
+  assert(tiles.tiles[1] == &tile2);
   
-  found = removeTileFromTileIndex(&index, &tile2);
+  found = removeTileFromTiles(&tiles, &tile2);
   assert(found);
-  assert(1 == index.count);
-  assert(index.tiles[0] == &tile3);
+  assert(1 == tiles.count);
+  assert(tiles.tiles[0] == &tile3);
   
-  found = removeTileFromTileIndex(&index, &tile3);
+  found = removeTileFromTiles(&tiles, &tile3);
   assert(found);
-  assert(0 == index.count);
+  assert(0 == tiles.count);
   
-  finalizeTiles(&index);
+  finalizeTiles(&tiles);
 }
