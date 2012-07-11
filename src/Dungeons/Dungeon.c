@@ -26,8 +26,7 @@
 static struct Tile *addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, int y, int z);
 static void addTileToDungeon(struct Dungeon *dungeon, struct Tile *tile);
 static struct Tile *createTile(enum TileType type, int x, int y, int z);
-static Boolean freeTileOnVisit(struct Tile *tile, void *unused);
-static Boolean gatherStatisticsOnVisit(struct Tile *tile, void *statisticsContext);
+static void gatherStatistics(struct Tile *tile, struct DungeonStatistics *statistics);
 static void printHorizontalBorder(FILE *out, int x1, int x2);
 static void printHorizontalScale(FILE *out, int x1, int x2);
 static enum TileType tileTypeAt(struct Dungeon *dungeon, int x, int y, int z);
@@ -62,7 +61,7 @@ static struct Tile *createTile(enum TileType type, int x, int y, int z)
 void finalizeDungeon(struct Dungeon *dungeon)
 {
   for (size_t i = 0; i < dungeon->tiles.count; ++i) {
-    freeTileOnVisit(dungeon->tiles.tiles[i], NULL);
+    free(dungeon->tiles.tiles[i]);
   }
   finalizeTiles(&dungeon->tiles);
 }
@@ -78,17 +77,8 @@ struct Tile *findTileInDungeonAt(struct Dungeon *dungeon, int x, int y, int z)
 }
 
 
-static Boolean freeTileOnVisit(struct Tile *tile, void *unused)
+static void gatherStatistics(struct Tile *tile, struct DungeonStatistics *statistics)
 {
-  free(tile);
-  return FALSE;
-}
-
-
-static Boolean gatherStatisticsOnVisit(struct Tile *tile, void *statisticsContext)
-{
-  struct DungeonStatistics *statistics = statisticsContext;
-  
   if (tile->x < statistics->minX) {
     statistics->minX = tile->x;
   }
@@ -103,8 +93,6 @@ static Boolean gatherStatisticsOnVisit(struct Tile *tile, void *statisticsContex
   }
   
   ++statistics->tileCount;
-  
-  return FALSE;
 }
 
 
@@ -112,7 +100,7 @@ void gatherDungeonStatistics(struct Dungeon *dungeon, struct DungeonStatistics *
 {
   memset(statistics, 0, sizeof(struct DungeonStatistics));
   for (size_t i = 0; i < dungeon->tiles.count; ++i) {
-    gatherStatisticsOnVisit(dungeon->tiles.tiles[i], statistics);
+    gatherStatistics(dungeon->tiles.tiles[i], statistics);
   }
 }
 
