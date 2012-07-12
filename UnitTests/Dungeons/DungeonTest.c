@@ -1,6 +1,7 @@
 #include <assert.h>
 #include "Dice.h"
 #include "Dungeon.h"
+#include "DungeonStatistics.h"
 #include "Tile.h"
 
 

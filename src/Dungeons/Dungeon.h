@@ -4,11 +4,11 @@
 
 #include <stddef.h>
 #include <stdio.h>
-#include "Boolean.h"
 #include "Tiles.h"
 
 
 struct Dice;
+struct DungeonStatistics;
 struct Tile;
 
 
@@ -16,13 +16,6 @@ struct Dungeon {
   struct Tiles tiles;
 };
 
-struct DungeonStatistics {
-  int minX;
-  int minY;
-  int maxX;
-  int maxY;
-  size_t tileCount;
-};
 
 void finalizeDungeon(struct Dungeon *dungeon);
 

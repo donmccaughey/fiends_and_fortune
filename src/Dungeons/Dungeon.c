@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <string.h>
 #include "Dice.h"
+#include "DungeonStatistics.h"
 #include "Tile.h"
 
 
