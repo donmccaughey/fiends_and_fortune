@@ -9,4 +9,7 @@ struct Point {
 };
 
 
+int comparePoints(struct Point const *point1, struct Point const *point2);
+
+
 #endif /* #ifndef DUNGEONS_POINT_H_INCLUDED */

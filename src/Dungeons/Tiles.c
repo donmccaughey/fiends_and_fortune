@@ -37,13 +37,7 @@ static int compareTilesByCoordinate(void const *item1, void const *item2)
   struct Tile const *tile1 = item1;
   struct Tile const *tile2 = item2;
 
-  if (tile1->point.z != tile2->point.z) {
-    return tile1->point.z - tile2->point.z;
-  }
-  if (tile1->point.y != tile2->point.y) {
-    return tile1->point.y - tile2->point.y;
-  }
-  return tile1->point.x - tile2->point.x;
+  return comparePoints(&tile1->point, &tile2->point);
 }
 
 
