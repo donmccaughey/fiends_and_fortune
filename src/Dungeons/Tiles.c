@@ -6,18 +6,18 @@
 #include "Tile.h"
 
 
-static void appendTileToTiles(struct Tiles *tiles, struct Tile *tile);
+static void appendTileToTiles(struct Tiles *tiles, struct Tile const *tile);
 static int compareTilesByCoordinate(void const *item1, void const *item2);
 
 
-void addTileToTiles(struct Tiles *tiles, struct Tile *tile)
+void addTileToTiles(struct Tiles *tiles, struct Tile const *tile)
 {
   appendTileToTiles(tiles, tile);
   qsort(tiles->tiles, tiles->count, sizeof(struct Tile), compareTilesByCoordinate);
 }
 
 
-static void appendTileToTiles(struct Tiles *tiles, struct Tile *tile)
+static void appendTileToTiles(struct Tiles *tiles, struct Tile const *tile)
 {
   if (tiles->capacity == tiles->count) {
     if (tiles->capacity) {
@@ -63,7 +63,7 @@ void initializeTiles(struct Tiles *tiles)
 }
 
 
-Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile *tile)
+Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
 {
   struct Tile *found = bsearch(tile, tiles->tiles, tiles->count, sizeof(struct Tile), compareTilesByCoordinate);
   if ( ! found) {

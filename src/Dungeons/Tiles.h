@@ -17,7 +17,7 @@ struct Tiles
 };
 
 
-void addTileToTiles(struct Tiles *tiles, struct Tile *tile);
+void addTileToTiles(struct Tiles *tiles, struct Tile const *tile);
 
 void finalizeTiles(struct Tiles *tiles);
 
@@ -25,7 +25,7 @@ struct Tile *findTileInTilesAt(struct Tiles *tiles, int x, int y, int z);
 
 void initializeTiles(struct Tiles *tiles);
 
-Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile *tile);
+Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile);
 
 
 #endif /* #ifndef DUNGEONS_TILES_H_INCLUDED */
