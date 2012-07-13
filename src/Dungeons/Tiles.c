@@ -1,13 +1,16 @@
 #include "Tiles.h"
 
+#include <limits.h>
 #include <stdlib.h>
 #include <string.h>
 #include "heap.h"
 #include "Tile.h"
+#include "TileStatistics.h"
 
 
 static void appendTileToTiles(struct Tiles *tiles, struct Tile const *tile);
 static int compareTilesByCoordinate(void const *item1, void const *item2);
+static void gatherStatistics(struct Tile const *tile, struct TileStatistics *statistics);
 
 
 void addTileToTiles(struct Tiles *tiles, struct Tile const *tile)
@@ -47,12 +50,44 @@ void finalizeTiles(struct Tiles *tiles)
 }
 
 
-struct Tile *findTileInTilesAt(struct Tiles *tiles, int x, int y, int z)
+struct Tile *findTileInTilesAt(struct Tiles const *tiles, int x, int y, int z)
 {
   struct Tile tile = { .point = { x, y, z} };
 
   struct Tile *tileInTiles = bsearch(&tile, tiles->tiles, tiles->count, sizeof(struct Tile), compareTilesByCoordinate);
   return tileInTiles ? tileInTiles : NULL;
+}
+
+
+static void gatherStatistics(struct Tile const *tile, struct TileStatistics *statistics)
+{
+  if (tile->point.x < statistics->minX) {
+    statistics->minX = tile->point.x;
+  }
+  if (tile->point.x > statistics->maxX) {
+    statistics->maxX = tile->point.x;
+  }
+  if (tile->point.y < statistics->minY) {
+    statistics->minY = tile->point.y;
+  }
+  if (tile->point.y > statistics->maxY) {
+    statistics->maxY = tile->point.y;
+  }
+
+  ++statistics->count;
+}
+
+
+void gatherTileStatistics(struct Tiles const *tiles, struct TileStatistics *statistics)
+{
+  statistics->count = 0;
+  statistics->maxX = INT_MIN;
+  statistics->maxY = INT_MIN;
+  statistics->minX = INT_MAX;
+  statistics->minY = INT_MAX;
+  for (size_t i = 0; i < tiles->count; ++i) {
+    gatherStatistics(&tiles->tiles[i], statistics);
+  }
 }
 
 
@@ -74,4 +109,25 @@ Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
   memmove(found, tail, (end - tail) * sizeof(struct Tile));
   --tiles->count;
   return TRUE;
+}
+
+
+struct Tiles const tilesOnLevel(struct Tiles const *tiles, int z)
+{
+  struct Tiles tilesOnLevel = { NULL, 0, 0 };
+
+  // TODO: replace linear search with binary lower bound/upper bound search
+  for (size_t i = 0; i < tiles->count; ++i) {
+    struct Tile *tile = &tiles->tiles[i];
+    if (tile->point.z == z) {
+      if ( ! tilesOnLevel.tiles) {
+        tilesOnLevel.tiles = tile;
+      }
+      ++tilesOnLevel.count;
+    } else if (tilesOnLevel.tiles) {
+      return tilesOnLevel;
+    }
+  }
+
+  return tilesOnLevel;
 }

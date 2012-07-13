@@ -1,7 +1,7 @@
 #include <assert.h>
 #include "Dice.h"
 #include "Dungeon.h"
-#include "DungeonStatistics.h"
+#include "TileStatistics.h"
 #include "Tile.h"
 
 
@@ -26,14 +26,14 @@ static void generateDungeonTest(void)
   generateDungeon(&dungeon, &dice);
   assert(113 == dungeon.tiles.count);
 
-  struct DungeonStatistics statistics;
-  gatherDungeonStatistics(&dungeon, &statistics);
+  struct TileStatistics statistics;
+  gatherTileStatistics(&dungeon.tiles, &statistics);
 
   assert(-7 == statistics.minX);
   assert(8 == statistics.maxX);
   assert(0 == statistics.minY);
   assert(14 == statistics.maxY);
-  assert(113 == statistics.tileCount);
+  assert(113 == statistics.count);
 
   struct Tile *tile = findTileInTilesAt(&dungeon.tiles, 0, 0, 1);
   assert(tile);

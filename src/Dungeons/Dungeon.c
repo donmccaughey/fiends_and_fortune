@@ -3,8 +3,8 @@
 #include <assert.h>
 #include <string.h>
 #include "Dice.h"
-#include "DungeonStatistics.h"
 #include "Tile.h"
+#include "TileStatistics.h"
 
 
 #define CORNER_EMPTY "+   "
@@ -23,10 +23,9 @@
 
 
 static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, int y, int z);
-static void gatherStatistics(struct Tile *tile, struct DungeonStatistics *statistics);
 static void printHorizontalBorder(FILE *out, int x1, int x2);
 static void printHorizontalScale(FILE *out, int x1, int x2);
-static enum TileType tileTypeAt(struct Dungeon *dungeon, int x, int y, int z);
+static enum TileType tileTypeAt(struct Tiles const *tiles, int x, int y, int z);
 
 
 static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, int y, int z)
@@ -44,34 +43,6 @@ static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, int y, in
 void finalizeDungeon(struct Dungeon *dungeon)
 {
   finalizeTiles(&dungeon->tiles);
-}
-
-
-static void gatherStatistics(struct Tile *tile, struct DungeonStatistics *statistics)
-{
-  if (tile->point.x < statistics->minX) {
-    statistics->minX = tile->point.x;
-  }
-  if (tile->point.x > statistics->maxX) {
-    statistics->maxX = tile->point.x;
-  }
-  if (tile->point.y < statistics->minY) {
-    statistics->minY = tile->point.y;
-  }
-  if (tile->point.y > statistics->maxY) {
-    statistics->maxY = tile->point.y;
-  }
-  
-  ++statistics->tileCount;
-}
-
-
-void gatherDungeonStatistics(struct Dungeon *dungeon, struct DungeonStatistics *statistics)
-{
-  memset(statistics, 0, sizeof(struct DungeonStatistics));
-  for (size_t i = 0; i < dungeon->tiles.count; ++i) {
-    gatherStatistics(&dungeon->tiles.tiles[i], statistics);
-  }
 }
 
 
@@ -254,17 +225,17 @@ void generateDungeon(struct Dungeon *dungeon, struct Dice *dice)
 }
 
 
-void graphDungeonUsingText(struct Dungeon *dungeon, FILE *out)
+void graphDungeonLevelUsingText(struct Dungeon *dungeon, int z, FILE *out)
 {
-  struct DungeonStatistics statistics;
-  gatherDungeonStatistics(dungeon, &statistics);
+  struct Tiles const levelTiles = tilesOnLevel(&dungeon->tiles, z);
+  struct TileStatistics statistics;
+  gatherTileStatistics(&levelTiles, &statistics);
   
   int x1 = statistics.minX - 1;
-  int x2 = statistics.maxX + 2;
+  int x2 = statistics.maxX + 2; /* exclusive */
   int y1 = statistics.maxY + 1;
-  int y2 = statistics.minY - 2;
-  int z = 1;
-  
+  int y2 = statistics.minY - 2; /* exclusive */
+
   // top border
   printHorizontalScale(out, x1, x2);
   printHorizontalBorder(out, x1, x2);
@@ -274,8 +245,8 @@ void graphDungeonUsingText(struct Dungeon *dungeon, FILE *out)
     // top line of row
     fprintf(out, LMARGIN_NUM, j);
     for (int i = x1; i < x2; ++i) {
-      enum TileType type = tileTypeAt(dungeon, i, j, z);
-      enum TileType westType = tileTypeAt(dungeon, i - 1, j, z);
+      enum TileType type = tileTypeAt(&levelTiles, i, j, z);
+      enum TileType westType = tileTypeAt(&levelTiles, i - 1, j, z);
       if (x1 == i || type != westType) {
         fprintf(out, SolidTileType == type ? VWALL_SOLID : VWALL_EMPTY);
       } else {
@@ -292,8 +263,8 @@ void graphDungeonUsingText(struct Dungeon *dungeon, FILE *out)
         continue;
       }
       
-      enum TileType type = tileTypeAt(dungeon, i, j, z);
-      enum TileType southType = tileTypeAt(dungeon, i, j - 1, z);
+      enum TileType type = tileTypeAt(&levelTiles, i, j, z);
+      enum TileType southType = tileTypeAt(&levelTiles, i, j - 1, z);
       if (x1 == i) {
         if (type == southType) {
           fprintf(out, SolidTileType == type ? CORNER_SOLID : CORNER_EMPTY);
@@ -303,8 +274,8 @@ void graphDungeonUsingText(struct Dungeon *dungeon, FILE *out)
         continue;
       }
 
-      enum TileType westType = tileTypeAt(dungeon, i - 1, j, z);
-      enum TileType southWestType = tileTypeAt(dungeon, i - 1, j - 1, z);
+      enum TileType westType = tileTypeAt(&levelTiles, i - 1, j, z);
+      enum TileType southWestType = tileTypeAt(&levelTiles, i - 1, j - 1, z);
       if (type == southType) {
         if (type == westType) {
           if (type == southWestType) {
@@ -365,8 +336,8 @@ static void printHorizontalScale(FILE *out, int x1, int x2)
 }
 
 
-static enum TileType tileTypeAt(struct Dungeon *dungeon, int x, int y, int z)
+static enum TileType tileTypeAt(struct Tiles const *tiles, int x, int y, int z)
 {
-  struct Tile *tile = findTileInTilesAt(&dungeon->tiles, x, y, z);
+  struct Tile *tile = findTileInTilesAt(tiles, x, y, z);
   return tile ? tile->type : SolidTileType;
 }

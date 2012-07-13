@@ -181,7 +181,7 @@ static void generateRandomDungeon(struct Dice *dice, FILE *out)
   initializeDungeon(&dungeon);
   generateDungeon(&dungeon, dice);
 
-  graphDungeonUsingText(&dungeon, out);
+  graphDungeonLevelUsingText(&dungeon, 1, out);
 
   finalizeDungeon(&dungeon);
 }
@@ -225,7 +225,7 @@ static void generateSampleDungeon(struct Dice *dice, FILE *out)
   struct Dungeon dungeon;
   initializeDungeon(&dungeon);
   generateDungeon(&dungeon, dice);
-  graphDungeonUsingText(&dungeon, out);
+  graphDungeonLevelUsingText(&dungeon, 1, out);
   finalizeDungeon(&dungeon);
 }
 
