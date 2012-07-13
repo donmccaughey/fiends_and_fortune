@@ -29,10 +29,10 @@ static void generateDungeonTest(void)
   struct TileStatistics statistics;
   gatherTileStatistics(&dungeon.tiles, &statistics);
 
-  assert(-7 == statistics.minX);
-  assert(8 == statistics.maxX);
-  assert(0 == statistics.minY);
-  assert(14 == statistics.maxY);
+  assert(-7 == statistics.xRange.begin);
+  assert(9 == statistics.xRange.end);
+  assert(0 == statistics.yRange.begin);
+  assert(15 == statistics.yRange.end);
   assert(113 == statistics.count);
 
   struct Tile *tile = findTileInTilesAt(&dungeon.tiles, 0, 0, 1);

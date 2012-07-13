@@ -4,15 +4,13 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include "Range.h"
 
 
-struct TileStatistics
-{
+struct TileStatistics {
   size_t count;
-  int32_t maxX;
-  int32_t maxY;
-  int32_t minX;
-  int32_t minY;
+  struct Range xRange;
+  struct Range yRange;
 };
 
 
