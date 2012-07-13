@@ -67,6 +67,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D4092F5B15AFDBA70002FB34 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		D420B2C914103887003DD56E /* treasure.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = treasure.txt; sourceTree = "<group>"; };
 		D43ED590142146F800D25EEC /* UnitTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		D43ED593142146F800D25EEC /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
@@ -274,6 +275,7 @@
 				D4783B0F15ABDF8B004E7F2C /* Treasure */,
 				D4783B3115ABE0C7004E7F2C /* Types */,
 				D4F73461140EF4380096618F /* main.c */,
+				D4092F5B15AFDBA70002FB34 /* prefix.pch */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -492,6 +494,8 @@
 		D4F7345A140EF3E00096618F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/prefix.pch;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = src;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -501,6 +505,8 @@
 		D4F7345B140EF3E00096618F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/prefix.pch;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				HEADER_SEARCH_PATHS = src;
 				PRODUCT_NAME = "$(TARGET_NAME)";

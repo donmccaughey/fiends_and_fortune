@@ -2,10 +2,13 @@
 #define DUNGEONS_POINT_H_INCLUDED
 
 
+#include <stdint.h>
+
+
 struct Point {
-  int x;
-  int y;
-  int z;
+  int32_t x;
+  int32_t y;
+  int32_t z;
 };
 
 

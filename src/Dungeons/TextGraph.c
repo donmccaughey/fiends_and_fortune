@@ -20,31 +20,31 @@
 #define VWALL_SOLID "|:::"
 
 
-static void printHorizontalBorder(FILE *out, int x1, int x2);
-static void printHorizontalScale(FILE *out, int x1, int x2);
-static enum TileType tileTypeAt(struct Tiles const *tiles, int x, int y, int z);
+static void printHorizontalBorder(FILE *out, int32_t x1, int32_t x2);
+static void printHorizontalScale(FILE *out, int32_t x1, int32_t x2);
+static enum TileType tileTypeAt(struct Tiles const *tiles, int32_t x, int32_t y, int32_t z);
 
 
-void graphDungeonLevelUsingText(struct Dungeon *dungeon, int z, FILE *out)
+void graphDungeonLevelUsingText(struct Dungeon *dungeon, int32_t z, FILE *out)
 {
   struct Tiles const levelTiles = tilesOnLevel(&dungeon->tiles, z);
   struct TileStatistics statistics;
   gatherTileStatistics(&levelTiles, &statistics);
 
-  int x1 = statistics.minX - 1;
-  int x2 = statistics.maxX + 2; /* exclusive */
-  int y1 = statistics.maxY + 1;
-  int y2 = statistics.minY - 2; /* exclusive */
+  int32_t x1 = statistics.minX - 1;
+  int32_t x2 = statistics.maxX + 2; /* exclusive */
+  int32_t y1 = statistics.maxY + 1;
+  int32_t y2 = statistics.minY - 2; /* exclusive */
 
   // top border
   printHorizontalScale(out, x1, x2);
   printHorizontalBorder(out, x1, x2);
 
   // rows of tiles
-  for (int j = y1; j > y2; --j) {
+  for (int32_t j = y1; j > y2; --j) {
     // top line of row
     fprintf(out, LMARGIN_NUM, j);
-    for (int i = x1; i < x2; ++i) {
+    for (int32_t i = x1; i < x2; ++i) {
       enum TileType type = tileTypeAt(&levelTiles, i, j, z);
       enum TileType westType = tileTypeAt(&levelTiles, i - 1, j, z);
       if (x1 == i || type != westType) {
@@ -57,7 +57,7 @@ void graphDungeonLevelUsingText(struct Dungeon *dungeon, int z, FILE *out)
 
     // bottom line of row
     fprintf(out, LMARGIN);
-    for (int i = x1; i < x2; ++i) {
+    for (int32_t i = x1; i < x2; ++i) {
       if (j == y2 + 1) {
         fprintf(out, CORNER_HWALL);
         continue;
@@ -109,27 +109,27 @@ void graphDungeonLevelUsingText(struct Dungeon *dungeon, int z, FILE *out)
 }
 
 
-static void printHorizontalBorder(FILE *out, int x1, int x2)
+static void printHorizontalBorder(FILE *out, int32_t x1, int32_t x2)
 {
   fprintf(out, LMARGIN);
-  for (int i = x1; i < x2; ++i) {
+  for (int32_t i = x1; i < x2; ++i) {
     fprintf(out, "+---");
   }
   fprintf(out, "+   \n");
 }
 
 
-static void printHorizontalScale(FILE *out, int x1, int x2)
+static void printHorizontalScale(FILE *out, int32_t x1, int32_t x2)
 {
   fprintf(out, LMARGIN);
-  for (int i = x1; i < x2; ++i) {
+  for (int32_t i = x1; i < x2; ++i) {
     fprintf(out, "%3i ", i);
   }
   fprintf(out, RMARGIN "\n");
 }
 
 
-static enum TileType tileTypeAt(struct Tiles const *tiles, int x, int y, int z)
+static enum TileType tileTypeAt(struct Tiles const *tiles, int32_t x, int32_t y, int32_t z)
 {
   struct Tile *tile = findTileInTilesAt(tiles, x, y, z);
   return tile ? tile->type : SolidTileType;

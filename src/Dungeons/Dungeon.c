@@ -1,15 +1,16 @@
 #include "Dungeon.h"
 
 #include <assert.h>
+#include <stdint.h>
 #include <string.h>
 #include "Dice.h"
 #include "Tile.h"
 
 
-static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, int y, int z);
+static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int32_t x, int32_t y, int32_t z);
 
 
-static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int x, int y, int z)
+static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int32_t x, int32_t y, int32_t z)
 {
   assert(NULL == findTileInTilesAt(&dungeon->tiles, x, y, z));
 

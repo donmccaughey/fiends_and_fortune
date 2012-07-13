@@ -3,6 +3,7 @@
 
 
 #include <stddef.h>
+#include <stdint.h>
 #include "Boolean.h"
 
 
@@ -22,7 +23,7 @@ void addTileToTiles(struct Tiles *tiles, struct Tile const *tile);
 
 void finalizeTiles(struct Tiles *tiles);
 
-struct Tile *findTileInTilesAt(struct Tiles const *tiles, int x, int y, int z);
+struct Tile *findTileInTilesAt(struct Tiles const *tiles, int32_t x, int32_t y, int32_t z);
 
 void gatherTileStatistics(struct Tiles const *tiles, struct TileStatistics *statistics);
 
@@ -30,7 +31,7 @@ void initializeTiles(struct Tiles *tiles);
 
 Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile);
 
-struct Tiles const tilesOnLevel(struct Tiles const *tiles, int z);
+struct Tiles const tilesOnLevel(struct Tiles const *tiles, int32_t z);
 
 
 #endif /* #ifndef DUNGEONS_TILES_H_INCLUDED */

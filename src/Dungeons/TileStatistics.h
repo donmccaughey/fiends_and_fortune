@@ -3,15 +3,16 @@
 
 
 #include <stddef.h>
+#include <stdint.h>
 
 
 struct TileStatistics
 {
   size_t count;
-  int maxX;
-  int maxY;
-  int minX;
-  int minY;
+  int32_t maxX;
+  int32_t maxY;
+  int32_t minX;
+  int32_t minY;
 };
 
 

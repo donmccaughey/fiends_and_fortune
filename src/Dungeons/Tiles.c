@@ -50,7 +50,7 @@ void finalizeTiles(struct Tiles *tiles)
 }
 
 
-struct Tile *findTileInTilesAt(struct Tiles const *tiles, int x, int y, int z)
+struct Tile *findTileInTilesAt(struct Tiles const *tiles, int32_t x, int32_t y, int32_t z)
 {
   struct Tile tile = { .point = { x, y, z} };
 
@@ -81,10 +81,10 @@ static void gatherStatistics(struct Tile const *tile, struct TileStatistics *sta
 void gatherTileStatistics(struct Tiles const *tiles, struct TileStatistics *statistics)
 {
   statistics->count = 0;
-  statistics->maxX = INT_MIN;
-  statistics->maxY = INT_MIN;
-  statistics->minX = INT_MAX;
-  statistics->minY = INT_MAX;
+  statistics->maxX = INT32_MIN;
+  statistics->maxY = INT32_MIN;
+  statistics->minX = INT32_MAX;
+  statistics->minY = INT32_MAX;
   for (size_t i = 0; i < tiles->count; ++i) {
     gatherStatistics(&tiles->tiles[i], statistics);
   }
@@ -112,7 +112,7 @@ Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
 }
 
 
-struct Tiles const tilesOnLevel(struct Tiles const *tiles, int z)
+struct Tiles const tilesOnLevel(struct Tiles const *tiles, int32_t z)
 {
   struct Tiles tilesOnLevel = { NULL, 0, 0 };
 
