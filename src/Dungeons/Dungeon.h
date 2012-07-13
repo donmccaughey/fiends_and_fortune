@@ -2,13 +2,10 @@
 #define DUNGEONS_DUNGEON_H_INCLUDED
 
 
-#include <stdio.h>
 #include "Tiles.h"
 
 
 struct Dice;
-struct TileStatistics;
-struct Tile;
 
 
 struct Dungeon {
@@ -19,8 +16,6 @@ struct Dungeon {
 void finalizeDungeon(struct Dungeon *dungeon);
 
 void generateDungeon(struct Dungeon *dungeon, struct Dice *dice);
-
-void graphDungeonLevelUsingText(struct Dungeon *dungeon, int z, FILE *out);
 
 void initializeDungeon(struct Dungeon *dungeon);
 

@@ -6,13 +6,14 @@
 #include "Character.h"
 #include "coinage.h"
 #include "Dice.h"
+#include "Dungeon.h"
 #include "Gem.h"
 #include "Jewelry.h"
 #include "MagicItem.h"
+#include "TextGraph.h"
 #include "Treasure.h"
 #include "TreasureMap.h"
 #include "TreasureType.h"
-#import "Dungeon.h"
 
 
 static void check(FILE *out, char const *constantNumber);

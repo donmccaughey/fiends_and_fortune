@@ -32,6 +32,7 @@
 		D4783B4C15ABEB32004E7F2C /* TilesTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B4B15ABEB32004E7F2C /* TilesTest.c */; };
 		D4F73462140EF4380096618F /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D4F73461140EF4380096618F /* main.c */; };
 		D4F73465140EF55C00966192 /* Point.c in Sources */ = {isa = PBXBuildFile; fileRef = D4F73465140EF55C00966191 /* Point.c */; };
+		D4F73465140EF55C00966196 /* TextGraph.c in Sources */ = {isa = PBXBuildFile; fileRef = D4F73465140EF55C00966195 /* TextGraph.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +110,8 @@
 		D4F73465140EF55C00966190 /* Point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Point.h; sourceTree = "<group>"; };
 		D4F73465140EF55C00966191 /* Point.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Point.c; sourceTree = "<group>"; };
 		D4F73465140EF55C00966193 /* TileStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileStatistics.h; sourceTree = "<group>"; };
+		D4F73465140EF55C00966194 /* TextGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextGraph.h; sourceTree = "<group>"; };
+		D4F73465140EF55C00966195 /* TextGraph.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TextGraph.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +179,8 @@
 				D4783B2715ABDFF0004E7F2C /* Dungeon.c */,
 				D4F73465140EF55C00966190 /* Point.h */,
 				D4F73465140EF55C00966191 /* Point.c */,
+				D4F73465140EF55C00966194 /* TextGraph.h */,
+				D4F73465140EF55C00966195 /* TextGraph.c */,
 				D4783B4615ABE561004E7F2C /* Tile.h */,
 				D4783B4715ABE698004E7F2C /* Tiles.h */,
 				D4783B4815ABE7E5004E7F2C /* Tiles.c */,
@@ -402,6 +407,7 @@
 				D4783B3915ABE10B004E7F2C /* unexpected.c in Sources */,
 				D4783B4A15ABE7F7004E7F2C /* Tiles.c in Sources */,
 				D4F73465140EF55C00966192 /* Point.c in Sources */,
+				D4F73465140EF55C00966196 /* TextGraph.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
