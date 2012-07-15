@@ -30,6 +30,8 @@ void initializeTiles(struct Tiles *tiles);
 
 Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile);
 
+size_t tilesCount(struct Tiles const *tiles);
+
 struct Tiles const tilesOnLevel(struct Tiles const *tiles, int32_t z);
 
 

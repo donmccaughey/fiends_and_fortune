@@ -110,6 +110,12 @@ Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
 }
 
 
+size_t tilesCount(struct Tiles const *tiles)
+{
+  return tiles->count;
+}
+
+
 struct Tiles const tilesOnLevel(struct Tiles const *tiles, int32_t z)
 {
   struct Tiles tilesOnLevel = { .capacity = 0, .count = 0, .tiles = NULL };

@@ -24,7 +24,7 @@ static void generateDungeonTest(void)
   initializeDungeon(&dungeon);
 
   generateDungeon(&dungeon, &dice);
-  assert(113 == dungeon.tiles.count);
+  assert(113 == tilesCount(&dungeon.tiles));
 
   struct TileStatistics statistics;
   gatherTileStatistics(&dungeon.tiles, &statistics);
