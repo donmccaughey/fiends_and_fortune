@@ -19,6 +19,7 @@ static void sort(struct Tiles *tiles);
 
 struct Tiles {
   size_t capacity;
+  int (*compare)(void const *, void const *);
   size_t count;
   struct Tiles *parent;
   struct Tile **tiles;
@@ -107,7 +108,7 @@ static void finalizeTiles(struct Tiles *tiles)
 
 static struct Tile **find(struct Tiles const *tiles, struct Tile const *criteria)
 {
-  return bsearch(&criteria, tiles->tiles, tiles->count, sizeof(struct Tile *), compareTilesByCoordinate);
+  return bsearch(&criteria, tiles->tiles, tiles->count, sizeof(struct Tile *), tiles->compare);
 }
 
 
@@ -153,12 +154,15 @@ void gatherTileStatistics(struct Tiles const *tiles, struct TileStatistics *stat
 static void initializeTiles(struct Tiles *tiles)
 {
   memset(tiles, 0, sizeof(struct Tiles));
+  tiles->compare = compareTilesByCoordinate;
   tiles->tiles = CALLOC_OR_DIE(0, sizeof(struct Tile));
 }
 
 
 Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
 {
+  // TODO: if tile isn't unique by compare criteria, the wrong tile may be removed
+  // is this a problem?
   struct Tile **found = find(tiles, tile);
   if ( ! found) {
     return tiles->parent ? removeTileFromTiles(tiles->parent, tile) : FALSE;
@@ -175,7 +179,7 @@ Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
 
 static void sort(struct Tiles *tiles)
 {
-  qsort(tiles->tiles, tiles->count, sizeof(struct Tile *), compareTilesByCoordinate);
+  qsort(tiles->tiles, tiles->count, sizeof(struct Tile *), tiles->compare);
 }
 
 
