@@ -1,5 +1,6 @@
 #include "Tiles.h"
 
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 #include "heap.h"
@@ -25,12 +26,6 @@ void addTileToTiles(struct Tiles *tiles, struct Tile const *tile)
 {
   appendTileToTiles(tiles, tile);
   qsort(tiles->tiles, tiles->count, sizeof(struct Tile), compareTilesByCoordinate);
-}
-
-
-struct Tile *allTiles(struct Tiles const *tiles)
-{
-  return tiles->tiles;
 }
 
 
@@ -137,6 +132,13 @@ Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
   memmove(found, tail, (end - tail) * sizeof(struct Tile));
   --tiles->count;
   return TRUE;
+}
+
+
+struct Tile *tileInTilesAtIndex(struct Tiles const *tiles, size_t index)
+{
+  assert(index < tiles->count);
+  return &tiles->tiles[index];
 }
 
 

@@ -29,40 +29,38 @@ void tilesTest(void)
 static void addTileToTilesTest(void)
 {
   struct Tiles *tiles = createTiles();
-
   assert(0 == tilesCount(tiles));
-  assert(allTiles(tiles));
-  
+
   struct Tile tile1 = { .point = { 0, 0, 0 } };
   addTileToTiles(tiles, &tile1);
   
   assert(1 == tilesCount(tiles));
-  assert(allTiles(tiles)[0].point.x == tile1.point.x);
+  assert(tileInTilesAtIndex(tiles, 0)->point.x == tile1.point.x);
   
   struct Tile tile2 = { .point = { 1, 0, 0 } };
   addTileToTiles(tiles, &tile2);
   
   assert(2 == tilesCount(tiles));
-  assert(allTiles(tiles)[1].point.x == tile2.point.x);
+  assert(tileInTilesAtIndex(tiles, 1)->point.x == tile2.point.x);
   
   struct Tile tile3 = { .point = { -1, 0, 0 } };
   addTileToTiles(tiles, &tile3);
   
   assert(3 == tilesCount(tiles));
-  assert(allTiles(tiles)[0].point.x == tile3.point.x);
-  assert(allTiles(tiles)[1].point.x == tile1.point.x);
-  assert(allTiles(tiles)[2].point.x == tile2.point.x);
+  assert(tileInTilesAtIndex(tiles, 0)->point.x == tile3.point.x);
+  assert(tileInTilesAtIndex(tiles, 1)->point.x == tile1.point.x);
+  assert(tileInTilesAtIndex(tiles, 2)->point.x == tile2.point.x);
   
   Boolean found = removeTileFromTiles(tiles, &tile1);
   assert(found);
   assert(2 == tilesCount(tiles));
-  assert(allTiles(tiles)[0].point.x == tile3.point.x);
-  assert(allTiles(tiles)[1].point.x == tile2.point.x);
+  assert(tileInTilesAtIndex(tiles, 0)->point.x == tile3.point.x);
+  assert(tileInTilesAtIndex(tiles, 1)->point.x == tile2.point.x);
   
   found = removeTileFromTiles(tiles, &tile2);
   assert(found);
   assert(1 == tilesCount(tiles));
-  assert(allTiles(tiles)[0].point.x == tile3.point.x);
+  assert(tileInTilesAtIndex(tiles, 0)->point.x == tile3.point.x);
   
   found = removeTileFromTiles(tiles, &tile3);
   assert(found);
@@ -91,7 +89,7 @@ static void tilesOnLevel_one_tile_Test(void)
   addTileToTiles(tiles, &tile1);
   struct Tiles *level1 = tilesOnLevel(tiles, 1);
 
-  assert(equalTiles(allTiles(tiles), allTiles(level1)));
+  assert(equalTiles(tileInTilesAtIndex(tiles, 0), tileInTilesAtIndex(level1, 0)));
   assert(1 == tilesCount(level1));
 
   destroyTiles(level1);
@@ -133,19 +131,19 @@ static void tilesOnLevel_with_two_levels_Test(void)
   destroyTiles(level0);
 
   struct Tiles *level1 = tilesOnLevel(tiles, 1);
-  assert(equalTiles(allTiles(tiles), allTiles(level1)));
+  assert(equalTiles(tileInTilesAtIndex(tiles, 0), tileInTilesAtIndex(level1, 0)));
   assert(2 == tilesCount(level1));
   for (size_t i = 0; i < tilesCount(level1); ++i) {
-    struct Tile *level1Tile = &allTiles(level1)[i];
+    struct Tile *level1Tile = tileInTilesAtIndex(level1, i);
     assert(1 == level1Tile->point.z);
   }
   destroyTiles(level1);
 
   struct Tiles *level2 = tilesOnLevel(tiles, 2);
-  assert( ! equalTiles(allTiles(tiles), allTiles(level2)));
+  assert( ! equalTiles(tileInTilesAtIndex(tiles, 0), tileInTilesAtIndex(level2, 0)));
   assert(3 == tilesCount(level2));
   for (size_t i = 0; i < tilesCount(level2); ++i) {
-    struct Tile *level2Tile = &allTiles(level2)[i];
+    struct Tile *level2Tile = tileInTilesAtIndex(level2, i);
     assert(2 == level2Tile->point.z);
   }
   destroyTiles(level2);
@@ -178,10 +176,10 @@ static void tilesOnLevel_with_two_noncontiguous_levels_Test(void)
   destroyTiles(level0);
 
   struct Tiles *level1 = tilesOnLevel(tiles, 1);
-  assert(equalTiles(allTiles(tiles), allTiles(level1)));
+  assert(equalTiles(tileInTilesAtIndex(tiles, 0), tileInTilesAtIndex(level1, 0)));
   assert(2 == tilesCount(level1));
   for (size_t i = 0; i < tilesCount(level1); ++i) {
-    struct Tile *level1Tile = &allTiles(level1)[i];
+    struct Tile *level1Tile = tileInTilesAtIndex(level1, i);
     assert(1 == level1Tile->point.z);
   }
   destroyTiles(level1);
@@ -191,10 +189,10 @@ static void tilesOnLevel_with_two_noncontiguous_levels_Test(void)
   destroyTiles(level2);
 
   struct Tiles *level3 = tilesOnLevel(tiles, 3);
-  assert( ! equalTiles(allTiles(tiles), allTiles(level3)));
+  assert( ! equalTiles(tileInTilesAtIndex(tiles, 0), tileInTilesAtIndex(level3, 0)));
   assert(3 == tilesCount(level3));
   for (size_t i = 0; i < tilesCount(level3); ++i) {
-    struct Tile *level2Tile = &allTiles(level3)[i];
+    struct Tile *level2Tile = tileInTilesAtIndex(level3, i);
     assert(3 == level2Tile->point.z);
   }
   destroyTiles(level3);
