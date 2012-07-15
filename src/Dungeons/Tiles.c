@@ -112,7 +112,7 @@ Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
 
 struct Tiles const tilesOnLevel(struct Tiles const *tiles, int32_t z)
 {
-  struct Tiles tilesOnLevel = { NULL, 0, 0 };
+  struct Tiles tilesOnLevel = { .capacity = 0, .count = 0, .tiles = NULL };
 
   // TODO: replace linear search with binary lower bound/upper bound search
   for (size_t i = 0; i < tiles->count; ++i) {

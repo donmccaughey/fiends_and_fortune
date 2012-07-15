@@ -12,9 +12,9 @@ struct TileStatistics;
 
 
 struct Tiles {
-  struct Tile *tiles;
   size_t capacity;
   size_t count;
+  struct Tile *tiles;
 };
 
 
