@@ -19,6 +19,12 @@ void addTileToTiles(struct Tiles *tiles, struct Tile const *tile)
 }
 
 
+struct Tile *allTiles(struct Tiles const *tiles)
+{
+  return tiles->tiles;
+}
+
+
 static void appendTileToTiles(struct Tiles *tiles, struct Tile const *tile)
 {
   if (tiles->capacity == tiles->count) {

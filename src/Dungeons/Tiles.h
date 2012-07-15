@@ -20,6 +20,8 @@ struct Tiles {
 
 void addTileToTiles(struct Tiles *tiles, struct Tile const *tile);
 
+struct Tile *allTiles(struct Tiles const *tiles);
+
 void finalizeTiles(struct Tiles *tiles);
 
 struct Tile *findTileInTilesAt(struct Tiles const *tiles, int32_t x, int32_t y, int32_t z);
