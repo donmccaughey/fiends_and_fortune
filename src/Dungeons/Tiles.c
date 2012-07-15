@@ -11,8 +11,10 @@
 static void appendTileToTiles(struct Tiles *tiles, struct Tile  *tile);
 static int compareTilesByCoordinate(void const *item1, void const *item2);
 static void finalizeTiles(struct Tiles *tiles);
+static struct Tile **find(struct Tiles const *tiles, struct Tile const *criteria);
 static void gatherStatistics(struct Tile const *tile, struct TileStatistics *statistics);
 static void initializeTiles(struct Tiles *tiles);
+static void sort(struct Tiles *tiles);
 
 
 struct Tiles {
@@ -27,7 +29,7 @@ void addTileToTiles(struct Tiles *tiles, struct Tile *tile)
 {
   if (tiles->parent) addTileToTiles(tiles->parent, tile);
   appendTileToTiles(tiles, tile);
-  qsort(tiles->tiles, tiles->count, sizeof(struct Tile *), compareTilesByCoordinate);
+  sort(tiles);
 }
 
 
@@ -103,12 +105,16 @@ static void finalizeTiles(struct Tiles *tiles)
 }
 
 
+static struct Tile **find(struct Tiles const *tiles, struct Tile const *criteria)
+{
+  return bsearch(&criteria, tiles->tiles, tiles->count, sizeof(struct Tile *), compareTilesByCoordinate);
+}
+
+
 struct Tile *findTileInTilesAt(struct Tiles const *tiles, int32_t x, int32_t y, int32_t z)
 {
   struct Tile tile = { .point = { x, y, z} };
-  struct Tile *criteria = &tile;
-
-  struct Tile **tileInTiles = bsearch(&criteria, tiles->tiles, tiles->count, sizeof(struct Tile *), compareTilesByCoordinate);
+  struct Tile **tileInTiles = find(tiles, &tile);
   return tileInTiles ? *tileInTiles : NULL;
 }
 
@@ -153,7 +159,7 @@ static void initializeTiles(struct Tiles *tiles)
 
 Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
 {
-  struct Tile **found = bsearch(&tile, tiles->tiles, tiles->count, sizeof(struct Tile *), compareTilesByCoordinate);
+  struct Tile **found = find(tiles, tile);
   if ( ! found) {
     return tiles->parent ? removeTileFromTiles(tiles->parent, tile) : FALSE;
   }
@@ -164,6 +170,12 @@ Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
   --tiles->count;
 
   return tiles->parent ? removeTileFromTiles(tiles->parent, tile) : TRUE;
+}
+
+
+static void sort(struct Tiles *tiles)
+{
+  qsort(tiles->tiles, tiles->count, sizeof(struct Tile *), compareTilesByCoordinate);
 }
 
 
