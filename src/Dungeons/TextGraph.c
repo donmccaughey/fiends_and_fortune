@@ -29,9 +29,9 @@ static enum TileType tileTypeAt(struct Tiles const *tiles, int32_t x, int32_t y,
 
 void graphDungeonLevelUsingText(struct Dungeon *dungeon, int32_t z, FILE *out)
 {
-  struct Tiles const levelTiles = tilesOnLevel(dungeon->tiles, z);
+  struct Tiles *levelTiles = tilesOnLevel(dungeon->tiles, z);
   struct TileStatistics statistics;
-  gatherTileStatistics(&levelTiles, &statistics);
+  gatherTileStatistics(levelTiles, &statistics);
 
   struct Range const xRange = expandRange(statistics.xRange, 1);
   struct Range const yRange = expandRange(statistics.yRange, 1);
@@ -46,8 +46,8 @@ void graphDungeonLevelUsingText(struct Dungeon *dungeon, int32_t z, FILE *out)
     // top line of row
     fprintf(out, LMARGIN_NUM, j);
     for (int32_t i = xRange.begin; i < xRange.end; ++i) {
-      enum TileType type = tileTypeAt(&levelTiles, i, j, z);
-      enum TileType westType = tileTypeAt(&levelTiles, i - 1, j, z);
+      enum TileType type = tileTypeAt(levelTiles, i, j, z);
+      enum TileType westType = tileTypeAt(levelTiles, i - 1, j, z);
       if (xRange.begin == i || type != westType) {
         fprintf(out, SolidTileType == type ? VWALL_SOLID : VWALL_EMPTY);
       } else {
@@ -64,8 +64,8 @@ void graphDungeonLevelUsingText(struct Dungeon *dungeon, int32_t z, FILE *out)
         continue;
       }
 
-      enum TileType type = tileTypeAt(&levelTiles, i, j, z);
-      enum TileType southType = tileTypeAt(&levelTiles, i, j - 1, z);
+      enum TileType type = tileTypeAt(levelTiles, i, j, z);
+      enum TileType southType = tileTypeAt(levelTiles, i, j - 1, z);
       if (xRange.begin == i) {
         if (type == southType) {
           fprintf(out, SolidTileType == type ? CORNER_SOLID : CORNER_EMPTY);
@@ -75,8 +75,8 @@ void graphDungeonLevelUsingText(struct Dungeon *dungeon, int32_t z, FILE *out)
         continue;
       }
 
-      enum TileType westType = tileTypeAt(&levelTiles, i - 1, j, z);
-      enum TileType southWestType = tileTypeAt(&levelTiles, i - 1, j - 1, z);
+      enum TileType westType = tileTypeAt(levelTiles, i - 1, j, z);
+      enum TileType southWestType = tileTypeAt(levelTiles, i - 1, j - 1, z);
       if (type == southType) {
         if (type == westType) {
           if (type == southWestType) {
@@ -107,6 +107,7 @@ void graphDungeonLevelUsingText(struct Dungeon *dungeon, int32_t z, FILE *out)
   }
 
   printHorizontalScale(out, xRange);
+  destroyTiles(levelTiles);
 }
 
 

@@ -14,6 +14,13 @@ static void gatherStatistics(struct Tile const *tile, struct TileStatistics *sta
 static void initializeTiles(struct Tiles *tiles);
 
 
+struct Tiles {
+  size_t capacity;
+  size_t count;
+  struct Tile *tiles;
+};
+
+
 void addTileToTiles(struct Tiles *tiles, struct Tile const *tile)
 {
   appendTileToTiles(tiles, tile);
@@ -145,20 +152,18 @@ size_t tilesCount(struct Tiles const *tiles)
 }
 
 
-struct Tiles const tilesOnLevel(struct Tiles const *tiles, int32_t z)
+struct Tiles *tilesOnLevel(struct Tiles const *tiles, int32_t z)
 {
-  struct Tiles tilesOnLevel = { .capacity = 0, .count = 0, .tiles = NULL };
+  struct Tiles *tilesOnLevel = createTiles();
 
-  // TODO: replace linear search with binary lower bound/upper bound search
+  // TODO: replace linear search with binary lower/upper bound search
+  // and memcpy the whole block of tiles
   for (size_t i = 0; i < tiles->count; ++i) {
     struct Tile *tile = &tiles->tiles[i];
     if (tile->point.z == z) {
-      if ( ! tilesOnLevel.tiles) {
-        tilesOnLevel.tiles = tile;
-      }
-      ++tilesOnLevel.count;
-    } else if (tilesOnLevel.tiles) {
-      return tilesOnLevel;
+      addTileToTiles(tilesOnLevel, tile);
+    } else if (tile->point.z > z) {
+      break;
     }
   }
 
