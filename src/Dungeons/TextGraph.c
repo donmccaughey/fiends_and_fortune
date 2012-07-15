@@ -29,7 +29,7 @@ static enum TileType tileTypeAt(struct Tiles const *tiles, int32_t x, int32_t y,
 
 void graphDungeonLevelUsingText(struct Dungeon *dungeon, int32_t z, FILE *out)
 {
-  struct Tiles *levelTiles = tilesOnLevel(dungeon->tiles, z);
+  struct Tiles *levelTiles = createTilesOnLevel(dungeon->tiles, z);
   struct TileStatistics statistics;
   gatherTileStatistics(levelTiles, &statistics);
 

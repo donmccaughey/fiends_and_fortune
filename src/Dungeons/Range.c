@@ -30,7 +30,7 @@ struct ReverseRange expandReverseRange(struct ReverseRange reverseRange, int32_t
 struct Range makeRange(int32_t begin, int32_t end)
 {
   assert(begin <= end);
-  return (struct Range) { begin, end };
+  return (struct Range) { .begin = begin, .end = end };
 }
 
 
@@ -46,7 +46,7 @@ struct Range makeRangeFromReverseRange(struct ReverseRange reverseRange)
 struct ReverseRange makeReverseRange(int32_t top, int32_t bottom)
 {
   assert(top >= bottom);
-  return (struct ReverseRange) { top, bottom };
+  return (struct ReverseRange) { .top = top, .bottom = bottom };
 }
 
 

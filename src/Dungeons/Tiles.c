@@ -8,7 +8,7 @@
 #include "TileStatistics.h"
 
 
-static void appendTileToTiles(struct Tiles *tiles, struct Tile const *tile);
+static void appendTileToTiles(struct Tiles *tiles, struct Tile  *tile);
 static int compareTilesByCoordinate(void const *item1, void const *item2);
 static void finalizeTiles(struct Tiles *tiles);
 static void gatherStatistics(struct Tile const *tile, struct TileStatistics *statistics);
@@ -18,18 +18,20 @@ static void initializeTiles(struct Tiles *tiles);
 struct Tiles {
   size_t capacity;
   size_t count;
-  struct Tile *tiles;
+  struct Tiles *parent;
+  struct Tile **tiles;
 };
 
 
-void addTileToTiles(struct Tiles *tiles, struct Tile const *tile)
+void addTileToTiles(struct Tiles *tiles, struct Tile *tile)
 {
+  if (tiles->parent) addTileToTiles(tiles->parent, tile);
   appendTileToTiles(tiles, tile);
-  qsort(tiles->tiles, tiles->count, sizeof(struct Tile), compareTilesByCoordinate);
+  qsort(tiles->tiles, tiles->count, sizeof(struct Tile *), compareTilesByCoordinate);
 }
 
 
-static void appendTileToTiles(struct Tiles *tiles, struct Tile const *tile)
+static void appendTileToTiles(struct Tiles *tiles, struct Tile  *tile)
 {
   if (tiles->capacity == tiles->count) {
     if (tiles->capacity) {
@@ -37,17 +39,19 @@ static void appendTileToTiles(struct Tiles *tiles, struct Tile const *tile)
     } else {
       tiles->capacity = 256;
     }
-    tiles->tiles = REALLOC_OR_DIE(tiles->tiles, tiles->capacity * sizeof(struct Tile));
+    tiles->tiles = REALLOC_OR_DIE(tiles->tiles, tiles->capacity * sizeof(struct Tile *));
   }
-  tiles->tiles[tiles->count] = *tile;
+  tiles->tiles[tiles->count] = tile;
   ++tiles->count;
 }
 
 
 static int compareTilesByCoordinate(void const *item1, void const *item2)
 {
-  struct Tile const *tile1 = item1;
-  struct Tile const *tile2 = item2;
+  struct Tile *const *pointer1 = item1;
+  struct Tile *const *pointer2 = item2;
+  struct Tile *tile1 = *pointer1;
+  struct Tile *tile2 = *pointer2;
 
   return comparePoints(&tile1->point, &tile2->point);
 }
@@ -61,6 +65,26 @@ struct Tiles *createTiles(void)
 }
 
 
+struct Tiles *createTilesOnLevel(struct Tiles *tiles, int32_t z)
+{
+  struct Tiles *tilesOnLevel = createTiles();
+  tilesOnLevel->parent = tiles;
+
+  // TODO: replace linear search with binary lower/upper bound search
+  // and memcpy the whole block of tiles
+  for (size_t i = 0; i < tiles->count; ++i) {
+    struct Tile *tile = tiles->tiles[i];
+    if (tile->point.z == z) {
+      appendTileToTiles(tilesOnLevel, tile);
+    } else if (tile->point.z > z) {
+      break;
+    }
+  }
+
+  return tilesOnLevel;
+}
+
+
 void destroyTiles(struct Tiles *tiles)
 {
     finalizeTiles(tiles);
@@ -70,6 +94,11 @@ void destroyTiles(struct Tiles *tiles)
 
 static void finalizeTiles(struct Tiles *tiles)
 {
+  if ( ! tiles->parent) {
+    for (size_t i = 0; i < tiles->count; ++i) {
+      destroyTile(tiles->tiles[i]);
+    }
+  }
   free(tiles->tiles);
 }
 
@@ -77,9 +106,10 @@ static void finalizeTiles(struct Tiles *tiles)
 struct Tile *findTileInTilesAt(struct Tiles const *tiles, int32_t x, int32_t y, int32_t z)
 {
   struct Tile tile = { .point = { x, y, z} };
+  struct Tile *criteria = &tile;
 
-  struct Tile *tileInTiles = bsearch(&tile, tiles->tiles, tiles->count, sizeof(struct Tile), compareTilesByCoordinate);
-  return tileInTiles ? tileInTiles : NULL;
+  struct Tile **tileInTiles = bsearch(&criteria, tiles->tiles, tiles->count, sizeof(struct Tile *), compareTilesByCoordinate);
+  return tileInTiles ? *tileInTiles : NULL;
 }
 
 
@@ -109,7 +139,7 @@ void gatherTileStatistics(struct Tiles const *tiles, struct TileStatistics *stat
   statistics->yRange = (struct Range) { INT32_MAX, INT32_MIN };
 
   for (size_t i = 0; i < tiles->count; ++i) {
-    gatherStatistics(&tiles->tiles[i], statistics);
+    gatherStatistics(tiles->tiles[i], statistics);
   }
 }
 
@@ -123,45 +153,28 @@ static void initializeTiles(struct Tiles *tiles)
 
 Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
 {
-  struct Tile *found = bsearch(tile, tiles->tiles, tiles->count, sizeof(struct Tile), compareTilesByCoordinate);
+  struct Tile **found = bsearch(&tile, tiles->tiles, tiles->count, sizeof(struct Tile *), compareTilesByCoordinate);
   if ( ! found) {
-    return FALSE;
+    return tiles->parent ? removeTileFromTiles(tiles->parent, tile) : FALSE;
   }
-  struct Tile *tail = found + 1;
-  struct Tile *end = tiles->tiles + tiles->count;
+
+  struct Tile **tail = found + 1;
+  struct Tile **end = tiles->tiles + tiles->count;
   memmove(found, tail, (end - tail) * sizeof(struct Tile));
   --tiles->count;
-  return TRUE;
+
+  return tiles->parent ? removeTileFromTiles(tiles->parent, tile) : TRUE;
 }
 
 
 struct Tile *tileInTilesAtIndex(struct Tiles const *tiles, size_t index)
 {
   assert(index < tiles->count);
-  return &tiles->tiles[index];
+  return tiles->tiles[index];
 }
 
 
 size_t tilesCount(struct Tiles const *tiles)
 {
   return tiles->count;
-}
-
-
-struct Tiles *tilesOnLevel(struct Tiles const *tiles, int32_t z)
-{
-  struct Tiles *tilesOnLevel = createTiles();
-
-  // TODO: replace linear search with binary lower/upper bound search
-  // and memcpy the whole block of tiles
-  for (size_t i = 0; i < tiles->count; ++i) {
-    struct Tile *tile = &tiles->tiles[i];
-    if (tile->point.z == z) {
-      addTileToTiles(tilesOnLevel, tile);
-    } else if (tile->point.z > z) {
-      break;
-    }
-  }
-
-  return tilesOnLevel;
 }

@@ -14,11 +14,8 @@ static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int32_t x, int32
 {
   assert(NULL == findTileInTilesAt(dungeon->tiles, x, y, z));
 
-  struct Tile tile = {
-    .point = { x, y, z },
-    .type = EmptyTileType,
-  };
-  addTileToTiles(dungeon->tiles, &tile);
+  struct Tile *tile = createTile(makePoint(x, y, z), EmptyTileType);
+  addTileToTiles(dungeon->tiles, tile);
 }
 
 

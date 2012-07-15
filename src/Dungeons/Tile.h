@@ -12,4 +12,9 @@ struct Tile {
 };
 
 
+struct Tile *createTile(struct Point point, enum TileType type);
+
+void destroyTile(struct Tile *tile);
+
+
 #endif /* #ifndef DUNGEONS_TILE_H_INCLUDED */

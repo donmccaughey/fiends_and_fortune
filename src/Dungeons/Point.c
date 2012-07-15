@@ -11,3 +11,9 @@ int comparePoints(struct Point const *point1, struct Point const *point2)
   }
   return point1->x - point2->x;
 }
+
+
+struct Point makePoint(int32_t x, int32_t y, int32_t z)
+{
+  return (struct Point) { .x = x, .y = y, .z = z, };
+}
