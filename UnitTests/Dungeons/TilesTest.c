@@ -30,14 +30,14 @@ static void addTileToTilesTest(void)
   
   initializeTiles(&tiles);
   
-  assert(0 == tiles.capacity);
+  assert(0 == tilesCapacity(&tiles));
   assert(0 == tilesCount(&tiles));
   assert(tiles.tiles);
   
   struct Tile tile1 = { .point = { 0, 0, 0 } };
   addTileToTiles(&tiles, &tile1);
   
-  assert(tiles.capacity > 0);
+  assert(tilesCapacity(&tiles) > 0);
   assert(1 == tilesCount(&tiles));
   assert(tiles.tiles[0].point.x == tile1.point.x);
   
@@ -83,7 +83,7 @@ static void tilesOnLevel_when_empty_Test(void)
   struct Tiles const level1 = tilesOnLevel(&tiles, 1);
 
   assert(NULL == level1.tiles);
-  assert(0 == level1.capacity);
+  assert(0 == tilesCapacity(&level1));
   assert(0 == tilesCount(&level1));
 
   finalizeTiles(&tiles);
@@ -101,7 +101,7 @@ static void tilesOnLevel_one_tile_Test(void)
   struct Tiles const level1 = tilesOnLevel(&tiles, 1);
 
   assert(tiles.tiles == level1.tiles);
-  assert(0 == level1.capacity);
+  assert(0 == tilesCapacity(&level1));
   assert(1 == tilesCount(&level1));
 
   finalizeTiles(&tiles);
@@ -119,7 +119,7 @@ static void tilesOnLevel_one_tile_not_found_Test(void)
   struct Tiles const level1 = tilesOnLevel(&tiles, 2);
 
   assert(NULL == level1.tiles);
-  assert(0 == level1.capacity);
+  assert(0 == tilesCapacity(&level1));
   assert(0 == tilesCount(&level1));
 
   finalizeTiles(&tiles);
@@ -145,12 +145,12 @@ static void tilesOnLevel_with_two_levels_Test(void)
 
   struct Tiles const level0 = tilesOnLevel(&tiles, 0);
   assert(NULL == level0.tiles);
-  assert(0 == level0.capacity);
+  assert(0 == tilesCapacity(&level0));
   assert(0 == tilesCount(&level0));
 
   struct Tiles const level1 = tilesOnLevel(&tiles, 1);
   assert(tiles.tiles == level1.tiles);
-  assert(0 == level1.capacity);
+  assert(0 == tilesCapacity(&level1));
   assert(2 == tilesCount(&level1));
   for (size_t i = 0; i < tilesCount(&level1); ++i) {
     struct Tile *level1Tile = &level1.tiles[i];
@@ -159,7 +159,7 @@ static void tilesOnLevel_with_two_levels_Test(void)
 
   struct Tiles const level2 = tilesOnLevel(&tiles, 2);
   assert(tiles.tiles != level2.tiles);
-  assert(0 == level2.capacity);
+  assert(0 == tilesCapacity(&level2));
   assert(3 == tilesCount(&level2));
   for (size_t i = 0; i < tilesCount(&level2); ++i) {
     struct Tile *level2Tile = &level2.tiles[i];
@@ -168,7 +168,7 @@ static void tilesOnLevel_with_two_levels_Test(void)
 
   struct Tiles const level3 = tilesOnLevel(&tiles, 3);
   assert(NULL == level3.tiles);
-  assert(0 == level3.capacity);
+  assert(0 == tilesCapacity(&level3));
   assert(0 == tilesCount(&level3));
 
   finalizeTiles(&tiles);
@@ -194,12 +194,12 @@ static void tilesOnLevel_with_two_noncontiguous_levels_Test(void)
 
   struct Tiles const level0 = tilesOnLevel(&tiles, 0);
   assert(NULL == level0.tiles);
-  assert(0 == level0.capacity);
+  assert(0 == tilesCapacity(&level0));
   assert(0 == tilesCount(&level0));
 
   struct Tiles const level1 = tilesOnLevel(&tiles, 1);
   assert(tiles.tiles == level1.tiles);
-  assert(0 == level1.capacity);
+  assert(0 == tilesCapacity(&level1));
   assert(2 == tilesCount(&level1));
   for (size_t i = 0; i < tilesCount(&level1); ++i) {
     struct Tile *level1Tile = &level1.tiles[i];
@@ -208,12 +208,12 @@ static void tilesOnLevel_with_two_noncontiguous_levels_Test(void)
 
   struct Tiles const level2 = tilesOnLevel(&tiles, 2);
   assert(NULL == level2.tiles);
-  assert(0 == level2.capacity);
+  assert(0 == tilesCapacity(&level2));
   assert(0 == tilesCount(&level2));
 
   struct Tiles const level3 = tilesOnLevel(&tiles, 3);
   assert(tiles.tiles != level3.tiles);
-  assert(0 == level3.capacity);
+  assert(0 == tilesCapacity(&level3));
   assert(3 == tilesCount(&level3));
   for (size_t i = 0; i < tilesCount(&level3); ++i) {
     struct Tile *level2Tile = &level3.tiles[i];
@@ -222,7 +222,7 @@ static void tilesOnLevel_with_two_noncontiguous_levels_Test(void)
 
   struct Tiles const level4 = tilesOnLevel(&tiles, 4);
   assert(NULL == level4.tiles);
-  assert(0 == level4.capacity);
+  assert(0 == tilesCapacity(&level4));
   assert(0 == tilesCount(&level4));
 
   finalizeTiles(&tiles);
