@@ -30,14 +30,12 @@ static void addTileToTilesTest(void)
 {
   struct Tiles *tiles = createTiles();
 
-  assert(0 == tilesCapacity(tiles));
   assert(0 == tilesCount(tiles));
   assert(allTiles(tiles));
   
   struct Tile tile1 = { .point = { 0, 0, 0 } };
   addTileToTiles(tiles, &tile1);
   
-  assert(tilesCapacity(tiles) > 0);
   assert(1 == tilesCount(tiles));
   assert(allTiles(tiles)[0].point.x == tile1.point.x);
   
@@ -79,7 +77,6 @@ static void tilesOnLevel_when_empty_Test(void)
   struct Tiles *tiles = createTiles();
   struct Tiles *level1 = tilesOnLevel(tiles, 1);
 
-  assert(0 == tilesCapacity(level1));
   assert(0 == tilesCount(level1));
 
   destroyTiles(level1);
@@ -95,7 +92,6 @@ static void tilesOnLevel_one_tile_Test(void)
   struct Tiles *level1 = tilesOnLevel(tiles, 1);
 
   assert(equalTiles(allTiles(tiles), allTiles(level1)));
-  assert(256 == tilesCapacity(level1));
   assert(1 == tilesCount(level1));
 
   destroyTiles(level1);
@@ -110,7 +106,6 @@ static void tilesOnLevel_one_tile_not_found_Test(void)
   addTileToTiles(tiles, &tile1);
   struct Tiles *level1 = tilesOnLevel(tiles, 2);
 
-  assert(0 == tilesCapacity(level1));
   assert(0 == tilesCount(level1));
 
   destroyTiles(level1);
@@ -134,13 +129,11 @@ static void tilesOnLevel_with_two_levels_Test(void)
 
 
   struct Tiles *level0 = tilesOnLevel(tiles, 0);
-  assert(0 == tilesCapacity(level0));
   assert(0 == tilesCount(level0));
   destroyTiles(level0);
 
   struct Tiles *level1 = tilesOnLevel(tiles, 1);
   assert(equalTiles(allTiles(tiles), allTiles(level1)));
-  assert(256 == tilesCapacity(level1));
   assert(2 == tilesCount(level1));
   for (size_t i = 0; i < tilesCount(level1); ++i) {
     struct Tile *level1Tile = &allTiles(level1)[i];
@@ -150,7 +143,6 @@ static void tilesOnLevel_with_two_levels_Test(void)
 
   struct Tiles *level2 = tilesOnLevel(tiles, 2);
   assert( ! equalTiles(allTiles(tiles), allTiles(level2)));
-  assert(256 == tilesCapacity(level2));
   assert(3 == tilesCount(level2));
   for (size_t i = 0; i < tilesCount(level2); ++i) {
     struct Tile *level2Tile = &allTiles(level2)[i];
@@ -159,7 +151,6 @@ static void tilesOnLevel_with_two_levels_Test(void)
   destroyTiles(level2);
 
   struct Tiles *level3 = tilesOnLevel(tiles, 3);
-  assert(0 == tilesCapacity(level3));
   assert(0 == tilesCount(level3));
   destroyTiles(level3);
 
@@ -183,13 +174,11 @@ static void tilesOnLevel_with_two_noncontiguous_levels_Test(void)
 
 
   struct Tiles *level0 = tilesOnLevel(tiles, 0);
-  assert(0 == tilesCapacity(level0));
   assert(0 == tilesCount(level0));
   destroyTiles(level0);
 
   struct Tiles *level1 = tilesOnLevel(tiles, 1);
   assert(equalTiles(allTiles(tiles), allTiles(level1)));
-  assert(256 == tilesCapacity(level1));
   assert(2 == tilesCount(level1));
   for (size_t i = 0; i < tilesCount(level1); ++i) {
     struct Tile *level1Tile = &allTiles(level1)[i];
@@ -198,13 +187,11 @@ static void tilesOnLevel_with_two_noncontiguous_levels_Test(void)
   destroyTiles(level1);
 
   struct Tiles *level2 = tilesOnLevel(tiles, 2);
-  assert(0 == tilesCapacity(level2));
   assert(0 == tilesCount(level2));
   destroyTiles(level2);
 
   struct Tiles *level3 = tilesOnLevel(tiles, 3);
   assert( ! equalTiles(allTiles(tiles), allTiles(level3)));
-  assert(256 == tilesCapacity(level3));
   assert(3 == tilesCount(level3));
   for (size_t i = 0; i < tilesCount(level3); ++i) {
     struct Tile *level2Tile = &allTiles(level3)[i];
@@ -213,7 +200,6 @@ static void tilesOnLevel_with_two_noncontiguous_levels_Test(void)
   destroyTiles(level3);
 
   struct Tiles *level4 = tilesOnLevel(tiles, 4);
-  assert(0 == tilesCapacity(level4));
   assert(0 == tilesCount(level4));
   destroyTiles(level4);
 

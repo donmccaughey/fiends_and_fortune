@@ -26,8 +26,6 @@ void gatherTileStatistics(struct Tiles const *tiles, struct TileStatistics *stat
 
 Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile);
 
-size_t tilesCapacity(struct Tiles const *tiles);
-
 size_t tilesCount(struct Tiles const *tiles);
 
 struct Tiles *tilesOnLevel(struct Tiles const *tiles, int32_t z);

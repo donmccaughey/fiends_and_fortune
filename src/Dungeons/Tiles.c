@@ -140,12 +140,6 @@ Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
 }
 
 
-size_t tilesCapacity(struct Tiles const *tiles)
-{
-  return tiles->capacity;
-}
-
-
 size_t tilesCount(struct Tiles const *tiles)
 {
   return tiles->count;
