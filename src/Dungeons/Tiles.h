@@ -22,13 +22,13 @@ void addTileToTiles(struct Tiles *tiles, struct Tile const *tile);
 
 struct Tile *allTiles(struct Tiles const *tiles);
 
-void finalizeTiles(struct Tiles *tiles);
+struct Tiles *createTiles(void);
+
+void destroyTiles(struct Tiles *tiles);
 
 struct Tile *findTileInTilesAt(struct Tiles const *tiles, int32_t x, int32_t y, int32_t z);
 
 void gatherTileStatistics(struct Tiles const *tiles, struct TileStatistics *statistics);
-
-void initializeTiles(struct Tiles *tiles);
 
 Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile);
 

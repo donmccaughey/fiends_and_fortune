@@ -9,7 +9,9 @@
 
 static void appendTileToTiles(struct Tiles *tiles, struct Tile const *tile);
 static int compareTilesByCoordinate(void const *item1, void const *item2);
+static void finalizeTiles(struct Tiles *tiles);
 static void gatherStatistics(struct Tile const *tile, struct TileStatistics *statistics);
+static void initializeTiles(struct Tiles *tiles);
 
 
 void addTileToTiles(struct Tiles *tiles, struct Tile const *tile)
@@ -49,7 +51,22 @@ static int compareTilesByCoordinate(void const *item1, void const *item2)
 }
 
 
-void finalizeTiles(struct Tiles *tiles)
+struct Tiles *createTiles(void)
+{
+    struct Tiles *tiles = MALLOC_OR_DIE(sizeof(struct Tiles));
+    initializeTiles(tiles);
+    return tiles;
+}
+
+
+void destroyTiles(struct Tiles *tiles)
+{
+    finalizeTiles(tiles);
+    free(tiles);
+}
+
+
+static void finalizeTiles(struct Tiles *tiles)
 {
   free(tiles->tiles);
 }
@@ -95,7 +112,7 @@ void gatherTileStatistics(struct Tiles const *tiles, struct TileStatistics *stat
 }
 
 
-void initializeTiles(struct Tiles *tiles)
+static void initializeTiles(struct Tiles *tiles)
 {
   memset(tiles, 0, sizeof(struct Tiles));
   tiles->tiles = CALLOC_OR_DIE(0, sizeof(struct Tile));

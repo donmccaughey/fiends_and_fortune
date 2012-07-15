@@ -31,13 +31,25 @@ int asprintfOrDie(char const *file, int line,
 }
 
 
-void *callocOrDie(char const *file, int line, size_t count, size_t size) {
+void *callocOrDie(char const *file, int line, size_t count, size_t size)
+{
   errno = 0;
   void *memory = calloc(count, size);
   if ( ! memory) {
     fatalError(file, line, "calloc(%li, %li) failed", count, size);
   }
   return memory;
+}
+
+
+void *mallocOrDie(char const *file, int line, size_t size)
+{
+    errno = 0;
+    void *memory = malloc(size);
+    if ( ! memory) {
+        fatalError(file, line, "malloc(%li) failed", size);
+    }
+    return memory;
 }
 
 

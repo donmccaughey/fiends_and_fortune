@@ -1,10 +1,10 @@
 #include "Dungeon.h"
 
 #include <assert.h>
-#include <stdint.h>
 #include <string.h>
 #include "Dice.h"
 #include "Tile.h"
+#include "Tiles.h"
 
 
 static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int32_t x, int32_t y, int32_t z);
@@ -12,19 +12,19 @@ static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int32_t x, int32
 
 static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int32_t x, int32_t y, int32_t z)
 {
-  assert(NULL == findTileInTilesAt(&dungeon->tiles, x, y, z));
+  assert(NULL == findTileInTilesAt(dungeon->tiles, x, y, z));
 
   struct Tile tile = {
     .point = { x, y, z },
     .type = EmptyTileType,
   };
-  addTileToTiles(&dungeon->tiles, &tile);
+  addTileToTiles(dungeon->tiles, &tile);
 }
 
 
 void finalizeDungeon(struct Dungeon *dungeon)
 {
-  finalizeTiles(&dungeon->tiles);
+  destroyTiles(dungeon->tiles);
 }
 
 
@@ -210,5 +210,5 @@ void generateDungeon(struct Dungeon *dungeon, struct Dice *dice)
 void initializeDungeon(struct Dungeon *dungeon)
 {
   memset(dungeon, 0, sizeof(struct Dungeon));
-  initializeTiles(&dungeon->tiles);
+  dungeon->tiles = createTiles();
 }

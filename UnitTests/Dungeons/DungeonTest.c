@@ -1,8 +1,9 @@
 #include <assert.h>
 #include "Dice.h"
 #include "Dungeon.h"
-#include "TileStatistics.h"
 #include "Tile.h"
+#include "Tiles.h"
+#include "TileStatistics.h"
 
 
 void dungeonTest(void);
@@ -24,10 +25,10 @@ static void generateDungeonTest(void)
   initializeDungeon(&dungeon);
 
   generateDungeon(&dungeon, &dice);
-  assert(113 == tilesCount(&dungeon.tiles));
+  assert(113 == tilesCount(dungeon.tiles));
 
   struct TileStatistics statistics;
-  gatherTileStatistics(&dungeon.tiles, &statistics);
+  gatherTileStatistics(dungeon.tiles, &statistics);
 
   assert(-7 == statistics.xRange.begin);
   assert(9 == statistics.xRange.end);
@@ -35,13 +36,13 @@ static void generateDungeonTest(void)
   assert(15 == statistics.yRange.end);
   assert(113 == statistics.count);
 
-  struct Tile *tile = findTileInTilesAt(&dungeon.tiles, 0, 0, 1);
+  struct Tile *tile = findTileInTilesAt(dungeon.tiles, 0, 0, 1);
   assert(tile);
 
-  tile = findTileInTilesAt(&dungeon.tiles, 0, 1, 1);
+  tile = findTileInTilesAt(dungeon.tiles, 0, 1, 1);
   assert(tile);
 
-  tile = findTileInTilesAt(&dungeon.tiles, -1, -8, 1);
+  tile = findTileInTilesAt(dungeon.tiles, -1, -8, 1);
   assert( ! tile);
 
   finalizeDungeon(&dungeon);

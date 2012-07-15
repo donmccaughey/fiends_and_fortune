@@ -2,14 +2,12 @@
 #define DUNGEONS_DUNGEON_H_INCLUDED
 
 
-#include "Tiles.h"
-
-
 struct Dice;
+struct Tiles;
 
 
 struct Dungeon {
-  struct Tiles tiles;
+  struct Tiles *tiles;
 };
 
 

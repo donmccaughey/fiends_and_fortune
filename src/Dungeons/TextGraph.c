@@ -3,6 +3,7 @@
 #include "Dungeon.h"
 #include "Range.h"
 #include "Tile.h"
+#include "Tiles.h"
 #include "TileStatistics.h"
 
 
@@ -28,7 +29,7 @@ static enum TileType tileTypeAt(struct Tiles const *tiles, int32_t x, int32_t y,
 
 void graphDungeonLevelUsingText(struct Dungeon *dungeon, int32_t z, FILE *out)
 {
-  struct Tiles const levelTiles = tilesOnLevel(&dungeon->tiles, z);
+  struct Tiles const levelTiles = tilesOnLevel(dungeon->tiles, z);
   struct TileStatistics statistics;
   gatherTileStatistics(&levelTiles, &statistics);
 
