@@ -5,6 +5,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "Boolean.h"
+#include "Range.h"
 
 
 struct Tile;
@@ -31,6 +32,12 @@ Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile);
 struct Tile *tileInTilesAtIndex(struct Tiles const *tiles, size_t index);
 
 size_t tilesCount(struct Tiles const *tiles);
+
+struct Range xRangeOfTiles(struct Tiles const *tiles);
+
+struct Range yRangeOfTiles(struct Tiles const *tiles);
+
+struct Range zRangeOfTiles(struct Tiles const *tiles);
 
 
 #endif /* #ifndef DUNGEONS_TILES_H_INCLUDED */

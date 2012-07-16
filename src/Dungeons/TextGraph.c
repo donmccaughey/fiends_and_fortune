@@ -30,12 +30,9 @@ static enum TileType tileTypeAt(struct Tiles const *tiles, int32_t x, int32_t y,
 void graphDungeonLevelUsingText(struct Dungeon *dungeon, int32_t z, FILE *out)
 {
   struct Tiles *levelTiles = createTilesOnLevel(dungeon->tiles, z);
-  struct TileStatistics statistics;
-  gatherTileStatistics(levelTiles, &statistics);
-
-  struct Range const xRange = expandRange(statistics.xRange, 1);
-  struct Range const yRange = expandRange(statistics.yRange, 1);
-  struct ReverseRange const yReverseRange = makeReverseRangeFromRange(yRange);
+  struct Range xRange = expandRange(xRangeOfTiles(levelTiles), 1);
+  struct Range yRange = expandRange(yRangeOfTiles(levelTiles), 1);
+  struct ReverseRange yReverseRange = makeReverseRangeFromRange(yRange);
 
   // top border
   printHorizontalScale(out, xRange);

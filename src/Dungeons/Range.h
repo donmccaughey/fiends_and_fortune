@@ -3,6 +3,7 @@
 
 
 #include <stdint.h>
+#include "Boolean.h"
 
 
 struct Range {
@@ -16,9 +17,25 @@ struct ReverseRange {
 };
 
 
+Boolean equalRanges(struct Range range1, struct Range range2);
+
+Boolean equalReverseRanges(struct ReverseRange reverseRange1, struct ReverseRange reverseRange2);
+
 struct Range expandRange(struct Range range, int32_t amount);
 
 struct ReverseRange expandReverseRange(struct ReverseRange reverseRange, int32_t amount);
+
+struct Range extendRangeToIncludeValue(struct Range range, int32_t value);
+
+struct ReverseRange extendReverseRangeToIncludeValue(struct ReverseRange reverseRange, int32_t value);
+
+Boolean isEmptyRange(struct Range range);
+
+Boolean isEmptyReverseRange(struct ReverseRange reverseRange);
+
+uint32_t lengthOfRange(struct Range range);
+
+uint32_t lengthOfReverseRange(struct ReverseRange reverseRange);
 
 struct Range makeRange(int32_t begin, int32_t end);
 

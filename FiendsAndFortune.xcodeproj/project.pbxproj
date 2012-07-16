@@ -11,6 +11,7 @@
 		D4092F6815AFFEE70002FB34 /* Range.c in Sources */ = {isa = PBXBuildFile; fileRef = D4F73465140EF55C00966198 /* Range.c */; };
 		D4092FB615B2A1880002FB34 /* Tile.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092FB515B2A1880002FB34 /* Tile.c */; };
 		D4092FB715B2A5AA0002FB34 /* Tile.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092FB515B2A1880002FB34 /* Tile.c */; };
+		D4230D1B15B3B298007A7762 /* RangeTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4230D1A15B3B298007A7762 /* RangeTest.c */; };
 		D43ED594142146F800D25EEC /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D43ED593142146F800D25EEC /* main.c */; };
 		D4783B1C15ABDF8B004E7F2C /* Gem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1015ABDF8B004E7F2C /* Gem.c */; };
 		D4783B1D15ABDF8B004E7F2C /* Jewelry.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1215ABDF8B004E7F2C /* Jewelry.c */; };
@@ -74,6 +75,7 @@
 		D4092F5B15AFDBA70002FB34 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		D4092FB515B2A1880002FB34 /* Tile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Tile.c; sourceTree = "<group>"; };
 		D420B2C914103887003DD56E /* treasure.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = treasure.txt; sourceTree = "<group>"; };
+		D4230D1A15B3B298007A7762 /* RangeTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RangeTest.c; sourceTree = "<group>"; };
 		D43ED590142146F800D25EEC /* UnitTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		D43ED593142146F800D25EEC /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		D4783B1015ABDF8B004E7F2C /* Gem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Gem.c; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 			isa = PBXGroup;
 			children = (
 				D4783B3B15ABE155004E7F2C /* DungeonTest.c */,
+				D4230D1A15B3B298007A7762 /* RangeTest.c */,
 				D4783B4B15ABEB32004E7F2C /* TilesTest.c */,
 			);
 			path = Dungeons;
@@ -399,6 +402,7 @@
 				D4092F3E15AE93DE0002FB34 /* Point.c in Sources */,
 				D4092F6815AFFEE70002FB34 /* Range.c in Sources */,
 				D4092FB715B2A5AA0002FB34 /* Tile.c in Sources */,
+				D4230D1B15B3B298007A7762 /* RangeTest.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
