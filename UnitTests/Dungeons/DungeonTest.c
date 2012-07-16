@@ -3,7 +3,6 @@
 #include "Dungeon.h"
 #include "Tile.h"
 #include "Tiles.h"
-#include "TileStatistics.h"
 
 
 void dungeonTest(void);
@@ -27,14 +26,9 @@ static void generateDungeonTest(void)
   generateDungeon(&dungeon, &dice);
   assert(113 == tilesCount(dungeon.tiles));
 
-  struct TileStatistics statistics;
-  gatherTileStatistics(dungeon.tiles, &statistics);
-
-  assert(-7 == statistics.xRange.begin);
-  assert(9 == statistics.xRange.end);
-  assert(0 == statistics.yRange.begin);
-  assert(15 == statistics.yRange.end);
-  assert(113 == statistics.count);
+  assert(equalRanges(makeRange(-7, 9), xRangeOfTiles(dungeon.tiles)));
+  assert(equalRanges(makeRange(0, 15), yRangeOfTiles(dungeon.tiles)));
+  assert(113 == tilesCount(dungeon.tiles));
 
   struct Tile *tile = findTileInTilesAt(dungeon.tiles, 0, 0, 1);
   assert(tile);

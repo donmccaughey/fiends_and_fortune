@@ -5,14 +5,12 @@
 #include <string.h>
 #include "heap.h"
 #include "Tile.h"
-#include "TileStatistics.h"
 
 
 static void appendTileToTiles(struct Tiles *tiles, struct Tile  *tile);
 static int compareTilesByCoordinate(void const *item1, void const *item2);
 static void finalizeTiles(struct Tiles *tiles);
 static struct Tile **find(struct Tiles const *tiles, struct Tile const *criteria);
-static void gatherStatistics(struct Tile const *tile, struct TileStatistics *statistics);
 static void initializeTiles(struct Tiles *tiles);
 static void sort(struct Tiles *tiles);
 static void updateRanges(struct Tiles *tiles);
@@ -124,37 +122,6 @@ struct Tile *findTileInTilesAt(struct Tiles const *tiles, int32_t x, int32_t y, 
   struct Tile tile = { .point = { x, y, z} };
   struct Tile **tileInTiles = find(tiles, &tile);
   return tileInTiles ? *tileInTiles : NULL;
-}
-
-
-static void gatherStatistics(struct Tile const *tile, struct TileStatistics *statistics)
-{
-  if (tile->point.x < statistics->xRange.begin) {
-    statistics->xRange.begin = tile->point.x;
-  }
-  if (tile->point.x >= statistics->xRange.end) {
-    statistics->xRange.end = tile->point.x + 1;
-  }
-  if (tile->point.y < statistics->yRange.begin) {
-    statistics->yRange.begin = tile->point.y;
-  }
-  if (tile->point.y >= statistics->yRange.end) {
-    statistics->yRange.end = tile->point.y + 1;
-  }
-
-  ++statistics->count;
-}
-
-
-void gatherTileStatistics(struct Tiles const *tiles, struct TileStatistics *statistics)
-{
-  statistics->count = 0;
-  statistics->xRange = (struct Range) { INT32_MAX, INT32_MIN };
-  statistics->yRange = (struct Range) { INT32_MAX, INT32_MIN };
-
-  for (size_t i = 0; i < tiles->count; ++i) {
-    gatherStatistics(tiles->tiles[i], statistics);
-  }
 }
 
 

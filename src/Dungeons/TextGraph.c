@@ -4,7 +4,6 @@
 #include "Range.h"
 #include "Tile.h"
 #include "Tiles.h"
-#include "TileStatistics.h"
 
 
 #define CORNER_EMPTY "+   "

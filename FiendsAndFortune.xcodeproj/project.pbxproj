@@ -117,7 +117,6 @@
 		D4F73465140EF55C0096618F /* FiendsAndFortune.1 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.man; path = FiendsAndFortune.1; sourceTree = "<group>"; };
 		D4F73465140EF55C00966190 /* Point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Point.h; sourceTree = "<group>"; };
 		D4F73465140EF55C00966191 /* Point.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Point.c; sourceTree = "<group>"; };
-		D4F73465140EF55C00966193 /* TileStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileStatistics.h; sourceTree = "<group>"; };
 		D4F73465140EF55C00966194 /* TextGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextGraph.h; sourceTree = "<group>"; };
 		D4F73465140EF55C00966195 /* TextGraph.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TextGraph.c; sourceTree = "<group>"; };
 		D4F73465140EF55C00966197 /* Range.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Range.h; sourceTree = "<group>"; };
@@ -197,7 +196,6 @@
 				D4092FB515B2A1880002FB34 /* Tile.c */,
 				D4783B4715ABE698004E7F2C /* Tiles.h */,
 				D4783B4815ABE7E5004E7F2C /* Tiles.c */,
-				D4F73465140EF55C00966193 /* TileStatistics.h */,
 				D4783B4415ABE484004E7F2C /* TileType.h */,
 			);
 			path = Dungeons;
