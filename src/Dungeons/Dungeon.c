@@ -5,9 +5,32 @@
 #include "Dice.h"
 #include "Tile.h"
 #include "Tiles.h"
+#include "unexpected.h"
+#include "Range.h"
 
 
+enum Direction {
+  North, South, East, West,
+};
+
+
+static struct Point advancePoint(struct Point start, int32_t steps, enum Direction direction);
 static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int32_t x, int32_t y, int32_t z);
+static void addNewEmptyTileToDungeonAtPoint(struct Dungeon *dungeon, struct Point point);
+static struct Point chamber(struct Dungeon *dungeon, struct Point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset);
+static struct Point hallway(struct Dungeon *dungeon, struct Point fromPoint, uint32_t distance, enum Direction direction);
+
+
+static struct Point advancePoint(struct Point start, int32_t steps, enum Direction direction) {
+  switch (direction) {
+    case North: return makePoint(start.x, start.y + steps, start.z);
+    case South: return makePoint(start.x, start.y - steps, start.z);
+    case East: return makePoint(start.x + steps, start.y, start.z);
+    case West: return makePoint(start.x - steps, start.y, start.z);
+    default: UNEXPECTED("Unrecognized direction %i", direction); break;
+  }
+  return start;
+}
 
 
 static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int32_t x, int32_t y, int32_t z)
@@ -19,6 +42,59 @@ static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int32_t x, int32
 }
 
 
+static void addNewEmptyTileToDungeonAtPoint(struct Dungeon *dungeon, struct Point point)
+{
+  addNewEmptyTileToDungeonAt(dungeon, point.x, point.y, point.z);
+}
+
+
+static struct Point chamber(struct Dungeon *dungeon, struct Point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset)
+{
+  assert(leftOffset < width);
+  struct Range xRange;
+  struct Range yRange;
+
+  switch (direction) {
+    case North:
+      xRange = makeRange(fromPoint.x - leftOffset, fromPoint.x + width - leftOffset);
+      yRange = makeRange(fromPoint.y, fromPoint.y + length);
+      break;
+    case South: {
+        struct ReverseRange xReverseRange = makeReverseRange(fromPoint.x + leftOffset,
+                                                             fromPoint.x - width + leftOffset);
+        struct ReverseRange yReverseRange = makeReverseRange(fromPoint.y, fromPoint.y - length);
+        xRange = makeRangeFromReverseRange(xReverseRange);
+        yRange = makeRangeFromReverseRange(yReverseRange);
+      }
+      break;
+    case East: {
+        struct ReverseRange yReverseRange = makeReverseRange(fromPoint.y + leftOffset,
+                                                             fromPoint.y - width + leftOffset);
+        xRange = makeRange(fromPoint.x, fromPoint.x + length);
+        yRange = makeRangeFromReverseRange(yReverseRange);
+      }
+      break;
+    case West: {
+        struct ReverseRange xReverseRange = makeReverseRange(fromPoint.x, fromPoint.x - length);
+        xRange = makeRangeFromReverseRange(xReverseRange);
+        yRange = makeRange(fromPoint.y - leftOffset, fromPoint.y + width - leftOffset);
+      }
+      break;
+    default:
+      UNEXPECTED("Unrecognized direction %i", direction);
+      return fromPoint;
+  }
+
+  for (int32_t j = yRange.begin; j < yRange.end; ++j) {
+    for (int32_t i = xRange.begin; i < xRange.end; ++i) {
+      addNewEmptyTileToDungeonAt(dungeon, i, j, fromPoint.z);
+    }
+  }
+
+  return advancePoint(fromPoint, length, direction);
+}
+
+
 void finalizeDungeon(struct Dungeon *dungeon)
 {
   destroyTiles(dungeon->tiles);
@@ -27,180 +103,66 @@ void finalizeDungeon(struct Dungeon *dungeon)
 
 void generateDungeon(struct Dungeon *dungeon, struct Dice *dice)
 {
-  addNewEmptyTileToDungeonAt(dungeon, 0, 0, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 0, 1, 1);
-
-  /* entry chamber */
-  addNewEmptyTileToDungeonAt(dungeon, -1, 2, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 0, 2, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 1, 2, 1);
-
-  addNewEmptyTileToDungeonAt(dungeon, -2, 3, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -1, 3, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 0, 3, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 1, 3, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 2, 3, 1);
-
-  addNewEmptyTileToDungeonAt(dungeon, -1, 4, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 0, 4, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 1, 4, 1);
-
-  addNewEmptyTileToDungeonAt(dungeon, -2, 5, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -1, 5, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 0, 5, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 1, 5, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 2, 5, 1);
-
-  addNewEmptyTileToDungeonAt(dungeon, -1, 6, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 0, 6, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 1, 6, 1);
-
-  addNewEmptyTileToDungeonAt(dungeon, 0, 7, 1);
-
-  /* entry chamber exit north, 60 ft corridor */
-  addNewEmptyTileToDungeonAt(dungeon, 0, 8, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 0, 9, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 0, 10, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 0, 11, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 0, 12, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 0, 13, 1);
-
-  /* right turn */
-  addNewEmptyTileToDungeonAt(dungeon, 0, 14, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 1, 14, 1);
-
-  /* 60 ft corridor east */
-  addNewEmptyTileToDungeonAt(dungeon, 2, 14, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 3, 14, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 4, 14, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 5, 14, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 6, 14, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 7, 14, 1);
-
-  /* right turn */
-  addNewEmptyTileToDungeonAt(dungeon, 8, 14, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 8, 13, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 8, 12, 1);
-
-  /* chamber */
-  addNewEmptyTileToDungeonAt(dungeon, 8, 11, 1);
-
-  addNewEmptyTileToDungeonAt(dungeon, 5, 10, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 6, 10, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 7, 10, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 8, 10, 1);
-
-  addNewEmptyTileToDungeonAt(dungeon, 5, 9, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 6, 9, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 7, 9, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 8, 9, 1);
-
-  addNewEmptyTileToDungeonAt(dungeon, 5, 8, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 6, 8, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 7, 8, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 8, 8, 1);
-
-  addNewEmptyTileToDungeonAt(dungeon, 5, 7, 1);
-
-  /* corridor */
-  addNewEmptyTileToDungeonAt(dungeon, 5, 6, 1);
-
-  /* right turn */
-  addNewEmptyTileToDungeonAt(dungeon, 4, 5, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 5, 5, 1);
-
-  /* corridor */
-  addNewEmptyTileToDungeonAt(dungeon, 3, 5, 1);
+  return generateSmallDungeon(dungeon);
+}
 
 
-  /* entry chamber, exit north-most west, right turn */
-  addNewEmptyTileToDungeonAt(dungeon, -3, 6, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -3, 5, 1);
+void generateSmallDungeon(struct Dungeon *dungeon)
+{
+  struct Point point = makePoint(0, 0, 1);
 
-  /* 40 ft corridor north */
-  addNewEmptyTileToDungeonAt(dungeon, -3, 7, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -3, 8, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -3, 9, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -3, 10, 1);
+  point = hallway(dungeon, point, 2, North);
 
-  /* chamber */
-  addNewEmptyTileToDungeonAt(dungeon, -3, 11, 1);
+  point = chamber(dungeon, point, 5, 3, North, 1);
 
-  addNewEmptyTileToDungeonAt(dungeon, -4, 12, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -3, 12, 1);
+  /* chamber exits */
+  struct Point pointInChamber = advancePoint(point, 2, South);
+  struct Point northWestExit = advancePoint(pointInChamber, 2, West);
+  struct Point southWestExit = advancePoint(northWestExit, 2, South);
+  struct Point northEastExit = advancePoint(pointInChamber, 2, East);
+  struct Point southEastExit = advancePoint(northEastExit, 2, South);
 
-  addNewEmptyTileToDungeonAt(dungeon, -4, 13, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -3, 13, 1);
+  point = hallway(dungeon, point, 7, North);
+  point = hallway(dungeon, point, 8, East);
+  point = hallway(dungeon, point, 4, South);
 
-  addNewEmptyTileToDungeonAt(dungeon, -4, 14, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -3, 14, 1);
+  point = chamber(dungeon, point, 3, 4, South, 0);
+  point = advancePoint(point, 3, West);
 
+  point = hallway(dungeon, point, 2, South);
+  point = hallway(dungeon, point, 4, West);
 
-  /* entry chamber, exit south-most west, left turn */
-  addNewEmptyTileToDungeonAt(dungeon, -3, 3, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -3, 2, 1);
+  /* from entry chamber, north west exit */
+  point = hallway(dungeon, northWestExit, 1, West);
+  point = hallway(dungeon, point, 7, North);
 
-  /* right turn */
-  addNewEmptyTileToDungeonAt(dungeon, -5, 1, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -4, 1, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -3, 1, 1);
-  
-  /* right turn */
-  addNewEmptyTileToDungeonAt(dungeon, -5, 2, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -5, 3, 1);
+  point = chamber(dungeon, point, 3, 2, North, 1);
 
-  addNewEmptyTileToDungeonAt(dungeon, -6, 4, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -5, 4, 1);
+  /* from entry chamber, south west exit */
+  point = hallway(dungeon, southWestExit, 1, West);
+  point = hallway(dungeon, point, 2, South);
+  point = hallway(dungeon, point, 2, West);
+  point = hallway(dungeon, point, 3, North);
 
-  addNewEmptyTileToDungeonAt(dungeon, -6, 5, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -5, 5, 1);
+  point = chamber(dungeon, point, 2, 2, North, 1);
 
-  addNewEmptyTileToDungeonAt(dungeon, -6, 6, 1);
+  point = advancePoint(point, 1, West);
+  point = hallway(dungeon, point, 3, North);
 
-  /* corridor north */
-  addNewEmptyTileToDungeonAt(dungeon, -6, 7, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -6, 8, 1);
+  point = chamber(dungeon, point, 2, 3, North, 1);
 
-  /* chamber */
-  addNewEmptyTileToDungeonAt(dungeon, -7, 9, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -6, 9, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -5, 9, 1);
+  /* from entry chamber, south east exit */
+  point = hallway(dungeon, southEastExit, 1, East);
 
-  addNewEmptyTileToDungeonAt(dungeon, -7, 10, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -6, 10, 1);
-  addNewEmptyTileToDungeonAt(dungeon, -5, 10, 1);
+  chamber(dungeon, point, 6, 4, East, 0);
+  struct Tile *tile = findTileInTilesAt(dungeon->tiles, 5, 2, 1);
+  removeTileFromTiles(dungeon->tiles, tile);
+}
 
 
-  /* entry chamber, exit south-most east, chamber */
-  addNewEmptyTileToDungeonAt(dungeon, 3, 3, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 3, 2, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 3, 1, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 3, 0, 1);
-
-  addNewEmptyTileToDungeonAt(dungeon, 4, 3, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 4, 2, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 4, 1, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 4, 0, 1);
-
-  addNewEmptyTileToDungeonAt(dungeon, 5, 3, 1);
-
-  addNewEmptyTileToDungeonAt(dungeon, 5, 1, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 5, 0, 1);
-
-  addNewEmptyTileToDungeonAt(dungeon, 6, 3, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 6, 2, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 6, 1, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 6, 0, 1);
-
-  addNewEmptyTileToDungeonAt(dungeon, 7, 3, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 7, 2, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 7, 1, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 7, 0, 1);
-
-  addNewEmptyTileToDungeonAt(dungeon, 8, 3, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 8, 2, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 8, 1, 1);
-  addNewEmptyTileToDungeonAt(dungeon, 8, 0, 1);
+static struct Point hallway(struct Dungeon *dungeon, struct Point fromPoint, uint32_t distance, enum Direction direction)
+{
+  return chamber(dungeon, fromPoint, distance, 1, direction, 0);
 }
 
 

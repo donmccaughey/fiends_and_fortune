@@ -181,9 +181,7 @@ static void generateRandomDungeon(struct Dice *dice, FILE *out)
   struct Dungeon dungeon;
   initializeDungeon(&dungeon);
   generateDungeon(&dungeon, dice);
-
   graphDungeonLevelUsingText(&dungeon, 1, out);
-
   finalizeDungeon(&dungeon);
 }
 
@@ -213,8 +211,17 @@ static void generateMagicItems(struct Dice *dice, FILE *out, int count)
   
   fprintf(out, "Magic Items:\n");
   for (int i = 0; i < count; ++i) {
+    initializeMagicItem(&magicItem);
     generateMagicItem(&magicItem, dice, ANY_MAGIC_ITEM);
     fprintf(out, "  %4i %s\n", (i + 1), magicItem.trueDescription);
+    if (magicItem.trueDetails) {
+      int j = 0;
+      while (magicItem.trueDetails[j]) {
+        fprintf(out, "           %s\n", magicItem.trueDetails[j]);
+        ++j;
+      }
+    }
+    finalizeMagicItem(&magicItem);
   }
   fprintf(out, "\n");
 }
@@ -225,7 +232,7 @@ static void generateSampleDungeon(struct Dice *dice, FILE *out)
 {
   struct Dungeon dungeon;
   initializeDungeon(&dungeon);
-  generateDungeon(&dungeon, dice);
+  generateSmallDungeon(&dungeon);
   graphDungeonLevelUsingText(&dungeon, 1, out);
   finalizeDungeon(&dungeon);
 }
@@ -285,7 +292,11 @@ int main(int argc, char *argv[])
   } else if (strcasecmp(argv[1], "check") == 0) {
     check(out, (argc >= 3) ? argv[2] : "0");
   } else if (strcasecmp(argv[1], "dungeon") == 0) {
-    generateRandomDungeon(&dice, out);
+    if (argc >= 3 && strcasecmp(argv[2], "small")) {
+      generateSampleDungeon(&dice, out);
+    } else {
+      generateRandomDungeon(&dice, out);
+    }
   } else if (strcasecmp(argv[1], "each") == 0) {
     generateEachTreasure(&dice, out);
   } else if (strcasecmp(argv[1], "magic") == 0) {
@@ -323,11 +334,17 @@ static void usage(int argc, char *argv[])
   fprintf(stderr, "Usage: %s ACTION\n", argv[0]);
   fprintf(stderr, "\n");
   fprintf(stderr, "Available actions:\n");
-  fprintf(stderr, "   character  Generate a character\n");
-  fprintf(stderr, "   check      Run tests\n");
-  fprintf(stderr, "   dungeon    Generate a random dungeon\n");
-  fprintf(stderr, "   each       Generate one of each treasure\n");
-  fprintf(stderr, "   map        Generate one treasure map\n");
-  fprintf(stderr, "   table      Generate the treasure type table\n");
-  fprintf(stderr, "   LETTER     Generate the treasure type for LETTER (A-Z)\n");
+  fprintf(stderr, "   character [METHOD]  Generate a character where METHOD is\n");
+  fprintf(stderr, "                         `method1', `method2', `method3', `method4',\n");
+  fprintf(stderr, "                         `general', `special' or `simple'\n");
+  fprintf(stderr, "                         (default `simple')\n");
+  fprintf(stderr, "   check [N]           Run tests where N is the \"constant\"\n");
+  fprintf(stderr, "                         random number (default 0)\n");
+  fprintf(stderr, "   dungeon [TYPE]      Generate a dungeon where TYPE is\n");
+  fprintf(stderr, "                         `random' or `small' (default `random')\n");
+  fprintf(stderr, "   each                Generate one of each treasure\n");
+  fprintf(stderr, "   magic [COUNT]       Generate COUNT magic items (default 10)\n");
+  fprintf(stderr, "   map                 Generate one treasure map\n");
+  fprintf(stderr, "   table               Generate the treasure type table\n");
+  fprintf(stderr, "   LETTER              Generate the treasure type for LETTER (A-Z)\n");
 }

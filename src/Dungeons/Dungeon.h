@@ -15,6 +15,8 @@ void finalizeDungeon(struct Dungeon *dungeon);
 
 void generateDungeon(struct Dungeon *dungeon, struct Dice *dice);
 
+void generateSmallDungeon(struct Dungeon *dungeon);
+
 void initializeDungeon(struct Dungeon *dungeon);
 
 
