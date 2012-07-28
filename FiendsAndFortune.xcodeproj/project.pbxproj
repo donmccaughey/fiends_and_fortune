@@ -378,8 +378,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = build/Debug/UnitTests;
-			showEnvVarsInLog = 0;
+			shellScript = $BUILT_PRODUCTS_DIR/UnitTests;
 		};
 /* End PBXShellScriptBuildPhase section */
 
