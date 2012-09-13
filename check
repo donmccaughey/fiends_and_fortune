@@ -1,8 +1,8 @@
 #!/bin/sh
 
-ACTUAL_OUT=build/check.out
-EXPECTED_OUT=test/check.out
-PROGRAM=./build/Debug/FiendsAndFortune
+ACTUAL_OUT=$TEMP_DIR/check.out
+EXPECTED_OUT=$PROJECT_DIR/test/check.out
+PROGRAM=$BUILT_PRODUCTS_DIR/FiendsAndFortune
 
 $PROGRAM check 0 > $ACTUAL_OUT
 diff $ACTUAL_OUT $EXPECTED_OUT
