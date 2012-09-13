@@ -103,7 +103,7 @@ void finalizeDungeon(struct Dungeon *dungeon)
 
 void generateDungeon(struct Dungeon *dungeon, struct Dice *dice)
 {
-  return generateSmallDungeon(dungeon);
+  generateSmallDungeon(dungeon);
 }
 
 
