@@ -13,6 +13,10 @@ struct Dungeon {
 };
 
 
+/// Caller is responsible for freeing the array but not its contents.
+/// The array is NULL terminated.
+char const **dungeonAreaDescriptions(struct Dungeon *dungeon);
+
 void finalizeDungeon(struct Dungeon *dungeon);
 
 void generateDungeon(struct Dungeon *dungeon, struct Dice *dice);

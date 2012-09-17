@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "Boolean.h"
 #include "Character.h"
 #include "coinage.h"
 #include "Dice.h"
@@ -17,29 +16,18 @@
 
 
 static void check(FILE *out, char const *constantNumber);
-
 static void enumerateTreasureItems(struct Treasure *treasure, FILE *out);
-
 static void generateCharacter(struct Dice *dice, 
                               FILE *out, 
                               char const *methodName);
-
 static void generateEachTreasure(struct Dice *dice, FILE *out);
-
 static void generateMap(struct Dice *dice, FILE *out);
-
 static void generateMagicItems(struct Dice *dice, FILE *out, int count);
-
 static void generateRandomDungeon(struct Dice *dice, FILE *out);
-
 static void generateSampleDungeon(struct Dice *dice, FILE *out);
-
 static void generateTreasureType(struct Dice *dice, FILE *out, char letter);
-
 static void generateTreasureTypeTable(FILE *out);
-
 static uint32_t nextConstantNumber(struct Dice *dice);
-
 static void usage(int argc, char *argv[]);
 
 
@@ -176,16 +164,6 @@ static void generateCharacter(struct Dice *dice,
 }
 
 
-static void generateRandomDungeon(struct Dice *dice, FILE *out)
-{
-  struct Dungeon dungeon;
-  initializeDungeon(&dungeon);
-  generateDungeon(&dungeon, dice);
-  graphDungeonLevelUsingText(&dungeon, 1, out);
-  finalizeDungeon(&dungeon);
-}
-
-
 static void generateEachTreasure(struct Dice *dice, FILE *out)
 {
   for (char letter = 'A'; letter <= 'Z'; ++letter) {
@@ -227,13 +205,44 @@ static void generateMagicItems(struct Dice *dice, FILE *out, int count)
 }
 
 
+static void generateRandomDungeon(struct Dice *dice, FILE *out)
+{
+  struct Dungeon dungeon;
+  initializeDungeon(&dungeon);
+
+  generateDungeon(&dungeon, dice);
+  graphDungeonLevelUsingText(&dungeon, 1, out);
+
+  char const **descriptions = dungeonAreaDescriptions(&dungeon);
+  char const **current = descriptions;
+  fprintf(out, "\nDungeon Areas:\n");
+  while (*current) {
+    fprintf(out, "\t%s\n", *current);
+    ++current;
+  }
+  free(descriptions);
+
+  finalizeDungeon(&dungeon);
+}
+
 
 static void generateSampleDungeon(struct Dice *dice, FILE *out)
 {
   struct Dungeon dungeon;
   initializeDungeon(&dungeon);
+
   generateSmallDungeon(&dungeon);
   graphDungeonLevelUsingText(&dungeon, 1, out);
+
+  char const **descriptions = dungeonAreaDescriptions(&dungeon);
+  char const **current = descriptions;
+  fprintf(out, "\nDungeon Areas:\n");
+  while (*current) {
+    fprintf(out, "\t%s\n", *current);
+    ++current;
+  }
+  free(descriptions);
+
   finalizeDungeon(&dungeon);
 }
 
@@ -275,6 +284,7 @@ static void generateTreasureTypeTable(FILE *out)
     fprintf(out, "%s", description);
   }
 }
+
 
 int main(int argc, char *argv[])
 {

@@ -2,12 +2,13 @@
 
 #include <assert.h>
 #include <string.h>
+#include "Area.h"
 #include "Areas.h"
 #include "Dice.h"
+#include "heap.h"
 #include "Tile.h"
 #include "Tiles.h"
 #include "unexpected.h"
-#include "Range.h"
 
 
 enum Direction {
@@ -16,10 +17,11 @@ enum Direction {
 
 
 static struct Point advancePoint(struct Point start, int32_t steps, enum Direction direction);
-static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int32_t x, int32_t y, int32_t z);
-static void addNewEmptyTileToDungeonAtPoint(struct Dungeon *dungeon, struct Point point);
+static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, struct Area *area, int32_t x, int32_t y, int32_t z);
+static struct Point area(struct Dungeon *dungeon, struct Point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset, enum AreaType areaType);
 static struct Point chamber(struct Dungeon *dungeon, struct Point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset);
-static struct Point hallway(struct Dungeon *dungeon, struct Point fromPoint, uint32_t distance, enum Direction direction);
+static char const *directionName(enum Direction direction);
+static struct Point passage(struct Dungeon *dungeon, struct Point fromPoint, uint32_t distance, enum Direction direction);
 
 
 static struct Point advancePoint(struct Point start, int32_t steps, enum Direction direction) {
@@ -34,22 +36,16 @@ static struct Point advancePoint(struct Point start, int32_t steps, enum Directi
 }
 
 
-static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, int32_t x, int32_t y, int32_t z)
+static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, struct Area *area, int32_t x, int32_t y, int32_t z)
 {
   assert(NULL == findTileInTilesAt(dungeon->tiles, x, y, z));
 
   struct Tile *tile = createTile(makePoint(x, y, z), EmptyTileType);
-  addTileToTiles(dungeon->tiles, tile);
+  addTileToTiles(area->tiles, tile);
 }
 
 
-static void addNewEmptyTileToDungeonAtPoint(struct Dungeon *dungeon, struct Point point)
-{
-  addNewEmptyTileToDungeonAt(dungeon, point.x, point.y, point.z);
-}
-
-
-static struct Point chamber(struct Dungeon *dungeon, struct Point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset)
+static struct Point area(struct Dungeon *dungeon, struct Point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset, enum AreaType areaType)
 {
   assert(leftOffset < width);
   struct Range xRange;
@@ -86,13 +82,53 @@ static struct Point chamber(struct Dungeon *dungeon, struct Point fromPoint, uin
       return fromPoint;
   }
 
+  char *description;
+  switch (areaType) {
+    case ChamberAreaType: ASPRINTF_OR_DIE(&description, "%u' x %u' chamber", length * 10, width * 10); break;
+    case PassageAreaType: ASPRINTF_OR_DIE(&description, "%u' passage %s", length * 10, directionName(direction)); break;
+    default: ASPRINTF_OR_DIE(&description, "%u' x %u' area", length * 10, width * 10); break;
+  }
+
+  struct Area *area = createArea(description, dungeon->tiles, areaType);
+  addAreaToAreas(dungeon->areas, area);
+
   for (int32_t j = yRange.begin; j < yRange.end; ++j) {
     for (int32_t i = xRange.begin; i < xRange.end; ++i) {
-      addNewEmptyTileToDungeonAt(dungeon, i, j, fromPoint.z);
+      addNewEmptyTileToDungeonAt(dungeon, area, i, j, fromPoint.z);
     }
   }
 
   return advancePoint(fromPoint, length, direction);
+}
+
+
+static struct Point chamber(struct Dungeon *dungeon, struct Point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset)
+{
+  return area(dungeon, fromPoint, length, width, direction, leftOffset, ChamberAreaType);
+}
+
+
+static char const *directionName(enum Direction direction)
+{
+  switch (direction) {
+    case North: return "North";
+    case South: return "South";
+    case East: return "East";
+    case West: return "West";
+    default: return "Unknown";
+  }
+}
+
+
+char const **dungeonAreaDescriptions(struct Dungeon *dungeon)
+{
+  size_t descriptionsCount = areasCount(dungeon->areas);
+  char const **descriptions = CALLOC_OR_DIE(descriptionsCount + 1, sizeof(char const *));
+
+  for (size_t i = 0; i < descriptionsCount; ++i) {
+    descriptions[i] = areaInAreasAtIndex(dungeon->areas, i)->description;
+  }
+  return descriptions;
 }
 
 
@@ -113,7 +149,7 @@ void generateSmallDungeon(struct Dungeon *dungeon)
 {
   struct Point point = makePoint(0, 0, 1);
 
-  point = hallway(dungeon, point, 2, North);
+  point = passage(dungeon, point, 2, North);
 
   point = chamber(dungeon, point, 5, 3, North, 1);
 
@@ -124,37 +160,37 @@ void generateSmallDungeon(struct Dungeon *dungeon)
   struct Point northEastExit = advancePoint(pointInChamber, 2, East);
   struct Point southEastExit = advancePoint(northEastExit, 2, South);
 
-  point = hallway(dungeon, point, 7, North);
-  point = hallway(dungeon, point, 8, East);
-  point = hallway(dungeon, point, 4, South);
+  point = passage(dungeon, point, 7, North);
+  point = passage(dungeon, point, 8, East);
+  point = passage(dungeon, point, 4, South);
 
   point = chamber(dungeon, point, 3, 4, South, 0);
   point = advancePoint(point, 3, West);
 
-  point = hallway(dungeon, point, 2, South);
-  point = hallway(dungeon, point, 4, West);
+  point = passage(dungeon, point, 2, South);
+  point = passage(dungeon, point, 4, West);
 
   /* from entry chamber, north west exit */
-  point = hallway(dungeon, northWestExit, 1, West);
-  point = hallway(dungeon, point, 7, North);
+  point = passage(dungeon, northWestExit, 1, West);
+  point = passage(dungeon, point, 7, North);
 
   point = chamber(dungeon, point, 3, 2, North, 1);
 
   /* from entry chamber, south west exit */
-  point = hallway(dungeon, southWestExit, 1, West);
-  point = hallway(dungeon, point, 2, South);
-  point = hallway(dungeon, point, 2, West);
-  point = hallway(dungeon, point, 3, North);
+  point = passage(dungeon, southWestExit, 1, West);
+  point = passage(dungeon, point, 2, South);
+  point = passage(dungeon, point, 2, West);
+  point = passage(dungeon, point, 3, North);
 
   point = chamber(dungeon, point, 2, 2, North, 1);
 
   point = advancePoint(point, 1, West);
-  point = hallway(dungeon, point, 3, North);
+  point = passage(dungeon, point, 3, North);
 
   point = chamber(dungeon, point, 2, 3, North, 1);
 
   /* from entry chamber, south east exit */
-  point = hallway(dungeon, southEastExit, 1, East);
+  point = passage(dungeon, southEastExit, 1, East);
 
   chamber(dungeon, point, 6, 4, East, 0);
   struct Tile *tile = findTileInTilesAt(dungeon->tiles, 5, 2, 1);
@@ -162,9 +198,9 @@ void generateSmallDungeon(struct Dungeon *dungeon)
 }
 
 
-static struct Point hallway(struct Dungeon *dungeon, struct Point fromPoint, uint32_t distance, enum Direction direction)
+static struct Point passage(struct Dungeon *dungeon, struct Point fromPoint, uint32_t distance, enum Direction direction)
 {
-  return chamber(dungeon, fromPoint, distance, 1, direction, 0);
+  return area(dungeon, fromPoint, distance, 1, direction, 0, PassageAreaType);
 }
 
 

@@ -12,6 +12,8 @@ struct Areas;
 /// The Areas struct takes ownership of the given area.
 void addAreaToAreas(struct Areas *areas, struct Area *area);
 
+struct Area *areaInAreasAtIndex(struct Areas *areas, size_t index);
+
 size_t areasCount(struct Areas const *areas);
 
 struct Areas *createAreas(void);

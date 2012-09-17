@@ -1,5 +1,6 @@
 #include "Areas.h"
 
+#include <assert.h>
 #include <stdlib.h>
 #include "Area.h"
 #include "heap.h"
@@ -24,6 +25,13 @@ void addAreaToAreas(struct Areas *areas, struct Area *area)
   }
   areas->areas[areas->count] = area;
   ++areas->count;
+}
+
+
+struct Area *areaInAreasAtIndex(struct Areas *areas, size_t index)
+{
+  assert(index < areas->count);
+  return areas->areas[index];
 }
 
 
