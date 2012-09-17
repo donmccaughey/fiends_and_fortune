@@ -3,34 +3,46 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "Boolean.h"
 #include "Dice.h"
 #include "heap.h"
 
 
-
 static size_t const characteristicCount = 6;
-
 static size_t const characteristicSize = sizeof(int);
-
 static size_t const method2CharacteristicCount = characteristicCount * 2;
-
 static int const method3RollCount = 6;
-
 static size_t const method4CharacterCount = 12;
-
 static size_t const method4CharacteristicCount = characteristicCount 
                                                * method4CharacterCount;
 
 
 static int compareCharacteristics(void const *characteristic1, 
                                   void const *characteristic2);
-
 static int compareCharacteristicSets(void const *characteristicSet1, 
                                      void const *characteristicSet2);
-
 static Boolean contains(char const *set[], size_t setCount, char const *s);
+
+
+char const *characteristicGenerationMethodDescription(enum CharacteristicGenerationMethod method)
+{
+  switch (method) {
+    case SimpleCharacteristicGenerationMethod:
+      return "roll 3d6 once per characteristic";
+    case CharacteristicGenerationMethod1:
+      return "roll 4d6 six times and drop the lowest die from each roll; player assigns rolls to characteristics";
+    case CharacteristicGenerationMethod2:
+      return "roll 3d6 twelve times and drop the lowest six rolls; player assigns rolls to characteristics";
+    case CharacteristicGenerationMethod3:
+      return "roll 3d6 six times per characteristic and keep the highest roll";
+    case CharacteristicGenerationMethod4:
+      return "generate 12 characters using the simple method; player chooses one of the twelve";
+    case GeneralNPCCharacteristicGenerationMethod:
+      return "roll 3d6 once per characteristic; change any die of 1 to 3 or 6 to 4";
+    case SpecialNPCCharacteristicGenerationMethod:
+      return "roll 3d6 once per normal characteristic; for profession characteristic(s), add 1 to each die less than 6";
+    default: return "Unknown character generation method";
+  }
+}
 
 
 static int compareCharacteristics(void const *characteristic1, 
@@ -684,13 +696,13 @@ int *generateCharacteristics(struct Dice *dice,
             characteristicSize * characteristicCount, 
             compareCharacteristicSets);
       break;
-    case GeneralCharacteristicGenerationMethod:
+    case GeneralNPCCharacteristicGenerationMethod:
       characteristics = CALLOC_OR_DIE(characteristicCount, characteristicSize);
       for (size_t i = 0; i < characteristicCount; ++i) {
         characteristics[i] = rollDiceAndAdjustTowardsAverage(dice, 3, 6);
       }
       break;
-    case SpecialCharacteristicGenerationMethod:
+    case SpecialNPCCharacteristicGenerationMethod:
       {
         characteristics = CALLOC_OR_DIE(characteristicCount, characteristicSize);
         for (int i = 0; i < characteristicCount; ++i) {
@@ -698,7 +710,7 @@ int *generateCharacteristics(struct Dice *dice,
           if (characteristicFlags & characteristicFlag) {
             characteristics[i] = rollDiceAndAdjustUpwards(dice, 3, 6);
           } else {
-            characteristics[i] = rollDiceAndAdjustTowardsAverage(dice, 3, 6);
+            characteristics[i] = roll(dice, "3d6");
           }
         }
         break;

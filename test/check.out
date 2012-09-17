@@ -315,4 +315,62 @@ Dungeon Areas:
 	20' x 30' chamber
 	10' passage East
 	60' x 40' chamber
+Character (simple): -------------------------
+(roll 3d6 once per characteristic)
+  Strength:      3
+  Intelligence:  3
+  Wisdom:        3
+  Dexterity:     3
+  Constitution:  3
+  Charisma:      3
+Character (method1): -------------------------
+(roll 4d6 six times and drop the lowest die from each roll; player assigns rolls to characteristics)
+   1) 3
+   2) 3
+   3) 3
+   4) 3
+   5) 3
+   6) 3
+Character (method2): -------------------------
+(roll 3d6 twelve times and drop the lowest six rolls; player assigns rolls to characteristics)
+   1) 3
+   2) 3
+   3) 3
+   4) 3
+   5) 3
+   6) 3
+Character (method3): -------------------------
+(roll 3d6 six times per characteristic and keep the highest roll)
+  Strength:      3
+  Intelligence:  3
+  Wisdom:        3
+  Dexterity:     3
+  Constitution:  3
+  Charisma:      3
+Possible Characters (method4): -------------------------
+(generate 12 characters using the simple method; player chooses one of the twelve)
+                  1    2    3    4    5    6    7    8    9   10   11   12
+                 --   --   --   --   --   --   --   --   --   --   --   --
+  Strength:       3    3    3    3    3    3    3    3    3    3    3    3
+  Intelligence:   3    3    3    3    3    3    3    3    3    3    3    3
+  Wisdom:         3    3    3    3    3    3    3    3    3    3    3    3
+  Dexterity:      3    3    3    3    3    3    3    3    3    3    3    3
+  Constitution:   3    3    3    3    3    3    3    3    3    3    3    3
+  Charisma:       3    3    3    3    3    3    3    3    3    3    3    3
+Character (generalnpc): -------------------------
+(roll 3d6 once per characteristic; change any die of 1 to 3 or 6 to 4)
+  Strength:      9
+  Intelligence:  9
+  Wisdom:        9
+  Dexterity:     9
+  Constitution:  9
+  Charisma:      9
+Character (specialnpc): -------------------------
+(roll 3d6 once per normal characteristic; for profession characteristic(s), add 1 to each die less than 6)
+  Strength:      6
+  Intelligence:  3
+  Wisdom:        3
+  Dexterity:     3
+  Constitution:  3
+  Charisma:      3
 

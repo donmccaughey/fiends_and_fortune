@@ -42,6 +42,13 @@ static void check(FILE *out, char const *constantNumber)
   generateMap(&fakeDice, out);
   generateEachTreasure(&fakeDice, out);
   generateSampleDungeon(&fakeDice, out);
+  generateCharacter(&fakeDice, out, "simple");
+  generateCharacter(&fakeDice, out, "method1");
+  generateCharacter(&fakeDice, out, "method2");
+  generateCharacter(&fakeDice, out, "method3");
+  generateCharacter(&fakeDice, out, "method4");
+  generateCharacter(&fakeDice, out, "generalnpc");
+  generateCharacter(&fakeDice, out, "specialnpc");
 }
 
 
@@ -101,10 +108,12 @@ static void generateCharacter(struct Dice *dice,
     method = CharacteristicGenerationMethod3;
   } else if (0 == strcasecmp("method4", methodName)) {
     method = CharacteristicGenerationMethod4;
-  } else if (0 == strcasecmp("general", methodName)) {
-    method = GeneralCharacteristicGenerationMethod;
-  } else if (0 == strcasecmp("special", methodName)) {
-    method = SpecialCharacteristicGenerationMethod;
+  } else if (0 == strcasecmp("generalnpc", methodName)) {
+    method = GeneralNPCCharacteristicGenerationMethod;
+  } else if (0 == strcasecmp("specialnpc", methodName)) {
+    method = SpecialNPCCharacteristicGenerationMethod;
+  } else {
+    methodName = "simple";
   }
   
   int *characteristics = generateCharacteristics(dice, method, specialCharacteristics);
@@ -112,12 +121,14 @@ static void generateCharacter(struct Dice *dice,
       || method == CharacteristicGenerationMethod2)
   {
     fprintf(out, "Character (%s): -------------------------\n", methodName);
+    fprintf(out, "(%s)\n", characteristicGenerationMethodDescription(method));
     for (int i = 0; i < 6; ++i) {
       fprintf(out, "  %2i) %i\n", i + 1, characteristics[i]);
     }
   } else if (method == CharacteristicGenerationMethod4) {
     fprintf(out, "Possible Characters (%s): -------------------------\n", methodName);
-    fprintf(out, "                 %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n", 
+    fprintf(out, "(%s)\n", characteristicGenerationMethodDescription(method));
+    fprintf(out, "                 %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n",
             1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
     fprintf(out, "                 %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s\n", 
             "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--");
@@ -153,6 +164,7 @@ static void generateCharacter(struct Dice *dice,
             characteristics[5 + 54], characteristics[5 + 60], characteristics[5 + 66]);
   } else {
     fprintf(out, "Character (%s): -------------------------\n", methodName);
+    fprintf(out, "(%s)\n", characteristicGenerationMethodDescription(method));
     fprintf(out, "  Strength:     %2i\n", characteristics[0]);
     fprintf(out, "  Intelligence: %2i\n", characteristics[1]);
     fprintf(out, "  Wisdom:       %2i\n", characteristics[2]);
@@ -346,7 +358,7 @@ static void usage(int argc, char *argv[])
   fprintf(stderr, "Available actions:\n");
   fprintf(stderr, "   character [METHOD]  Generate a character where METHOD is\n");
   fprintf(stderr, "                         `method1', `method2', `method3', `method4',\n");
-  fprintf(stderr, "                         `general', `special' or `simple'\n");
+  fprintf(stderr, "                         `generalnpc', `specialnpc' or `simple'\n");
   fprintf(stderr, "                         (default `simple')\n");
   fprintf(stderr, "   check [N]           Run tests where N is the \"constant\"\n");
   fprintf(stderr, "                         random number (default 0)\n");

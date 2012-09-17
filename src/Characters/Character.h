@@ -24,8 +24,8 @@ enum CharacteristicGenerationMethod {
   CharacteristicGenerationMethod2,
   CharacteristicGenerationMethod3,
   CharacteristicGenerationMethod4,
-  GeneralCharacteristicGenerationMethod,
-  SpecialCharacteristicGenerationMethod
+  GeneralNPCCharacteristicGenerationMethod,
+  SpecialNPCCharacteristicGenerationMethod
 };
 
 enum SpellType {
@@ -46,7 +46,9 @@ struct Character {
 };
 
 
-char const *determineLanguage(struct Dice *dice, 
+char const *characteristicGenerationMethodDescription(enum CharacteristicGenerationMethod method);
+
+char const *determineLanguage(struct Dice *dice,
                               char const *exclude[], 
                               size_t excludeCount);
 
