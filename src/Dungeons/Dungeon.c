@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <string.h>
+#include "Areas.h"
 #include "Dice.h"
 #include "Tile.h"
 #include "Tiles.h"
@@ -97,6 +98,7 @@ static struct Point chamber(struct Dungeon *dungeon, struct Point fromPoint, uin
 
 void finalizeDungeon(struct Dungeon *dungeon)
 {
+  destroyAreas(dungeon->areas);
   destroyTiles(dungeon->tiles);
 }
 
@@ -169,5 +171,6 @@ static struct Point hallway(struct Dungeon *dungeon, struct Point fromPoint, uin
 void initializeDungeon(struct Dungeon *dungeon)
 {
   memset(dungeon, 0, sizeof(struct Dungeon));
+  dungeon->areas = createAreas();
   dungeon->tiles = createTiles();
 }

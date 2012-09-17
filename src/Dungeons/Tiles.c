@@ -9,9 +9,7 @@
 
 static void appendTileToTiles(struct Tiles *tiles, struct Tile  *tile);
 static int compareTilesByCoordinate(void const *item1, void const *item2);
-static void finalizeTiles(struct Tiles *tiles);
 static struct Tile **find(struct Tiles const *tiles, struct Tile const *criteria);
-static void initializeTiles(struct Tiles *tiles);
 static void sort(struct Tiles *tiles);
 static void updateRanges(struct Tiles *tiles);
 
@@ -65,18 +63,26 @@ static int compareTilesByCoordinate(void const *item1, void const *item2)
 }
 
 
+struct Tiles *createEmptyTilesWithParent(struct Tiles *tiles)
+{
+  struct Tiles *emptyTiles = createTiles();
+  emptyTiles->parent = tiles;
+  return emptyTiles;
+}
+
+
 struct Tiles *createTiles(void)
 {
-    struct Tiles *tiles = MALLOC_OR_DIE(sizeof(struct Tiles));
-    initializeTiles(tiles);
-    return tiles;
+  struct Tiles *tiles = CALLOC_OR_DIE(1, sizeof(struct Tiles));
+  tiles->compare = compareTilesByCoordinate;
+  tiles->tiles = CALLOC_OR_DIE(0, sizeof(struct Tile *));
+  return tiles;
 }
 
 
 struct Tiles *createTilesOnLevel(struct Tiles *tiles, int32_t z)
 {
-  struct Tiles *tilesOnLevel = createTiles();
-  tilesOnLevel->parent = tiles;
+  struct Tiles *tilesOnLevel = createEmptyTilesWithParent(tiles);
 
   // TODO: replace linear search with binary lower/upper bound search
   // and memcpy the whole block of tiles
@@ -95,19 +101,13 @@ struct Tiles *createTilesOnLevel(struct Tiles *tiles, int32_t z)
 
 void destroyTiles(struct Tiles *tiles)
 {
-    finalizeTiles(tiles);
-    free(tiles);
-}
-
-
-static void finalizeTiles(struct Tiles *tiles)
-{
   if ( ! tiles->parent) {
     for (size_t i = 0; i < tiles->count; ++i) {
       destroyTile(tiles->tiles[i]);
     }
   }
   free(tiles->tiles);
+  free(tiles);
 }
 
 
@@ -125,20 +125,13 @@ struct Tile *findTileInTilesAt(struct Tiles const *tiles, int32_t x, int32_t y, 
 }
 
 
-static void initializeTiles(struct Tiles *tiles)
-{
-  memset(tiles, 0, sizeof(struct Tiles));
-  tiles->compare = compareTilesByCoordinate;
-  tiles->tiles = CALLOC_OR_DIE(0, sizeof(struct Tile));
-}
-
-
 Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
 {
   // TODO: if tile isn't unique by compare criteria, the wrong tile may be removed
   // is this a problem?
   struct Tile **found = find(tiles, tile);
   if ( ! found) {
+    // TODO: should we search the parent in this case?
     return tiles->parent ? removeTileFromTiles(tiles->parent, tile) : FALSE;
   }
 

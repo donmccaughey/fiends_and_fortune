@@ -13,10 +13,14 @@ struct Tiles;
 
 
 /// The Tiles struct takes ownership of the given tile.
+/// The tile is added to the parent Tiles struct as well.
 void addTileToTiles(struct Tiles *tiles, struct Tile *tile);
+
+struct Tiles *createEmptyTilesWithParent(struct Tiles *tiles);
 
 struct Tiles *createTiles(void);
 
+/// The created Tiles struct is a child of the given Tiles struct.
 struct Tiles *createTilesOnLevel(struct Tiles *tiles, int32_t z);
 
 void destroyTiles(struct Tiles *tiles);
