@@ -168,13 +168,13 @@ void generateSmallDungeon(struct Dungeon *dungeon)
   point = advancePoint(point, 3, West);
 
   point = passage(dungeon, point, 2, South);
-  point = passage(dungeon, point, 4, West);
+  passage(dungeon, point, 4, West);
 
   /* from entry chamber, north west exit */
   point = passage(dungeon, northWestExit, 1, West);
   point = passage(dungeon, point, 7, North);
 
-  point = chamber(dungeon, point, 3, 2, North, 1);
+  chamber(dungeon, point, 3, 2, North, 1);
 
   /* from entry chamber, south west exit */
   point = passage(dungeon, southWestExit, 1, West);
@@ -187,7 +187,7 @@ void generateSmallDungeon(struct Dungeon *dungeon)
   point = advancePoint(point, 1, West);
   point = passage(dungeon, point, 3, North);
 
-  point = chamber(dungeon, point, 2, 3, North, 1);
+  chamber(dungeon, point, 2, 3, North, 1);
 
   /* from entry chamber, south east exit */
   point = passage(dungeon, southEastExit, 1, East);
