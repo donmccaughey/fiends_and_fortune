@@ -59,7 +59,7 @@ static int compareTilesByCoordinate(void const *item1, void const *item2)
   struct Tile *tile1 = *pointer1;
   struct Tile *tile2 = *pointer2;
 
-  return comparePoints(&tile1->point, &tile2->point);
+  return comparePoints(tile1->point, tile2->point);
 }
 
 

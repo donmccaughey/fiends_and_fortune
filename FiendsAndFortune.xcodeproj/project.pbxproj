@@ -34,6 +34,7 @@
 		D4783B4915ABE7E5004E7F2C /* Tiles.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B4815ABE7E5004E7F2C /* Tiles.c */; };
 		D4783B4A15ABE7F7004E7F2C /* Tiles.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B4815ABE7E5004E7F2C /* Tiles.c */; };
 		D4783B4C15ABEB32004E7F2C /* TilesTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B4B15ABEB32004E7F2C /* TilesTest.c */; };
+		D4BCC61617D44C2500C76D11 /* PointTest.c in Sources */ = {isa = PBXBuildFile; fileRef = B0F47782965430E75922F468 /* PointTest.c */; };
 		D4EA732B1606B85500B01DB5 /* Area.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA732A1606B85500B01DB5 /* Area.c */; };
 		D4EA732E1606BB9300B01DB5 /* Areas.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA732D1606BB9300B01DB5 /* Areas.c */; };
 		D4EA732F1606BF2400B01DB5 /* Areas.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA732D1606BB9300B01DB5 /* Areas.c */; };
@@ -83,6 +84,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B0F47782965430E75922F468 /* PointTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PointTest.c; sourceTree = "<group>"; };
 		D4092F5B15AFDBA70002FB34 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		D4092FB515B2A1880002FB34 /* Tile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Tile.c; sourceTree = "<group>"; };
 		D4230D1A15B3B298007A7762 /* RangeTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RangeTest.c; sourceTree = "<group>"; };
@@ -253,6 +255,7 @@
 			isa = PBXGroup;
 			children = (
 				D4783B3B15ABE155004E7F2C /* DungeonTest.c */,
+				B0F47782965430E75922F468 /* PointTest.c */,
 				D4230D1A15B3B298007A7762 /* RangeTest.c */,
 				D4783B4B15ABEB32004E7F2C /* TilesTest.c */,
 			);
@@ -432,6 +435,7 @@
 				D4230D1B15B3B298007A7762 /* RangeTest.c in Sources */,
 				D4EA732F1606BF2400B01DB5 /* Areas.c in Sources */,
 				D4EA73301606BF3600B01DB5 /* Area.c in Sources */,
+				D4BCC61617D44C2500C76D11 /* PointTest.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
