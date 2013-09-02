@@ -38,7 +38,7 @@ static struct Point advancePoint(struct Point start, int32_t steps, enum Directi
 
 static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, struct Area *area, int32_t x, int32_t y, int32_t z)
 {
-  assert(NULL == findTileInTilesAt(dungeon->tiles, x, y, z));
+  assert(NULL == findTileInTilesAt(dungeon->tiles, makePoint(x, y, z)));
 
   struct Tile *tile = createTile(makePoint(x, y, z), EmptyTileType);
   addTileToTiles(area->tiles, tile);
@@ -193,7 +193,7 @@ void generateSmallDungeon(struct Dungeon *dungeon)
   point = passage(dungeon, southEastExit, 1, East);
 
   chamber(dungeon, point, 6, 4, East, 0);
-  struct Tile *tile = findTileInTilesAt(dungeon->tiles, 5, 2, 1);
+  struct Tile *tile = findTileInTilesAt(dungeon->tiles, makePoint(5, 2, 1));
   removeTileFromTiles(dungeon->tiles, tile);
 }
 

@@ -129,6 +129,6 @@ static void printHorizontalScale(FILE *out, struct Range range)
 
 static enum TileType tileTypeAt(struct Tiles const *tiles, int32_t x, int32_t y, int32_t z)
 {
-  struct Tile *tile = findTileInTilesAt(tiles, x, y, z);
+  struct Tile *tile = findTileInTilesAt(tiles, makePoint(x, y, z));
   return tile ? tile->type : SolidTileType;
 }

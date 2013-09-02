@@ -5,6 +5,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "Boolean.h"
+#include "Point.h"
 #include "Range.h"
 
 
@@ -25,7 +26,7 @@ struct Tiles *createTilesOnLevel(struct Tiles *tiles, int32_t z);
 
 void destroyTiles(struct Tiles *tiles);
 
-struct Tile *findTileInTilesAt(struct Tiles const *tiles, int32_t x, int32_t y, int32_t z);
+struct Tile *findTileInTilesAt(struct Tiles const *tiles, struct Point point);
 
 /// The caller is responsible for destroying the tile.
 Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile);

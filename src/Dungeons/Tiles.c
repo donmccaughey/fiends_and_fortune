@@ -117,9 +117,9 @@ static struct Tile **find(struct Tiles const *tiles, struct Tile const *criteria
 }
 
 
-struct Tile *findTileInTilesAt(struct Tiles const *tiles, int32_t x, int32_t y, int32_t z)
+struct Tile *findTileInTilesAt(struct Tiles const *tiles, struct Point point)
 {
-  struct Tile tile = { .point = { x, y, z} };
+  struct Tile tile = { .point = point };
   struct Tile **tileInTiles = find(tiles, &tile);
   return tileInTiles ? *tileInTiles : NULL;
 }
