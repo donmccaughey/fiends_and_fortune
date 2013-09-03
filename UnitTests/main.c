@@ -5,6 +5,7 @@
 void diceTest(void);
 void dungeonTest(void);
 void pointTest(void);
+void pointsTest(void);
 void rangeTest(void);
 void tilesTest(void);
 
@@ -17,6 +18,7 @@ int main (int argc, const char *argv[])
   diceTest();
   dungeonTest();
   pointTest();
+  pointsTest();
   rangeTest();
   tilesTest();
 
