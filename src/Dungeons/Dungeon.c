@@ -5,22 +5,17 @@
 #include "Area.h"
 #include "Areas.h"
 #include "Dice.h"
+#include "Direction.h"
 #include "heap.h"
 #include "Tile.h"
 #include "Tiles.h"
 #include "unexpected.h"
 
 
-enum Direction {
-  North, South, East, West,
-};
-
-
 static struct Point advancePoint(struct Point start, int32_t steps, enum Direction direction);
 static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, struct Area *area, int32_t x, int32_t y, int32_t z);
 static struct Point area(struct Dungeon *dungeon, struct Point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset, enum AreaType areaType);
 static struct Point chamber(struct Dungeon *dungeon, struct Point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset);
-static char const *directionName(enum Direction direction);
 static struct Point passage(struct Dungeon *dungeon, struct Point fromPoint, uint32_t distance, enum Direction direction);
 
 
@@ -105,18 +100,6 @@ static struct Point area(struct Dungeon *dungeon, struct Point fromPoint, uint32
 static struct Point chamber(struct Dungeon *dungeon, struct Point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset)
 {
   return area(dungeon, fromPoint, length, width, direction, leftOffset, ChamberAreaType);
-}
-
-
-static char const *directionName(enum Direction direction)
-{
-  switch (direction) {
-    case North: return "North";
-    case South: return "South";
-    case East: return "East";
-    case West: return "West";
-    default: return "Unknown";
-  }
 }
 
 
