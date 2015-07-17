@@ -92,6 +92,8 @@
 		B0F47782965430E75922F468 /* PointTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PointTest.c; sourceTree = "<group>"; };
 		D4092F5B15AFDBA70002FB34 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		D4092FB515B2A1880002FB34 /* Tile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Tile.c; sourceTree = "<group>"; };
+		D41D32CA1A4339BC00484607 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		D41D32CB1A4339BC00484607 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D4230D1A15B3B298007A7762 /* RangeTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RangeTest.c; sourceTree = "<group>"; };
 		D43ED590142146F800D25EEC /* UnitTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		D43ED593142146F800D25EEC /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
@@ -288,6 +290,8 @@
 			isa = PBXGroup;
 			children = (
 				D4F244A114181FF5003BDED5 /* check */,
+				D41D32CA1A4339BC00484607 /* LICENSE */,
+				D41D32CB1A4339BC00484607 /* README.md */,
 				D4BCC61517D30DD000C76D11 /* docs */,
 				D4F73460140EF4380096618F /* src */,
 				D4F244A21418207C003BDED5 /* test */,
