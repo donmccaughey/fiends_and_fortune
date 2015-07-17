@@ -13,6 +13,8 @@
 		D4092FB715B2A5AA0002FB34 /* Tile.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092FB515B2A1880002FB34 /* Tile.c */; };
 		D4230D1B15B3B298007A7762 /* RangeTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4230D1A15B3B298007A7762 /* RangeTest.c */; };
 		D43ED594142146F800D25EEC /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D43ED593142146F800D25EEC /* main.c */; };
+		D45BB94E1B58C1CA0096E525 /* earmark.c in Sources */ = {isa = PBXBuildFile; fileRef = D45BB94C1B58C1CA0096E525 /* earmark.c */; };
+		D45BB94F1B58C5470096E525 /* earmark.c in Sources */ = {isa = PBXBuildFile; fileRef = D45BB94C1B58C1CA0096E525 /* earmark.c */; };
 		D4783B1C15ABDF8B004E7F2C /* Gem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1015ABDF8B004E7F2C /* Gem.c */; };
 		D4783B1D15ABDF8B004E7F2C /* Jewelry.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1215ABDF8B004E7F2C /* Jewelry.c */; };
 		D4783B1E15ABDF8B004E7F2C /* MagicItem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1415ABDF8B004E7F2C /* MagicItem.c */; };
@@ -97,6 +99,8 @@
 		D4230D1A15B3B298007A7762 /* RangeTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RangeTest.c; sourceTree = "<group>"; };
 		D43ED590142146F800D25EEC /* UnitTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		D43ED593142146F800D25EEC /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		D45BB94C1B58C1CA0096E525 /* earmark.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = earmark.c; sourceTree = "<group>"; };
+		D45BB94D1B58C1CA0096E525 /* earmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = earmark.h; sourceTree = "<group>"; };
 		D4783B1015ABDF8B004E7F2C /* Gem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Gem.c; sourceTree = "<group>"; };
 		D4783B1115ABDF8B004E7F2C /* Gem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gem.h; sourceTree = "<group>"; };
 		D4783B1215ABDF8B004E7F2C /* Jewelry.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Jewelry.c; sourceTree = "<group>"; };
@@ -111,7 +115,7 @@
 		D4783B1B15ABDF8B004E7F2C /* TreasureType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreasureType.h; sourceTree = "<group>"; };
 		D4783B2315ABDFE9004E7F2C /* Character.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Character.c; sourceTree = "<group>"; };
 		D4783B2415ABDFE9004E7F2C /* Character.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Character.h; sourceTree = "<group>"; };
-		D4783B2715ABDFF0004E7F2C /* Dungeon.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Dungeon.c; sourceTree = "<group>"; };
+		D4783B2715ABDFF0004E7F2C /* Dungeon.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.c; path = Dungeon.c; sourceTree = "<group>"; tabWidth = 2; };
 		D4783B2815ABDFF0004E7F2C /* Dungeon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dungeon.h; sourceTree = "<group>"; };
 		D4783B2A15ABE045004E7F2C /* coinage.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coinage.c; sourceTree = "<group>"; };
 		D4783B2B15ABE045004E7F2C /* coinage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coinage.h; sourceTree = "<group>"; };
@@ -317,6 +321,8 @@
 				D4783B2D15ABE063004E7F2C /* Game */,
 				D4783B3315ABE10B004E7F2C /* System */,
 				D4783B0F15ABDF8B004E7F2C /* Treasure */,
+				D45BB94C1B58C1CA0096E525 /* earmark.c */,
+				D45BB94D1B58C1CA0096E525 /* earmark.h */,
 				D4F73461140EF4380096618F /* main.c */,
 				D4092F5B15AFDBA70002FB34 /* prefix.pch */,
 			);
@@ -430,6 +436,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D43ED594142146F800D25EEC /* main.c in Sources */,
+				D45BB94F1B58C5470096E525 /* earmark.c in Sources */,
 				D4783B3E15ABE155004E7F2C /* DungeonTest.c in Sources */,
 				D4783B3F15ABE155004E7F2C /* DiceTest.c in Sources */,
 				D4783B4015ABE17F004E7F2C /* Dice.c in Sources */,
@@ -475,6 +482,7 @@
 				D4092FB615B2A1880002FB34 /* Tile.c in Sources */,
 				D4EA732B1606B85500B01DB5 /* Area.c in Sources */,
 				D4EA732E1606BB9300B01DB5 /* Areas.c in Sources */,
+				D45BB94E1B58C1CA0096E525 /* earmark.c in Sources */,
 				D4BCC61B17D5984D00C76D11 /* Points.c in Sources */,
 				D4BCC61F17D5A25E00C76D11 /* Direction.c in Sources */,
 			);

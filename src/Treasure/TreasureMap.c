@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "Dice.h"
+#include "earmark.h"
 #include "Gem.h"
 #include "heap.h"
 #include "Jewelry.h"
@@ -387,21 +388,21 @@ void generateTreasureMap(struct TreasureMap *treasureMap, struct Dice *dice)
       disposition = "secreted in a town";
     }
     
-    ASPRINTF_OR_DIE(&treasureMap->trueDescription,
-                    "%smap to %s of %s %i miles to the %s, %s",
-                    (treasureMap->isFalse ? "false " : ""), 
-                    treasureMapTypes[treasureMapType],
-                    describeTreasure(&treasureMap->treasure),
-                    miles,
-                    compassDirections[compassDirection],
-                    disposition);
+    em_asprintf(&treasureMap->trueDescription,
+                "%smap to %s of %s %i miles to the %s, %s",
+                (treasureMap->isFalse ? "false " : ""),
+                treasureMapTypes[treasureMapType],
+                describeTreasure(&treasureMap->treasure),
+                miles,
+                compassDirections[compassDirection],
+                disposition);
   } else {
-    ASPRINTF_OR_DIE(&treasureMap->trueDescription,
-                    "%smap to %s of %s in nearby labyrinth to the %s",
-                    (treasureMap->isFalse ? "false " : ""),  
-                    treasureMapTypes[treasureMapType],
-                    describeTreasure(&treasureMap->treasure),
-                    compassDirections[compassDirection]);
+    em_asprintf(&treasureMap->trueDescription,
+                "%smap to %s of %s in nearby labyrinth to the %s",
+                (treasureMap->isFalse ? "false " : ""),
+                treasureMapTypes[treasureMapType],
+                describeTreasure(&treasureMap->treasure),
+                compassDirections[compassDirection]);
   }
 }
 

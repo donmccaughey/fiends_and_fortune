@@ -6,6 +6,7 @@
 #include "Areas.h"
 #include "Dice.h"
 #include "Direction.h"
+#include "earmark.h"
 #include "heap.h"
 #include "Tile.h"
 #include "Tiles.h"
@@ -79,9 +80,16 @@ static struct Point area(struct Dungeon *dungeon, struct Point fromPoint, uint32
 
   char *description;
   switch (areaType) {
-    case ChamberAreaType: ASPRINTF_OR_DIE(&description, "%u' x %u' chamber", length * 10, width * 10); break;
-    case PassageAreaType: ASPRINTF_OR_DIE(&description, "%u' passage %s", length * 10, directionName(direction)); break;
-    default: ASPRINTF_OR_DIE(&description, "%u' x %u' area", length * 10, width * 10); break;
+    case ChamberAreaType:
+      em_asprintf(&description, "%u' x %u' chamber", length * 10, width * 10);
+      break;
+    case PassageAreaType:
+      em_asprintf(&description, "%u' passage %s",
+                  length * 10, directionName(direction));
+      break;
+    default:
+      em_asprintf(&description, "%u' x %u' area", length * 10, width * 10);
+      break;
   }
 
   struct Area *area = createArea(description, dungeon->tiles, areaType);

@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "coinage.h"
+#include "earmark.h"
 #include "Dice.h"
 #include "heap.h"
 
@@ -66,8 +67,7 @@ static char const *typeNameForGem(struct Gem *gem);
 static char *describeGem(struct Gem *gem)
 {
   char *description;
-  ASPRINTF_OR_DIE(&description, "%s %s", 
-                  sizeNameForGem(gem), typeNameForGem(gem))
+  em_asprintf(&description, "%s %s", sizeNameForGem(gem), typeNameForGem(gem));
   return description;
 }
 
@@ -78,18 +78,18 @@ static char *describeGemModifiers(struct Gem *gem)
   char *percentModifier = NULL;
   
   if (gem->valueRankModifier) {
-    ASPRINTF_OR_DIE(&rankModifier, "rank %+i", gem->valueRankModifier);
+    em_asprintf(&rankModifier, "rank %+i", gem->valueRankModifier);
   }
   if (gem->valuePercentModifier) {
-    ASPRINTF_OR_DIE(&percentModifier, "%+i%%", gem->valuePercentModifier - 100);
+    em_asprintf(&percentModifier, "%+i%%", gem->valuePercentModifier - 100);
   }
   
   char *description;
   if (rankModifier && percentModifier) {
-    ASPRINTF_OR_DIE(&description, "%s, %s", rankModifier, percentModifier);
+    em_asprintf(&description, "%s, %s", rankModifier, percentModifier);
   } else if (rankModifier || percentModifier) {
-    ASPRINTF_OR_DIE(&description, "%s",
-                    rankModifier ? rankModifier : percentModifier);
+    em_asprintf(&description, "%s",
+                rankModifier ? rankModifier : percentModifier);
   } else {
     description = STRDUP_OR_DIE("");
   }
@@ -183,8 +183,8 @@ void generateGem(struct Gem *gem, struct Dice *dice)
   char *value_gp = goldFormat_cp(value_cp);
   
   char const *separator = modifiers[0] ? ": " : "";
-  ASPRINTF_OR_DIE(&gem->trueDescription, "%s (%s%s%s)", 
-                  description, modifiers, separator, value_gp);
+  em_asprintf(&gem->trueDescription, "%s (%s%s%s)",
+              description, modifiers, separator, value_gp);
   
   free(value_gp);
   free(modifiers);

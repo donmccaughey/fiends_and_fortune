@@ -8,6 +8,7 @@
 
 #include "coinage.h"
 #include "Dice.h"
+#include "earmark.h"
 #include "heap.h"
 
 
@@ -160,7 +161,7 @@ static char *describeJewelry(struct Jewelry *jewelry)
   char const *format = jewelryMaterialFormats[jewelry->material];
   char const *name = jewelryFormTable[jewelry->form].name;
   char *description;
-  ASPRINTF_OR_DIE(&description, format, name);
+  em_asprintf(&description, format, name);
   return description;
 }
 
@@ -171,21 +172,21 @@ static char *describeJewelryModifiers(struct Jewelry *jewelry)
   char *exceptionalStoneBonus = NULL;
   
   if (jewelry->workmanshipBonus) {
-    ASPRINTF_OR_DIE(&workmanshipBonus, "workmanship %+i", 
-                    jewelry->workmanshipBonus);
+    em_asprintf(&workmanshipBonus, "workmanship %+i",
+                jewelry->workmanshipBonus);
   }
   if (jewelry->exceptionalStoneBonus) {
-    ASPRINTF_OR_DIE(&exceptionalStoneBonus, "exceptional stone %+i", 
-                    jewelry->exceptionalStoneBonus);
+    em_asprintf(&exceptionalStoneBonus, "exceptional stone %+i",
+                jewelry->exceptionalStoneBonus);
   }
   
   char *description;
   if (workmanshipBonus && exceptionalStoneBonus) {
-    ASPRINTF_OR_DIE(&description, "%s, %s", 
-                    workmanshipBonus, exceptionalStoneBonus);
+    em_asprintf(&description, "%s, %s",
+                workmanshipBonus, exceptionalStoneBonus);
   } else if (workmanshipBonus || exceptionalStoneBonus) {
-    ASPRINTF_OR_DIE(&description, "%s", 
-                    workmanshipBonus ? workmanshipBonus : exceptionalStoneBonus);
+    em_asprintf(&description, "%s",
+                workmanshipBonus ? workmanshipBonus : exceptionalStoneBonus);
   } else {
     description = STRDUP_OR_DIE("");
   }
@@ -285,8 +286,8 @@ void generateJewelry(struct Jewelry *jewelry, struct Dice *dice)
   char *value_gp = goldFormat_cp(value_cp);
   
   char const *separator = modifiers[0] ? ": " : "";
-  ASPRINTF_OR_DIE(&jewelry->trueDescription, "%s (%s%s%s)", 
-                  description, modifiers, separator, value_gp);
+  em_asprintf(&jewelry->trueDescription, "%s (%s%s%s)",
+              description, modifiers, separator, value_gp);
   
   free(modifiers);
   free(value_gp);

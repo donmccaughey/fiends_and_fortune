@@ -6,6 +6,7 @@
 
 #include "coinage.h"
 #include "Dice.h"
+#include "earmark.h"
 #include "Gem.h"
 #include "Jewelry.h"
 #include "heap.h"
@@ -41,26 +42,26 @@ char *describeTreasure(struct Treasure *treasure) {
   
   if (treasure->gemsCount) {
     char const *plural = (treasure->gemsCount == 1) ? "" : "s";
-    ASPRINTF_OR_DIE(&phrases[GemsPhrase], "%d gem%s", 
-                    treasure->gemsCount, plural);
+    em_asprintf(&phrases[GemsPhrase], "%d gem%s",
+                treasure->gemsCount, plural);
   }
   
   if (treasure->jewelryCount) {
     char const *plural = (treasure->jewelryCount == 1) ? "" : "s";
-    ASPRINTF_OR_DIE(&phrases[JewelryPhrase], "%d piece%s of jewelry", 
-                    treasure->jewelryCount, plural);
+    em_asprintf(&phrases[JewelryPhrase], "%d piece%s of jewelry",
+                treasure->jewelryCount, plural);
   }
   
   if (treasure->mapsCount) {
     char const *plural = (treasure->mapsCount == 1) ? "" : "s";
-    ASPRINTF_OR_DIE(&phrases[MapsPhrase], "%d map%s", 
-                    treasure->mapsCount, plural);
+    em_asprintf(&phrases[MapsPhrase], "%d map%s",
+                treasure->mapsCount, plural);
   }
   
   if (treasure->magicItemsCount) {
     char const *plural = (treasure->magicItemsCount == 1) ? "" : "s";
-    ASPRINTF_OR_DIE(&phrases[MagicPhrase], "%d magic item%s", 
-                    treasure->magicItemsCount, plural);
+    em_asprintf(&phrases[MagicPhrase], "%d magic item%s",
+                treasure->magicItemsCount, plural);
   }
   
   char const separator[] = ", ";
@@ -99,7 +100,7 @@ char *describeTreasure(struct Treasure *treasure) {
 
 static void describeTreasureCoins(int *coins, char const *name, char **phrase) {
   if (*coins) {
-    ASPRINTF_OR_DIE(phrase, "%d %s", *coins, name);
+    em_asprintf(phrase, "%d %s", *coins, name);
   }
 }
 

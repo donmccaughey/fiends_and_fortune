@@ -1,6 +1,7 @@
 #include "coinage.h"
 
 #include "heap.h"
+#include "earmark.h"
 
 
 char *goldFormat_cp(int cp) {
@@ -12,11 +13,11 @@ char *goldFormat_cp(int cp) {
   
   char *string;
   if (gp && cp) {
-    ASPRINTF_OR_DIE(&string, "%i gp, %i cp", gp, cp);
+    em_asprintf(&string, "%i gp, %i cp", gp, cp);
   } else if (gp) {
-    ASPRINTF_OR_DIE(&string, "%i gp", gp);
+    em_asprintf(&string, "%i gp", gp);
   } else {
-    ASPRINTF_OR_DIE(&string, "%i cp", cp);
+    em_asprintf(&string, "%i cp", cp);
   }
   return string;
 }

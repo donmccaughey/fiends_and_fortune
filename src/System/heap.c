@@ -9,28 +9,6 @@
 #include "unexpected.h"
 
 
-int asprintfOrDie(char const *file, int line, 
-                  char const *firstArgument, char const *otherArguments,
-                  char **newString, char const *format, ...)
-{  
-  va_list arguments;
-  va_start(arguments, format);
-  errno = 0;
-  int bytesAllocated = vasprintf(newString, format, arguments);
-  va_end(arguments);
-  
-  if (bytesAllocated < 0) {
-    if (firstArgument && otherArguments) {
-      fatalError(file, line, "vasprintf(%s, %s) failed", 
-                 firstArgument, otherArguments);
-    } else {
-      fatalError(file, line, "vasprintf() failed");
-    }
-  }
-  return bytesAllocated;
-}
-
-
 void *callocOrDie(char const *file, int line, size_t count, size_t size)
 {
   errno = 0;
