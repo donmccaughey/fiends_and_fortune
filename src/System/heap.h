@@ -7,8 +7,6 @@
 
 #ifdef NDEBUG
 
-#   define CALLOC_OR_DIE( COUNT, SIZE ) callocOrDie(NULL, 0, (COUNT), (SIZE))
-
 #   define MALLOC_OR_DIE( SIZE ) MallocOrDie(NULL, 0, (SIZE))
 
 #   define REALLOC_OR_DIE( MEMORY, SIZE ) \
@@ -17,9 +15,6 @@
 #   define STRDUP_OR_DIE( STRING ) strdupOrDie(NULL, 0, (STRING))
 
 #else
-
-#   define CALLOC_OR_DIE( COUNT, SIZE ) \
-        callocOrDie(__FILE__, __LINE__, (COUNT), (SIZE))
 
 #   define MALLOC_OR_DIE( SIZE ) \
         mallocOrDie(__FILE__, __LINE__, (SIZE))
@@ -30,8 +25,6 @@
 #   define STRDUP_OR_DIE( STRING ) strdupOrDie(__FILE__, __LINE__, (STRING))
 
 #endif /* #ifdef NDEBUG */
-
-void *callocOrDie(char const *file, int line, size_t count, size_t size);
 
 void *mallocOrDie(char const *file, int line, size_t size);
 

@@ -114,7 +114,7 @@ static struct Point chamber(struct Dungeon *dungeon, struct Point fromPoint, uin
 char const **dungeonAreaDescriptions(struct Dungeon *dungeon)
 {
   size_t descriptionsCount = areasCount(dungeon->areas);
-  char const **descriptions = CALLOC_OR_DIE(descriptionsCount + 1, sizeof(char const *));
+  char const **descriptions = em_calloc(descriptionsCount + 1, sizeof(char const *));
 
   for (size_t i = 0; i < descriptionsCount; ++i) {
     descriptions[i] = areaInAreasAtIndex(dungeon->areas, i)->description;

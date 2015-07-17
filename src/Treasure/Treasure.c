@@ -82,7 +82,7 @@ char *describeTreasure(struct Treasure *treasure) {
     return STRDUP_OR_DIE("(no treasure)");
   }
   
-  char *description = CALLOC_OR_DIE(bytes, sizeof(char));
+  char *description = em_calloc(bytes, sizeof(char));
   phraseCount = 0;
   for (int i = 0; i < phrasesCount; ++i) {
     if (phrases[i]) {

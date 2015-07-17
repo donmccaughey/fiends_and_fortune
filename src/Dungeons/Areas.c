@@ -2,7 +2,9 @@
 
 #include <assert.h>
 #include <stdlib.h>
+
 #include "Area.h"
+#include "earmark.h"
 #include "heap.h"
 
 
@@ -43,8 +45,8 @@ size_t areasCount(struct Areas const *areas)
 
 struct Areas *createAreas(void)
 {
-  struct Areas *areas = CALLOC_OR_DIE(1, sizeof(struct Areas));
-  areas->areas = CALLOC_OR_DIE(0, sizeof(struct Area *));
+  struct Areas *areas = em_calloc(1, sizeof(struct Areas));
+  areas->areas = em_calloc(0, sizeof(struct Area *));
   return areas;
 }
 

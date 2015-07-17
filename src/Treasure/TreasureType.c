@@ -620,7 +620,7 @@ static char *describeMapsOrMagic(struct MapsOrMagic *mapsOrMagic) {
       }
       typeListSize += strlen(typeDescriptions[i]);
     }
-    char *typeList = CALLOC_OR_DIE(typeListSize, sizeof(char));
+    char *typeList = em_calloc(typeListSize, sizeof(char));
     for (int i = 0; i < mapsOrMagic->typeCount; ++i) {
       if (i) {
         strcat(typeList, separator);
@@ -692,7 +692,7 @@ static void generateTreasureGems(struct Treasure *treasure,
     int percentRoll = roll(dice, "1D100");
     if (percentRoll <= treasure->type->gems.percentChance) {
       treasure->gemsCount = roll(dice, treasure->type->gems.amount);
-      treasure->gems = CALLOC_OR_DIE(treasure->gemsCount, sizeof(struct Gem));
+      treasure->gems = em_calloc(treasure->gemsCount, sizeof(struct Gem));
       for (int i = 0; i < treasure->gemsCount; ++i) {
         initializeGem(&treasure->gems[i]);
         generateGem(&treasure->gems[i], dice);
@@ -711,8 +711,8 @@ static void generateTreasureJewelry(struct Treasure *treasure,
     int percentRoll = roll(dice, "1D100");
     if (percentRoll <= treasure->type->jewelry.percentChance) {
       treasure->jewelryCount = roll(dice, treasure->type->jewelry.amount);
-      treasure->jewelry = CALLOC_OR_DIE(treasure->jewelryCount, 
-                                        sizeof(struct Jewelry));
+      treasure->jewelry = em_calloc(treasure->jewelryCount,
+                                    sizeof(struct Jewelry));
       for (int i = 0; i < treasure->jewelryCount; ++i) {
         initializeJewelry(&treasure->jewelry[i]);
         generateJewelry(&treasure->jewelry[i], dice);

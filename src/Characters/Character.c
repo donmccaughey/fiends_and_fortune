@@ -4,7 +4,9 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "Dice.h"
+#include "earmark.h"
 #include "heap.h"
 
 
@@ -661,7 +663,7 @@ int *generateCharacteristics(struct Dice *dice,
   int *characteristics;
   switch (method) {
     case CharacteristicGenerationMethod1:
-      characteristics = CALLOC_OR_DIE(characteristicCount, characteristicSize);
+      characteristics = em_calloc(characteristicCount, characteristicSize);
       for (size_t i = 0; i < characteristicCount; ++i) {
         characteristics[i] = rollDiceAndDropLowest(dice, 4, 6);
       }
@@ -669,7 +671,7 @@ int *generateCharacteristics(struct Dice *dice,
             compareCharacteristics);
       break;
     case CharacteristicGenerationMethod2:
-      characteristics = CALLOC_OR_DIE(method2CharacteristicCount, characteristicSize);
+      characteristics = em_calloc(method2CharacteristicCount, characteristicSize);
       for (size_t i = 0; i < method2CharacteristicCount; ++i) {
         characteristics[i] = roll(dice, "3d6");
       }
@@ -677,7 +679,7 @@ int *generateCharacteristics(struct Dice *dice,
             compareCharacteristics);
       break;
     case CharacteristicGenerationMethod3:
-      characteristics = CALLOC_OR_DIE(characteristicCount, characteristicSize);
+      characteristics = em_calloc(characteristicCount, characteristicSize);
       for (size_t i = 0; i < characteristicCount; ++i) {
         for (int j = 0; j < method3RollCount; ++j) {
           int characteristic = roll(dice, "3d6");
@@ -688,7 +690,7 @@ int *generateCharacteristics(struct Dice *dice,
       }
       break;
     case CharacteristicGenerationMethod4:
-      characteristics = CALLOC_OR_DIE(method4CharacteristicCount, characteristicSize);
+      characteristics = em_calloc(method4CharacteristicCount, characteristicSize);
       for (size_t i = 0; i < method4CharacteristicCount; ++i) {
         characteristics[i] = roll(dice, "3d6");
       }
@@ -698,14 +700,14 @@ int *generateCharacteristics(struct Dice *dice,
             compareCharacteristicSets);
       break;
     case GeneralNPCCharacteristicGenerationMethod:
-      characteristics = CALLOC_OR_DIE(characteristicCount, characteristicSize);
+      characteristics = em_calloc(characteristicCount, characteristicSize);
       for (size_t i = 0; i < characteristicCount; ++i) {
         characteristics[i] = rollDiceAndAdjustTowardsAverage(dice, 3, 6);
       }
       break;
     case SpecialNPCCharacteristicGenerationMethod:
       {
-        characteristics = CALLOC_OR_DIE(characteristicCount, characteristicSize);
+        characteristics = em_calloc(characteristicCount, characteristicSize);
         for (int i = 0; i < characteristicCount; ++i) {
           uint32_t characteristicFlag = STRENGTH << i;
           if (characteristicFlags & characteristicFlag) {
@@ -717,7 +719,7 @@ int *generateCharacteristics(struct Dice *dice,
         break;
       }
     default:
-      characteristics = CALLOC_OR_DIE(characteristicCount, characteristicSize);
+      characteristics = em_calloc(characteristicCount, characteristicSize);
       for (size_t i = 0; i < characteristicCount; ++i) {
         characteristics[i] = roll(dice, "3d6");
       }

@@ -3,6 +3,8 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "earmark.h"
 #include "heap.h"
 #include "Tile.h"
 
@@ -73,9 +75,9 @@ struct Tiles *createEmptyTilesWithParent(struct Tiles *tiles)
 
 struct Tiles *createTiles(void)
 {
-  struct Tiles *tiles = CALLOC_OR_DIE(1, sizeof(struct Tiles));
+  struct Tiles *tiles = em_calloc(1, sizeof(struct Tiles));
   tiles->compare = compareTilesByCoordinate;
-  tiles->tiles = CALLOC_OR_DIE(0, sizeof(struct Tile *));
+  tiles->tiles = em_calloc(0, sizeof(struct Tile *));
   return tiles;
 }
 

@@ -1143,7 +1143,7 @@ static void generateNecklaceOfPrayerBeads(struct MagicItem *magicItem,
   }
   bufferSize += sizeof '\0';
   
-  char *buffer = CALLOC_OR_DIE(bufferSize, sizeof(char));
+  char *buffer = em_calloc(bufferSize, sizeof(char));
   char *bufferEnd = buffer;
   bool first = true;
   for (int i = 0; i < TYPE_COUNT; ++i) {
@@ -1695,7 +1695,7 @@ static void generateScroll(struct MagicItem *magicItem, struct Dice *dice)
   assert(scroll);
   
   if (scroll->isSpellScroll) {
-    magicItem->trueDetails = CALLOC_OR_DIE(scroll->spellCount + 1, sizeof(char *));
+    magicItem->trueDetails = em_calloc(scroll->spellCount + 1, sizeof(char *));
     
     enum SpellType spellType;
     char const *spellTypeName;
@@ -1825,7 +1825,7 @@ static void generateSword(struct MagicItem *magicItem, struct Dice *dice)
     ++detailCount;
   }
   if (detailCount) {
-    magicItem->trueDetails = CALLOC_OR_DIE(detailCount + 1, sizeof(char *));
+    magicItem->trueDetails = em_calloc(detailCount + 1, sizeof(char *));
     for (int i = 0; i < detailCount; ++i) {
       magicItem->trueDetails[i] = STRDUP_OR_DIE(sword->details[i]);
     }
@@ -1884,7 +1884,7 @@ static void generateSword(struct MagicItem *magicItem, struct Dice *dice)
                      + 2 /* languages list, ego points */
                      + 1 /* NULL */;
   if ( ! magicItem->trueDetails) {
-    magicItem->trueDetails = CALLOC_OR_DIE(detailCapacity, sizeof(char *));
+    magicItem->trueDetails = em_calloc(detailCapacity, sizeof(char *));
   } else {
     magicItem->trueDetails = REALLOC_OR_DIE(magicItem->trueDetails, 
                                             detailCapacity * sizeof(char *));
@@ -2337,7 +2337,7 @@ static void generateSword(struct MagicItem *magicItem, struct Dice *dice)
     languagesSize += (strlen(separator) * languageCount);
     languagesSize += strlen(alignment);
     languagesSize += sizeof('\0');
-    char *languagesDetail = CALLOC_OR_DIE(sizeof(char), languagesSize);
+    char *languagesDetail = em_calloc(sizeof(char), languagesSize);
     strcat(languagesDetail, prefix);
     for (int i = 0; i < languageCount; ++i) {
       if (i) {

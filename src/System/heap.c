@@ -9,17 +9,6 @@
 #include "unexpected.h"
 
 
-void *callocOrDie(char const *file, int line, size_t count, size_t size)
-{
-  errno = 0;
-  void *memory = calloc(count, size);
-  if ( ! memory) {
-    fatalError(file, line, "calloc(%li, %li) failed", count, size);
-  }
-  return memory;
-}
-
-
 void *mallocOrDie(char const *file, int line, size_t size)
 {
     errno = 0;
