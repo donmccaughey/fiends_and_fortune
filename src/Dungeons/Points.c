@@ -1,12 +1,14 @@
 #include "Points.h"
 
 #include <stdlib.h>
+
+#include "earmark.h"
 #include "heap.h"
 
 
 struct Points *addPointToPoints(struct Point point, struct Points *next)
 {
-  struct Points *points = MALLOC_OR_DIE(sizeof(struct Points));
+  struct Points *points = em_malloc(sizeof(struct Points));
   points->next = next;
   points->point = point;
   return points;

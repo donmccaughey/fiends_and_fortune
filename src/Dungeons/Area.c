@@ -1,13 +1,15 @@
 #include "Area.h"
 
 #include <stdlib.h>
+
+#include "earmark.h"
 #include "heap.h"
 #include "Tiles.h"
 
 
 struct Area *createArea(char const *description, struct Tiles *parentTiles, enum AreaType type)
 {
-  struct Area *area = MALLOC_OR_DIE(sizeof(struct Area));
+  struct Area *area = em_malloc(sizeof(struct Area));
   area->description = STRDUP_OR_DIE(description);
   area->tiles = createEmptyTilesWithParent(parentTiles);
   area->type = type;

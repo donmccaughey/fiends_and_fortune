@@ -9,17 +9,6 @@
 #include "unexpected.h"
 
 
-void *mallocOrDie(char const *file, int line, size_t size)
-{
-    errno = 0;
-    void *memory = malloc(size);
-    if ( ! memory) {
-        fatalError(file, line, "malloc(%li) failed", size);
-    }
-    return memory;
-}
-
-
 void *reallocOrDie(char const *file, int line, char const *firstArgument,
                    void *memory, size_t size)
 {
