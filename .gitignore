@@ -2,6 +2,6 @@
 .idea
 build
 tmp
-FiendsAndFortune.xcodeproj/xcuserdata
-FiendsAndFortune.xcodeproj/project.xcworkspace/xcuserdata/
+xcuserdata
+xcshareddata
 

@@ -2,8 +2,8 @@
 #define DUNGEONS_RANGE_H_INCLUDED
 
 
+#include <stdbool.h>
 #include <stdint.h>
-#include "Boolean.h"
 
 
 struct Range {
@@ -17,9 +17,9 @@ struct ReverseRange {
 };
 
 
-Boolean equalRanges(struct Range range1, struct Range range2);
+bool equalRanges(struct Range range1, struct Range range2);
 
-Boolean equalReverseRanges(struct ReverseRange reverseRange1, struct ReverseRange reverseRange2);
+bool equalReverseRanges(struct ReverseRange reverseRange1, struct ReverseRange reverseRange2);
 
 struct Range expandRange(struct Range range, int32_t amount);
 
@@ -29,9 +29,9 @@ struct Range extendRangeToIncludeValue(struct Range range, int32_t value);
 
 struct ReverseRange extendReverseRangeToIncludeValue(struct ReverseRange reverseRange, int32_t value);
 
-Boolean isEmptyRange(struct Range range);
+bool isEmptyRange(struct Range range);
 
-Boolean isEmptyReverseRange(struct ReverseRange reverseRange);
+bool isEmptyReverseRange(struct ReverseRange reverseRange);
 
 uint32_t lengthOfRange(struct Range range);
 

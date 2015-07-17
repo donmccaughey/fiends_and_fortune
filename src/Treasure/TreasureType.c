@@ -16,8 +16,8 @@
 
 
 struct CoinsGemsOrJewelry {
-  Boolean isPossible;
-  Boolean isPerIndividual;
+  bool isPossible;
+  bool isPerIndividual;
   int percentChance;
   char const *amount;
   int multiplier;
@@ -27,13 +27,13 @@ struct CoinsGemsOrJewelry {
 struct MapsOrMagicType {
   int amount;
   char const *variableAmount;
-  Boolean isMapPossible;
+  bool isMapPossible;
   PossibleMagicItems possibleMagicItems;
 };
 
 
 struct MapsOrMagic {
-  Boolean isPossible;
+  bool isPossible;
   int percentChance;
   struct MapsOrMagicType types[6];
   int typeCount; 
@@ -56,400 +56,400 @@ struct TreasureType {
 static struct TreasureType treasureTypes[] = {
   {
     'A',
-    { TRUE, FALSE, 25, "1D6", 1000 },
-    { TRUE, FALSE, 30, "1D6", 1000 },
-    { TRUE, FALSE, 35, "1D6", 1000 },
-    { TRUE, FALSE, 40, "1D10", 1000 },
-    { TRUE, FALSE, 25, "1D4", 100 },
-    { TRUE, FALSE, 60, "4D10", 1 },
-    { TRUE, FALSE, 50, "3D10", 1 },
+    { true, false, 25, "1D6", 1000 },
+    { true, false, 30, "1D6", 1000 },
+    { true, false, 35, "1D6", 1000 },
+    { true, false, 40, "1D10", 1000 },
+    { true, false, 25, "1D4", 100 },
+    { true, false, 60, "4D10", 1 },
+    { true, false, 50, "3D10", 1 },
     {
-      TRUE, 30, 
+      true, 30, 
       {
-        { 3, "", TRUE, ANY_MAGIC_ITEM } 
+        { 3, "", true, ANY_MAGIC_ITEM } 
       }, 
       1 
     }
   },
   {
     'B',
-    { TRUE, FALSE, 50, "1D8", 1000 },
-    { TRUE, FALSE, 25, "1D6", 1000 },
-    { TRUE, FALSE, 25, "1D4", 1000 },
-    { TRUE, FALSE, 25, "1D3", 1000 },
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, FALSE, 30, "1D8", 1 },
-    { TRUE, FALSE, 20, "1D4", 1 },
+    { true, false, 50, "1D8", 1000 },
+    { true, false, 25, "1D6", 1000 },
+    { true, false, 25, "1D4", 1000 },
+    { true, false, 25, "1D3", 1000 },
+    { false, false, 0, "", 0 },
+    { true, false, 30, "1D8", 1 },
+    { true, false, 20, "1D4", 1 },
     {
-      TRUE, 10, 
+      true, 10, 
       {
-        { 1, "", FALSE, MAGIC_WEAPON_OR_ARMOR } 
+        { 1, "", false, MAGIC_WEAPON_OR_ARMOR } 
       }, 
       1 
     }
   },
   {
     'C',
-    { TRUE, FALSE, 20, "1D12", 1000 },
-    { TRUE, FALSE, 30, "1D6", 1000 },
-    { TRUE, FALSE, 10, "1D4", 1000 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, FALSE, 25, "1D6", 1 },
-    { TRUE, FALSE, 20, "1D3", 1 },
+    { true, false, 20, "1D12", 1000 },
+    { true, false, 30, "1D6", 1000 },
+    { true, false, 10, "1D4", 1000 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { true, false, 25, "1D6", 1 },
+    { true, false, 20, "1D3", 1 },
     {
-      TRUE, 10, 
+      true, 10, 
       {
-        { 2, "", TRUE, ANY_MAGIC_ITEM } 
+        { 2, "", true, ANY_MAGIC_ITEM } 
       }, 
       1 
     }
   },
   {
     'D',
-    { TRUE, FALSE, 10, "1D8", 1000 },
-    { TRUE, FALSE, 15, "1D12", 1000 },
-    { TRUE, FALSE, 15, "1D8", 1000 },
-    { TRUE, FALSE, 50, "1D6", 1000 },
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, FALSE, 30, "1D10", 1 },
-    { TRUE, FALSE, 25, "1D6", 1 },
+    { true, false, 10, "1D8", 1000 },
+    { true, false, 15, "1D12", 1000 },
+    { true, false, 15, "1D8", 1000 },
+    { true, false, 50, "1D6", 1000 },
+    { false, false, 0, "", 0 },
+    { true, false, 30, "1D10", 1 },
+    { true, false, 25, "1D6", 1 },
     {
-      TRUE, 15, 
+      true, 15, 
       {
-        { 2, "", TRUE, ANY_MAGIC_ITEM },
-        { 1, "", FALSE, POTION } 
+        { 2, "", true, ANY_MAGIC_ITEM },
+        { 1, "", false, POTION } 
       }, 
       2
     }
   },
   {
     'E',
-    { TRUE, FALSE, 5, "1D10", 1000 },
-    { TRUE, FALSE, 25, "1D12", 1000 },
-    { TRUE, FALSE, 25, "1D6", 1000 },
-    { TRUE, FALSE, 25, "1D8", 1000 },
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, FALSE, 15, "1D12", 1 },
-    { TRUE, FALSE, 10, "1D8", 1 },
+    { true, false, 5, "1D10", 1000 },
+    { true, false, 25, "1D12", 1000 },
+    { true, false, 25, "1D6", 1000 },
+    { true, false, 25, "1D8", 1000 },
+    { false, false, 0, "", 0 },
+    { true, false, 15, "1D12", 1 },
+    { true, false, 10, "1D8", 1 },
     {
-      TRUE, 25, 
+      true, 25, 
       {
-        { 3, "", TRUE, ANY_MAGIC_ITEM },
-        { 1, "", FALSE, SCROLL } 
+        { 3, "", true, ANY_MAGIC_ITEM },
+        { 1, "", false, SCROLL } 
       }, 
       2
     }
   },
   {
     'F',
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, FALSE, 10, "1D20", 1000 },
-    { TRUE, FALSE, 15, "1D12", 1000 },
-    { TRUE, FALSE, 40, "1D10", 1000 },
-    { TRUE, FALSE, 35, "1D8", 100 },
-    { TRUE, FALSE, 20, "3D10", 1 },
-    { TRUE, FALSE, 10, "1D10", 1 },
+    { false, false, 0, "", 0 },
+    { true, false, 10, "1D20", 1000 },
+    { true, false, 15, "1D12", 1000 },
+    { true, false, 40, "1D10", 1000 },
+    { true, false, 35, "1D8", 100 },
+    { true, false, 20, "3D10", 1 },
+    { true, false, 10, "1D10", 1 },
     {
-      TRUE, 30, 
+      true, 30, 
       {
-        { 3, "", TRUE, NON_WEAPON_MAGIC },
-        { 1, "", FALSE, POTION },
-        { 1, "", FALSE, SCROLL } 
+        { 3, "", true, NON_WEAPON_MAGIC },
+        { 1, "", false, POTION },
+        { 1, "", false, SCROLL } 
       }, 
       3
     }
   },
   {
     'G',
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, FALSE, 50, "10D4", 1000 },
-    { TRUE, FALSE, 50, "1D20", 100 },
-    { TRUE, FALSE, 30, "5D4", 1 },
-    { TRUE, FALSE, 25, "1D10", 1 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { true, false, 50, "10D4", 1000 },
+    { true, false, 50, "1D20", 100 },
+    { true, false, 30, "5D4", 1 },
+    { true, false, 25, "1D10", 1 },
     {
-      TRUE, 35, 
+      true, 35, 
       {
-        { 4, "", TRUE, ANY_MAGIC_ITEM },
-        { 1, "", FALSE, SCROLL } 
+        { 4, "", true, ANY_MAGIC_ITEM },
+        { 1, "", false, SCROLL } 
       }, 
       2
     }
   },
   {
     'H',
-    { TRUE, FALSE, 25, "5D6", 1000 },
-    { TRUE, FALSE, 40, "1D100", 1000 },
-    { TRUE, FALSE, 40, "10D4", 1000 },
-    { TRUE, FALSE, 55, "10D6", 1000 },
-    { TRUE, FALSE, 25, "5D10", 100 },
-    { TRUE, FALSE, 50, "1D100", 1 },
-    { TRUE, FALSE, 50, "10D4", 1 },
+    { true, false, 25, "5D6", 1000 },
+    { true, false, 40, "1D100", 1000 },
+    { true, false, 40, "10D4", 1000 },
+    { true, false, 55, "10D6", 1000 },
+    { true, false, 25, "5D10", 100 },
+    { true, false, 50, "1D100", 1 },
+    { true, false, 50, "10D4", 1 },
     {
-      TRUE, 15, 
+      true, 15, 
       {
-        { 4, "", TRUE, ANY_MAGIC_ITEM },
-        { 1, "", FALSE, POTION },
-        { 1, "", FALSE, SCROLL } 
+        { 4, "", true, ANY_MAGIC_ITEM },
+        { 1, "", false, POTION },
+        { 1, "", false, SCROLL } 
       }, 
       3
     }
   },
   {
     'I',
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, FALSE, 30, "3D6", 100 },
-    { TRUE, FALSE, 55, "2D10", 1 },
-    { TRUE, FALSE, 50, "1D12", 1 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { true, false, 30, "3D6", 100 },
+    { true, false, 55, "2D10", 1 },
+    { true, false, 50, "1D12", 1 },
     {
-      TRUE, 15, 
+      true, 15, 
       {
-        { 1, "", TRUE, ANY_MAGIC_ITEM } 
+        { 1, "", true, ANY_MAGIC_ITEM } 
       }, 
       1 
     }
   },
   {
     'J',
-    { TRUE, TRUE, 100, "3D8", 1 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, 0, {}, 0 }
+    { true, true, 100, "3D8", 1 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, 0, {}, 0 }
   },
   {
     'K',
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, TRUE, 100, "3D6", 1 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, 0, {}, 0 }
+    { false, false, 0, "", 0 },
+    { true, true, 100, "3D6", 1 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, 0, {}, 0 }
   },
   {
     'L',
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, TRUE, 100, "2D6", 1 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, 0, {}, 0 }
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { true, true, 100, "2D6", 1 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, 0, {}, 0 }
   },
   {
     'M',
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, TRUE, 100, "2D4", 1 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, 0, {}, 0 }
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { true, true, 100, "2D4", 1 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, 0, {}, 0 }
   },
   {
     'N',
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, TRUE, 100, "1D6", 1 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, 0, {}, 0 }
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { true, true, 100, "1D6", 1 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, 0, {}, 0 }
   },
   {
     'O',
-    { TRUE, FALSE, 25, "1D4", 1000 },
-    { TRUE, FALSE, 20, "1D3", 1000 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, 0, {}, 0 }
+    { true, false, 25, "1D4", 1000 },
+    { true, false, 20, "1D3", 1000 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, 0, {}, 0 }
   },
   {
     'P',
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, FALSE, 30, "1D6", 1000 },
-    { TRUE, FALSE, 25, "1D2", 1000 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, 0, {}, 0 }
+    { false, false, 0, "", 0 },
+    { true, false, 30, "1D6", 1000 },
+    { true, false, 25, "1D2", 1000 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, 0, {}, 0 }
   },
   {
     'Q',
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, FALSE, 50, "1D4", 1 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, 0, {}, 0 }
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { true, false, 50, "1D4", 1 },
+    { false, false, 0, "", 0 },
+    { false, 0, {}, 0 }
   },
   {
     'R',
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, FALSE, 40, "2D4", 1000 },
-    { TRUE, FALSE, 50, "10D6", 100 },
-    { TRUE, FALSE, 55, "4D8", 1 },
-    { TRUE, FALSE, 45, "1D12", 1 },
-    { FALSE, 0, {}, 0 }
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { true, false, 40, "2D4", 1000 },
+    { true, false, 50, "10D6", 100 },
+    { true, false, 55, "4D8", 1 },
+    { true, false, 45, "1D12", 1 },
+    { false, 0, {}, 0 }
   },
   {
     'S',
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
     {
-      TRUE, 40, 
+      true, 40, 
       {
-        { 0, "2D4", FALSE, POTION } 
+        { 0, "2D4", false, POTION } 
       }, 
       1 
     }
   },
   {
     'T',
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
     {
-      TRUE, 50, 
+      true, 50, 
       {
-        { 0, "1D4", FALSE, SCROLL } 
+        { 0, "1D4", false, SCROLL } 
       }, 
       1 
     }
   },
   {
     'U',
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, FALSE, 90, "10D8", 1 },
-    { TRUE, FALSE, 80, "5D6", 1 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { true, false, 90, "10D8", 1 },
+    { true, false, 80, "5D6", 1 },
     {
-      TRUE, 70, 
+      true, 70, 
       {
-        { 1, "", FALSE, RING },
-        { 1, "", FALSE, ROD_STAFF_WAND },
-        { 1, "", FALSE, MISC_MAGIC },
-        { 1, "", FALSE, ARMOR_SHIELD },
-        { 1, "", FALSE, SWORD },
-        { 1, "", FALSE, MISC_WEAPON }
+        { 1, "", false, RING },
+        { 1, "", false, ROD_STAFF_WAND },
+        { 1, "", false, MISC_MAGIC },
+        { 1, "", false, ARMOR_SHIELD },
+        { 1, "", false, SWORD },
+        { 1, "", false, MISC_WEAPON }
       }, 
       6
     }
   },
   {
     'V',
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
     {
-      TRUE, 85, 
+      true, 85, 
       {
-        { 2, "", FALSE, RING },
-        { 2, "", FALSE, ROD_STAFF_WAND },
-        { 2, "", FALSE, MISC_MAGIC },
-        { 2, "", FALSE, ARMOR_SHIELD },
-        { 2, "", FALSE, SWORD },
-        { 2, "", FALSE, MISC_WEAPON }
+        { 2, "", false, RING },
+        { 2, "", false, ROD_STAFF_WAND },
+        { 2, "", false, MISC_MAGIC },
+        { 2, "", false, ARMOR_SHIELD },
+        { 2, "", false, SWORD },
+        { 2, "", false, MISC_WEAPON }
       }, 
       6
     }
   },
   {
     'W',
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, FALSE, 60, "5D6", 1000 },
-    { TRUE, FALSE, 15, "1D8", 100 },
-    { TRUE, FALSE, 60, "10D8", 1 },
-    { TRUE, FALSE, 50, "5D8", 1 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { true, false, 60, "5D6", 1000 },
+    { true, false, 15, "1D8", 100 },
+    { true, false, 60, "10D8", 1 },
+    { true, false, 50, "5D8", 1 },
     {
-      TRUE, 55, 
+      true, 55, 
       {
-        { 1, "", TRUE, NO_MAGIC_ITEM }
+        { 1, "", true, NO_MAGIC_ITEM }
       }, 
       1
     }
   },
   {
     'X',
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
     {
-      TRUE, 60, 
+      true, 60, 
       {
-        { 1, "", FALSE, MISC_MAGIC },
-        { 1, "", FALSE, POTION }
+        { 1, "", false, MISC_MAGIC },
+        { 1, "", false, POTION }
       }, 
       2
     }
   },
   {
     'Y',
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { TRUE, FALSE, 70, "2D6", 1000 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, FALSE, 0, "", 0 },
-    { FALSE, 0, {}, 0 }
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { true, false, 70, "2D6", 1000 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, false, 0, "", 0 },
+    { false, 0, {}, 0 }
   },
   {
     'Z',
-    { TRUE, FALSE, 20, "1D3", 1000 },
-    { TRUE, FALSE, 25, "1D4", 1000 },
-    { TRUE, FALSE, 25, "1D4", 1000 },
-    { TRUE, FALSE, 30, "1D4", 1000 },
-    { TRUE, FALSE, 30, "1D6", 100 },
-    { TRUE, FALSE, 55, "10D6", 1 },
-    { TRUE, FALSE, 50, "5D6", 1 },
+    { true, false, 20, "1D3", 1000 },
+    { true, false, 25, "1D4", 1000 },
+    { true, false, 25, "1D4", 1000 },
+    { true, false, 30, "1D4", 1000 },
+    { true, false, 30, "1D6", 100 },
+    { true, false, 55, "10D6", 1 },
+    { true, false, 50, "5D6", 1 },
     {
-      TRUE, 50, 
+      true, 50, 
       {
-        { 3, "", FALSE, ANY_MAGIC_ITEM }
+        { 3, "", false, ANY_MAGIC_ITEM }
       }, 
       1
     }
@@ -478,12 +478,12 @@ static void generateTreasureMapsOrMagicType(struct MapsOrMagicType *type,
                                             struct Treasure *treasure, 
                                             struct Dice *dice);
 
-static char const *possibleMapsOrMagicName(Boolean isMapPossible, 
+static char const *possibleMapsOrMagicName(bool isMapPossible,
                                            PossibleMagicItems possibleMagicItems);
 
 
 char *describeTreasureType(struct TreasureType *treasureType, 
-                           Boolean includeHeader)
+                           bool includeHeader)
 {
   /*          1000       1000       1000       1000       100                          */
   /* Type    copper     silver    electrum     gold     platinum     gems      jewelry */
@@ -743,7 +743,7 @@ static void generateTreasureMapsOrMagicType(struct MapsOrMagicType *type,
                                             struct Dice *dice)
 {
   int amount = type->amount;
-  Boolean isVariable = type->variableAmount[0];
+  bool isVariable = type->variableAmount[0];
   if (isVariable) {
     amount = roll(dice, type->variableAmount);
   }
@@ -752,7 +752,7 @@ static void generateTreasureMapsOrMagicType(struct MapsOrMagicType *type,
   int mapsCount = 0;
   for (int i = 0; i < amount; ++i) {
     if (type->isMapPossible) {
-      Boolean isMagicItemPossible = type->possibleMagicItems & ANY_MAGIC_ITEM;
+      bool isMagicItemPossible = type->possibleMagicItems & ANY_MAGIC_ITEM;
       if (isMagicItemPossible) {
         (roll(dice, "1d100") <= 10) ? ++mapsCount : ++magicItemsCount;
       } else {
@@ -773,7 +773,7 @@ static void generateTreasureMapsOrMagicType(struct MapsOrMagicType *type,
 }
 
 
-static char const *possibleMapsOrMagicName(Boolean isMapPossible, 
+static char const *possibleMapsOrMagicName(bool isMapPossible, 
                                            PossibleMagicItems possibleMagicItems)
 {
   if (isMapPossible) {

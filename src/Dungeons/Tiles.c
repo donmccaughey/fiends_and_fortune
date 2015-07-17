@@ -125,14 +125,14 @@ struct Tile *findTileInTilesAt(struct Tiles const *tiles, struct Point point)
 }
 
 
-Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
+bool removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
 {
   // TODO: if tile isn't unique by compare criteria, the wrong tile may be removed
   // is this a problem?
   struct Tile **found = find(tiles, tile);
   if ( ! found) {
     // TODO: should we search the parent in this case?
-    return tiles->parent ? removeTileFromTiles(tiles->parent, tile) : FALSE;
+    return tiles->parent ? removeTileFromTiles(tiles->parent, tile) : false;
   }
 
   struct Tile **tail = found + 1;
@@ -141,7 +141,7 @@ Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
   --tiles->count;
   updateRanges(tiles);
 
-  return tiles->parent ? removeTileFromTiles(tiles->parent, tile) : TRUE;
+  return tiles->parent ? removeTileFromTiles(tiles->parent, tile) : true;
 }
 
 

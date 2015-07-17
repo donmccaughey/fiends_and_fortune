@@ -2,9 +2,9 @@
 #define DUNGEONS_TILES_H_INCLUDED
 
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include "Boolean.h"
 #include "Point.h"
 #include "Range.h"
 
@@ -29,7 +29,7 @@ void destroyTiles(struct Tiles *tiles);
 struct Tile *findTileInTilesAt(struct Tiles const *tiles, struct Point point);
 
 /// The caller is responsible for destroying the tile.
-Boolean removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile);
+bool removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile);
 
 struct Tile *tileInTilesAtIndex(struct Tiles const *tiles, size_t index);
 

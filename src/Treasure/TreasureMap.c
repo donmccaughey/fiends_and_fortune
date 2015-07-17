@@ -344,7 +344,7 @@ void generateTreasureMap(struct TreasureMap *treasureMap, struct Dice *dice)
   int dieRoll = roll(dice, "1d100");
   if (dieRoll <= 5) {
     treasureMapType = FalseMap;
-    treasureMap->isFalse = TRUE;
+    treasureMap->isFalse = true;
     /* TODO: generate description of false treasure */
   } else if (dieRoll <= 70) {
     treasureMapType = MapToMonetaryTreasure;

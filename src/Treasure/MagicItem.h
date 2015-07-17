@@ -4,8 +4,6 @@
 
 #include <stdint.h>
 
-#include "Boolean.h"
-
 
 /* constants for ClassRestrictions */
 #define NO_CLASS_RESTRICTIONS ((uint32_t) 0x0000u)

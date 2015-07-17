@@ -1,6 +1,7 @@
 #include "Jewelry.h"
 
 #include <assert.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,7 +21,7 @@ struct JewelryFormTable {
 struct JewelryRank {
   char const *baseValue;
   int baseValueMultiplier;
-  Boolean hasGems;
+  bool hasGems;
   enum JewelryMaterial materials[3];
   int materialsCount;
 };
@@ -85,10 +86,10 @@ static char const *const jewelryMaterialFormats[] = {
 
 static struct JewelryRank const jewelryRanks[] = {
   {
-    "", 0, FALSE, {}, 0
+    "", 0, false, {}, 0
   },
   {
-    "1D10", 100 * CP_PER_GP, FALSE, 
+    "1D10", 100 * CP_PER_GP, false,
     { 
       IvoryJewelryMaterial, 
       SilverJewelryMaterial
@@ -96,21 +97,21 @@ static struct JewelryRank const jewelryRanks[] = {
     2
   },
   {
-    "2D6", 100 * CP_PER_GP, FALSE, 
+    "2D6", 100 * CP_PER_GP, false,
     { 
       SilverAndGoldJewelryMaterial
     }, 
     1
   },
   {
-    "3D6", 100 * CP_PER_GP, FALSE, 
+    "3D6", 100 * CP_PER_GP, false,
     { 
       GoldJewelryMaterial
     }, 
     1
   },
   {
-    "5D6", 100 * CP_PER_GP, FALSE, 
+    "5D6", 100 * CP_PER_GP, false, 
     { 
       JadeJewelryMaterial, 
       CoralJewelryMaterial,
@@ -119,21 +120,21 @@ static struct JewelryRank const jewelryRanks[] = {
     3
   },
   {
-    "1D6", 1000 * CP_PER_GP, TRUE, 
+    "1D6", 1000 * CP_PER_GP, true,
     { 
       SilverWithGemsJewelryMaterial
     }, 
     1
   },
   {
-    "2D4", 1000 * CP_PER_GP, TRUE, 
+    "2D4", 1000 * CP_PER_GP, true,
     { 
       GoldWithGemsJewelryMaterial
     }, 
     1
   },
   {
-    "2D6", 1000 * CP_PER_GP, TRUE, 
+    "2D6", 1000 * CP_PER_GP, true, 
     { 
       PlatinumWithGemsJewelryMaterial
     }, 

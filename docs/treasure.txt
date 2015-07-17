@@ -185,7 +185,7 @@ GenerateFunction generate;
 struct ArmorOrShield {
 int percent;
 char const *name;
-Boolean isArmor;
+bool isArmor;
 int experiencePoints;
 int saleValue_gp;
 }
@@ -217,7 +217,7 @@ ClassRestrictions classRestrictions;
 struct Ring {
 int percent;
 char const *name;
-Boolean limitedCharges;
+bool limitedCharges;
 >>> char const *quantity; (always 1)
 char const *experiencePoints;
 char const *saleValue_gp;
@@ -237,7 +237,7 @@ struct Scroll {
 int percent;
 char const *name;
 >>> char const *quantity; (always 1)
-Boolean isSpellScroll;
+bool isSpellScroll;
 int spellCount;
 char const *magicUserSpellLevelRange;
 char const *clericalSpellLevelRange;

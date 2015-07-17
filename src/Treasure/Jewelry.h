@@ -2,7 +2,7 @@
 #define JEWELRY_H_INCLUDED
 
 
-#include "Boolean.h"
+#include <stdbool.h>
 
 
 struct Dice;
@@ -63,7 +63,7 @@ enum JewelryMaterial {
 
 
 struct Jewelry {
-  Boolean hasGems;
+  bool hasGems;
   enum JewelryForm form;
   enum JewelryMaterial material;
   int workmanshipBonus;

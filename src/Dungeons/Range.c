@@ -3,7 +3,7 @@
 #include <assert.h>
 
 
-Boolean equalRanges(struct Range range1, struct Range range2)
+bool equalRanges(struct Range range1, struct Range range2)
 {
   assert(range1.begin <= range1.end);
   assert(range2.begin <= range2.end);
@@ -16,7 +16,7 @@ Boolean equalRanges(struct Range range1, struct Range range2)
 }
 
 
-Boolean equalReverseRanges(struct ReverseRange reverseRange1, struct ReverseRange reverseRange2)
+bool equalReverseRanges(struct ReverseRange reverseRange1, struct ReverseRange reverseRange2)
 {
   assert(reverseRange1.top >= reverseRange1.bottom);
   assert(reverseRange2.top >= reverseRange2.bottom);
@@ -86,14 +86,14 @@ struct ReverseRange extendReverseRangeToIncludeValue(struct ReverseRange reverse
 }
 
 
-Boolean isEmptyRange(struct Range range)
+bool isEmptyRange(struct Range range)
 {
   assert(range.begin <= range.end);
   return range.begin == range.end;
 }
 
 
-Boolean isEmptyReverseRange(struct ReverseRange reverseRange)
+bool isEmptyReverseRange(struct ReverseRange reverseRange)
 {
   assert(reverseRange.top >= reverseRange.bottom);
   return reverseRange.top == reverseRange.bottom;

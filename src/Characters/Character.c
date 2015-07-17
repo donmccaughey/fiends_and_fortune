@@ -1,6 +1,7 @@
 #include "Character.h"
 
 #include <assert.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include "Dice.h"
@@ -20,7 +21,7 @@ static int compareCharacteristics(void const *characteristic1,
                                   void const *characteristic2);
 static int compareCharacteristicSets(void const *characteristicSet1, 
                                      void const *characteristicSet2);
-static Boolean contains(char const *set[], size_t setCount, char const *s);
+static bool contains(char const *set[], size_t setCount, char const *s);
 
 
 char const *characteristicGenerationMethodDescription(enum CharacteristicGenerationMethod method)
@@ -68,18 +69,18 @@ static int compareCharacteristicSets(void const *characteristicSet1,
 }
 
 
-static Boolean contains(char const *set[], size_t setCount, char const *s)
+static bool contains(char const *set[], size_t setCount, char const *s)
 {
   if ( ! set) {
-    return FALSE;
+    return false;
   }
   
   for (int i = 0; i < setCount; ++i) {
     if (0 == strcasecmp(set[i], s)) {
-      return TRUE;
+      return true;
     }
   }
-  return FALSE;
+  return false;
 }
 
 
@@ -164,7 +165,7 @@ char const *determineLanguage(struct Dice *dice,
       }
     }
   }
-  assert(FALSE);
+  assert(false);
   return NULL;
 }
 
@@ -648,7 +649,7 @@ char const *determineSpell(struct Dice *dice,
       }
     }
   }
-  assert(FALSE);
+  assert(false);
   return "(spell)";
 }
 

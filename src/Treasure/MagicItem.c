@@ -1,6 +1,7 @@
 #include "MagicItem.h"
 
 #include <assert.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -147,36 +148,36 @@ static void generateArmorOrShield(struct MagicItem *magicItem,
   static struct ArmorOrShield {
     int percent;
     char const *name;
-    Boolean isArmor;
+    bool isArmor;
     int experiencePoints;
     int saleValue_gp;
   } const armorAndShieldTable[] = {
-    {   5 -  0, "chain mail +1", TRUE, 600, 3500 },
-    {   9 -  5, "chain mail +2", TRUE, 1200, 7500 },
-    {  11 -  9, "chain mail +3", TRUE, 2000, 12500 },
-    {  19 - 11, "leather armor +1", TRUE, 300, 2000 },
-    {  26 - 19, "plate mail +1", TRUE, 800, 5000 },
-    {  32 - 26, "plate mail +2", TRUE, 1750, 10500 },
-    {  35 - 32, "plate mail +3", TRUE, 2750, 15500 },
-    {  37 - 35, "plate mail +4", TRUE, 3500, 20500 },
-    {  38 - 37, "plate mail +5", TRUE, 4500, 27500 },
-    {  39 - 38, "plate mail of etherealness", TRUE, 5000, 30000 },
-    {  44 - 39, "plate mail of vulnerability", TRUE, 0, 1500 },
-    {  50 - 44, "ring mail +1", TRUE, 400, 2500 },
-    {  55 - 50, "scale mail +1", TRUE, 500, 3000 },
-    {  59 - 55, "scale mail +2", TRUE, 1100, 6750 },
-    {  63 - 59, "splint mail +1", TRUE, 700, 4000 },
-    {  66 - 63, "splint mail +2", TRUE, 1500, 8500 },
-    {  68 - 66, "splint mail +3", TRUE, 2250, 14500 },
-    {  69 - 68, "splint mail +4", TRUE, 3000, 19000 },
-    {  75 - 69, "studded leather +1", TRUE, 400, 2500 },
-    {  84 - 75, "shield +1", FALSE, 250, 25000 },
-    {  89 - 84, "shield +2", FALSE, 500, 5000 },
-    {  93 - 89, "shield +3", FALSE, 800, 8000 },
-    {  95 - 93, "shield +4", FALSE, 1200, 12000 },
-    {  96 - 95, "shield +5", FALSE, 1750, 17500 },
-    {  97 - 96, "shield, large, +1, +4 vs missiles", FALSE, 400, 4000 },
-    { 100 - 97, "shield -1, missile attractor", FALSE, 0, 750 }
+    {   5 -  0, "chain mail +1", true, 600, 3500 },
+    {   9 -  5, "chain mail +2", true, 1200, 7500 },
+    {  11 -  9, "chain mail +3", true, 2000, 12500 },
+    {  19 - 11, "leather armor +1", true, 300, 2000 },
+    {  26 - 19, "plate mail +1", true, 800, 5000 },
+    {  32 - 26, "plate mail +2", true, 1750, 10500 },
+    {  35 - 32, "plate mail +3", true, 2750, 15500 },
+    {  37 - 35, "plate mail +4", true, 3500, 20500 },
+    {  38 - 37, "plate mail +5", true, 4500, 27500 },
+    {  39 - 38, "plate mail of etherealness", true, 5000, 30000 },
+    {  44 - 39, "plate mail of vulnerability", true, 0, 1500 },
+    {  50 - 44, "ring mail +1", true, 400, 2500 },
+    {  55 - 50, "scale mail +1", true, 500, 3000 },
+    {  59 - 55, "scale mail +2", true, 1100, 6750 },
+    {  63 - 59, "splint mail +1", true, 700, 4000 },
+    {  66 - 63, "splint mail +2", true, 1500, 8500 },
+    {  68 - 66, "splint mail +3", true, 2250, 14500 },
+    {  69 - 68, "splint mail +4", true, 3000, 19000 },
+    {  75 - 69, "studded leather +1", true, 400, 2500 },
+    {  84 - 75, "shield +1", false, 250, 25000 },
+    {  89 - 84, "shield +2", false, 500, 5000 },
+    {  93 - 89, "shield +3", false, 800, 8000 },
+    {  95 - 93, "shield +4", false, 1200, 12000 },
+    {  96 - 95, "shield +5", false, 1750, 17500 },
+    {  97 - 96, "shield, large, +1, +4 vs missiles", false, 400, 4000 },
+    { 100 - 97, "shield -1, missile attractor", false, 0, 750 }
   };
   static size_t const armorAndShieldTableCount = sizeof armorAndShieldTable 
                                                / sizeof armorAndShieldTable[0];
@@ -650,7 +651,7 @@ void generateMagicItem(struct MagicItem *magicItem,
       }
     }
   }
-  assert(FALSE);
+  assert(false);
 }
 
 
@@ -1148,12 +1149,12 @@ static void generateNecklaceOfPrayerBeads(struct MagicItem *magicItem,
   
   char *buffer = CALLOC_OR_DIE(bufferSize, sizeof(char));
   char *bufferEnd = buffer;
-  Boolean first = TRUE;
+  bool first = true;
   for (int i = 0; i < TYPE_COUNT; ++i) {
     if ( ! specialBeadCounts[i]) continue;
     
     if (first) {
-      first = FALSE;
+      first = false;
     } else {
       strcat(bufferEnd, separator);
       bufferEnd += separatorLength;
@@ -1497,36 +1498,36 @@ static void generateRing(struct MagicItem *magicItem, struct Dice *dice)
   static struct Ring {
     int percent;
     char const *name;
-    Boolean limitedCharges;
+    bool limitedCharges;
     int experiencePoints;
     int saleValue_gp;
     ClassRestrictions classRestrictions;
     GenerateFunction generate;
   } const ringsTable[] = {
-    {   6 -  0, "contrariness", FALSE, 0, 1000 },
-    {  12 -  6, "delusion", FALSE, 0, 2000 },
-    {  14 - 12, "djinni summoning", TRUE, 3000, 20000 },
-    {  15 - 14, "elemental control", FALSE, 5000, 25000 },
-    {  21 - 15, "feather falling", FALSE, 1000, 5000 },
-    {  27 - 21, "fire resistance", FALSE, 1000, 5000 },
-    {  30 - 27, "free action", FALSE, 1000, 5000 },
-    {  33 - 30, "human influence", TRUE, 2000, 10000 },
-    {  40 - 33, "invisibility", FALSE, 1500, 7500 },
-    {  43 - 40, "mammal control", TRUE, 1000, 5000 },
-    {  44 - 43, "multiple wishes", TRUE, 5000, 25000 },
-    {  60 - 44, "protection", FALSE, 2000, 10000, NO_CLASS_RESTRICTIONS, generateRingOfProtection },
-    {  61 - 60, "regeneration", FALSE, 5000, 40000 },
-    {  63 - 61, "shooting stars", FALSE, 3000, 15000 },
-    {  65 - 63, "spell storing", FALSE, 2500, 22500 },
-    {  69 - 65, "spell turning", FALSE, 2000, 17500 },
-    {  75 - 69, "swimming", FALSE, 1000, 5000 },
-    {  77 - 75, "telekinesis", TRUE, 2000, 10000 },
-    {  79 - 77, "three wishes", TRUE, 3000, 15000 },
-    {  85 - 79, "warmth", FALSE, 1000, 5000 },
-    {  90 - 85, "water walking", FALSE, 1000, 5000 },
-    {  98 - 90, "weakness", FALSE, 0, 1000 },
-    {  99 - 98, "wizardry", TRUE, 4000, 50000, MAGIC_USERS },
-    { 100 - 99, "x-ray vision", FALSE, 4000, 35000 }
+    {   6 -  0, "contrariness", false, 0, 1000 },
+    {  12 -  6, "delusion", false, 0, 2000 },
+    {  14 - 12, "djinni summoning", true, 3000, 20000 },
+    {  15 - 14, "elemental control", false, 5000, 25000 },
+    {  21 - 15, "feather falling", false, 1000, 5000 },
+    {  27 - 21, "fire resistance", false, 1000, 5000 },
+    {  30 - 27, "free action", false, 1000, 5000 },
+    {  33 - 30, "human influence", true, 2000, 10000 },
+    {  40 - 33, "invisibility", false, 1500, 7500 },
+    {  43 - 40, "mammal control", true, 1000, 5000 },
+    {  44 - 43, "multiple wishes", true, 5000, 25000 },
+    {  60 - 44, "protection", false, 2000, 10000, NO_CLASS_RESTRICTIONS, generateRingOfProtection },
+    {  61 - 60, "regeneration", false, 5000, 40000 },
+    {  63 - 61, "shooting stars", false, 3000, 15000 },
+    {  65 - 63, "spell storing", false, 2500, 22500 },
+    {  69 - 65, "spell turning", false, 2000, 17500 },
+    {  75 - 69, "swimming", false, 1000, 5000 },
+    {  77 - 75, "telekinesis", true, 2000, 10000 },
+    {  79 - 77, "three wishes", true, 3000, 15000 },
+    {  85 - 79, "warmth", false, 1000, 5000 },
+    {  90 - 85, "water walking", false, 1000, 5000 },
+    {  98 - 90, "weakness", false, 0, 1000 },
+    {  99 - 98, "wizardry", true, 4000, 50000, MAGIC_USERS },
+    { 100 - 99, "x-ray vision", false, 4000, 35000 }
   };
   size_t const ringsTableCount = sizeof ringsTable / sizeof ringsTable[0];
   
@@ -1654,38 +1655,38 @@ static void generateScroll(struct MagicItem *magicItem, struct Dice *dice)
   static struct Scroll {
     int percent;
     char const *name;
-    Boolean isSpellScroll;
+    bool isSpellScroll;
     int spellCount;
     char const *magicUserSpellLevelRange;
     char const *clericalSpellLevelRange;
     int experiencePoints;
     int saleValue_gp;
   } const scrollsTable[] = {
-    {  10 - 00, "(spell scroll)", TRUE, 1, "1d4", "1d4", 100, 300 },
-    {  16 - 10, "(spell scroll)", TRUE, 1, "1d6", "1d6", 100, 300 },
-    {  19 - 16, "(spell scroll)", TRUE, 1, "1d8+1", "1d6+1", 100, 300 },
-    {  24 - 19, "(spell scroll)", TRUE, 2, "1d4", "1d4", 100, 300 },
-    {  27 - 24, "(spell scroll)", TRUE, 2, "1d8", "1d6", 100, 300 },
-    {  32 - 27, "(spell scroll)", TRUE, 3, "1d4", "1d4", 100, 300 },
-    {  35 - 32, "(spell scroll)", TRUE, 3, "1d8+1", "1d6+1", 100, 300 },
-    {  39 - 35, "(spell scroll)", TRUE, 4, "1d6", "1d6", 100, 300 },
-    {  42 - 39, "(spell scroll)", TRUE, 4, "1d8", "1d6", 100, 300 },
-    {  46 - 42, "(spell scroll)", TRUE, 5, "1d6", "1d6", 100, 300 },
-    {  49 - 46, "(spell scroll)", TRUE, 5, "1d8", "1d6", 100, 300 },
-    {  52 - 49, "(spell scroll)", TRUE, 6, "1d6", "1d6", 100, 300 },
-    {  54 - 52, "(spell scroll)", TRUE, 6, "1d6+2", "1d4+2", 100, 300 },
-    {  57 - 54, "(spell scroll)", TRUE, 7, "1d8", "1d6", 100, 300 },
-    {  59 - 57, "(spell scroll)", TRUE, 7, "1d8+1", "1d6+1", 100, 300 },
-    {  60 - 59, "(spell scroll)", TRUE, 7, "1d6+3", "1d4+3", 100, 300 },
-    {  62 - 60, "protection from demons", FALSE, 1, "0", "0", 2500, 2500 * 5 },
-    {  64 - 62, "protection from devils", FALSE, 1, "0", "0", 2500, 2500 * 5 },
-    {  70 - 64, "protection from elementals", FALSE, 1, "0", "0", 1500, 1500 * 5 },
-    {  76 - 70, "protection from lycanthropes", FALSE, 1, "0", "0", 1000, 1000 * 5 },
-    {  82 - 76, "protection from magic", FALSE, 1, "0", "0", 1500, 1500 * 5 },
-    {  87 - 82, "protection from petrification", FALSE, 1, "0", "0", 2000, 2000 * 5 },
-    {  92 - 87, "protection from possession", FALSE, 1, "0", "0", 2000, 2000 * 5 },
-    {  97 - 92, "protection from undead", FALSE, 1, "0", "0", 1500, 1500 * 5 },
-    { 100 - 97, "cursed", FALSE, 1, "0", "0" }
+    {  10 - 00, "(spell scroll)", true, 1, "1d4", "1d4", 100, 300 },
+    {  16 - 10, "(spell scroll)", true, 1, "1d6", "1d6", 100, 300 },
+    {  19 - 16, "(spell scroll)", true, 1, "1d8+1", "1d6+1", 100, 300 },
+    {  24 - 19, "(spell scroll)", true, 2, "1d4", "1d4", 100, 300 },
+    {  27 - 24, "(spell scroll)", true, 2, "1d8", "1d6", 100, 300 },
+    {  32 - 27, "(spell scroll)", true, 3, "1d4", "1d4", 100, 300 },
+    {  35 - 32, "(spell scroll)", true, 3, "1d8+1", "1d6+1", 100, 300 },
+    {  39 - 35, "(spell scroll)", true, 4, "1d6", "1d6", 100, 300 },
+    {  42 - 39, "(spell scroll)", true, 4, "1d8", "1d6", 100, 300 },
+    {  46 - 42, "(spell scroll)", true, 5, "1d6", "1d6", 100, 300 },
+    {  49 - 46, "(spell scroll)", true, 5, "1d8", "1d6", 100, 300 },
+    {  52 - 49, "(spell scroll)", true, 6, "1d6", "1d6", 100, 300 },
+    {  54 - 52, "(spell scroll)", true, 6, "1d6+2", "1d4+2", 100, 300 },
+    {  57 - 54, "(spell scroll)", true, 7, "1d8", "1d6", 100, 300 },
+    {  59 - 57, "(spell scroll)", true, 7, "1d8+1", "1d6+1", 100, 300 },
+    {  60 - 59, "(spell scroll)", true, 7, "1d6+3", "1d4+3", 100, 300 },
+    {  62 - 60, "protection from demons", false, 1, "0", "0", 2500, 2500 * 5 },
+    {  64 - 62, "protection from devils", false, 1, "0", "0", 2500, 2500 * 5 },
+    {  70 - 64, "protection from elementals", false, 1, "0", "0", 1500, 1500 * 5 },
+    {  76 - 70, "protection from lycanthropes", false, 1, "0", "0", 1000, 1000 * 5 },
+    {  82 - 76, "protection from magic", false, 1, "0", "0", 1500, 1500 * 5 },
+    {  87 - 82, "protection from petrification", false, 1, "0", "0", 2000, 2000 * 5 },
+    {  92 - 87, "protection from possession", false, 1, "0", "0", 2000, 2000 * 5 },
+    {  97 - 92, "protection from undead", false, 1, "0", "0", 1500, 1500 * 5 },
+    { 100 - 97, "cursed", false, 1, "0", "0" }
   };
   size_t const scrollsTableCount = sizeof scrollsTable / sizeof scrollsTable[0];
   
@@ -2068,13 +2069,13 @@ static void generateSword(struct MagicItem *magicItem, struct Dice *dice)
     int teleportation;
     int xrayVision;
   } extraordinaryPowers = {};
-  Boolean hasSpecialPurpose = FALSE;
+  bool hasSpecialPurpose = false;
   for (int i = 0; i < extraordinaryPowerCount; ++i) {
     int dieRollMax = 100;
     int rolls = 1;
-    Boolean rollTwicePossible = TRUE;
-    Boolean chooseOnePossible = TRUE;
-    Boolean specialPurposePossible = TRUE;
+    bool rollTwicePossible = true;
+    bool chooseOnePossible = true;
+    bool specialPurposePossible = true;
     do {
       dieRoll = rollDice(dice, 1, dieRollMax);
       --rolls;
@@ -2128,7 +2129,7 @@ static void generateSword(struct MagicItem *magicItem, struct Dice *dice)
           range += rollTwiceRange;
         }
         if (dieRoll <= range) {
-          rollTwicePossible = FALSE;
+          rollTwicePossible = false;
           rolls = 2;
           dieRollMax -= rollTwiceRange;
         }
@@ -2138,7 +2139,7 @@ static void generateSword(struct MagicItem *magicItem, struct Dice *dice)
           range += chooseOneRange;
         }
         if (dieRoll <= range) {
-          chooseOnePossible = FALSE;
+          chooseOnePossible = false;
           rolls = 1;
           dieRollMax -= chooseOneRange;
         }
@@ -2148,8 +2149,8 @@ static void generateSword(struct MagicItem *magicItem, struct Dice *dice)
           range += specialPurposeRange;
         }
         if (dieRoll <= range) {
-          specialPurposePossible = FALSE;
-          hasSpecialPurpose = TRUE;
+          specialPurposePossible = false;
+          hasSpecialPurpose = true;
           rolls = 1;
           dieRollMax -= specialPurposeRange;
         }

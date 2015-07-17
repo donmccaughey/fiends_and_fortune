@@ -12,7 +12,7 @@ static void tilesOnLevel_one_tile_not_found_Test(void);
 static void tilesOnLevel_with_two_levels_Test(void);
 static void tilesOnLevel_with_two_noncontiguous_levels_Test(void);
 
-static Boolean equalTiles(struct Tile *tile1, struct Tile *tile2);
+static bool equalTiles(struct Tile *tile1, struct Tile *tile2);
 
 
 void tilesTest(void)
@@ -63,7 +63,7 @@ static void addTileToTilesTest(void)
   assert(equalRanges(makeRange(0, 1), yRangeOfTiles(tiles)));
   assert(equalRanges(makeRange(0, 1), zRangeOfTiles(tiles)));
 
-  Boolean found = removeTileFromTiles(tiles, tile1);
+  bool found = removeTileFromTiles(tiles, tile1);
   assert(found);
   assert(2 == tilesCount(tiles));
   assert(tileInTilesAtIndex(tiles, 0)->point.x == tile3->point.x);
@@ -229,7 +229,7 @@ static void tilesOnLevel_with_two_noncontiguous_levels_Test(void)
 }
 
 
-static Boolean equalTiles(struct Tile *tile1, struct Tile *tile2)
+static bool equalTiles(struct Tile *tile1, struct Tile *tile2)
 {
     return tile1->point.x == tile2->point.x
         && tile1->point.y == tile2->point.y

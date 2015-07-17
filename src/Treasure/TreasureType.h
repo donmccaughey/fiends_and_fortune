@@ -2,9 +2,8 @@
 #define TREASURETYPE_H_INCLUDED
 
 
+#include <stdbool.h>
 #include <stddef.h>
-
-#include "Boolean.h"
 
 
 struct Dice;
@@ -13,7 +12,7 @@ struct TreasureType;
 
 
 char *describeTreasureType(struct TreasureType *treasureType, 
-                           Boolean includeHeader);
+                           bool includeHeader);
 
 void generateTreasure(struct TreasureType *treasureType, 
                       struct Treasure *treasure, 

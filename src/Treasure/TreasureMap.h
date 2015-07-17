@@ -2,7 +2,8 @@
 #define TREASURE_TREASUREMAP_H_INCLUDED
 
 
-#include "Boolean.h"
+#include <stdbool.h>
+
 #include "Treasure.h"
 
 
@@ -10,7 +11,7 @@ struct Dice;
 
 
 struct TreasureMap {
-  Boolean isFalse;
+  bool isFalse;
   struct Treasure treasure;
   char *trueDescription;
 };
