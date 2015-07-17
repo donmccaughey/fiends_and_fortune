@@ -1886,8 +1886,8 @@ static void generateSword(struct MagicItem *magicItem, struct Dice *dice)
   if ( ! magicItem->trueDetails) {
     magicItem->trueDetails = em_calloc(detailCapacity, sizeof(char *));
   } else {
-    magicItem->trueDetails = REALLOC_OR_DIE(magicItem->trueDetails, 
-                                            detailCapacity * sizeof(char *));
+    magicItem->trueDetails = em_realloc(magicItem->trueDetails,
+                                        detailCapacity * sizeof(char *));
     char **startOfUnused = magicItem->trueDetails + detailCount;
     size_t sizeOfUnused = (detailCapacity - detailCount) * sizeof(char *);
     memset(startOfUnused, 0, sizeOfUnused);

@@ -9,24 +9,6 @@
 #include "unexpected.h"
 
 
-void *reallocOrDie(char const *file, int line, char const *firstArgument,
-                   void *memory, size_t size)
-{
-  errno = 0;
-  void *newMemory = realloc(memory, size);
-  if ( ! newMemory) {
-    if (firstArgument) {
-      fatalError(file, line, "realloc(%s, %lu) failed", 
-                 firstArgument, (unsigned long) size);
-    } else {
-      fatalError(file, line, "realloc(%p, %lu) failed", 
-                 memory, (unsigned long) size);
-    }
-  }
-  return newMemory;
-}
-
-
 char *strdupOrDie(char const *file, int line, char const *string) {
   errno = 0;
   char *duplicate = strdup(string);

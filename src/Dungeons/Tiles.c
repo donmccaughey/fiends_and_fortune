@@ -44,7 +44,7 @@ static void appendTileToTiles(struct Tiles *tiles, struct Tile  *tile)
     } else {
       tiles->capacity = 256;
     }
-    tiles->tiles = REALLOC_OR_DIE(tiles->tiles, tiles->capacity * sizeof(struct Tile *));
+    tiles->tiles = em_realloc(tiles->tiles, tiles->capacity * sizeof(struct Tile *));
   }
   tiles->tiles[tiles->count] = tile;
   ++tiles->count;

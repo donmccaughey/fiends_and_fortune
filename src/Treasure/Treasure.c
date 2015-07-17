@@ -135,7 +135,7 @@ void generateMagicItemsForTreasure(struct Treasure *treasure,
 {
   size_t newSize = (treasure->magicItemsCount + count)  
                  * sizeof(struct MagicItem);
-  treasure->magicItems = REALLOC_OR_DIE(treasure->magicItems, newSize);
+  treasure->magicItems = em_realloc(treasure->magicItems, newSize);
   for (int i = 0; i < count; ++i) {
     int j = treasure->magicItemsCount + i;
     initializeMagicItem(&treasure->magicItems[j]);
@@ -150,7 +150,7 @@ void generateMapsForTreasure(struct Treasure *treasure,
                              int count)
 {
   size_t newSize = (treasure->mapsCount + count) * sizeof(struct TreasureMap);
-  treasure->maps = REALLOC_OR_DIE(treasure->maps, newSize);
+  treasure->maps = em_realloc(treasure->maps, newSize);
   for (int i = 0; i < count; ++i) {
     int j = treasure->mapsCount + i;
     initializeTreasureMap(&treasure->maps[j]);

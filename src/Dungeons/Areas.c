@@ -23,7 +23,7 @@ void addAreaToAreas(struct Areas *areas, struct Area *area)
     } else {
       areas->capacity = 256;
     }
-    areas->areas = REALLOC_OR_DIE(areas->areas, areas->capacity * sizeof(struct Area *));
+    areas->areas = em_realloc(areas->areas, areas->capacity * sizeof(struct Area *));
   }
   areas->areas[areas->count] = area;
   ++areas->count;
