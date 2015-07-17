@@ -90,7 +90,6 @@
 
 /* Begin PBXFileReference section */
 		B0F47782965430E75922F468 /* PointTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PointTest.c; sourceTree = "<group>"; };
-		D4092F5B15AFDBA70002FB34 /* prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = prefix.pch; sourceTree = "<group>"; };
 		D4092FB515B2A1880002FB34 /* Tile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Tile.c; sourceTree = "<group>"; };
 		D41D32CA1A4339BC00484607 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D41D32CB1A4339BC00484607 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -318,7 +317,6 @@
 				D45BB94D1B58C1CA0096E525 /* earmark.h */,
 				D45BB94C1B58C1CA0096E525 /* earmark.c */,
 				D4F73461140EF4380096618F /* main.c */,
-				D4092F5B15AFDBA70002FB34 /* prefix.pch */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -624,7 +622,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/prefix.pch;
+				GCC_PREFIX_HEADER = "";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_PEDANTIC = NO;
 				HEADER_SEARCH_PATHS = src;
@@ -636,7 +634,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/prefix.pch;
+				GCC_PREFIX_HEADER = "";
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_PEDANTIC = NO;
 				HEADER_SEARCH_PATHS = src;
