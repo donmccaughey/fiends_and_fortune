@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 #include "earmark.h"
-#include "heap.h"
 
 
 struct Points *addPointToPoints(struct Point point, struct Points *next)

@@ -9,7 +9,6 @@
 #include "earmark.h"
 #include "Gem.h"
 #include "Jewelry.h"
-#include "heap.h"
 #include "TreasureMap.h"
 
 
@@ -79,7 +78,7 @@ char *describeTreasure(struct Treasure *treasure) {
   bytes += sizeof('\0');
   
   if ( ! phraseCount) {
-    return STRDUP_OR_DIE("(no treasure)");
+    return em_strdup("(no treasure)");
   }
   
   char *description = em_calloc(bytes, sizeof(char));

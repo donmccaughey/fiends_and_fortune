@@ -7,7 +7,6 @@
 #include "Dice.h"
 #include "Direction.h"
 #include "earmark.h"
-#include "heap.h"
 #include "Tile.h"
 #include "Tiles.h"
 #include "unexpected.h"

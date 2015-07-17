@@ -25,13 +25,11 @@
 		D4783B2915ABDFF0004E7F2C /* Dungeon.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B2715ABDFF0004E7F2C /* Dungeon.c */; };
 		D4783B2C15ABE045004E7F2C /* coinage.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B2A15ABE045004E7F2C /* coinage.c */; };
 		D4783B3015ABE063004E7F2C /* Dice.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B2E15ABE063004E7F2C /* Dice.c */; };
-		D4783B3815ABE10B004E7F2C /* heap.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B3415ABE10B004E7F2C /* heap.c */; };
 		D4783B3915ABE10B004E7F2C /* unexpected.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B3615ABE10B004E7F2C /* unexpected.c */; };
 		D4783B3E15ABE155004E7F2C /* DungeonTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B3B15ABE155004E7F2C /* DungeonTest.c */; };
 		D4783B3F15ABE155004E7F2C /* DiceTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B3D15ABE155004E7F2C /* DiceTest.c */; };
 		D4783B4015ABE17F004E7F2C /* Dice.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B2E15ABE063004E7F2C /* Dice.c */; };
 		D4783B4115ABE18A004E7F2C /* Dungeon.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B2715ABDFF0004E7F2C /* Dungeon.c */; };
-		D4783B4215ABE198004E7F2C /* heap.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B3415ABE10B004E7F2C /* heap.c */; };
 		D4783B4315ABE19B004E7F2C /* unexpected.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B3615ABE10B004E7F2C /* unexpected.c */; };
 		D4783B4915ABE7E5004E7F2C /* Tiles.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B4815ABE7E5004E7F2C /* Tiles.c */; };
 		D4783B4A15ABE7F7004E7F2C /* Tiles.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B4815ABE7E5004E7F2C /* Tiles.c */; };
@@ -121,8 +119,6 @@
 		D4783B2B15ABE045004E7F2C /* coinage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coinage.h; sourceTree = "<group>"; };
 		D4783B2E15ABE063004E7F2C /* Dice.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Dice.c; sourceTree = "<group>"; };
 		D4783B2F15ABE063004E7F2C /* Dice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dice.h; sourceTree = "<group>"; };
-		D4783B3415ABE10B004E7F2C /* heap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = heap.c; sourceTree = "<group>"; };
-		D4783B3515ABE10B004E7F2C /* heap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = heap.h; sourceTree = "<group>"; };
 		D4783B3615ABE10B004E7F2C /* unexpected.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unexpected.c; sourceTree = "<group>"; };
 		D4783B3715ABE10B004E7F2C /* unexpected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unexpected.h; sourceTree = "<group>"; };
 		D4783B3B15ABE155004E7F2C /* DungeonTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DungeonTest.c; sourceTree = "<group>"; };
@@ -254,8 +250,6 @@
 		D4783B3315ABE10B004E7F2C /* System */ = {
 			isa = PBXGroup;
 			children = (
-				D4783B3515ABE10B004E7F2C /* heap.h */,
-				D4783B3415ABE10B004E7F2C /* heap.c */,
 				D4783B3715ABE10B004E7F2C /* unexpected.h */,
 				D4783B3615ABE10B004E7F2C /* unexpected.c */,
 			);
@@ -441,7 +435,6 @@
 				D4783B3F15ABE155004E7F2C /* DiceTest.c in Sources */,
 				D4783B4015ABE17F004E7F2C /* Dice.c in Sources */,
 				D4783B4115ABE18A004E7F2C /* Dungeon.c in Sources */,
-				D4783B4215ABE198004E7F2C /* heap.c in Sources */,
 				D4783B4315ABE19B004E7F2C /* unexpected.c in Sources */,
 				D4783B4915ABE7E5004E7F2C /* Tiles.c in Sources */,
 				D4783B4C15ABEB32004E7F2C /* TilesTest.c in Sources */,
@@ -473,7 +466,6 @@
 				D4783B2915ABDFF0004E7F2C /* Dungeon.c in Sources */,
 				D4783B2C15ABE045004E7F2C /* coinage.c in Sources */,
 				D4783B3015ABE063004E7F2C /* Dice.c in Sources */,
-				D4783B3815ABE10B004E7F2C /* heap.c in Sources */,
 				D4783B3915ABE10B004E7F2C /* unexpected.c in Sources */,
 				D4783B4A15ABE7F7004E7F2C /* Tiles.c in Sources */,
 				D4F73465140EF55C00966192 /* Point.c in Sources */,

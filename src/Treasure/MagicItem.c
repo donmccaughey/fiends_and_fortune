@@ -10,7 +10,6 @@
 #include "coinage.h"
 #include "Dice.h"
 #include "earmark.h"
-#include "heap.h"
 #include "unexpected.h"
 
 
@@ -1179,7 +1178,7 @@ static void generateNolzursMarvelousPigments(struct MagicItem *magicItem,
   int quantity = roll(dice, "1d4");
   magicItem->experiencePoints = quantity * 500;
   magicItem->trueValue_cp = quantity * 3000 * CP_PER_GP;
-  magicItem->trueDescription = STRDUP_OR_DIE("Nolzurs' marvelous pigments");
+  magicItem->trueDescription = em_strdup("Nolzurs' marvelous pigments");
 }
 
 
@@ -1827,7 +1826,7 @@ static void generateSword(struct MagicItem *magicItem, struct Dice *dice)
   if (detailCount) {
     magicItem->trueDetails = em_calloc(detailCount + 1, sizeof(char *));
     for (int i = 0; i < detailCount; ++i) {
-      magicItem->trueDetails[i] = STRDUP_OR_DIE(sword->details[i]);
+      magicItem->trueDetails[i] = em_strdup(sword->details[i]);
     }
   }
   

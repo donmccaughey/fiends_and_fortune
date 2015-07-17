@@ -9,7 +9,6 @@
 #include "coinage.h"
 #include "Dice.h"
 #include "earmark.h"
-#include "heap.h"
 
 
 struct JewelryFormTable {
@@ -188,7 +187,7 @@ static char *describeJewelryModifiers(struct Jewelry *jewelry)
     em_asprintf(&description, "%s",
                 workmanshipBonus ? workmanshipBonus : exceptionalStoneBonus);
   } else {
-    description = STRDUP_OR_DIE("");
+    description = em_strdup("");
   }
   
   free(exceptionalStoneBonus);

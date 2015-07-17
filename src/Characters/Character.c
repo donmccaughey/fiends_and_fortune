@@ -7,7 +7,6 @@
 
 #include "Dice.h"
 #include "earmark.h"
-#include "heap.h"
 
 
 static size_t const characteristicCount = 6;

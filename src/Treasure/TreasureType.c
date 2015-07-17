@@ -8,7 +8,6 @@
 #include "Dice.h"
 #include "earmark.h"
 #include "Gem.h"
-#include "heap.h"
 #include "Jewelry.h"
 #include "MagicItem.h"
 #include "Treasure.h"
@@ -577,7 +576,7 @@ static char *describeCoinsGemsOrJewelry(struct CoinsGemsOrJewelry *coinsGemsOrJe
       return description;
     }
   } else {
-    return STRDUP_OR_DIE("   nil   ");
+    return em_strdup("   nil   ");
   }
 }
 
@@ -634,7 +633,7 @@ static char *describeMapsOrMagic(struct MapsOrMagic *mapsOrMagic) {
     free(typeList);
     return description;
   } else {
-    return STRDUP_OR_DIE("   nil   ");
+    return em_strdup("   nil   ");
   }
 }
 

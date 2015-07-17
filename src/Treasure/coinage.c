@@ -1,6 +1,5 @@
 #include "coinage.h"
 
-#include "heap.h"
 #include "earmark.h"
 
 

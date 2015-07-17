@@ -2,7 +2,6 @@
 
 #include <stdlib.h>
 
-#include "heap.h"
 #include "earmark.h"
 
 

@@ -6,7 +6,6 @@
 #include "Dice.h"
 #include "earmark.h"
 #include "Gem.h"
-#include "heap.h"
 #include "Jewelry.h"
 #include "MagicItem.h"
 

@@ -4,9 +4,8 @@
 #include <string.h>
 
 #include "coinage.h"
-#include "earmark.h"
 #include "Dice.h"
-#include "heap.h"
+#include "earmark.h"
 
 
 static char const *const gemSizeNames[] = {
@@ -91,7 +90,7 @@ static char *describeGemModifiers(struct Gem *gem)
     em_asprintf(&description, "%s",
                 rankModifier ? rankModifier : percentModifier);
   } else {
-    description = STRDUP_OR_DIE("");
+    description = em_strdup("");
   }
   
   free(percentModifier);

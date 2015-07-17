@@ -5,7 +5,6 @@
 
 #include "Area.h"
 #include "earmark.h"
-#include "heap.h"
 
 
 struct Areas {

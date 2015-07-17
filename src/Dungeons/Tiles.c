@@ -5,7 +5,6 @@
 #include <string.h>
 
 #include "earmark.h"
-#include "heap.h"
 #include "Tile.h"
 
 
