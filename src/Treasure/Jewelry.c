@@ -6,9 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "alloc_or_die.h"
 #include "coinage.h"
 #include "Dice.h"
-#include "earmark.h"
 
 
 struct JewelryFormTable {
@@ -160,7 +160,7 @@ static char *describeJewelry(struct Jewelry *jewelry)
   char const *format = jewelryMaterialFormats[jewelry->material];
   char const *name = jewelryFormTable[jewelry->form].name;
   char *description;
-  em_asprintf(&description, format, name);
+  asprintf_or_die(&description, format, name);
   return description;
 }
 
@@ -171,23 +171,23 @@ static char *describeJewelryModifiers(struct Jewelry *jewelry)
   char *exceptionalStoneBonus = NULL;
   
   if (jewelry->workmanshipBonus) {
-    em_asprintf(&workmanshipBonus, "workmanship %+i",
-                jewelry->workmanshipBonus);
+    asprintf_or_die(&workmanshipBonus, "workmanship %+i",
+                    jewelry->workmanshipBonus);
   }
   if (jewelry->exceptionalStoneBonus) {
-    em_asprintf(&exceptionalStoneBonus, "exceptional stone %+i",
-                jewelry->exceptionalStoneBonus);
+    asprintf_or_die(&exceptionalStoneBonus, "exceptional stone %+i",
+                    jewelry->exceptionalStoneBonus);
   }
   
   char *description;
   if (workmanshipBonus && exceptionalStoneBonus) {
-    em_asprintf(&description, "%s, %s",
-                workmanshipBonus, exceptionalStoneBonus);
+    asprintf_or_die(&description, "%s, %s",
+                    workmanshipBonus, exceptionalStoneBonus);
   } else if (workmanshipBonus || exceptionalStoneBonus) {
-    em_asprintf(&description, "%s",
-                workmanshipBonus ? workmanshipBonus : exceptionalStoneBonus);
+    asprintf_or_die(&description, "%s",
+                    workmanshipBonus ? workmanshipBonus : exceptionalStoneBonus);
   } else {
-    description = em_strdup("");
+    description = strdup_or_die("");
   }
   
   free(exceptionalStoneBonus);
@@ -285,8 +285,8 @@ void generateJewelry(struct Jewelry *jewelry, struct Dice *dice)
   char *value_gp = goldFormat_cp(value_cp);
   
   char const *separator = modifiers[0] ? ": " : "";
-  em_asprintf(&jewelry->trueDescription, "%s (%s%s%s)",
-              description, modifiers, separator, value_gp);
+  asprintf_or_die(&jewelry->trueDescription, "%s (%s%s%s)",
+                  description, modifiers, separator, value_gp);
   
   free(modifiers);
   free(value_gp);

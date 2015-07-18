@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "alloc_or_die.h"
 #include "coinage.h"
 #include "Dice.h"
-#include "earmark.h"
 
 
 static char const *const gemSizeNames[] = {
@@ -66,7 +66,8 @@ static char const *typeNameForGem(struct Gem *gem);
 static char *describeGem(struct Gem *gem)
 {
   char *description;
-  em_asprintf(&description, "%s %s", sizeNameForGem(gem), typeNameForGem(gem));
+  asprintf_or_die(&description, "%s %s",
+                  sizeNameForGem(gem), typeNameForGem(gem));
   return description;
 }
 
@@ -77,20 +78,20 @@ static char *describeGemModifiers(struct Gem *gem)
   char *percentModifier = NULL;
   
   if (gem->valueRankModifier) {
-    em_asprintf(&rankModifier, "rank %+i", gem->valueRankModifier);
+    asprintf_or_die(&rankModifier, "rank %+i", gem->valueRankModifier);
   }
   if (gem->valuePercentModifier) {
-    em_asprintf(&percentModifier, "%+i%%", gem->valuePercentModifier - 100);
+    asprintf_or_die(&percentModifier, "%+i%%", gem->valuePercentModifier - 100);
   }
   
   char *description;
   if (rankModifier && percentModifier) {
-    em_asprintf(&description, "%s, %s", rankModifier, percentModifier);
+    asprintf_or_die(&description, "%s, %s", rankModifier, percentModifier);
   } else if (rankModifier || percentModifier) {
-    em_asprintf(&description, "%s",
-                rankModifier ? rankModifier : percentModifier);
+    asprintf_or_die(&description, "%s",
+                    rankModifier ? rankModifier : percentModifier);
   } else {
-    description = em_strdup("");
+    description = strdup_or_die("");
   }
   
   free(percentModifier);
@@ -182,8 +183,8 @@ void generateGem(struct Gem *gem, struct Dice *dice)
   char *value_gp = goldFormat_cp(value_cp);
   
   char const *separator = modifiers[0] ? ": " : "";
-  em_asprintf(&gem->trueDescription, "%s (%s%s%s)",
-              description, modifiers, separator, value_gp);
+  asprintf_or_die(&gem->trueDescription, "%s (%s%s%s)",
+                  description, modifiers, separator, value_gp);
   
   free(value_gp);
   free(modifiers);

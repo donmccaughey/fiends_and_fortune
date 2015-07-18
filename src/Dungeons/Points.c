@@ -2,12 +2,12 @@
 
 #include <stdlib.h>
 
-#include "earmark.h"
+#include "alloc_or_die.h"
 
 
 struct Points *addPointToPoints(struct Point point, struct Points *next)
 {
-  struct Points *points = em_malloc(sizeof(struct Points));
+  struct Points *points = malloc_or_die(sizeof(struct Points));
   points->next = next;
   points->point = point;
   return points;

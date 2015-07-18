@@ -2,11 +2,12 @@
 
 #include <assert.h>
 #include <string.h>
+
+#include "alloc_or_die.h"
 #include "Area.h"
 #include "Areas.h"
 #include "Dice.h"
 #include "Direction.h"
-#include "earmark.h"
 #include "Tile.h"
 #include "Tiles.h"
 #include "unexpected.h"
@@ -80,14 +81,15 @@ static struct Point area(struct Dungeon *dungeon, struct Point fromPoint, uint32
   char *description;
   switch (areaType) {
     case ChamberAreaType:
-      em_asprintf(&description, "%u' x %u' chamber", length * 10, width * 10);
+      asprintf_or_die(&description, "%u' x %u' chamber",
+                      length * 10, width * 10);
       break;
     case PassageAreaType:
-      em_asprintf(&description, "%u' passage %s",
-                  length * 10, directionName(direction));
+      asprintf_or_die(&description, "%u' passage %s",
+                      length * 10, directionName(direction));
       break;
     default:
-      em_asprintf(&description, "%u' x %u' area", length * 10, width * 10);
+      asprintf_or_die(&description, "%u' x %u' area", length * 10, width * 10);
       break;
   }
 
@@ -113,7 +115,8 @@ static struct Point chamber(struct Dungeon *dungeon, struct Point fromPoint, uin
 char const **dungeonAreaDescriptions(struct Dungeon *dungeon)
 {
   size_t descriptionsCount = areasCount(dungeon->areas);
-  char const **descriptions = em_calloc(descriptionsCount + 1, sizeof(char const *));
+  char const **descriptions = calloc_or_die(descriptionsCount + 1,
+                                            sizeof(char const *));
 
   for (size_t i = 0; i < descriptionsCount; ++i) {
     descriptions[i] = areaInAreasAtIndex(dungeon->areas, i)->description;

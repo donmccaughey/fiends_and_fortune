@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "alloc_or_die.h"
 #include "Dice.h"
-#include "earmark.h"
 #include "Gem.h"
 #include "Jewelry.h"
 #include "MagicItem.h"
@@ -313,7 +313,7 @@ static void generateMonetaryTreasure_13to15_Gems(struct Treasure *treasure,
 {
   int count = roll(dice, "1d10") * 10;
   size_t newSize = (treasure->gemsCount + count) * sizeof(struct Gem);
-  treasure->gems = em_realloc(treasure->gems, newSize);
+  treasure->gems = realloc_or_die(treasure->gems, newSize);
   for (int i = 0; i < count; ++i) {
     int j = treasure->gemsCount + i;
     initializeGem(&treasure->gems[j]);
@@ -328,7 +328,7 @@ static void generateMonetaryTreasure_16to17_Jewelry(struct Treasure *treasure,
 {
   int count = roll(dice, "5d10");
   size_t newSize = (treasure->jewelryCount + count) * sizeof(struct Jewelry);
-  treasure->jewelry = em_realloc(treasure->jewelry, newSize);
+  treasure->jewelry = realloc_or_die(treasure->jewelry, newSize);
   for (int i = 0; i < count; ++i) {
     int j = treasure->jewelryCount + i;
     initializeJewelry(&treasure->jewelry[j]);
@@ -387,21 +387,21 @@ void generateTreasureMap(struct TreasureMap *treasureMap, struct Dice *dice)
       disposition = "secreted in a town";
     }
     
-    em_asprintf(&treasureMap->trueDescription,
-                "%smap to %s of %s %i miles to the %s, %s",
-                (treasureMap->isFalse ? "false " : ""),
-                treasureMapTypes[treasureMapType],
-                describeTreasure(&treasureMap->treasure),
-                miles,
-                compassDirections[compassDirection],
-                disposition);
+    asprintf_or_die(&treasureMap->trueDescription,
+                    "%smap to %s of %s %i miles to the %s, %s",
+                    (treasureMap->isFalse ? "false " : ""),
+                    treasureMapTypes[treasureMapType],
+                    describeTreasure(&treasureMap->treasure),
+                    miles,
+                    compassDirections[compassDirection],
+                    disposition);
   } else {
-    em_asprintf(&treasureMap->trueDescription,
-                "%smap to %s of %s in nearby labyrinth to the %s",
-                (treasureMap->isFalse ? "false " : ""),
-                treasureMapTypes[treasureMapType],
-                describeTreasure(&treasureMap->treasure),
-                compassDirections[compassDirection]);
+    asprintf_or_die(&treasureMap->trueDescription,
+                    "%smap to %s of %s in nearby labyrinth to the %s",
+                    (treasureMap->isFalse ? "false " : ""),
+                    treasureMapTypes[treasureMapType],
+                    describeTreasure(&treasureMap->treasure),
+                    compassDirections[compassDirection]);
   }
 }
 

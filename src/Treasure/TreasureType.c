@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "alloc_or_die.h"
 #include "Dice.h"
-#include "earmark.h"
 #include "Gem.h"
 #include "Jewelry.h"
 #include "MagicItem.h"
@@ -508,14 +508,14 @@ char *describeTreasureType(struct TreasureType *treasureType,
   char *jewelry = describeCoinsGemsOrJewelry(&treasureType->jewelry);
   char *mapsOrMagic = describeMapsOrMagic(&treasureType->mapsOrMagic);
   
-  em_asprintf(&letter, letterFormat, treasureType->letter);
+  asprintf_or_die(&letter, letterFormat, treasureType->letter);
   
   char *descriptionFormat = "%s%s | %s | %s | %s | %s | %s | %s | %s | %s\n";
   char *description;
-  em_asprintf(&description, descriptionFormat,
-              (includeHeader ? header : ""),
-              letter, copper, silver, electrum,
-              gold, platinum, gems, jewelry, mapsOrMagic);
+  asprintf_or_die(&description, descriptionFormat,
+                  (includeHeader ? header : ""),
+                  letter, copper, silver, electrum,
+                  gold, platinum, gems, jewelry, mapsOrMagic);
   free(letter);
   free(copper);
   free(silver);
@@ -543,7 +543,8 @@ static char *describeCoinsGemsOrJewelry(struct CoinsGemsOrJewelry *coinsGemsOrJe
       char const *suffix = (dieRollLength < 4 ? " " : "");
       
       char *description;
-      em_asprintf(&description, " %i-%i per%s", minAmount, maxAmount, suffix);
+      asprintf_or_die(&description, " %i-%i per%s",
+                      minAmount, maxAmount, suffix);
       
       return description;
     } else {
@@ -567,16 +568,16 @@ static char *describeCoinsGemsOrJewelry(struct CoinsGemsOrJewelry *coinsGemsOrJe
       }
       
       char *dieRoll;
-      em_asprintf(&dieRoll, "%i-%i", minAmount, maxAmount);
+      asprintf_or_die(&dieRoll, "%i-%i", minAmount, maxAmount);
       
       char *description;
-      em_asprintf(&description, "%s%s:%2i%%%s", prefix, dieRoll,
-                  coinsGemsOrJewelry->percentChance, suffix);
+      asprintf_or_die(&description, "%s%s:%2i%%%s", prefix, dieRoll,
+                      coinsGemsOrJewelry->percentChance, suffix);
       free(dieRoll);
       return description;
     }
   } else {
-    return em_strdup("   nil   ");
+    return strdup_or_die("   nil   ");
   }
 }
 
@@ -592,21 +593,21 @@ static char *describeMapsOrMagic(struct MapsOrMagic *mapsOrMagic) {
       if (type->variableAmount[0]) {
         int minAmount = minDieRoll(type->variableAmount);
         int maxAmount = maxDieRoll(type->variableAmount);
-        em_asprintf(&typeDescriptions[i], "%i-%i %ss",
-                    minAmount, maxAmount, typeName);
+        asprintf_or_die(&typeDescriptions[i], "%i-%i %ss",
+                        minAmount, maxAmount, typeName);
       } else if (   type->isMapPossible 
                  && type->possibleMagicItems == ANY_MAGIC_ITEM)
       {
-        em_asprintf(&typeDescriptions[i], "any %i", type->amount);
+        asprintf_or_die(&typeDescriptions[i], "any %i", type->amount);
       } else if (type->possibleMagicItems == NON_WEAPON_MAGIC) {
-        em_asprintf(&typeDescriptions[i],
-                    "any %i except sword or misc weapon", type->amount);
+        asprintf_or_die(&typeDescriptions[i],
+                        "any %i except sword or misc weapon", type->amount);
       } else if (type->possibleMagicItems == ANY_MAGIC_ITEM) {
-        em_asprintf(&typeDescriptions[i], "any %i magic", type->amount);
+        asprintf_or_die(&typeDescriptions[i], "any %i magic", type->amount);
       } else {
         char const *plural = (type->amount == 1) ? "" : "s";
-        em_asprintf(&typeDescriptions[i], "%i %s%s",
-                    type->amount, typeName, plural);
+        asprintf_or_die(&typeDescriptions[i], "%i %s%s",
+                        type->amount, typeName, plural);
       }
     }
     
@@ -619,7 +620,7 @@ static char *describeMapsOrMagic(struct MapsOrMagic *mapsOrMagic) {
       }
       typeListSize += strlen(typeDescriptions[i]);
     }
-    char *typeList = em_calloc(typeListSize, sizeof(char));
+    char *typeList = calloc_or_die(typeListSize, sizeof(char));
     for (int i = 0; i < mapsOrMagic->typeCount; ++i) {
       if (i) {
         strcat(typeList, separator);
@@ -629,11 +630,12 @@ static char *describeMapsOrMagic(struct MapsOrMagic *mapsOrMagic) {
     }
     
     char *description;
-    em_asprintf(&description, "%s: %i%%", typeList, mapsOrMagic->percentChance);
+    asprintf_or_die(&description, "%s: %i%%",
+                    typeList, mapsOrMagic->percentChance);
     free(typeList);
     return description;
   } else {
-    return em_strdup("   nil   ");
+    return strdup_or_die("   nil   ");
   }
 }
 
@@ -691,7 +693,7 @@ static void generateTreasureGems(struct Treasure *treasure,
     int percentRoll = roll(dice, "1D100");
     if (percentRoll <= treasure->type->gems.percentChance) {
       treasure->gemsCount = roll(dice, treasure->type->gems.amount);
-      treasure->gems = em_calloc(treasure->gemsCount, sizeof(struct Gem));
+      treasure->gems = calloc_or_die(treasure->gemsCount, sizeof(struct Gem));
       for (int i = 0; i < treasure->gemsCount; ++i) {
         initializeGem(&treasure->gems[i]);
         generateGem(&treasure->gems[i], dice);
@@ -710,8 +712,8 @@ static void generateTreasureJewelry(struct Treasure *treasure,
     int percentRoll = roll(dice, "1D100");
     if (percentRoll <= treasure->type->jewelry.percentChance) {
       treasure->jewelryCount = roll(dice, treasure->type->jewelry.amount);
-      treasure->jewelry = em_calloc(treasure->jewelryCount,
-                                    sizeof(struct Jewelry));
+      treasure->jewelry = calloc_or_die(treasure->jewelryCount,
+                                        sizeof(struct Jewelry));
       for (int i = 0; i < treasure->jewelryCount; ++i) {
         initializeJewelry(&treasure->jewelry[i]);
         generateJewelry(&treasure->jewelry[i], dice);

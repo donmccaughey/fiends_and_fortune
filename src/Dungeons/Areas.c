@@ -3,8 +3,8 @@
 #include <assert.h>
 #include <stdlib.h>
 
+#include "alloc_or_die.h"
 #include "Area.h"
-#include "earmark.h"
 
 
 struct Areas {
@@ -22,7 +22,8 @@ void addAreaToAreas(struct Areas *areas, struct Area *area)
     } else {
       areas->capacity = 256;
     }
-    areas->areas = em_realloc(areas->areas, areas->capacity * sizeof(struct Area *));
+    areas->areas = realloc_or_die(areas->areas,
+                                  areas->capacity * sizeof(struct Area *));
   }
   areas->areas[areas->count] = area;
   ++areas->count;
@@ -44,8 +45,8 @@ size_t areasCount(struct Areas const *areas)
 
 struct Areas *createAreas(void)
 {
-  struct Areas *areas = em_calloc(1, sizeof(struct Areas));
-  areas->areas = em_calloc(0, sizeof(struct Area *));
+  struct Areas *areas = calloc_or_die(1, sizeof(struct Areas));
+  areas->areas = calloc_or_die(0, sizeof(struct Area *));
   return areas;
 }
 

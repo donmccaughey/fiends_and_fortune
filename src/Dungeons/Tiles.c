@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "earmark.h"
+#include "alloc_or_die.h"
 #include "Tile.h"
 
 
@@ -43,7 +43,8 @@ static void appendTileToTiles(struct Tiles *tiles, struct Tile  *tile)
     } else {
       tiles->capacity = 256;
     }
-    tiles->tiles = em_realloc(tiles->tiles, tiles->capacity * sizeof(struct Tile *));
+    tiles->tiles = realloc_or_die(tiles->tiles,
+                                  tiles->capacity * sizeof(struct Tile *));
   }
   tiles->tiles[tiles->count] = tile;
   ++tiles->count;
@@ -74,9 +75,9 @@ struct Tiles *createEmptyTilesWithParent(struct Tiles *tiles)
 
 struct Tiles *createTiles(void)
 {
-  struct Tiles *tiles = em_calloc(1, sizeof(struct Tiles));
+  struct Tiles *tiles = calloc_or_die(1, sizeof(struct Tiles));
   tiles->compare = compareTilesByCoordinate;
-  tiles->tiles = em_calloc(0, sizeof(struct Tile *));
+  tiles->tiles = calloc_or_die(0, sizeof(struct Tile *));
   return tiles;
 }
 

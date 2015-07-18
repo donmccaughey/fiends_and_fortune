@@ -4,9 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "alloc_or_die.h"
 #include "coinage.h"
 #include "Dice.h"
-#include "earmark.h"
 #include "Gem.h"
 #include "Jewelry.h"
 #include "TreasureMap.h"
@@ -41,26 +41,26 @@ char *describeTreasure(struct Treasure *treasure) {
   
   if (treasure->gemsCount) {
     char const *plural = (treasure->gemsCount == 1) ? "" : "s";
-    em_asprintf(&phrases[GemsPhrase], "%d gem%s",
-                treasure->gemsCount, plural);
+    asprintf_or_die(&phrases[GemsPhrase], "%d gem%s",
+                    treasure->gemsCount, plural);
   }
   
   if (treasure->jewelryCount) {
     char const *plural = (treasure->jewelryCount == 1) ? "" : "s";
-    em_asprintf(&phrases[JewelryPhrase], "%d piece%s of jewelry",
-                treasure->jewelryCount, plural);
+    asprintf_or_die(&phrases[JewelryPhrase], "%d piece%s of jewelry",
+                    treasure->jewelryCount, plural);
   }
   
   if (treasure->mapsCount) {
     char const *plural = (treasure->mapsCount == 1) ? "" : "s";
-    em_asprintf(&phrases[MapsPhrase], "%d map%s",
-                treasure->mapsCount, plural);
+    asprintf_or_die(&phrases[MapsPhrase], "%d map%s",
+                    treasure->mapsCount, plural);
   }
   
   if (treasure->magicItemsCount) {
     char const *plural = (treasure->magicItemsCount == 1) ? "" : "s";
-    em_asprintf(&phrases[MagicPhrase], "%d magic item%s",
-                treasure->magicItemsCount, plural);
+    asprintf_or_die(&phrases[MagicPhrase], "%d magic item%s",
+                    treasure->magicItemsCount, plural);
   }
   
   char const separator[] = ", ";
@@ -78,10 +78,10 @@ char *describeTreasure(struct Treasure *treasure) {
   bytes += sizeof('\0');
   
   if ( ! phraseCount) {
-    return em_strdup("(no treasure)");
+    return strdup_or_die("(no treasure)");
   }
   
-  char *description = em_calloc(bytes, sizeof(char));
+  char *description = calloc_or_die(bytes, sizeof(char));
   phraseCount = 0;
   for (int i = 0; i < phrasesCount; ++i) {
     if (phrases[i]) {
@@ -99,7 +99,7 @@ char *describeTreasure(struct Treasure *treasure) {
 
 static void describeTreasureCoins(int *coins, char const *name, char **phrase) {
   if (*coins) {
-    em_asprintf(phrase, "%d %s", *coins, name);
+    asprintf_or_die(phrase, "%d %s", *coins, name);
   }
 }
 
@@ -134,7 +134,7 @@ void generateMagicItemsForTreasure(struct Treasure *treasure,
 {
   size_t newSize = (treasure->magicItemsCount + count)  
                  * sizeof(struct MagicItem);
-  treasure->magicItems = em_realloc(treasure->magicItems, newSize);
+  treasure->magicItems = realloc_or_die(treasure->magicItems, newSize);
   for (int i = 0; i < count; ++i) {
     int j = treasure->magicItemsCount + i;
     initializeMagicItem(&treasure->magicItems[j]);
@@ -149,7 +149,7 @@ void generateMapsForTreasure(struct Treasure *treasure,
                              int count)
 {
   size_t newSize = (treasure->mapsCount + count) * sizeof(struct TreasureMap);
-  treasure->maps = em_realloc(treasure->maps, newSize);
+  treasure->maps = realloc_or_die(treasure->maps, newSize);
   for (int i = 0; i < count; ++i) {
     int j = treasure->mapsCount + i;
     initializeTreasureMap(&treasure->maps[j]);
