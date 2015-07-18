@@ -22,8 +22,9 @@ void addAreaToAreas(struct Areas *areas, struct Area *area)
     } else {
       areas->capacity = 256;
     }
-    areas->areas = realloc_or_die(areas->areas,
-                                  areas->capacity * sizeof(struct Area *));
+    areas->areas = reallocarray_or_die(areas->areas,
+                                       areas->capacity,
+                                       sizeof(struct Area *));
   }
   areas->areas[areas->count] = area;
   ++areas->count;

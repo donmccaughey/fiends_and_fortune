@@ -43,8 +43,9 @@ static void appendTileToTiles(struct Tiles *tiles, struct Tile  *tile)
     } else {
       tiles->capacity = 256;
     }
-    tiles->tiles = realloc_or_die(tiles->tiles,
-                                  tiles->capacity * sizeof(struct Tile *));
+    tiles->tiles = reallocarray_or_die(tiles->tiles,
+                                       tiles->capacity,
+                                       sizeof(struct Tile *));
   }
   tiles->tiles[tiles->count] = tile;
   ++tiles->count;

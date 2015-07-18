@@ -312,8 +312,9 @@ static void generateMonetaryTreasure_13to15_Gems(struct Treasure *treasure,
                                                  struct Dice *dice)
 {
   int count = roll(dice, "1d10") * 10;
-  size_t newSize = (treasure->gemsCount + count) * sizeof(struct Gem);
-  treasure->gems = realloc_or_die(treasure->gems, newSize);
+  treasure->gems = reallocarray_or_die(treasure->gems,
+                                       treasure->gemsCount + count,
+                                       sizeof(struct Gem));
   for (int i = 0; i < count; ++i) {
     int j = treasure->gemsCount + i;
     initializeGem(&treasure->gems[j]);
@@ -327,8 +328,9 @@ static void generateMonetaryTreasure_16to17_Jewelry(struct Treasure *treasure,
                                                     struct Dice *dice)
 {
   int count = roll(dice, "5d10");
-  size_t newSize = (treasure->jewelryCount + count) * sizeof(struct Jewelry);
-  treasure->jewelry = realloc_or_die(treasure->jewelry, newSize);
+  treasure->jewelry = reallocarray_or_die(treasure->jewelry,
+                                          treasure->jewelryCount + count,
+                                          sizeof(struct Jewelry));
   for (int i = 0; i < count; ++i) {
     int j = treasure->jewelryCount + i;
     initializeJewelry(&treasure->jewelry[j]);

@@ -104,7 +104,7 @@
 		D4783B1315ABDF8B004E7F2C /* Jewelry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Jewelry.h; sourceTree = "<group>"; };
 		D4783B1415ABDF8B004E7F2C /* MagicItem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = MagicItem.c; sourceTree = "<group>"; };
 		D4783B1515ABDF8B004E7F2C /* MagicItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagicItem.h; sourceTree = "<group>"; };
-		D4783B1615ABDF8B004E7F2C /* Treasure.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Treasure.c; sourceTree = "<group>"; };
+		D4783B1615ABDF8B004E7F2C /* Treasure.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.c; path = Treasure.c; sourceTree = "<group>"; tabWidth = 2; };
 		D4783B1715ABDF8B004E7F2C /* Treasure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Treasure.h; sourceTree = "<group>"; };
 		D4783B1815ABDF8B004E7F2C /* TreasureMap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TreasureMap.c; sourceTree = "<group>"; };
 		D4783B1915ABDF8B004E7F2C /* TreasureMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreasureMap.h; sourceTree = "<group>"; };
