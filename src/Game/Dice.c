@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "rnd.h"
 #include "unexpected.h"
 
 
@@ -29,16 +30,15 @@ static int compareDieRolls(void const *die1, void const *die2)
 }
 
 
+void finalizeDice(struct Dice *dice)
+{
+  rnd_free(dice->rnd);
+}
+
+
 void initializeDice(struct Dice *dice)
 {
-  clock_t clockNow = clock();
-  time_t timeNow = time(NULL);
-  u_int32_t random = arc4random();
-  
-  dice->state[0] = (unsigned short)clockNow;
-  dice->state[1] = (unsigned short)timeNow;
-  dice->state[2] = (unsigned short)random;
-  dice->nextRandomNumber = nextRandomNumber;
+  dice->rnd = global_rnd;
 }
 
 
@@ -58,7 +58,7 @@ int minDieRoll(char const *dieRollString)
 
 static uint32_t nextRandomNumber(struct Dice *dice)
 {
-  return (uint32_t) jrand48(dice->state);
+  return rnd_next_uniform_value(dice->rnd, UINT32_MAX);
 }
 
 
@@ -85,7 +85,7 @@ static uint32_t nextRandomNumberInRange(struct Dice *dice,
   /* to eliminate modulo bias */
   uint32_t sourceValue;
   do {
-    sourceValue = dice->nextRandomNumber(dice);
+    sourceValue = nextRandomNumber(dice);
   } while (sourceValue > sourceMaxIncludedValue);
   
   uint64_t resultValue = (uint64_t) sourceValue % resultRange;

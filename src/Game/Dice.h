@@ -5,9 +5,11 @@
 #include <stdint.h>
 
 
+struct rnd;
+
+
 struct Dice {
-  unsigned short state[3];
-  uint32_t (*nextRandomNumber)(struct Dice *dice);
+  struct rnd *rnd;
 };
 
 
@@ -18,6 +20,8 @@ struct DieRoll {
   int multiplier;
 };
 
+
+void finalizeDice(struct Dice *dice);
 
 void initializeDice(struct Dice *dice);
 

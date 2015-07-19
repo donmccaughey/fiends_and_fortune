@@ -1,11 +1,10 @@
 #include <assert.h>
+
 #include "Dice.h"
+#include "rnd.h"
 
 
 void diceTest(void);
-static uint32_t nextAscending(struct Dice *dice);
-static uint32_t nextOne(struct Dice *dice);
-static uint32_t nextZero(struct Dice *dice);
 static void parseDieRollTest(void);
 static void rollTest(void);
 static void rollDiceTest(void);
@@ -21,24 +20,6 @@ void diceTest(void) {
   rollDiceAndAdjustTowardsAverageTest();
   rollDiceAndDropLowestTest();
   rollDicePlusTest();
-}
-
-
-static uint32_t nextAscending(struct Dice *dice)
-{
-  return (uint32_t) dice->state[0]++;
-}
-
-
-static uint32_t nextOne(struct Dice *dice)
-{
-  return 1;
-}
-
-
-static uint32_t nextZero(struct Dice *dice)
-{
-  return 0;
 }
 
 
@@ -122,10 +103,12 @@ static void parseDieRollTest(void)
 
 static void rollTest(void)
 {
-  struct Dice alwaysRollOnes;
-  alwaysRollOnes.nextRandomNumber = nextZero;
-  struct Dice alwaysRollTwos;
-  alwaysRollTwos.nextRandomNumber = nextOne;
+  struct Dice alwaysRollOnes = {
+    .rnd=rnd_alloc_fake_fixed(0)
+  };
+  struct Dice alwaysRollTwos = {
+    .rnd=rnd_alloc_fake_fixed(1)
+  };
   int dieRoll;
   
   /* "roll" a constant number */
@@ -178,15 +161,20 @@ static void rollTest(void)
   
   dieRoll = roll(&alwaysRollTwos, "2d20+1*10");
   assert(50 == dieRoll);
+  
+  finalizeDice(&alwaysRollOnes);
+  finalizeDice(&alwaysRollTwos);
 }
 
 
 static void rollDiceTest(void)
 {
-  struct Dice alwaysRollOnes;
-  alwaysRollOnes.nextRandomNumber = nextZero;
-  struct Dice alwaysRollTwos;
-  alwaysRollTwos.nextRandomNumber = nextOne;
+  struct Dice alwaysRollOnes = {
+    .rnd=rnd_alloc_fake_fixed(0)
+  };
+  struct Dice alwaysRollTwos = {
+    .rnd=rnd_alloc_fake_fixed(1)
+  };
   int dieRoll;
   
   /* "roll" a constant number */
@@ -215,19 +203,22 @@ static void rollDiceTest(void)
   
   dieRoll = rollDice(&alwaysRollTwos, 3, 4);
   assert(6 == dieRoll);
+  
+  finalizeDice(&alwaysRollOnes);
+  finalizeDice(&alwaysRollTwos);
 }
 
 
 static void rollDiceAndAdjustTowardsAverageTest(void)
 {
   struct Dice ascendingRolls = {
-    .nextRandomNumber = nextAscending
+    .rnd=rnd_alloc_fake_ascending(0)
   };
   struct Dice alwaysRollOnes = {
-    .nextRandomNumber = nextZero
+    .rnd=rnd_alloc_fake_fixed(0)
   };
   struct Dice alwaysRollTwos = {
-    .nextRandomNumber = nextOne
+    .rnd=rnd_alloc_fake_fixed(1)
   };
   int dieRoll;
   
@@ -239,19 +230,24 @@ static void rollDiceAndAdjustTowardsAverageTest(void)
   
   dieRoll = rollDiceAndAdjustTowardsAverage(&alwaysRollTwos, 3, 6);
   assert(6 == dieRoll);
+  
+  finalizeDice(&ascendingRolls);
+  finalizeDice(&alwaysRollOnes);
+  finalizeDice(&alwaysRollTwos);
 }
+
 
 
 static void rollDiceAndDropLowestTest(void)
 {
   struct Dice ascendingRolls = {
-    .nextRandomNumber = nextAscending
+    .rnd=rnd_alloc_fake_ascending(0)
   };
   struct Dice alwaysRollOnes = {
-    .nextRandomNumber = nextZero
+    .rnd=rnd_alloc_fake_fixed(0)
   };
   struct Dice alwaysRollTwos = {
-    .nextRandomNumber = nextOne
+    .rnd=rnd_alloc_fake_fixed(1)
   };
   int dieRoll;
   
@@ -263,15 +259,21 @@ static void rollDiceAndDropLowestTest(void)
   
   dieRoll = rollDiceAndDropLowest(&alwaysRollTwos, 5, 4);
   assert(8 == dieRoll);
+  
+  finalizeDice(&ascendingRolls);
+  finalizeDice(&alwaysRollOnes);
+  finalizeDice(&alwaysRollTwos);
 }
 
 
 static void rollDicePlusTest(void)
 {
-  struct Dice alwaysRollOnes;
-  alwaysRollOnes.nextRandomNumber = nextZero;
-  struct Dice alwaysRollTwos;
-  alwaysRollTwos.nextRandomNumber = nextOne;
+  struct Dice alwaysRollOnes = {
+    .rnd=rnd_alloc_fake_fixed(0)
+  };
+  struct Dice alwaysRollTwos = {
+    .rnd=rnd_alloc_fake_fixed(1)
+  };
   int dieRoll;
   
   /* "roll" a constant number */
@@ -300,4 +302,7 @@ static void rollDicePlusTest(void)
   
   dieRoll = rollDicePlus(&alwaysRollTwos, 3, 4, -3);
   assert(3 == dieRoll);
+  
+  finalizeDice(&alwaysRollOnes);
+  finalizeDice(&alwaysRollTwos);
 }

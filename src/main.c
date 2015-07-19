@@ -9,6 +9,7 @@
 #include "Gem.h"
 #include "Jewelry.h"
 #include "MagicItem.h"
+#include "rnd.h"
 #include "TextGraph.h"
 #include "Treasure.h"
 #include "TreasureMap.h"
@@ -27,16 +28,15 @@ static void generateRandomDungeon(struct Dice *dice, FILE *out);
 static void generateSampleDungeon(struct Dice *dice, FILE *out);
 static void generateTreasureType(struct Dice *dice, FILE *out, char letter);
 static void generateTreasureTypeTable(FILE *out);
-static uint32_t nextConstantNumber(struct Dice *dice);
 static void usage(int argc, char *argv[]);
 
 
 static void check(FILE *out, char const *constantNumber)
 {
-  struct Dice fakeDice;
-  
-  fakeDice.state[0] = (unsigned short) strtoul(constantNumber, NULL, 10);
-  fakeDice.nextRandomNumber = nextConstantNumber;
+  uint32_t fixedValue = (uint32_t)strtoul(constantNumber, NULL, 10);
+  struct Dice fakeDice = {
+      .rnd=rnd_alloc_fake_fixed(fixedValue)
+  };
   
   generateTreasureTypeTable(out);
   generateMap(&fakeDice, out);
@@ -49,6 +49,8 @@ static void check(FILE *out, char const *constantNumber)
   generateCharacter(&fakeDice, out, "method4");
   generateCharacter(&fakeDice, out, "generalnpc");
   generateCharacter(&fakeDice, out, "specialnpc");
+  
+  finalizeDice(&fakeDice);
 }
 
 
@@ -342,12 +344,6 @@ int main(int argc, char *argv[])
   
   fprintf(out, "\n");
   return EXIT_SUCCESS;
-}
-
-
-static uint32_t nextConstantNumber(struct Dice *dice)
-{
-  return dice->state[0];
 }
 
 

@@ -13,6 +13,8 @@
 		D4092FB715B2A5AA0002FB34 /* Tile.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092FB515B2A1880002FB34 /* Tile.c */; };
 		D4230D1B15B3B298007A7762 /* RangeTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4230D1A15B3B298007A7762 /* RangeTest.c */; };
 		D43ED594142146F800D25EEC /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D43ED593142146F800D25EEC /* main.c */; };
+		D45178401B5B684D00F26844 /* rnd.c in Sources */ = {isa = PBXBuildFile; fileRef = D451783E1B5B684D00F26844 /* rnd.c */; };
+		D45178411B5B684D00F26844 /* rnd.c in Sources */ = {isa = PBXBuildFile; fileRef = D451783E1B5B684D00F26844 /* rnd.c */; };
 		D45BB9521B5A12BF0096E525 /* alloc_or_die.c in Sources */ = {isa = PBXBuildFile; fileRef = D45BB9501B5A12BF0096E525 /* alloc_or_die.c */; };
 		D45BB9531B5A12BF0096E525 /* alloc_or_die.c in Sources */ = {isa = PBXBuildFile; fileRef = D45BB9501B5A12BF0096E525 /* alloc_or_die.c */; };
 		D4783B1C15ABDF8B004E7F2C /* Gem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1015ABDF8B004E7F2C /* Gem.c */; };
@@ -96,6 +98,8 @@
 		D4230D1A15B3B298007A7762 /* RangeTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RangeTest.c; sourceTree = "<group>"; };
 		D43ED590142146F800D25EEC /* UnitTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		D43ED593142146F800D25EEC /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		D451783E1B5B684D00F26844 /* rnd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rnd.c; path = ../../rnd/rnd.c; sourceTree = "<group>"; };
+		D451783F1B5B684D00F26844 /* rnd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rnd.h; path = ../../rnd/rnd.h; sourceTree = "<group>"; };
 		D45BB9501B5A12BF0096E525 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
 		D45BB9511B5A12BF0096E525 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
 		D4783B1015ABDF8B004E7F2C /* Gem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Gem.c; sourceTree = "<group>"; };
@@ -116,12 +120,12 @@
 		D4783B2815ABDFF0004E7F2C /* Dungeon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dungeon.h; sourceTree = "<group>"; };
 		D4783B2A15ABE045004E7F2C /* coinage.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coinage.c; sourceTree = "<group>"; };
 		D4783B2B15ABE045004E7F2C /* coinage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coinage.h; sourceTree = "<group>"; };
-		D4783B2E15ABE063004E7F2C /* Dice.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Dice.c; sourceTree = "<group>"; };
-		D4783B2F15ABE063004E7F2C /* Dice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dice.h; sourceTree = "<group>"; };
+		D4783B2E15ABE063004E7F2C /* Dice.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.c; path = Dice.c; sourceTree = "<group>"; tabWidth = 2; };
+		D4783B2F15ABE063004E7F2C /* Dice.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; path = Dice.h; sourceTree = "<group>"; tabWidth = 2; };
 		D4783B3615ABE10B004E7F2C /* unexpected.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unexpected.c; sourceTree = "<group>"; };
 		D4783B3715ABE10B004E7F2C /* unexpected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unexpected.h; sourceTree = "<group>"; };
 		D4783B3B15ABE155004E7F2C /* DungeonTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DungeonTest.c; sourceTree = "<group>"; };
-		D4783B3D15ABE155004E7F2C /* DiceTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = DiceTest.c; sourceTree = "<group>"; };
+		D4783B3D15ABE155004E7F2C /* DiceTest.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.c; path = DiceTest.c; sourceTree = "<group>"; tabWidth = 2; };
 		D4783B4415ABE484004E7F2C /* TileType.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TileType.h; sourceTree = "<group>"; };
 		D4783B4615ABE561004E7F2C /* Tile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tile.h; sourceTree = "<group>"; };
 		D4783B4715ABE698004E7F2C /* Tiles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tiles.h; sourceTree = "<group>"; };
@@ -141,7 +145,7 @@
 		D4F244A114181FF5003BDED5 /* check */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = check; sourceTree = "<group>"; };
 		D4F244A31418207C003BDED5 /* check.out */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = check.out; sourceTree = "<group>"; };
 		D4F7344F140EF3E00096618F /* FiendsAndFortune */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FiendsAndFortune; sourceTree = BUILT_PRODUCTS_DIR; };
-		D4F73461140EF4380096618F /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		D4F73461140EF4380096618F /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; tabWidth = 2; };
 		D4F73465140EF55C00966190 /* Point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Point.h; sourceTree = "<group>"; };
 		D4F73465140EF55C00966191 /* Point.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Point.c; sourceTree = "<group>"; };
 		D4F73465140EF55C00966194 /* TextGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextGraph.h; sourceTree = "<group>"; };
@@ -317,6 +321,8 @@
 				D45BB9511B5A12BF0096E525 /* alloc_or_die.h */,
 				D45BB9501B5A12BF0096E525 /* alloc_or_die.c */,
 				D4F73461140EF4380096618F /* main.c */,
+				D451783F1B5B684D00F26844 /* rnd.h */,
+				D451783E1B5B684D00F26844 /* rnd.c */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -437,6 +443,7 @@
 				D4783B4C15ABEB32004E7F2C /* TilesTest.c in Sources */,
 				D4092F3E15AE93DE0002FB34 /* Point.c in Sources */,
 				D4092F6815AFFEE70002FB34 /* Range.c in Sources */,
+				D45178411B5B684D00F26844 /* rnd.c in Sources */,
 				D4092FB715B2A5AA0002FB34 /* Tile.c in Sources */,
 				D4230D1B15B3B298007A7762 /* RangeTest.c in Sources */,
 				D4EA732F1606BF2400B01DB5 /* Areas.c in Sources */,
@@ -453,6 +460,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D45178401B5B684D00F26844 /* rnd.c in Sources */,
 				D4F73462140EF4380096618F /* main.c in Sources */,
 				D4783B1C15ABDF8B004E7F2C /* Gem.c in Sources */,
 				D4783B1D15ABDF8B004E7F2C /* Jewelry.c in Sources */,
