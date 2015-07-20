@@ -13,10 +13,6 @@
 
 static int compareDieRolls(void const *die1, void const *die2);
 
-static uint32_t nextRandomNumberInRange(struct rnd *rnd,
-                                        uint32_t resultInclusiveMin, 
-                                        uint32_t resultInclusiveMax); 
-
 static int rollDieRoll(struct rnd *rnd,
                        struct DieRoll *dieRoll, 
                        int diceRolled[]);
@@ -39,23 +35,6 @@ int minDieRoll(char const *dieRollString)
 {
   struct DieRoll dieRoll = parseDieRoll(dieRollString);
   return dieRoll.count;
-}
-
-
-static uint32_t nextRandomNumberInRange(struct rnd *rnd,
-                                        uint32_t resultInclusiveMin, 
-                                        uint32_t resultInclusiveMax)
-{
-  assert(resultInclusiveMin < resultInclusiveMax);
-  
-  uint64_t exclusiveUpperBound = (uint64_t) resultInclusiveMax
-                               - (uint64_t) resultInclusiveMin
-                               + (uint64_t) 1;
-  assert(exclusiveUpperBound > (uint64_t) 1);
-  assert(exclusiveUpperBound <= (uint64_t) UINT32_MAX);
-  
-  uint32_t sourceValue = rnd_next_uniform_value(rnd, (uint32_t) exclusiveUpperBound);
-  return sourceValue + resultInclusiveMin;
 }
 
 
@@ -208,7 +187,7 @@ static int rollDieRoll(struct rnd *rnd,
   } else {
     int total = dieRoll->modifier;
     for (int i = 0; i < dieRoll->count; ++i) {
-      int result = (int) nextRandomNumberInRange(rnd, 1, dieRoll->sides);
+      int result = (int) rnd_next_uniform_value_in_range(rnd, 1, dieRoll->sides + 1);
       if (diceRolled) {
         diceRolled[i] = result;
       }
