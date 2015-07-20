@@ -15,7 +15,7 @@
 #define NO_SPECIAL_CHARACTERISTICS 0
 
 
-struct Dice;
+struct rnd;
 
 
 enum CharacteristicGenerationMethod {
@@ -48,11 +48,11 @@ struct Character {
 
 char const *characteristicGenerationMethodDescription(enum CharacteristicGenerationMethod method);
 
-char const *determineLanguage(struct Dice *dice,
+char const *determineLanguage(struct rnd *rnd,
                               char const *exclude[], 
                               size_t excludeCount);
 
-char const *determineSpell(struct Dice *dice, 
+char const *determineSpell(struct rnd *rnd,
                            enum SpellType spellType, 
                            int spellLevel);
 
@@ -60,7 +60,7 @@ void finalizeCharacter(struct Character *character);
 
 void initializeCharacter(struct Character *character);
 
-int *generateCharacteristics(struct Dice *dice, 
+int *generateCharacteristics(struct rnd *rnd,
                              enum CharacteristicGenerationMethod method,
                              uint32_t characteristicFlags);
 

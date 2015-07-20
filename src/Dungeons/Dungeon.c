@@ -132,7 +132,7 @@ void finalizeDungeon(struct Dungeon *dungeon)
 }
 
 
-void generateDungeon(struct Dungeon *dungeon, struct Dice *dice)
+void generateDungeon(struct Dungeon *dungeon, struct rnd *rnd)
 {
   generateSmallDungeon(dungeon);
 }

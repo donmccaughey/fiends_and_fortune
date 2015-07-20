@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 
-struct Dice;
+struct rnd;
 
 
 enum JewelryForm {
@@ -75,7 +75,7 @@ struct Jewelry {
 
 void finalizeJewelry(struct Jewelry *jewelry);
 
-void generateJewelry(struct Jewelry *jewelry, struct Dice *dice);
+void generateJewelry(struct Jewelry *jewelry, struct rnd *rnd);
 
 void initializeJewelry(struct Jewelry *jewelry);
 

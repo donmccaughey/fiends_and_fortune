@@ -8,7 +8,7 @@
 struct Gem;
 struct Jewelry;
 struct MagicItem;
-struct Dice;
+struct rnd;
 struct TreasureMap;
 struct TreasureType;
 
@@ -36,12 +36,12 @@ char *describeTreasure(struct Treasure *treasure);
 void finalizeTreasure(struct Treasure *treasure);
 
 void generateMagicItemsForTreasure(struct Treasure *treasure, 
-                                   struct Dice *dice, 
+                                   struct rnd *rnd,
                                    int count, 
                                    PossibleMagicItems possibleMagicItems);
 
 void generateMapsForTreasure(struct Treasure *treasure, 
-                             struct Dice *dice, 
+                             struct rnd *rnd,
                              int count);
 
 void initializeTreasure(struct Treasure *treasure);

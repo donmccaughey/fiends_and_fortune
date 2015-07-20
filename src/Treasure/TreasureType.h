@@ -6,7 +6,7 @@
 #include <stddef.h>
 
 
-struct Dice;
+struct rnd;
 struct Treasure;
 struct TreasureType;
 
@@ -16,7 +16,7 @@ char *describeTreasureType(struct TreasureType *treasureType,
 
 void generateTreasure(struct TreasureType *treasureType, 
                       struct Treasure *treasure, 
-                      struct Dice *dice,
+                      struct rnd *rnd,
                       int individualCount);
 
 struct TreasureType *treasureTypeByLetter(char letter);

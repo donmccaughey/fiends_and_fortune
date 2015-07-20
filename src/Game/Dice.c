@@ -13,13 +13,11 @@
 
 static int compareDieRolls(void const *die1, void const *die2);
 
-static uint32_t nextRandomNumber(struct Dice *dice);
-
-static uint32_t nextRandomNumberInRange(struct Dice *dice, 
+static uint32_t nextRandomNumberInRange(struct rnd *rnd,
                                         uint32_t resultInclusiveMin, 
                                         uint32_t resultInclusiveMax); 
 
-static int rollDieRoll(struct Dice *dice, 
+static int rollDieRoll(struct rnd *rnd,
                        struct DieRoll *dieRoll, 
                        int diceRolled[]);
 
@@ -27,18 +25,6 @@ static int rollDieRoll(struct Dice *dice,
 static int compareDieRolls(void const *die1, void const *die2)
 {
   return *((int *) die1) - *((int *) die2);
-}
-
-
-void finalizeDice(struct Dice *dice)
-{
-  rnd_free(dice->rnd);
-}
-
-
-void initializeDice(struct Dice *dice)
-{
-  dice->rnd = global_rnd;
 }
 
 
@@ -56,41 +42,20 @@ int minDieRoll(char const *dieRollString)
 }
 
 
-static uint32_t nextRandomNumber(struct Dice *dice)
-{
-  return rnd_next_uniform_value(dice->rnd, UINT32_MAX);
-}
-
-
-static uint32_t nextRandomNumberInRange(struct Dice *dice, 
+static uint32_t nextRandomNumberInRange(struct rnd *rnd,
                                         uint32_t resultInclusiveMin, 
                                         uint32_t resultInclusiveMax)
 {
   assert(resultInclusiveMin < resultInclusiveMax);
   
-  uint64_t resultRange = (uint64_t) resultInclusiveMax 
-                       - (uint64_t) resultInclusiveMin + (uint64_t) 1;
-  assert(resultRange > (uint64_t) 1);
+  uint64_t exclusiveUpperBound = (uint64_t) resultInclusiveMax
+                               - (uint64_t) resultInclusiveMin
+                               + (uint64_t) 1;
+  assert(exclusiveUpperBound > (uint64_t) 1);
+  assert(exclusiveUpperBound <= (uint64_t) UINT32_MAX);
   
-  uint64_t const sourceInclusiveMax = UINT32_MAX;
-  uint64_t const sourceInclusiveMin = 0;
-  uint64_t const sourceRange = sourceInclusiveMax 
-                             - sourceInclusiveMin + (uint64_t) 1;
-  uint64_t sourceRangeExcluded = sourceRange % resultRange;
-  uint32_t sourceMaxIncludedValue = (uint32_t) (sourceInclusiveMax 
-                                                - sourceRangeExcluded);
-  
-  /* discard values outside the range of */
-  /* [sourceInclusiveMin, sourceMaxIncludedValue] */
-  /* to eliminate modulo bias */
-  uint32_t sourceValue;
-  do {
-    sourceValue = nextRandomNumber(dice);
-  } while (sourceValue > sourceMaxIncludedValue);
-  
-  uint64_t resultValue = (uint64_t) sourceValue % resultRange;
-  uint64_t resultOffset = (uint64_t) resultInclusiveMin - sourceInclusiveMin;
-  return (uint32_t) (resultValue + resultOffset);
+  uint32_t sourceValue = rnd_next_uniform_value(rnd, (uint32_t) exclusiveUpperBound);
+  return sourceValue + resultInclusiveMin;
 }
 
 
@@ -138,28 +103,28 @@ struct DieRoll parseDieRoll(char const *dieRollString)
 }
 
 
-int roll(struct Dice *dice, char const *dieRollString)
+int roll(struct rnd *rnd, char const *dieRollString)
 {
   struct DieRoll dieRoll = parseDieRoll(dieRollString);
   
-  return rollDieRoll(dice, &dieRoll, NULL);
+  return rollDieRoll(rnd, &dieRoll, NULL);
 }
 
 
-int rollDice(struct Dice *dice, int count, int sides)
+int rollDice(struct rnd *rnd, int count, int sides)
 {
   struct DieRoll dieRoll = { count, sides, .modifier = 0, .multiplier = 1 };
   
-  return rollDieRoll(dice, &dieRoll, NULL);
+  return rollDieRoll(rnd, &dieRoll, NULL);
 }
 
 
-int rollDiceAndAdjustTowardsAverage(struct Dice *dice, int count, int sides)
+int rollDiceAndAdjustTowardsAverage(struct rnd *rnd, int count, int sides)
 {
   struct DieRoll dieRoll = { count, sides, .modifier = 0, .multiplier = 1 };
   int diceRolled[count];
   
-  rollDieRoll(dice, &dieRoll, diceRolled);
+  rollDieRoll(rnd, &dieRoll, diceRolled);
   
   int total = 0;
   int const highRoll = sides;
@@ -180,12 +145,12 @@ int rollDiceAndAdjustTowardsAverage(struct Dice *dice, int count, int sides)
 }
 
 
-int rollDiceAndAdjustUpwards(struct Dice *dice, int count, int sides)
+int rollDiceAndAdjustUpwards(struct rnd *rnd, int count, int sides)
 {
   struct DieRoll dieRoll = { count, sides, .modifier = 0, .multiplier = 1 };
   int diceRolled[count];
   
-  rollDieRoll(dice, &dieRoll, diceRolled);
+  rollDieRoll(rnd, &dieRoll, diceRolled);
   
   int total = 0;
   for (int i = 0; i < count; ++i) {
@@ -199,12 +164,12 @@ int rollDiceAndAdjustUpwards(struct Dice *dice, int count, int sides)
 }
 
 
-int rollDiceAndDropLowest(struct Dice *dice, int count, int sides)
+int rollDiceAndDropLowest(struct rnd *rnd, int count, int sides)
 {
   struct DieRoll dieRoll = { count, sides, .modifier = 0, .multiplier = 1 };
   int diceRolled[count];
   
-  rollDieRoll(dice, &dieRoll, diceRolled);
+  rollDieRoll(rnd, &dieRoll, diceRolled);
   qsort(diceRolled, (size_t) count, sizeof diceRolled[0], compareDieRolls);
   
   int total = 0;
@@ -215,15 +180,15 @@ int rollDiceAndDropLowest(struct Dice *dice, int count, int sides)
 }
 
 
-int rollDicePlus(struct Dice *dice, int count, int sides, int modifier)
+int rollDicePlus(struct rnd *rnd, int count, int sides, int modifier)
 {
   struct DieRoll dieRoll = { count, sides, modifier, .multiplier = 1 };
   
-  return rollDieRoll(dice, &dieRoll, NULL);
+  return rollDieRoll(rnd, &dieRoll, NULL);
 }
 
 
-static int rollDieRoll(struct Dice *dice, 
+static int rollDieRoll(struct rnd *rnd,
                        struct DieRoll *dieRoll, 
                        int diceRolled[])
 {
@@ -243,7 +208,7 @@ static int rollDieRoll(struct Dice *dice,
   } else {
     int total = dieRoll->modifier;
     for (int i = 0; i < dieRoll->count; ++i) {
-      int result = (int) nextRandomNumberInRange(dice, 1, dieRoll->sides);
+      int result = (int) nextRandomNumberInRange(rnd, 1, dieRoll->sides);
       if (diceRolled) {
         diceRolled[i] = result;
       }

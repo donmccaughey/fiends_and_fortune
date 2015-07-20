@@ -202,10 +202,10 @@ void finalizeJewelry(struct Jewelry *jewelry)
 }
 
 
-void generateJewelry(struct Jewelry *jewelry, struct Dice *dice)
+void generateJewelry(struct Jewelry *jewelry, struct rnd *rnd)
 {
   int rank;
-  int dieRoll = roll(dice, "1d100");
+  int dieRoll = roll(rnd, "1d100");
   if (dieRoll <= 10) {
     rank = 1;
   } else if (dieRoll <= 20) {
@@ -229,14 +229,14 @@ void generateJewelry(struct Jewelry *jewelry, struct Dice *dice)
   if (jewelryRanks[rank].materialsCount == 1) {
     jewelry->material = jewelryRanks[rank].materials[0];
   } else {
-    dieRoll = rollDice(dice, 1, jewelryRanks[rank].materialsCount);
+    dieRoll = rollDice(rnd, 1, jewelryRanks[rank].materialsCount);
     jewelry->material = jewelryRanks[rank].materials[dieRoll - 1];
   }
   
-  dieRoll = roll(dice, jewelryRanks[rank].baseValue);
+  dieRoll = roll(rnd, jewelryRanks[rank].baseValue);
   jewelry->value_cp = dieRoll * jewelryRanks[rank].baseValueMultiplier;
   
-  dieRoll = roll(dice, "1d100");
+  dieRoll = roll(rnd, "1d100");
   for (int i = 0; i < jewelryFormTableCount; ++i) {
     if (dieRoll <= jewelryFormTable[i].dieRoll) {
       jewelry->form = jewelryFormTable[i].form;
@@ -246,7 +246,7 @@ void generateJewelry(struct Jewelry *jewelry, struct Dice *dice)
   
   int const maxWorkmanshipBonus = 12;
   do {
-    dieRoll = roll(dice, "1d10");
+    dieRoll = roll(rnd, "1d10");
     if (dieRoll == 1) {
       ++jewelry->workmanshipBonus;
     }
@@ -258,18 +258,18 @@ void generateJewelry(struct Jewelry *jewelry, struct Dice *dice)
       jewelry->value_cp = maxValue_cp;
     } else if (rank < jewelryMaxRank) {
       ++rank;
-      dieRoll = roll(dice, jewelryRanks[rank].baseValue);
+      dieRoll = roll(rnd, jewelryRanks[rank].baseValue);
       jewelry->value_cp = dieRoll * jewelryRanks[rank].baseValueMultiplier;
     }
   }
   
   int const maxExceptionalStoneBonus = 128;
   if (jewelry->hasGems) {
-    dieRoll = roll(dice, "1d8");
+    dieRoll = roll(rnd, "1d8");
     if (dieRoll == 1) {
       jewelry->exceptionalStoneBonus = 1;
       do {
-        dieRoll = roll(dice, "1d6");
+        dieRoll = roll(rnd, "1d6");
         if (dieRoll == 1) {
           jewelry->exceptionalStoneBonus *= 2;
         }

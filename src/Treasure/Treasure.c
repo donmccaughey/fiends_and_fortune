@@ -128,7 +128,7 @@ void finalizeTreasure(struct Treasure *treasure) {
 
 
 void generateMagicItemsForTreasure(struct Treasure *treasure, 
-                                   struct Dice *dice, 
+                                   struct rnd *rnd,
                                    int count, 
                                    PossibleMagicItems possibleMagicItems)
 {
@@ -138,14 +138,14 @@ void generateMagicItemsForTreasure(struct Treasure *treasure,
   for (int i = 0; i < count; ++i) {
     int j = treasure->magicItemsCount + i;
     initializeMagicItem(&treasure->magicItems[j]);
-    generateMagicItem(&treasure->magicItems[j], dice, possibleMagicItems);
+    generateMagicItem(&treasure->magicItems[j], rnd, possibleMagicItems);
   }
   treasure->magicItemsCount += count;
 }
 
 
 void generateMapsForTreasure(struct Treasure *treasure, 
-                             struct Dice *dice, 
+                             struct rnd *rnd,
                              int count)
 {
   treasure->maps = reallocarray_or_die(treasure->maps,
@@ -154,7 +154,7 @@ void generateMapsForTreasure(struct Treasure *treasure,
   for (int i = 0; i < count; ++i) {
     int j = treasure->mapsCount + i;
     initializeTreasureMap(&treasure->maps[j]);
-    generateTreasureMap(&treasure->maps[j], dice);
+    generateTreasureMap(&treasure->maps[j], rnd);
   }
   treasure->mapsCount += count;
 }

@@ -7,7 +7,7 @@
 #include "Treasure.h"
 
 
-struct Dice;
+struct rnd;
 
 
 struct TreasureMap {
@@ -19,7 +19,7 @@ struct TreasureMap {
 
 void finalizeTreasureMap(struct TreasureMap *treasureMap);
 
-void generateTreasureMap(struct TreasureMap *treasureMap, struct Dice *dice);
+void generateTreasureMap(struct TreasureMap *treasureMap, struct rnd *rnd);
 
 void initializeTreasureMap(struct TreasureMap *treasureMap);
 

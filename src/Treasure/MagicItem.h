@@ -36,7 +36,7 @@ typedef uint32_t ClassRestrictions;
 typedef uint32_t PossibleMagicItems;
 
 
-struct Dice;
+struct rnd;
 
 
 enum MagicItemType {
@@ -64,7 +64,7 @@ struct MagicItem {
 void finalizeMagicItem(struct MagicItem *magicItem);
 
 void generateMagicItem(struct MagicItem *magicItem, 
-                       struct Dice *dice,
+                       struct rnd *rnd,
                        PossibleMagicItems possibleMagicItems);
 
 void initializeMagicItem(struct MagicItem *magicItem);

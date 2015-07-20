@@ -2,7 +2,7 @@
 #define TREASURE_GEM_H_INCLUDED
 
 
-struct Dice;
+struct rnd;
 
 
 enum GemSize {
@@ -39,7 +39,7 @@ void finalizeGem(struct Gem *gem);
 
 int gemValue_cp(struct Gem *gem);
 
-void generateGem(struct Gem *gem, struct Dice *dice);
+void generateGem(struct Gem *gem, struct rnd *rnd);
 
 void initializeGem(struct Gem *gem);
 

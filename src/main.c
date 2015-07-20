@@ -18,15 +18,15 @@
 
 static void check(FILE *out, char const *constantNumber);
 static void enumerateTreasureItems(struct Treasure *treasure, FILE *out);
-static void generateCharacter(struct Dice *dice, 
+static void generateCharacter(struct rnd *rnd,
                               FILE *out, 
                               char const *methodName);
-static void generateEachTreasure(struct Dice *dice, FILE *out);
-static void generateMap(struct Dice *dice, FILE *out);
-static void generateMagicItems(struct Dice *dice, FILE *out, int count);
-static void generateRandomDungeon(struct Dice *dice, FILE *out);
-static void generateSampleDungeon(struct Dice *dice, FILE *out);
-static void generateTreasureType(struct Dice *dice, FILE *out, char letter);
+static void generateEachTreasure(struct rnd *rnd, FILE *out);
+static void generateMap(struct rnd *rnd, FILE *out);
+static void generateMagicItems(struct rnd *rnd, FILE *out, int count);
+static void generateRandomDungeon(struct rnd *rnd, FILE *out);
+static void generateSampleDungeon(struct rnd *rnd, FILE *out);
+static void generateTreasureType(struct rnd *rnd, FILE *out, char letter);
 static void generateTreasureTypeTable(FILE *out);
 static void usage(int argc, char *argv[]);
 
@@ -34,23 +34,21 @@ static void usage(int argc, char *argv[]);
 static void check(FILE *out, char const *constantNumber)
 {
   uint32_t fixedValue = (uint32_t)strtoul(constantNumber, NULL, 10);
-  struct Dice fakeDice = {
-      .rnd=rnd_alloc_fake_fixed(fixedValue)
-  };
+  struct rnd *fake_rnd = rnd_alloc_fake_fixed(fixedValue);
   
   generateTreasureTypeTable(out);
-  generateMap(&fakeDice, out);
-  generateEachTreasure(&fakeDice, out);
-  generateSampleDungeon(&fakeDice, out);
-  generateCharacter(&fakeDice, out, "simple");
-  generateCharacter(&fakeDice, out, "method1");
-  generateCharacter(&fakeDice, out, "method2");
-  generateCharacter(&fakeDice, out, "method3");
-  generateCharacter(&fakeDice, out, "method4");
-  generateCharacter(&fakeDice, out, "generalnpc");
-  generateCharacter(&fakeDice, out, "specialnpc");
+  generateMap(fake_rnd, out);
+  generateEachTreasure(fake_rnd, out);
+  generateSampleDungeon(fake_rnd, out);
+  generateCharacter(fake_rnd, out, "simple");
+  generateCharacter(fake_rnd, out, "method1");
+  generateCharacter(fake_rnd, out, "method2");
+  generateCharacter(fake_rnd, out, "method3");
+  generateCharacter(fake_rnd, out, "method4");
+  generateCharacter(fake_rnd, out, "generalnpc");
+  generateCharacter(fake_rnd, out, "specialnpc");
   
-  finalizeDice(&fakeDice);
+  rnd_free(fake_rnd);
 }
 
 
@@ -96,7 +94,7 @@ static void enumerateTreasureItems(struct Treasure *treasure, FILE *out)
 }
 
 
-static void generateCharacter(struct Dice *dice, 
+static void generateCharacter(struct rnd *rnd,
                               FILE *out, 
                               char const *methodName)
 {
@@ -118,7 +116,7 @@ static void generateCharacter(struct Dice *dice,
     methodName = "simple";
   }
   
-  int *characteristics = generateCharacteristics(dice, method, specialCharacteristics);
+  int *characteristics = generateCharacteristics(rnd, method, specialCharacteristics);
   if (   method == CharacteristicGenerationMethod1
       || method == CharacteristicGenerationMethod2)
   {
@@ -178,33 +176,33 @@ static void generateCharacter(struct Dice *dice,
 }
 
 
-static void generateEachTreasure(struct Dice *dice, FILE *out)
+static void generateEachTreasure(struct rnd *rnd, FILE *out)
 {
   for (char letter = 'A'; letter <= 'Z'; ++letter) {
-    generateTreasureType(dice, out, letter);
+    generateTreasureType(rnd, out, letter);
   }
 }
 
 
-static void generateMap(struct Dice *dice, FILE *out)
+static void generateMap(struct rnd *rnd, FILE *out)
 {
   struct TreasureMap treasureMap;
   initializeTreasureMap(&treasureMap);
-  generateTreasureMap(&treasureMap, dice);
+  generateTreasureMap(&treasureMap, rnd);
   fprintf(out, "%s\n", treasureMap.trueDescription);
   enumerateTreasureItems(&treasureMap.treasure, out);
   finalizeTreasureMap(&treasureMap);
 }
 
 
-static void generateMagicItems(struct Dice *dice, FILE *out, int count)
+static void generateMagicItems(struct rnd *rnd, FILE *out, int count)
 {
   struct MagicItem magicItem;
   
   fprintf(out, "Magic Items:\n");
   for (int i = 0; i < count; ++i) {
     initializeMagicItem(&magicItem);
-    generateMagicItem(&magicItem, dice, ANY_MAGIC_ITEM);
+    generateMagicItem(&magicItem, rnd, ANY_MAGIC_ITEM);
     fprintf(out, "  %4i %s\n", (i + 1), magicItem.trueDescription);
     if (magicItem.trueDetails) {
       int j = 0;
@@ -219,12 +217,12 @@ static void generateMagicItems(struct Dice *dice, FILE *out, int count)
 }
 
 
-static void generateRandomDungeon(struct Dice *dice, FILE *out)
+static void generateRandomDungeon(struct rnd *rnd, FILE *out)
 {
   struct Dungeon dungeon;
   initializeDungeon(&dungeon);
 
-  generateDungeon(&dungeon, dice);
+  generateDungeon(&dungeon, rnd);
   graphDungeonLevelUsingText(&dungeon, 1, out);
 
   char const **descriptions = dungeonAreaDescriptions(&dungeon);
@@ -240,7 +238,7 @@ static void generateRandomDungeon(struct Dice *dice, FILE *out)
 }
 
 
-static void generateSampleDungeon(struct Dice *dice, FILE *out)
+static void generateSampleDungeon(struct rnd *rnd, FILE *out)
 {
   struct Dungeon dungeon;
   initializeDungeon(&dungeon);
@@ -261,7 +259,7 @@ static void generateSampleDungeon(struct Dice *dice, FILE *out)
 }
 
 
-static void generateTreasureType(struct Dice *dice, FILE *out, char letter)
+static void generateTreasureType(struct rnd *rnd, FILE *out, char letter)
 {
   struct Treasure treasure;
   int individualCount;
@@ -269,14 +267,14 @@ static void generateTreasureType(struct Dice *dice, FILE *out, char letter)
   fprintf(out, "Treasure type %c: ", letter);
   
   if (letter >= 'J' && letter <= 'N') {
-    individualCount = roll(dice, "1D10");
+    individualCount = roll(rnd, "1D10");
   } else {
     individualCount = 0;
   }
   
   initializeTreasure(&treasure);
   generateTreasure(treasureTypeByLetter(letter), 
-                   &treasure, dice, individualCount);
+                   &treasure, rnd, individualCount);
   
   char *description = describeTreasure(&treasure);
   int value_cp = treasureValue_cp(&treasure);
@@ -303,41 +301,39 @@ static void generateTreasureTypeTable(FILE *out)
 int main(int argc, char *argv[])
 {
   FILE *out = stdout;
-  struct Dice dice;
-  
-  initializeDice(&dice);
+  struct rnd *rnd = global_rnd;
   
   fprintf(out, "Fiends and Fortunes\n");
   
   if (argc < 2) {
     usage(argc, argv);
   } else if (strcasecmp(argv[1], "character") == 0) {
-    generateCharacter(&dice, out, (argc >= 3) ? argv[2] : "simple");
+    generateCharacter(rnd, out, (argc >= 3) ? argv[2] : "simple");
   } else if (strcasecmp(argv[1], "check") == 0) {
     check(out, (argc >= 3) ? argv[2] : "0");
   } else if (strcasecmp(argv[1], "dungeon") == 0) {
     if (argc >= 3 && strcasecmp(argv[2], "small")) {
-      generateSampleDungeon(&dice, out);
+      generateSampleDungeon(rnd, out);
     } else {
-      generateRandomDungeon(&dice, out);
+      generateRandomDungeon(rnd, out);
     }
   } else if (strcasecmp(argv[1], "each") == 0) {
-    generateEachTreasure(&dice, out);
+    generateEachTreasure(rnd, out);
   } else if (strcasecmp(argv[1], "magic") == 0) {
     int count = 10;
     if (argc >= 3) {
       count = (int) strtol(argv[2], NULL, 10);
     }
-    generateMagicItems(&dice, out, count);
+    generateMagicItems(rnd, out, count);
   } else if (strcasecmp(argv[1], "map") == 0) {
-    generateMap(&dice, out);
+    generateMap(rnd, out);
   } else if (strcasecmp(argv[1], "table") == 0) {
     generateTreasureTypeTable(out);
   } else if (argv[1][0] >= 'A' && argv[1][0] <= 'Z' && argv[1][1] == '\0') {
-    generateTreasureType(&dice, out, argv[1][0]);
+    generateTreasureType(rnd, out, argv[1][0]);
   } else if (argv[1][0] >= 'a' && argv[1][0] <= 'z' && argv[1][1] == '\0') {
     char letter = argv[1][0] - 'a' + 'A';
-    generateTreasureType(&dice, out, letter);
+    generateTreasureType(rnd, out, letter);
   } else {
     usage(argc, argv);
   }

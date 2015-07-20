@@ -3,7 +3,7 @@
 
 
 struct Areas;
-struct Dice;
+struct rnd;
 struct Tiles;
 
 
@@ -19,7 +19,7 @@ char const **dungeonAreaDescriptions(struct Dungeon *dungeon);
 
 void finalizeDungeon(struct Dungeon *dungeon);
 
-void generateDungeon(struct Dungeon *dungeon, struct Dice *dice);
+void generateDungeon(struct Dungeon *dungeon, struct rnd *rnd);
 
 void generateSmallDungeon(struct Dungeon *dungeon);
 

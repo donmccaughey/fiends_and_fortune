@@ -1,6 +1,7 @@
 #include <assert.h>
-#include "Dice.h"
+
 #include "Dungeon.h"
+#include "rnd.h"
 #include "Tile.h"
 #include "Tiles.h"
 
@@ -17,13 +18,10 @@ void dungeonTest(void)
 
 static void generateDungeonTest(void)
 {
-  struct Dice dice;
-  initializeDice(&dice);
-
   struct Dungeon dungeon;
   initializeDungeon(&dungeon);
 
-  generateDungeon(&dungeon, &dice);
+  generateDungeon(&dungeon, global_rnd);
   assert(113 == tilesCount(dungeon.tiles));
 
   assert(equalRanges(makeRange(-7, 9), xRangeOfTiles(dungeon.tiles)));

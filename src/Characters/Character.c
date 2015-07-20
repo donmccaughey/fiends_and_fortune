@@ -85,7 +85,7 @@ static bool contains(char const *set[], size_t setCount, char const *s)
 }
 
 
-char const *determineLanguage(struct Dice *dice, 
+char const *determineLanguage(struct rnd *rnd,
                               char const *exclude[], 
                               size_t excludeCount)
 {
@@ -156,7 +156,7 @@ char const *determineLanguage(struct Dice *dice,
     }
   }
   
-  int dieRoll = rollDice(dice, 1, total);
+  int dieRoll = rollDice(rnd, 1, total);
   int range = 0;
   for (int i = 0; i < languageTableCount; ++i) {
     if ( ! contains(exclude, excludeCount, languageTable[i].language)) {
@@ -171,7 +171,7 @@ char const *determineLanguage(struct Dice *dice,
 }
 
 
-char const *determineSpell(struct Dice *dice, 
+char const *determineSpell(struct rnd *rnd,
                            enum SpellType spellType, 
                            int spellLevel)
 {
@@ -638,7 +638,7 @@ char const *determineSpell(struct Dice *dice,
   }
   assert(total);
   
-  int dieRoll = rollDice(dice, 1, total);
+  int dieRoll = rollDice(rnd, 1, total);
   int range = 0;
   for (int i = 0; i < spellsTableCount; ++i) {
     if (   spellsTable[i].type == spellType 
@@ -655,7 +655,7 @@ char const *determineSpell(struct Dice *dice,
 }
 
 
-int *generateCharacteristics(struct Dice *dice, 
+int *generateCharacteristics(struct rnd *rnd,
                              enum CharacteristicGenerationMethod method,
                              uint32_t characteristicFlags)
 {
@@ -664,7 +664,7 @@ int *generateCharacteristics(struct Dice *dice,
     case CharacteristicGenerationMethod1:
       characteristics = calloc_or_die(characteristicCount, characteristicSize);
       for (size_t i = 0; i < characteristicCount; ++i) {
-        characteristics[i] = rollDiceAndDropLowest(dice, 4, 6);
+        characteristics[i] = rollDiceAndDropLowest(rnd, 4, 6);
       }
       qsort(characteristics, characteristicCount, characteristicSize, 
             compareCharacteristics);
@@ -673,7 +673,7 @@ int *generateCharacteristics(struct Dice *dice,
       characteristics = calloc_or_die(method2CharacteristicCount,
                                       characteristicSize);
       for (size_t i = 0; i < method2CharacteristicCount; ++i) {
-        characteristics[i] = roll(dice, "3d6");
+        characteristics[i] = roll(rnd, "3d6");
       }
       qsort(characteristics, characteristicCount, characteristicSize, 
             compareCharacteristics);
@@ -682,7 +682,7 @@ int *generateCharacteristics(struct Dice *dice,
       characteristics = calloc_or_die(characteristicCount, characteristicSize);
       for (size_t i = 0; i < characteristicCount; ++i) {
         for (int j = 0; j < method3RollCount; ++j) {
-          int characteristic = roll(dice, "3d6");
+          int characteristic = roll(rnd, "3d6");
           if (characteristic > characteristics[i]) {
             characteristics[i] = characteristic;
           }
@@ -693,7 +693,7 @@ int *generateCharacteristics(struct Dice *dice,
       characteristics = calloc_or_die(method4CharacteristicCount,
                                       characteristicSize);
       for (size_t i = 0; i < method4CharacteristicCount; ++i) {
-        characteristics[i] = roll(dice, "3d6");
+        characteristics[i] = roll(rnd, "3d6");
       }
       qsort(characteristics, 
             method4CharacterCount, 
@@ -703,7 +703,7 @@ int *generateCharacteristics(struct Dice *dice,
     case GeneralNPCCharacteristicGenerationMethod:
       characteristics = calloc_or_die(characteristicCount, characteristicSize);
       for (size_t i = 0; i < characteristicCount; ++i) {
-        characteristics[i] = rollDiceAndAdjustTowardsAverage(dice, 3, 6);
+        characteristics[i] = rollDiceAndAdjustTowardsAverage(rnd, 3, 6);
       }
       break;
     case SpecialNPCCharacteristicGenerationMethod:
@@ -713,9 +713,9 @@ int *generateCharacteristics(struct Dice *dice,
         for (int i = 0; i < characteristicCount; ++i) {
           uint32_t characteristicFlag = STRENGTH << i;
           if (characteristicFlags & characteristicFlag) {
-            characteristics[i] = rollDiceAndAdjustUpwards(dice, 3, 6);
+            characteristics[i] = rollDiceAndAdjustUpwards(rnd, 3, 6);
           } else {
-            characteristics[i] = roll(dice, "3d6");
+            characteristics[i] = roll(rnd, "3d6");
           }
         }
         break;
@@ -723,7 +723,7 @@ int *generateCharacteristics(struct Dice *dice,
     default:
       characteristics = calloc_or_die(characteristicCount, characteristicSize);
       for (size_t i = 0; i < characteristicCount; ++i) {
-        characteristics[i] = roll(dice, "3d6");
+        characteristics[i] = roll(rnd, "3d6");
       }
       break;
   }
