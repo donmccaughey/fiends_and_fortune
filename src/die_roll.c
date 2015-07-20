@@ -11,34 +11,37 @@
 #include "unexpected.h"
 
 
-static int compareDieRolls(void const *die1, void const *die2);
+static int
+rollDieRoll(struct rnd *rnd,
+            struct die_roll die_roll,
+            int diceRolled[]);
 
-static int rollDieRoll(struct rnd *rnd,
-                       struct die_roll die_roll,
-                       int diceRolled[]);
 
-
-static int compareDieRolls(void const *die1, void const *die2)
+static int
+compareDieRolls(void const *die1, void const *die2)
 {
     return *((int *)die1) - *((int *)die2);
 }
 
 
-int maxDieRoll(char const *dieRollString)
+int
+maxDieRoll(char const *dieRollString)
 {
     struct die_roll die_roll = parseDieRoll(dieRollString);
     return die_roll.count * die_roll.sides;
 }
 
 
-int minDieRoll(char const *dieRollString)
+int
+minDieRoll(char const *dieRollString)
 {
     struct die_roll die_roll = parseDieRoll(dieRollString);
     return die_roll.count;
 }
 
 
-struct die_roll parseDieRoll(char const *dieRollString)
+struct die_roll
+parseDieRoll(char const *dieRollString)
 {
     struct die_roll die_roll = {
         .count=1,
@@ -86,14 +89,16 @@ struct die_roll parseDieRoll(char const *dieRollString)
 }
 
 
-int roll(struct rnd *rnd, char const *dieRollString)
+int
+roll(struct rnd *rnd, char const *dieRollString)
 {
     struct die_roll die_roll = parseDieRoll(dieRollString);
     return rollDieRoll(rnd, die_roll, NULL);
 }
 
 
-int rollDice(struct rnd *rnd, int count, int sides)
+int
+rollDice(struct rnd *rnd, int count, int sides)
 {
     struct die_roll die_roll = {
         .count=count,
@@ -105,7 +110,8 @@ int rollDice(struct rnd *rnd, int count, int sides)
 }
 
 
-int rollDiceAndAdjustTowardsAverage(struct rnd *rnd, int count, int sides)
+int
+rollDiceAndAdjustTowardsAverage(struct rnd *rnd, int count, int sides)
 {
     struct die_roll die_roll = {
         .count=count,
@@ -136,7 +142,8 @@ int rollDiceAndAdjustTowardsAverage(struct rnd *rnd, int count, int sides)
 }
 
 
-int rollDiceAndAdjustUpwards(struct rnd *rnd, int count, int sides)
+int
+rollDiceAndAdjustUpwards(struct rnd *rnd, int count, int sides)
 {
     struct die_roll die_roll = {
         .count=count,
@@ -160,7 +167,8 @@ int rollDiceAndAdjustUpwards(struct rnd *rnd, int count, int sides)
 }
 
 
-int rollDiceAndDropLowest(struct rnd *rnd, int count, int sides)
+int
+rollDiceAndDropLowest(struct rnd *rnd, int count, int sides)
 {
     struct die_roll die_roll = {
         .count=count,
@@ -181,7 +189,8 @@ int rollDiceAndDropLowest(struct rnd *rnd, int count, int sides)
 }
 
 
-int rollDicePlus(struct rnd *rnd, int count, int sides, int modifier)
+int
+rollDicePlus(struct rnd *rnd, int count, int sides, int modifier)
 {
     struct die_roll die_roll = {
         .count=count,
@@ -202,9 +211,10 @@ max_possible_total(struct die_roll die_roll)
 }
 
 
-static int rollDieRoll(struct rnd *rnd,
-                       struct die_roll die_roll,
-                       int diceRolled[])
+static int
+rollDieRoll(struct rnd *rnd,
+            struct die_roll die_roll,
+            int diceRolled[])
 {
     assert(die_roll.count >= 0);
     assert(die_roll.sides > 0);
