@@ -6,7 +6,6 @@
 
 #include "alloc_or_die.h"
 #include "coinage.h"
-#include "Dice.h"
 #include "Gem.h"
 #include "Jewelry.h"
 #include "TreasureMap.h"

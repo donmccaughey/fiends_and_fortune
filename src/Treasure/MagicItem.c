@@ -9,7 +9,7 @@
 #include "alloc_or_die.h"
 #include "Character.h"
 #include "coinage.h"
-#include "Dice.h"
+#include "die_roll.h"
 #include "unexpected.h"
 
 

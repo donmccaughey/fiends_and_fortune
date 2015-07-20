@@ -1,18 +1,15 @@
-#ifndef DICE_H_INCLUDED
-#define DICE_H_INCLUDED
-
-
-#include <stdint.h>
+#ifndef DIE_ROLL_H_INCLUDED
+#define DIE_ROLL_H_INCLUDED
 
 
 struct rnd;
 
 
 struct DieRoll {
-  int count;
-  int sides;
-  int modifier;
-  int multiplier;
+    int count;
+    int sides;
+    int modifier;
+    int multiplier;
 };
 
 

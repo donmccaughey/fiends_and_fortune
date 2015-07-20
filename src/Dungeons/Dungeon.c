@@ -6,7 +6,6 @@
 #include "alloc_or_die.h"
 #include "Area.h"
 #include "Areas.h"
-#include "Dice.h"
 #include "Direction.h"
 #include "Tile.h"
 #include "Tiles.h"

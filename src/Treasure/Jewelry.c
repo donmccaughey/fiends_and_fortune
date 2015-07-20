@@ -8,7 +8,7 @@
 
 #include "alloc_or_die.h"
 #include "coinage.h"
-#include "Dice.h"
+#include "die_roll.h"
 
 
 struct JewelryFormTable {
