@@ -14,7 +14,7 @@
 static int compareDieRolls(void const *die1, void const *die2);
 
 static int rollDieRoll(struct rnd *rnd,
-                       struct die_roll *die_roll,
+                       struct die_roll die_roll,
                        int diceRolled[]);
 
 
@@ -89,7 +89,7 @@ struct die_roll parseDieRoll(char const *dieRollString)
 int roll(struct rnd *rnd, char const *dieRollString)
 {
     struct die_roll die_roll = parseDieRoll(dieRollString);
-    return rollDieRoll(rnd, &die_roll, NULL);
+    return rollDieRoll(rnd, die_roll, NULL);
 }
 
 
@@ -101,7 +101,7 @@ int rollDice(struct rnd *rnd, int count, int sides)
         .modifier=0,
         .multiplier=1,
     };
-    return rollDieRoll(rnd, &die_roll, NULL);
+    return rollDieRoll(rnd, die_roll, NULL);
 }
 
 
@@ -115,7 +115,7 @@ int rollDiceAndAdjustTowardsAverage(struct rnd *rnd, int count, int sides)
     };
     int diceRolled[count];
     
-    rollDieRoll(rnd, &die_roll, diceRolled);
+    rollDieRoll(rnd, die_roll, diceRolled);
     
     int total = 0;
     int const highRoll = sides;
@@ -146,7 +146,7 @@ int rollDiceAndAdjustUpwards(struct rnd *rnd, int count, int sides)
     };
     int diceRolled[count];
     
-    rollDieRoll(rnd, &die_roll, diceRolled);
+    rollDieRoll(rnd, die_roll, diceRolled);
     
     int total = 0;
     for (int i = 0; i < count; ++i) {
@@ -170,7 +170,7 @@ int rollDiceAndDropLowest(struct rnd *rnd, int count, int sides)
     };
     int diceRolled[count];
     
-    rollDieRoll(rnd, &die_roll, diceRolled);
+    rollDieRoll(rnd, die_roll, diceRolled);
     qsort(diceRolled, (size_t)count, sizeof diceRolled[0], compareDieRolls);
     
     int total = 0;
@@ -189,38 +189,40 @@ int rollDicePlus(struct rnd *rnd, int count, int sides, int modifier)
         .modifier=modifier,
         .multiplier=1,
     };
-    return rollDieRoll(rnd, &die_roll, NULL);
+    return rollDieRoll(rnd, die_roll, NULL);
+}
+
+
+static inline double
+max_possible_total(struct die_roll die_roll)
+{
+    double max_possible_roll = (double)die_roll.count * (double)die_roll.sides;
+    double max_possible_total = max_possible_roll + (double)die_roll.modifier;
+    return max_possible_total * (double)die_roll.multiplier;
 }
 
 
 static int rollDieRoll(struct rnd *rnd,
-                       struct die_roll *die_roll,
+                       struct die_roll die_roll,
                        int diceRolled[])
 {
-    assert(die_roll->count >= 0);
-    assert(die_roll->sides > 0);
-# ifndef NDEBUG
-    double maxPossibleRoll = (double)die_roll->count * (double)die_roll->sides;
-    double maxPossibleTotal = (maxPossibleRoll + (double)die_roll->modifier)
-    *(double)die_roll->multiplier;
-    assert(maxPossibleTotal <= (double) INT_MAX);
-# endif /* #ifndef NDEBUG */
+    assert(die_roll.count >= 0);
+    assert(die_roll.sides > 0);
+    assert(max_possible_total(die_roll) <= (double)INT_MAX);
     
-    if (die_roll->count == 0) {
+    if (die_roll.count == 0) {
         return 0;
-    } else if (die_roll->sides == 1) {
-        return (die_roll->count + die_roll->modifier) * die_roll->multiplier;
+    } else if (die_roll.sides == 1) {
+        return (die_roll.count + die_roll.modifier) * die_roll.multiplier;
     } else {
-        int total = die_roll->modifier;
-        for (int i = 0; i < die_roll->count; ++i) {
+        int total = die_roll.modifier;
+        for (int i = 0; i < die_roll.count; ++i) {
             int result = (int)rnd_next_uniform_value_in_range(rnd,
                                                               1,
-                                                              die_roll->sides + 1);
-            if (diceRolled) {
-                diceRolled[i] = result;
-            }
+                                                              die_roll.sides + 1);
+            if (diceRolled) diceRolled[i] = result;
             total += result;
         }
-        return total * die_roll->multiplier;
+        return total * die_roll.multiplier;
     }
 }
