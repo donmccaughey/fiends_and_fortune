@@ -5,7 +5,7 @@
 struct rnd;
 
 
-struct DieRoll {
+struct die_roll {
     int count;
     int sides;
     int modifier;
@@ -17,7 +17,7 @@ int maxDieRoll(char const *dieRollString);
 
 int minDieRoll(char const *dieRollString);
 
-struct DieRoll parseDieRoll(char const *dieRollString);
+struct die_roll parseDieRoll(char const *dieRollString);
 
 int roll(struct rnd *rnd, char const *dieRollString);
 
