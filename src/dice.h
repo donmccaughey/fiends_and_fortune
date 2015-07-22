@@ -40,9 +40,6 @@ int
 roll(struct rnd *rnd, char const *dice_string);
 
 int
-rollDice(struct rnd *rnd, int count, int sides);
-
-int
 rollDiceAndAdjustTowardsAverage(struct rnd *rnd, int count, int sides);
 
 int

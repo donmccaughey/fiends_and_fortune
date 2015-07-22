@@ -93,13 +93,6 @@ roll(struct rnd *rnd, char const *dice_string)
 
 
 int
-rollDice(struct rnd *rnd, int count, int sides)
-{
-    return dice_roll(dice_make(count, sides), rnd, NULL);
-}
-
-
-int
 rollDiceAndAdjustTowardsAverage(struct rnd *rnd, int count, int sides)
 {
     int die_scores[count];

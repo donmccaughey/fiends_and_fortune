@@ -7,7 +7,6 @@
 void dice_test(void);
 static void dice_parse_test(void);
 static void rollTest(void);
-static void rollDiceTest(void);
 static void rollDiceAndAdjustTowardsAverageTest(void);
 static void rollDiceAndDropLowestTest(void);
 static void rollDicePlusTest(void);
@@ -17,7 +16,6 @@ void dice_test(void)
 {
     dice_parse_test();
     rollTest();
-    rollDiceTest();
     rollDiceAndAdjustTowardsAverageTest();
     rollDiceAndDropLowestTest();
     rollDicePlusTest();
@@ -158,44 +156,6 @@ static void rollTest(void)
     
     dieRoll = roll(alwaysRollTwos, "2d20+1*10");
     assert(50 == dieRoll);
-    
-    rnd_free(alwaysRollOnes);
-    rnd_free(alwaysRollTwos);
-}
-
-
-static void rollDiceTest(void)
-{
-    struct rnd *alwaysRollOnes = rnd_alloc_fake_fixed(0);
-    struct rnd *alwaysRollTwos = rnd_alloc_fake_fixed(1);
-    int dieRoll;
-    
-    /* "roll" a constant number */
-    dieRoll = rollDice(alwaysRollTwos, 1, 1);
-    assert(1 == dieRoll);
-    
-    dieRoll = rollDice(alwaysRollTwos, 5, 1);
-    assert(5 == dieRoll);
-    
-    /* roll dice that always roll 1's */
-    dieRoll = rollDice(alwaysRollOnes, 1, 6);
-    assert(1 == dieRoll);
-    
-    dieRoll = rollDice(alwaysRollOnes, 2, 10);
-    assert(2 == dieRoll);
-    
-    dieRoll = rollDice(alwaysRollOnes, 3, 4);
-    assert(3 == dieRoll);
-    
-    /* roll dice that always roll 2's */
-    dieRoll = rollDice(alwaysRollTwos, 1, 6);
-    assert(2 == dieRoll);
-    
-    dieRoll = rollDice(alwaysRollTwos, 2, 10);
-    assert(4 == dieRoll);
-    
-    dieRoll = rollDice(alwaysRollTwos, 3, 4);
-    assert(6 == dieRoll);
     
     rnd_free(alwaysRollOnes);
     rnd_free(alwaysRollTwos);

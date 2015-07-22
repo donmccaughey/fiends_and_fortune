@@ -205,18 +205,18 @@ void finalizeJewelry(struct Jewelry *jewelry)
 void generateJewelry(struct Jewelry *jewelry, struct rnd *rnd)
 {
   int rank;
-  int dieRoll = roll(rnd, "1d100");
-  if (dieRoll <= 10) {
+  int score = roll(rnd, "1d100");
+  if (score <= 10) {
     rank = 1;
-  } else if (dieRoll <= 20) {
+  } else if (score <= 20) {
     rank = 2;
-  } else if (dieRoll <= 40) {
+  } else if (score <= 40) {
     rank = 3;
-  } else if (dieRoll <= 50) {
+  } else if (score <= 50) {
     rank = 4;
-  } else if (dieRoll <= 70) {
+  } else if (score <= 70) {
     rank = 5;
-  } else if (dieRoll <= 90) {
+  } else if (score <= 90) {
     rank = 6;
   } else {
     rank = 7;
@@ -229,16 +229,17 @@ void generateJewelry(struct Jewelry *jewelry, struct rnd *rnd)
   if (jewelryRanks[rank].materialsCount == 1) {
     jewelry->material = jewelryRanks[rank].materials[0];
   } else {
-    dieRoll = rollDice(rnd, 1, jewelryRanks[rank].materialsCount);
-    jewelry->material = jewelryRanks[rank].materials[dieRoll - 1];
+    struct dice dice = dice_make(1, jewelryRanks[rank].materialsCount);
+    score = dice_roll(dice, rnd, NULL);
+    jewelry->material = jewelryRanks[rank].materials[score - 1];
   }
   
-  dieRoll = roll(rnd, jewelryRanks[rank].baseValue);
-  jewelry->value_cp = dieRoll * jewelryRanks[rank].baseValueMultiplier;
+  score = roll(rnd, jewelryRanks[rank].baseValue);
+  jewelry->value_cp = score * jewelryRanks[rank].baseValueMultiplier;
   
-  dieRoll = roll(rnd, "1d100");
+  score = roll(rnd, "1d100");
   for (int i = 0; i < jewelryFormTableCount; ++i) {
-    if (dieRoll <= jewelryFormTable[i].dieRoll) {
+    if (score <= jewelryFormTable[i].dieRoll) {
       jewelry->form = jewelryFormTable[i].form;
       break;
     }
@@ -246,11 +247,11 @@ void generateJewelry(struct Jewelry *jewelry, struct rnd *rnd)
   
   int const maxWorkmanshipBonus = 12;
   do {
-    dieRoll = roll(rnd, "1d10");
-    if (dieRoll == 1) {
+    score = roll(rnd, "1d10");
+    if (score == 1) {
       ++jewelry->workmanshipBonus;
     }
-  } while (dieRoll == 1 && jewelry->workmanshipBonus < maxWorkmanshipBonus);
+  } while (score == 1 && jewelry->workmanshipBonus < maxWorkmanshipBonus);
   for (int i = 0; i < jewelry->workmanshipBonus; ++i) {
     int maxValue_cp = dice_max_score(jewelryRanks[rank].baseValue)
                     * jewelryRanks[rank].baseValueMultiplier;
@@ -258,22 +259,22 @@ void generateJewelry(struct Jewelry *jewelry, struct rnd *rnd)
       jewelry->value_cp = maxValue_cp;
     } else if (rank < jewelryMaxRank) {
       ++rank;
-      dieRoll = roll(rnd, jewelryRanks[rank].baseValue);
-      jewelry->value_cp = dieRoll * jewelryRanks[rank].baseValueMultiplier;
+      score = roll(rnd, jewelryRanks[rank].baseValue);
+      jewelry->value_cp = score * jewelryRanks[rank].baseValueMultiplier;
     }
   }
   
   int const maxExceptionalStoneBonus = 128;
   if (jewelry->hasGems) {
-    dieRoll = roll(rnd, "1d8");
-    if (dieRoll == 1) {
+    score = roll(rnd, "1d8");
+    if (score == 1) {
       jewelry->exceptionalStoneBonus = 1;
       do {
-        dieRoll = roll(rnd, "1d6");
-        if (dieRoll == 1) {
+        score = roll(rnd, "1d6");
+        if (score == 1) {
           jewelry->exceptionalStoneBonus *= 2;
         }
-      } while (   dieRoll == 1 
+      } while (   score == 1 
                && jewelry->exceptionalStoneBonus < maxExceptionalStoneBonus);
     }
     jewelry->value_cp += jewelry->exceptionalStoneBonus * 5000 * CP_PER_GP;

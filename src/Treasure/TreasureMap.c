@@ -240,32 +240,32 @@ static void generateMonetaryTreasure(struct Treasure *treasure,
                                      struct rnd *rnd)
 {
   int multipleRolls = 0;
-  int dieRollMax = 20;
+  int max_score = 20;
   do {
-    int dieRoll = rollDice(rnd, 1, dieRollMax);
-    if (dieRoll <= 2) {
+    int score = dice_roll(dice_make(1, max_score), rnd, NULL);
+    if (score <= 2) {
       generateMonetaryTreasure_1to2_CopperAndSilver(treasure, rnd);
       --multipleRolls;
-    } else if (dieRoll <= 5) {
+    } else if (score <= 5) {
       generateMonetaryTreasure_3to5_Electrum(treasure, rnd);
       --multipleRolls;
-    } else if (dieRoll <= 10) {
+    } else if (score <= 10) {
       generateMonetaryTreasure_6to10_Gold(treasure, rnd);
       --multipleRolls;
-    } else if (dieRoll <= 12) {
+    } else if (score <= 12) {
       generateMonetaryTreasure_11to12_Platinum(treasure, rnd);
       --multipleRolls;
-    } else if (dieRoll <= 15) {
+    } else if (score <= 15) {
       generateMonetaryTreasure_13to15_Gems(treasure, rnd);
       --multipleRolls;
-    } else if (dieRoll <= 17) {
+    } else if (score <= 17) {
       generateMonetaryTreasure_16to17_Jewelry(treasure, rnd);
       --multipleRolls;
-    } else if (dieRoll <= 18) {
-      dieRollMax = 17;
+    } else if (score <= 18) {
+      max_score = 17;
       multipleRolls = 2;
-    } else if (dieRoll <= 19) {
-      dieRollMax = 17;
+    } else if (score <= 19) {
+      max_score = 17;
       multipleRolls = 3;
     } else {
       generateMonetaryTreasure_1to2_CopperAndSilver(treasure, rnd);

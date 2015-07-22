@@ -638,12 +638,12 @@ void generateMagicItem(struct MagicItem *magicItem,
     }
   }
   
-  int dieRoll = rollDice(rnd, 1, total);
+  int score = dice_roll(dice_make(1, total), rnd, NULL);
   int range = 0;
   for (int i = 0; i < magicItemsTableCount; ++i) {
     if (possibleMagicItems & magicItemsTable[i].possibleMagicItems) {
       range += magicItemsTable[i].percent;
-      if (dieRoll <= range) {
+      if (score <= range) {
         magicItem->type = magicItemsTable[i].type;
         magicItemsTable[i].generate(magicItem, rnd);
         return;
@@ -1797,12 +1797,12 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
   };
   size_t const swordsTableCount = sizeof swordsTable / sizeof swordsTable[0];
   
-  int dieRoll = roll(rnd, "1d100");
+  int score = roll(rnd, "1d100");
   int range = 0;
   struct Sword const *sword = NULL;
   for (int i = 0; i < swordsTableCount; ++i) {
     range += swordsTable[i].percent;
-    if (dieRoll <= range) {
+    if (score <= range) {
       sword = &swordsTable[i];
       break;
     }
@@ -1813,14 +1813,14 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
   magicItem->trueValue_cp = sword->saleValue_gp * CP_PER_GP;
   
   char const *swordType;
-  dieRoll = roll(rnd, "1d100");
-  if (dieRoll <= 70) {
+  score = roll(rnd, "1d100");
+  if (score <= 70) {
     swordType = "longsword";
-  } else if (dieRoll <= 90) {
+  } else if (score <= 90) {
     swordType = "broadsword";
-  } else if (dieRoll <= 95) {
+  } else if (score <= 95) {
     swordType = "short sword";
-  } else if (dieRoll <= 99) {
+  } else if (score <= 99) {
     swordType = "bastard sword";
   } else {
     swordType = "two-handed sword";
@@ -1844,27 +1844,27 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
   int extraordinaryPowerCount = 0;
   char const *communication = NULL;
   
-  dieRoll = roll(rnd, "1d100");
-  if (dieRoll <= 75) {
+  score = roll(rnd, "1d100");
+  if (score <= 75) {
     /* not an unusual magic sword */
     return;
-  } else if (dieRoll <= 83) {
+  } else if (score <= 83) {
     intelligence = 12;
     primaryAbilityCount = 1;
     communication = "semi-empathy";
-  } else if (dieRoll <= 89) {
+  } else if (score <= 89) {
     intelligence = 13;
     primaryAbilityCount = 2;
     communication = "empathy";
-  } else if (dieRoll <= 94) {
+  } else if (score <= 94) {
     intelligence = 14;
     primaryAbilityCount = 2;
     communication = "speech";
-  } else if (dieRoll <= 97) {
+  } else if (score <= 97) {
     intelligence = 15;
     primaryAbilityCount = 3;
     communication = "speech";
-  } else if (dieRoll <= 99) {
+  } else if (score <= 99) {
     intelligence = 16;
     primaryAbilityCount = 3;
     communication = "speech";
@@ -1907,22 +1907,22 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
   assert(detailCount < detailCapacity);
   
   char const *alignment;
-  dieRoll = roll(rnd, "1d100");
-  if (dieRoll <= 5) {
+  score = roll(rnd, "1d100");
+  if (score <= 5) {
     alignment = "chaotic good";
-  } else if (dieRoll <= 15) {
+  } else if (score <= 15) {
     alignment = "chaotic neutral";
-  } else if (dieRoll <= 20) {
+  } else if (score <= 20) {
     alignment = "chaotic evil";
-  } else if (dieRoll <= 25) {
+  } else if (score <= 25) {
     alignment = "neutral evil";
-  } else if (dieRoll <= 30) {
+  } else if (score <= 30) {
     alignment = "lawful evil";
-  } else if (dieRoll <= 55) {
+  } else if (score <= 55) {
     alignment = "lawful good";
-  } else if (dieRoll <= 60) {
+  } else if (score <= 60) {
     alignment = "lawful neutral";
-  } else if (dieRoll <= 80) {
+  } else if (score <= 80) {
     alignment = "neutral";
   } else {
     alignment = "neutral good";
@@ -1946,44 +1946,44 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
     double locateObject;
   } primaryAbilities = {};
   for (int i = 0; i < primaryAbilityCount; ++i) {
-    int dieRollMax = 100;
+    int max_score = 100;
     int rolls = 1;
     do {
-      dieRoll = rollDice(rnd, 1, dieRollMax);
+      score = dice_roll(dice_make(1, max_score), rnd, NULL);
       --rolls;
-      if (dieRoll <= 11) {
+      if (score <= 11) {
         ++primaryAbilities.count;
         primaryAbilities.detectElevators += 1;
-      } else if (dieRoll <= 22) {
+      } else if (score <= 22) {
         ++primaryAbilities.count;
         primaryAbilities.detectSlopingPassages += 1;
-      } else if (dieRoll <= 33) {
+      } else if (score <= 33) {
         ++primaryAbilities.count;
         primaryAbilities.detectTraps += 1;
-      } else if (dieRoll <= 44) {
+      } else if (score <= 44) {
         ++primaryAbilities.count;
         primaryAbilities.detectEvilGood += 1;
-      } else if (dieRoll <= 55) {
+      } else if (score <= 55) {
         ++primaryAbilities.count;
         primaryAbilities.detectPreciousMetals += 2;
-      } else if (dieRoll <= 66) {
+      } else if (score <= 66) {
         ++primaryAbilities.count;
         primaryAbilities.detectGems += 0.5;
-      } else if (dieRoll <= 77) {
+      } else if (score <= 77) {
         ++primaryAbilities.count;
         primaryAbilities.detectMagic += 1;
-      } else if (dieRoll <= 82) {
+      } else if (score <= 82) {
         ++primaryAbilities.count;
         primaryAbilities.detectSecretDoors += 0.5;
-      } else if (dieRoll <= 87) {
+      } else if (score <= 87) {
         ++primaryAbilities.count;
         primaryAbilities.detectInvisible += 1;
-      } else if (dieRoll <= 92) {
+      } else if (score <= 92) {
         ++primaryAbilities.count;
         primaryAbilities.locateObject += 12;
-      } else if (dieRoll <= 98) {
+      } else if (score <= 98) {
         rolls = 2;
-        dieRollMax = 92;
+        max_score = 92;
       } else {
         ++extraordinaryPowerCount;
       }
@@ -2072,54 +2072,54 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
   } extraordinaryPowers = {};
   bool hasSpecialPurpose = false;
   for (int i = 0; i < extraordinaryPowerCount; ++i) {
-    int dieRollMax = 100;
+    int max_score = 100;
     int rolls = 1;
     bool rollTwicePossible = true;
     bool chooseOnePossible = true;
     bool specialPurposePossible = true;
     do {
-      dieRoll = rollDice(rnd, 1, dieRollMax);
+      score = dice_roll(dice_make(1, max_score), rnd, NULL);
       --rolls;
-      if (dieRoll <= 7) {
+      if (score <= 7) {
         ++extraordinaryPowers.count;
         extraordinaryPowers.charmPerson += 3;
-      } else if (dieRoll <= 15) {
+      } else if (score <= 15) {
         ++extraordinaryPowers.count;
         extraordinaryPowers.clairaudience += 3;
-      } else if (dieRoll <= 22) {
+      } else if (score <= 22) {
         ++extraordinaryPowers.count;
         extraordinaryPowers.clairvoyance += 3;
-      } else if (dieRoll <= 28) {
+      } else if (score <= 28) {
         ++extraordinaryPowers.count;
         extraordinaryPowers.determineDirections += 2;
-      } else if (dieRoll <= 34) {
+      } else if (score <= 34) {
         ++extraordinaryPowers.count;
         extraordinaryPowers.esp += 3;
-      } else if (dieRoll <= 41) {
+      } else if (score <= 41) {
         ++extraordinaryPowers.count;
         extraordinaryPowers.flying += 1;
-      } else if (dieRoll <= 47) {
+      } else if (score <= 47) {
         ++extraordinaryPowers.count;
         extraordinaryPowers.heal += 1;
-      } else if (dieRoll <= 54) {
+      } else if (score <= 54) {
         ++extraordinaryPowers.count;
         extraordinaryPowers.illusion += 2;
-      } else if (dieRoll <= 61) {
+      } else if (score <= 61) {
         ++extraordinaryPowers.count;
         extraordinaryPowers.levitation += 3;
-      } else if (dieRoll <= 67) {
+      } else if (score <= 67) {
         ++extraordinaryPowers.count;
         extraordinaryPowers.strength += 1;
-      } else if (dieRoll <= 75) {
+      } else if (score <= 75) {
         ++extraordinaryPowers.count;
         extraordinaryPowers.telekinesis += 2;
-      } else if (dieRoll <= 81) {
+      } else if (score <= 81) {
         ++extraordinaryPowers.count;
         extraordinaryPowers.telepathy += 2;
-      } else if (dieRoll <= 88) {
+      } else if (score <= 88) {
         ++extraordinaryPowers.count;
         extraordinaryPowers.teleportation += 1;
-      } else if (dieRoll <= 94) {
+      } else if (score <= 94) {
         ++extraordinaryPowers.count;
         extraordinaryPowers.xrayVision += 2;
       } else {
@@ -2129,31 +2129,31 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
         if (rollTwicePossible) {
           range += rollTwiceRange;
         }
-        if (dieRoll <= range) {
+        if (score <= range) {
           rollTwicePossible = false;
           rolls = 2;
-          dieRollMax -= rollTwiceRange;
+          max_score -= rollTwiceRange;
         }
         
         int const chooseOneRange = 2;
         if (chooseOnePossible) {
           range += chooseOneRange;
         }
-        if (dieRoll <= range) {
+        if (score <= range) {
           chooseOnePossible = false;
           rolls = 1;
-          dieRollMax -= chooseOneRange;
+          max_score -= chooseOneRange;
         }
         
         int const specialPurposeRange = 1;
         if (specialPurposePossible) {
           range += specialPurposeRange;
         }
-        if (dieRoll <= range) {
+        if (score <= range) {
           specialPurposePossible = false;
           hasSpecialPurpose = true;
           rolls = 1;
-          dieRollMax -= specialPurposeRange;
+          max_score -= specialPurposeRange;
         }
 
       }
@@ -2250,26 +2250,26 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
   if (hasSpecialPurpose) {
     ego += 5;
     char const *specialPurpose;
-    dieRoll = roll(rnd, "1d100");
-    if (dieRoll <= 10) {
+    score = roll(rnd, "1d100");
+    if (score <= 10) {
       if (0 == strcmp(alignment, "neutral")) {
         specialPurpose = "preserve the balance by defeating/slaying powerful beings of extreme alignment (LG, LE, CG, CE)";
       } else {
         specialPurpose = "defeat/slay diametrically opposed alignment";
       }
-    } else if (dieRoll <= 20) {
+    } else if (score <= 20) {
       specialPurpose = "kill clerics";
-    } else if (dieRoll <= 30) {
+    } else if (score <= 30) {
       specialPurpose = "kill fighters";
-    } else if (dieRoll <= 40) {
+    } else if (score <= 40) {
       specialPurpose = "kill magic-users";
-    } else if (dieRoll <= 50) {
+    } else if (score <= 50) {
       specialPurpose = "kill thieves";
-    } else if (dieRoll <= 55) {
+    } else if (score <= 55) {
       specialPurpose = "kill bards/monks";
-    } else if (dieRoll <= 65) {
+    } else if (score <= 65) {
       specialPurpose = "overthrow law and/or chaos";
-    } else if (dieRoll <= 75) {
+    } else if (score <= 75) {
       specialPurpose = "slay good and/or evil";
     } else {
       specialPurpose = "slay non-human monsters";
@@ -2281,18 +2281,18 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
     
     char const *specialPurposePower;
     char const *format = "special purpose power: %s on a hit unless save vs magic";
-    dieRoll = roll(rnd, "1d100");
-    if (dieRoll <= 10) {
+    score = roll(rnd, "1d100");
+    if (score <= 10) {
       specialPurposePower = "blindness for 2-12 rounds";
-    } else if (dieRoll <= 20) {
+    } else if (score <= 20) {
       specialPurposePower = "confusion for 2-12 rounds";
-    } else if (dieRoll <= 25) {
+    } else if (score <= 25) {
       specialPurposePower = "disintegrate";
-    } else if (dieRoll <= 55) {
+    } else if (score <= 55) {
       specialPurposePower = "fear for 1-4 rounds";
-    } else if (dieRoll <= 65) {
+    } else if (score <= 65) {
       specialPurposePower = "insanity for 1-4 rounds";
-    } else if (dieRoll <= 80) {
+    } else if (score <= 80) {
       specialPurposePower = "paralysis for 1-4 rounds";
     } else {
       specialPurposePower = "+2 on all saving throws, -1 on each die of damage sustained";
@@ -2306,27 +2306,27 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
   
   // languages
   if (intelligence >= 14) {
-    int dieRollMax = 100;
+    int max_score = 100;
     int rolls = 1;
     int languageCount = 0;
     int minLanguageCount = 0;
     do {
-      dieRoll = rollDice(rnd, 1, dieRollMax);
+      score = dice_roll(dice_make(1, max_score), rnd, NULL);
       --rolls;
-      if (dieRoll <= 40) {
+      if (score <= 40) {
         languageCount += 1;
-      } else if (dieRoll <= 70) {
+      } else if (score <= 70) {
         languageCount += 2;
-      } else if (dieRoll <= 85) {
+      } else if (score <= 85) {
         languageCount += 3;
-      } else if (dieRoll <= 95) {
+      } else if (score <= 95) {
         languageCount += 4;
-      } else if (dieRoll <= 99) {
+      } else if (score <= 99) {
         languageCount += 5;
       } else {
         languageCount = 0;
         minLanguageCount = 6;
-        dieRollMax = 99;
+        max_score = 99;
         rolls = 2;
       }
     } while (rolls > 0);

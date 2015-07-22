@@ -156,12 +156,12 @@ char const *determineLanguage(struct rnd *rnd,
     }
   }
   
-  int dieRoll = rollDice(rnd, 1, total);
+  int score = dice_roll(dice_make(1, total), rnd, NULL);
   int range = 0;
   for (int i = 0; i < languageTableCount; ++i) {
     if ( ! contains(exclude, excludeCount, languageTable[i].language)) {
       range += languageTable[i].percent;
-      if (dieRoll <= range) {
+      if (score <= range) {
         return languageTable[i].language;
       }
     }
@@ -638,14 +638,14 @@ char const *determineSpell(struct rnd *rnd,
   }
   assert(total);
   
-  int dieRoll = rollDice(rnd, 1, total);
+  int score = dice_roll(dice_make(1, total), rnd, NULL);
   int range = 0;
   for (int i = 0; i < spellsTableCount; ++i) {
     if (   spellsTable[i].type == spellType 
         && spellsTable[i].level == spellLevel)
     {
       ++range;
-      if (dieRoll <= range) {
+      if (score <= range) {
         return spellsTable[i].name;
       }
     }
