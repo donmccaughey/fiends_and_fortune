@@ -4,7 +4,7 @@
 
 #include "Character.h"
 #include "coinage.h"
-#include "die_roll.h"
+#include "dice.h"
 #include "Dungeon.h"
 #include "Gem.h"
 #include "Jewelry.h"

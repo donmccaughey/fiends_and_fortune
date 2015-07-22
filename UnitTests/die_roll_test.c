@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "die_roll.h"
+#include "dice.h"
 #include "rnd.h"
 
 

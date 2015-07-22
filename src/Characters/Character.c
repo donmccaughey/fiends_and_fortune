@@ -6,7 +6,7 @@
 #include <string.h>
 
 #include "alloc_or_die.h"
-#include "die_roll.h"
+#include "dice.h"
 
 
 static size_t const characteristicCount = 6;

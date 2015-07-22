@@ -5,7 +5,7 @@
 
 #include "alloc_or_die.h"
 #include "coinage.h"
-#include "die_roll.h"
+#include "dice.h"
 
 
 static char const *const gemSizeNames[] = {

@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "alloc_or_die.h"
-#include "die_roll.h"
+#include "dice.h"
 #include "Gem.h"
 #include "Jewelry.h"
 #include "MagicItem.h"

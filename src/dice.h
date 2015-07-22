@@ -1,5 +1,5 @@
-#ifndef DIE_ROLL_H_INCLUDED
-#define DIE_ROLL_H_INCLUDED
+#ifndef DICE_H_INCLUDED
+#define DICE_H_INCLUDED
 
 
 struct rnd;

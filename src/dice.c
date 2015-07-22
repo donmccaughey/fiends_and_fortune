@@ -1,4 +1,4 @@
-#include "die_roll.h"
+#include "dice.h"
 
 #include <assert.h>
 #include <errno.h>

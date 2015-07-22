@@ -15,8 +15,8 @@
 		D43ED594142146F800D25EEC /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D43ED593142146F800D25EEC /* main.c */; };
 		D45178401B5B684D00F26844 /* rnd.c in Sources */ = {isa = PBXBuildFile; fileRef = D451783E1B5B684D00F26844 /* rnd.c */; };
 		D45178411B5B684D00F26844 /* rnd.c in Sources */ = {isa = PBXBuildFile; fileRef = D451783E1B5B684D00F26844 /* rnd.c */; };
-		D45178441B5CAFBE00F26844 /* die_roll.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178421B5CAFBE00F26844 /* die_roll.c */; };
-		D45178451B5CAFBE00F26844 /* die_roll.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178421B5CAFBE00F26844 /* die_roll.c */; };
+		D45178441B5CAFBE00F26844 /* dice.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178421B5CAFBE00F26844 /* dice.c */; };
+		D45178451B5CAFBE00F26844 /* dice.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178421B5CAFBE00F26844 /* dice.c */; };
 		D45178471B5CB43600F26844 /* die_roll_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178461B5CB43600F26844 /* die_roll_test.c */; };
 		D45BB9521B5A12BF0096E525 /* alloc_or_die.c in Sources */ = {isa = PBXBuildFile; fileRef = D45BB9501B5A12BF0096E525 /* alloc_or_die.c */; };
 		D45BB9531B5A12BF0096E525 /* alloc_or_die.c in Sources */ = {isa = PBXBuildFile; fileRef = D45BB9501B5A12BF0096E525 /* alloc_or_die.c */; };
@@ -100,8 +100,8 @@
 		D43ED593142146F800D25EEC /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		D451783E1B5B684D00F26844 /* rnd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rnd.c; path = ../../rnd/rnd.c; sourceTree = "<group>"; };
 		D451783F1B5B684D00F26844 /* rnd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rnd.h; path = ../../rnd/rnd.h; sourceTree = "<group>"; };
-		D45178421B5CAFBE00F26844 /* die_roll.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = die_roll.c; sourceTree = "<group>"; };
-		D45178431B5CAFBE00F26844 /* die_roll.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = die_roll.h; sourceTree = "<group>"; };
+		D45178421B5CAFBE00F26844 /* dice.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dice.c; sourceTree = "<group>"; };
+		D45178431B5CAFBE00F26844 /* dice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dice.h; sourceTree = "<group>"; };
 		D45178461B5CB43600F26844 /* die_roll_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = die_roll_test.c; sourceTree = "<group>"; };
 		D45BB9501B5A12BF0096E525 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
 		D45BB9511B5A12BF0096E525 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
@@ -302,8 +302,8 @@
 				D4783B0F15ABDF8B004E7F2C /* Treasure */,
 				D45BB9511B5A12BF0096E525 /* alloc_or_die.h */,
 				D45BB9501B5A12BF0096E525 /* alloc_or_die.c */,
-				D45178431B5CAFBE00F26844 /* die_roll.h */,
-				D45178421B5CAFBE00F26844 /* die_roll.c */,
+				D45178431B5CAFBE00F26844 /* dice.h */,
+				D45178421B5CAFBE00F26844 /* dice.c */,
 				D4F73461140EF4380096618F /* main.c */,
 				D451783F1B5B684D00F26844 /* rnd.h */,
 				D451783E1B5B684D00F26844 /* rnd.c */,
@@ -429,7 +429,7 @@
 				D4092FB715B2A5AA0002FB34 /* Tile.c in Sources */,
 				D4230D1B15B3B298007A7762 /* RangeTest.c in Sources */,
 				D4EA732F1606BF2400B01DB5 /* Areas.c in Sources */,
-				D45178451B5CAFBE00F26844 /* die_roll.c in Sources */,
+				D45178451B5CAFBE00F26844 /* dice.c in Sources */,
 				D4EA73301606BF3600B01DB5 /* Area.c in Sources */,
 				D45BB9531B5A12BF0096E525 /* alloc_or_die.c in Sources */,
 				D4BCC61617D44C2500C76D11 /* PointTest.c in Sources */,
@@ -448,7 +448,7 @@
 				D4F73462140EF4380096618F /* main.c in Sources */,
 				D4783B1C15ABDF8B004E7F2C /* Gem.c in Sources */,
 				D4783B1D15ABDF8B004E7F2C /* Jewelry.c in Sources */,
-				D45178441B5CAFBE00F26844 /* die_roll.c in Sources */,
+				D45178441B5CAFBE00F26844 /* dice.c in Sources */,
 				D4783B1E15ABDF8B004E7F2C /* MagicItem.c in Sources */,
 				D4783B1F15ABDF8B004E7F2C /* Treasure.c in Sources */,
 				D4783B2015ABDF8B004E7F2C /* TreasureMap.c in Sources */,
