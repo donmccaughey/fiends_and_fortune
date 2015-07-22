@@ -151,19 +151,6 @@ rollDiceAndDropLowest(struct rnd *rnd, int count, int sides)
 }
 
 
-int
-rollDicePlus(struct rnd *rnd, int count, int sides, int modifier)
-{
-    struct dice dice = {
-        .count=count,
-        .sides=sides,
-        .modifier=modifier,
-        .multiplier=1,
-    };
-    return dice_roll(dice, rnd, NULL);
-}
-
-
 static inline double
 max_possible_total(struct dice dice)
 {

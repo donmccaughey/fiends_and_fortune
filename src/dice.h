@@ -48,8 +48,5 @@ rollDiceAndAdjustUpwards(struct rnd *rnd, int count, int sides);
 int
 rollDiceAndDropLowest(struct rnd *rnd, int count, int sides);
 
-int
-rollDicePlus(struct rnd *rnd, int count, int sides, int modifier);
-
 
 #endif /* #ifndef DICE_H_INCLUDED */

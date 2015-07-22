@@ -1,8 +1,12 @@
 #!/bin/sh
 
+PROGRAM=$BUILT_PRODUCTS_DIR/FiendsAndFortune
+UNIT_TESTS=$BUILT_PRODUCTS_DIR/UnitTests
+
+$UNIT_TESTS || exit
+
 ACTUAL_OUT=$TEMP_DIR/check.out
 EXPECTED_OUT=$PROJECT_DIR/test/check.out
-PROGRAM=$BUILT_PRODUCTS_DIR/FiendsAndFortune
 
 mkdir -p $TEMP_DIR
 $PROGRAM check 0 > $ACTUAL_OUT
