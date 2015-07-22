@@ -2,12 +2,23 @@
 #include <stdlib.h>
 
 
-void dice_test(void);
-void dungeonTest(void);
-void pointTest(void);
-void pointsTest(void);
-void rangeTest(void);
-void tilesTest(void);
+void
+dice_test(void);
+
+void
+dungeonTest(void);
+
+void
+pointTest(void);
+
+void
+pointsTest(void);
+
+void
+rangeTest(void);
+
+void
+tilesTest(void);
 
 
 int main (int argc, const char *argv[])

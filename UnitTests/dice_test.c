@@ -4,23 +4,12 @@
 #include "rnd.h"
 
 
-void dice_test(void);
-static void dice_parse_test(void);
-static void rollTest(void);
-static void rollDiceAndAdjustTowardsAverageTest(void);
-static void rollDiceAndDropLowestTest(void);
+void
+dice_test(void);
 
 
-void dice_test(void)
-{
-    dice_parse_test();
-    rollTest();
-    rollDiceAndAdjustTowardsAverageTest();
-    rollDiceAndDropLowestTest();
-}
-
-
-static void dice_parse_test(void)
+static void
+dice_parse_test(void)
 {
     struct dice dice;
     
@@ -98,7 +87,8 @@ static void dice_parse_test(void)
 }
 
 
-static void rollTest(void)
+static void
+rollTest(void)
 {
     struct rnd *alwaysRollOnes = rnd_alloc_fake_fixed(0);
     struct rnd *alwaysRollTwos = rnd_alloc_fake_fixed(1);
@@ -160,20 +150,21 @@ static void rollTest(void)
 }
 
 
-static void rollDiceAndAdjustTowardsAverageTest(void)
+static void
+dice_roll_with_average_scoring_test(void)
 {
     struct rnd *ascendingRolls = rnd_alloc_fake_ascending(0);
     struct rnd *alwaysRollOnes = rnd_alloc_fake_fixed(0);
     struct rnd *alwaysRollTwos = rnd_alloc_fake_fixed(1);
     int dieRoll;
     
-    dieRoll = rollDiceAndAdjustTowardsAverage(ascendingRolls, 3, 6);
+    dieRoll = dice_roll_with_average_scoring(dice_make(3, 6), ascendingRolls);
     assert(8 == dieRoll);
     
-    dieRoll = rollDiceAndAdjustTowardsAverage(alwaysRollOnes, 3, 6);
+    dieRoll = dice_roll_with_average_scoring(dice_make(3, 6), alwaysRollOnes);
     assert(9 == dieRoll);
     
-    dieRoll = rollDiceAndAdjustTowardsAverage(alwaysRollTwos, 3, 6);
+    dieRoll = dice_roll_with_average_scoring(dice_make(3, 6), alwaysRollTwos);
     assert(6 == dieRoll);
     
     rnd_free(ascendingRolls);
@@ -182,7 +173,8 @@ static void rollDiceAndAdjustTowardsAverageTest(void)
 }
 
 
-static void rollDiceAndDropLowestTest(void)
+static void
+rollDiceAndDropLowestTest(void)
 {
     struct rnd *ascendingRolls = rnd_alloc_fake_ascending(0);
     struct rnd *alwaysRollOnes = rnd_alloc_fake_fixed(0);
@@ -201,4 +193,14 @@ static void rollDiceAndDropLowestTest(void)
     rnd_free(ascendingRolls);
     rnd_free(alwaysRollOnes);
     rnd_free(alwaysRollTwos);
+}
+
+
+void
+dice_test(void)
+{
+    dice_parse_test();
+    rollTest();
+    dice_roll_with_average_scoring_test();
+    rollDiceAndDropLowestTest();
 }

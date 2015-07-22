@@ -93,19 +93,19 @@ roll(struct rnd *rnd, char const *dice_string)
 
 
 int
-rollDiceAndAdjustTowardsAverage(struct rnd *rnd, int count, int sides)
+dice_roll_with_average_scoring(struct dice dice, struct rnd *rnd)
 {
-    int die_scores[count];
-    dice_roll(dice_make(count, sides), rnd, die_scores);
+    int die_scores[dice.count];
+    dice_roll(dice, rnd, die_scores);
     
-    int const high_roll = sides;
+    int const high_roll = dice.sides;
     int const low_roll = 1;
     int const low_plus_high = high_roll + low_roll;
     int const low_average = low_plus_high / 2;
     int const high_average = low_average + (low_plus_high % 2);
     
     int score = 0;
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < dice.count; ++i) {
         if (die_scores[i] == low_roll) {
             score += low_average;
         } else if (die_scores[i] == high_roll) {

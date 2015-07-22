@@ -703,7 +703,7 @@ int *generateCharacteristics(struct rnd *rnd,
     case GeneralNPCCharacteristicGenerationMethod:
       characteristics = calloc_or_die(characteristicCount, characteristicSize);
       for (size_t i = 0; i < characteristicCount; ++i) {
-        characteristics[i] = rollDiceAndAdjustTowardsAverage(rnd, 3, 6);
+        characteristics[i] = dice_roll_with_average_scoring(dice_make(3, 6), rnd);
       }
       break;
     case SpecialNPCCharacteristicGenerationMethod:
