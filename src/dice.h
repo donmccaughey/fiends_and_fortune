@@ -46,7 +46,7 @@ int
 dice_roll_and_adjust_upwards(struct dice dice, struct rnd *rnd);
 
 int
-rollDiceAndDropLowest(struct rnd *rnd, int count, int sides);
+dice_roll_and_drop_lowest(struct dice dice, struct rnd *rnd);
 
 
 #endif /* #ifndef DICE_H_INCLUDED */

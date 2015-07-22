@@ -664,7 +664,7 @@ int *generateCharacteristics(struct rnd *rnd,
     case CharacteristicGenerationMethod1:
       characteristics = calloc_or_die(characteristicCount, characteristicSize);
       for (size_t i = 0; i < characteristicCount; ++i) {
-        characteristics[i] = rollDiceAndDropLowest(rnd, 4, 6);
+        characteristics[i] = dice_roll_and_drop_lowest(dice_make(4, 6), rnd);
       }
       qsort(characteristics, characteristicCount, characteristicSize, 
             compareCharacteristics);

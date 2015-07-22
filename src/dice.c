@@ -12,9 +12,13 @@
 
 
 static int
-compare_dice_scores(void const *score1, void const *score2)
+compare_die_scores(void const *item1, void const *item2)
 {
-    return *((int *)score1) - *((int *)score2);
+    int const *score1 = item1;
+    int const *score2 = item2;
+    if (*score1 < *score2) return -1;
+    if (*score1 > *score2) return 1;
+    return 0;
 }
 
 
@@ -137,14 +141,14 @@ dice_roll_and_adjust_upwards(struct dice dice, struct rnd *rnd)
 
 
 int
-rollDiceAndDropLowest(struct rnd *rnd, int count, int sides)
+dice_roll_and_drop_lowest(struct dice dice, struct rnd *rnd)
 {
-    int die_scores[count];    
-    dice_roll(dice_make(count, sides), rnd, die_scores);
-    qsort(die_scores, (size_t)count, sizeof die_scores[0], compare_dice_scores);
+    int die_scores[dice.count];
+    dice_roll(dice, rnd, die_scores);
+    qsort(die_scores, (size_t)dice.count, sizeof die_scores[0], compare_die_scores);
     
     int score = 0;
-    for (int i = 1; i < count; ++i) {
+    for (int i = 1; i < dice.count; ++i) {
         score += die_scores[i];
     }
     return score;
