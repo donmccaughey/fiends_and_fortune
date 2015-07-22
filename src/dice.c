@@ -12,15 +12,9 @@
 
 
 static int
-rollDieRoll(struct rnd *rnd,
-            struct dice dice,
-            int diceRolled[]);
-
-
-static int
-compareDieRolls(void const *die1, void const *die2)
+compare_dice_scores(void const *score1, void const *score2)
 {
-    return *((int *)die1) - *((int *)die2);
+    return *((int *)score1) - *((int *)score2);
 }
 
 
@@ -94,99 +88,73 @@ int
 roll(struct rnd *rnd, char const *dice_string)
 {
     struct dice dice = dice_parse(dice_string);
-    return rollDieRoll(rnd, dice, NULL);
+    return dice_roll(dice, rnd, NULL);
 }
 
 
 int
 rollDice(struct rnd *rnd, int count, int sides)
 {
-    struct dice dice = {
-        .count=count,
-        .sides=sides,
-        .modifier=0,
-        .multiplier=1,
-    };
-    return rollDieRoll(rnd, dice, NULL);
+    return dice_roll(dice_make(count, sides), rnd, NULL);
 }
 
 
 int
 rollDiceAndAdjustTowardsAverage(struct rnd *rnd, int count, int sides)
 {
-    struct dice dice = {
-        .count=count,
-        .sides=sides,
-        .modifier=0,
-        .multiplier=1,
-    };
-    int diceRolled[count];
+    int die_scores[count];
+    dice_roll(dice_make(count, sides), rnd, die_scores);
     
-    rollDieRoll(rnd, dice, diceRolled);
+    int const high_roll = sides;
+    int const low_roll = 1;
+    int const low_plus_high = high_roll + low_roll;
+    int const low_average = low_plus_high / 2;
+    int const high_average = low_average + (low_plus_high % 2);
     
-    int total = 0;
-    int const highRoll = sides;
-    int const lowRoll = 1;
-    int const lowPlusHigh = highRoll + lowRoll;
-    int const lowAverage = lowPlusHigh / 2;
-    int const highAverage = lowAverage + (lowPlusHigh % 2);
+    int score = 0;
     for (int i = 0; i < count; ++i) {
-        if (diceRolled[i] == 1) {
-            total += lowAverage;
-        } else if (diceRolled[i] == sides) {
-            total += highAverage;
+        if (die_scores[i] == low_roll) {
+            score += low_average;
+        } else if (die_scores[i] == high_roll) {
+            score += high_average;
         } else {
-            total += diceRolled[i];
+            score += die_scores[i];
         }
     }
-    return total;
+    return score;
 }
 
 
 int
 rollDiceAndAdjustUpwards(struct rnd *rnd, int count, int sides)
 {
-    struct dice dice = {
-        .count=count,
-        .sides=sides,
-        .modifier=0,
-        .multiplier=1,
-    };
-    int diceRolled[count];
+    int die_scores[count];
+    dice_roll(dice_make(count, sides), rnd, die_scores);
     
-    rollDieRoll(rnd, dice, diceRolled);
-    
-    int total = 0;
+    int score = 0;
     for (int i = 0; i < count; ++i) {
-        if (diceRolled[i] < 6) {
-            total += diceRolled[i] + 1;
+        if (die_scores[i] < 6) {
+            score += die_scores[i] + 1;
         } else {
-            total += diceRolled[i];
+            score += die_scores[i];
         }
     }
-    return total;
+    return score;
 }
 
 
 int
 rollDiceAndDropLowest(struct rnd *rnd, int count, int sides)
 {
-    struct dice dice = {
-        .count=count,
-        .sides=sides,
-        .modifier=0,
-        .multiplier=1,
-    };
-    int diceRolled[count];
+    int die_scores[count];    
+    dice_roll(dice_make(count, sides), rnd, die_scores);
+    qsort(die_scores, (size_t)count, sizeof die_scores[0], compare_dice_scores);
     
-    rollDieRoll(rnd, dice, diceRolled);
-    qsort(diceRolled, (size_t)count, sizeof diceRolled[0], compareDieRolls);
-    
-    int total = 0;
+    int score = 0;
     for (int i = 1; i < count; ++i) {
-        total += diceRolled[i];
+        score += die_scores[i];
     }
-    return total;
+    return score;
 }
 
 
@@ -199,7 +167,7 @@ rollDicePlus(struct rnd *rnd, int count, int sides, int modifier)
         .modifier=modifier,
         .multiplier=1,
     };
-    return rollDieRoll(rnd, dice, NULL);
+    return dice_roll(dice, rnd, NULL);
 }
 
 
@@ -212,10 +180,8 @@ max_possible_total(struct dice dice)
 }
 
 
-static int
-rollDieRoll(struct rnd *rnd,
-            struct dice dice,
-            int diceRolled[])
+int
+dice_roll(struct dice dice, struct rnd *rnd, int die_scores[])
 {
     assert(dice.count >= 0);
     assert(dice.sides > 0);
@@ -226,14 +192,17 @@ rollDieRoll(struct rnd *rnd,
     } else if (dice.sides == 1) {
         return (dice.count + dice.modifier) * dice.multiplier;
     } else {
-        int total = dice.modifier;
+        int score = dice.modifier;
         for (int i = 0; i < dice.count; ++i) {
-            int result = (int)rnd_next_uniform_value_in_range(rnd,
-                                                              1,
-                                                              dice.sides + 1);
-            if (diceRolled) diceRolled[i] = result;
-            total += result;
+            int die_score = (int)rnd_next_uniform_value_in_range(rnd,
+                                                                 1,
+                                                                 dice.sides);
+            if (die_scores) die_scores[i] = die_score;
+            score += die_score;
         }
-        return total * dice.multiplier;
+        return score * dice.multiplier;
     }
 }
+
+extern inline struct dice
+dice_make(int count, int sides);
