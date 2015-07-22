@@ -43,7 +43,7 @@ int
 dice_roll_with_average_scoring(struct dice dice, struct rnd *rnd);
 
 int
-rollDiceAndAdjustUpwards(struct rnd *rnd, int count, int sides);
+dice_roll_and_adjust_upwards(struct dice dice, struct rnd *rnd);
 
 int
 rollDiceAndDropLowest(struct rnd *rnd, int count, int sides);

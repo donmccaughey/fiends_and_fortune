@@ -713,7 +713,7 @@ int *generateCharacteristics(struct rnd *rnd,
         for (int i = 0; i < characteristicCount; ++i) {
           uint32_t characteristicFlag = STRENGTH << i;
           if (characteristicFlags & characteristicFlag) {
-            characteristics[i] = rollDiceAndAdjustUpwards(rnd, 3, 6);
+            characteristics[i] = dice_roll_and_adjust_upwards(dice_make(3, 6), rnd);
           } else {
             characteristics[i] = roll(rnd, "3d6");
           }

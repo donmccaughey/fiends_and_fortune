@@ -119,13 +119,13 @@ dice_roll_with_average_scoring(struct dice dice, struct rnd *rnd)
 
 
 int
-rollDiceAndAdjustUpwards(struct rnd *rnd, int count, int sides)
+dice_roll_and_adjust_upwards(struct dice dice, struct rnd *rnd)
 {
-    int die_scores[count];
-    dice_roll(dice_make(count, sides), rnd, die_scores);
+    int die_scores[dice.count];
+    dice_roll(dice, rnd, die_scores);
     
     int score = 0;
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < dice.count; ++i) {
         if (die_scores[i] < 6) {
             score += die_scores[i] + 1;
         } else {
