@@ -252,7 +252,7 @@ void generateJewelry(struct Jewelry *jewelry, struct rnd *rnd)
     }
   } while (dieRoll == 1 && jewelry->workmanshipBonus < maxWorkmanshipBonus);
   for (int i = 0; i < jewelry->workmanshipBonus; ++i) {
-    int maxValue_cp = maxDieRoll(jewelryRanks[rank].baseValue)
+    int maxValue_cp = dice_max_score(jewelryRanks[rank].baseValue)
                     * jewelryRanks[rank].baseValueMultiplier;
     if (jewelry->value_cp < maxValue_cp) {
       jewelry->value_cp = maxValue_cp;

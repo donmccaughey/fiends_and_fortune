@@ -25,15 +25,16 @@ compareDieRolls(void const *die1, void const *die2)
 
 
 int
-maxDieRoll(char const *dice_string)
+dice_max_score(char const *dice_string)
 {
     struct dice dice = dice_parse(dice_string);
+    assert((double)dice.count * (double)dice.sides <= (double)INT_MAX);
     return dice.count * dice.sides;
 }
 
 
 int
-minDieRoll(char const *dice_string)
+dice_min_score(char const *dice_string)
 {
     struct dice dice = dice_parse(dice_string);
     return dice.count;

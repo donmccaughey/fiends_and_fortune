@@ -14,10 +14,10 @@ struct dice {
 
 
 int
-maxDieRoll(char const *dice_string);
+dice_max_score(char const *dice_string);
 
 int
-minDieRoll(char const *dice_string);
+dice_min_score(char const *dice_string);
 
 struct dice
 dice_parse(char const *dice_string);

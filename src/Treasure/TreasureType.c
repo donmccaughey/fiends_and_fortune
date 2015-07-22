@@ -533,10 +533,10 @@ char *describeTreasureType(struct TreasureType *treasureType,
 static char *describeCoinsGemsOrJewelry(struct CoinsGemsOrJewelry *coinsGemsOrJewelry) {
   if (coinsGemsOrJewelry->isPossible) {
     if (coinsGemsOrJewelry->isPerIndividual) {
-      int minAmount = minDieRoll(coinsGemsOrJewelry->amount);
+      int minAmount = dice_min_score(coinsGemsOrJewelry->amount);
       int minLength = (minAmount < 10 ? 1 : 2);
       
-      int maxAmount = maxDieRoll(coinsGemsOrJewelry->amount);
+      int maxAmount = dice_max_score(coinsGemsOrJewelry->amount);
       int maxLength = (maxAmount < 10 ? 1 : 2);
       
       int dieRollLength = minLength + 1 /* dash */ + maxLength;
@@ -548,10 +548,10 @@ static char *describeCoinsGemsOrJewelry(struct CoinsGemsOrJewelry *coinsGemsOrJe
       
       return description;
     } else {
-      int minAmount = minDieRoll(coinsGemsOrJewelry->amount);
+      int minAmount = dice_min_score(coinsGemsOrJewelry->amount);
       int minLength = (minAmount < 10 ? 1 : 2);
       
-      int maxAmount = maxDieRoll(coinsGemsOrJewelry->amount);
+      int maxAmount = dice_max_score(coinsGemsOrJewelry->amount);
       int maxLength = (maxAmount < 100 ? (maxAmount < 10 ? 1 : 2) : 3);
       
       int dieRollLength = minLength + 1 /* dash */ + maxLength;
@@ -591,8 +591,8 @@ static char *describeMapsOrMagic(struct MapsOrMagic *mapsOrMagic) {
       char const *typeName = possibleMapsOrMagicName(type->isMapPossible, 
                                                      type->possibleMagicItems);
       if (type->variableAmount[0]) {
-        int minAmount = minDieRoll(type->variableAmount);
-        int maxAmount = maxDieRoll(type->variableAmount);
+        int minAmount = dice_min_score(type->variableAmount);
+        int maxAmount = dice_max_score(type->variableAmount);
         asprintf_or_die(&typeDescriptions[i], "%i-%i %ss",
                         minAmount, maxAmount, typeName);
       } else if (   type->isMapPossible 
