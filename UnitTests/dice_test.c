@@ -5,7 +5,7 @@
 
 
 void dice_test(void);
-static void parseDieRollTest(void);
+static void dice_parse_test(void);
 static void rollTest(void);
 static void rollDiceTest(void);
 static void rollDiceAndAdjustTowardsAverageTest(void);
@@ -15,7 +15,7 @@ static void rollDicePlusTest(void);
 
 void dice_test(void)
 {
-    parseDieRollTest();
+    dice_parse_test();
     rollTest();
     rollDiceTest();
     rollDiceAndAdjustTowardsAverageTest();
@@ -24,77 +24,77 @@ void dice_test(void)
 }
 
 
-static void parseDieRollTest(void)
+static void dice_parse_test(void)
 {
     struct dice dice;
     
-    dice = parseDieRoll("0");
+    dice = dice_parse("0");
     assert(0 == dice.count);
     assert(1 == dice.sides);
     assert(0 == dice.modifier);
     assert(1 == dice.multiplier);
     
-    dice = parseDieRoll("1");
+    dice = dice_parse("1");
     assert(1 == dice.count);
     assert(1 == dice.sides);
     assert(0 == dice.modifier);
     assert(1 == dice.multiplier);
     
-    dice = parseDieRoll("5");
+    dice = dice_parse("5");
     assert(5 == dice.count);
     assert(1 == dice.sides);
     assert(0 == dice.modifier);
     assert(1 == dice.multiplier);
     
-    dice = parseDieRoll("1d6");
+    dice = dice_parse("1d6");
     assert(1 == dice.count);
     assert(6 == dice.sides);
     assert(0 == dice.modifier);
     assert(1 == dice.multiplier);
     
-    dice = parseDieRoll("2D6");
+    dice = dice_parse("2D6");
     assert(2 == dice.count);
     assert(6 == dice.sides);
     assert(0 == dice.modifier);
     assert(1 == dice.multiplier);
     
-    dice = parseDieRoll("10+1");
+    dice = dice_parse("10+1");
     assert(10 == dice.count);
     assert(1 == dice.sides);
     assert(1 == dice.modifier);
     assert(1 == dice.multiplier);
     
-    dice = parseDieRoll("1d6+1");
+    dice = dice_parse("1d6+1");
     assert(1 == dice.count);
     assert(6 == dice.sides);
     assert(1 == dice.modifier);
     assert(1 == dice.multiplier);
     
-    dice = parseDieRoll("2d4-1");
+    dice = dice_parse("2d4-1");
     assert(2 == dice.count);
     assert(4 == dice.sides);
     assert(-1 == dice.modifier);
     assert(1 == dice.multiplier);
     
-    dice = parseDieRoll("5*10");
+    dice = dice_parse("5*10");
     assert(5 == dice.count);
     assert(1 == dice.sides);
     assert(0 == dice.modifier);
     assert(10 == dice.multiplier);
     
-    dice = parseDieRoll("1d6*10");
+    dice = dice_parse("1d6*10");
     assert(1 == dice.count);
     assert(6 == dice.sides);
     assert(0 == dice.modifier);
     assert(10 == dice.multiplier);
     
-    dice = parseDieRoll("5d4*-5");
+    dice = dice_parse("5d4*-5");
     assert(5 == dice.count);
     assert(4 == dice.sides);
     assert(0 == dice.modifier);
     assert(-5 == dice.multiplier);
     
-    dice = parseDieRoll("2d10+4*100");
+    dice = dice_parse("2d10+4*100");
     assert(2 == dice.count);
     assert(10 == dice.sides);
     assert(4 == dice.modifier);

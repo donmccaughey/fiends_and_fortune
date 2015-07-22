@@ -25,23 +25,23 @@ compareDieRolls(void const *die1, void const *die2)
 
 
 int
-maxDieRoll(char const *dieRollString)
+maxDieRoll(char const *dice_string)
 {
-    struct dice dice = parseDieRoll(dieRollString);
+    struct dice dice = dice_parse(dice_string);
     return dice.count * dice.sides;
 }
 
 
 int
-minDieRoll(char const *dieRollString)
+minDieRoll(char const *dice_string)
 {
-    struct dice dice = parseDieRoll(dieRollString);
+    struct dice dice = dice_parse(dice_string);
     return dice.count;
 }
 
 
 struct dice
-parseDieRoll(char const *dieRollString)
+dice_parse(char const *dice_string)
 {
     struct dice dice = {
         .count=1,
@@ -53,7 +53,7 @@ parseDieRoll(char const *dieRollString)
     int base = 10;
     char *end;
     errno = 0;
-    long count = strtol(dieRollString, &end, base);
+    long count = strtol(dice_string, &end, base);
     assert(!errno);
     
     assert(count >= 0 && count <= INT_MAX);
@@ -90,9 +90,9 @@ parseDieRoll(char const *dieRollString)
 
 
 int
-roll(struct rnd *rnd, char const *dieRollString)
+roll(struct rnd *rnd, char const *dice_string)
 {
-    struct dice dice = parseDieRoll(dieRollString);
+    struct dice dice = dice_parse(dice_string);
     return rollDieRoll(rnd, dice, NULL);
 }
 

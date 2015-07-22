@@ -14,16 +14,16 @@ struct dice {
 
 
 int
-maxDieRoll(char const *dieRollString);
+maxDieRoll(char const *dice_string);
 
 int
-minDieRoll(char const *dieRollString);
+minDieRoll(char const *dice_string);
 
 struct dice
-parseDieRoll(char const *dieRollString);
+dice_parse(char const *dice_string);
 
 int
-roll(struct rnd *rnd, char const *dieRollString);
+roll(struct rnd *rnd, char const *dice_string);
 
 int
 rollDice(struct rnd *rnd, int count, int sides);
