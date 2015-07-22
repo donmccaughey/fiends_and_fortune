@@ -1,8 +1,6 @@
 #include "dice.h"
 
-#include <assert.h>
 #include <errno.h>
-#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -19,23 +17,6 @@ compare_die_scores(void const *item1, void const *item2)
     if (*score1 < *score2) return -1;
     if (*score1 > *score2) return 1;
     return 0;
-}
-
-
-int
-dice_max_score(char const *dice_string)
-{
-    struct dice dice = dice_parse(dice_string);
-    assert((double)dice.count * (double)dice.sides <= (double)INT_MAX);
-    return dice.count * dice.sides;
-}
-
-
-int
-dice_min_score(char const *dice_string)
-{
-    struct dice dice = dice_parse(dice_string);
-    return dice.count;
 }
 
 
@@ -180,8 +161,15 @@ dice_roll(struct dice dice, struct rnd *rnd, int die_scores[])
     }
 }
 
+
 extern inline struct dice
 dice_make(int count, int sides);
+
+extern inline int
+dice_max_score(struct dice dice);
+
+extern inline int
+dice_min_score(struct dice dice);
 
 extern inline int
 roll(char const *dice_string, struct rnd *rnd);

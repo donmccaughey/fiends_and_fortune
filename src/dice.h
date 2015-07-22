@@ -2,6 +2,8 @@
 #define DICE_H_INCLUDED
 
 
+#include <assert.h>
+#include <limits.h>
 #include <stddef.h>
 
 
@@ -27,11 +29,17 @@ dice_make(int count, int sides)
     };
 }
 
-int
-dice_max_score(char const *dice_string);
+inline int
+dice_max_score(struct dice dice)
+{
+    return ((dice.count * dice.sides) + dice.modifier) * dice.multiplier;
+}
 
-int
-dice_min_score(char const *dice_string);
+inline int
+dice_min_score(struct dice dice)
+{
+    return (dice.count + dice.modifier) * dice.multiplier;
+}
 
 struct dice
 dice_parse(char const *dice_string);
