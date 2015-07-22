@@ -97,7 +97,7 @@ void finalizeTreasureMap(struct TreasureMap *treasureMap)
 static void generateCombinedHoard(struct Treasure *treasure, 
                                   struct rnd *rnd)
 {
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   if (dieRoll <= 20) {
     generateMonetaryTreasure_1to2_CopperAndSilver(treasure, rnd);
     generateMagicTreasure_1to5_ItemAndPotions(treasure, rnd);
@@ -159,7 +159,7 @@ static void generateCombinedHoard(struct Treasure *treasure,
 static void generateMagicTreasure(struct Treasure *treasure, 
                                   struct rnd *rnd)
 {
-  int dieRoll = roll(rnd, "1d20");
+  int dieRoll = roll("1d20", rnd);
   if (dieRoll <= 5) {
     generateMagicTreasure_1to5_ItemAndPotions(treasure, rnd);
   } else if (dieRoll <= 8) {
@@ -282,36 +282,36 @@ static void generateMonetaryTreasure(struct Treasure *treasure,
 static void generateMonetaryTreasure_1to2_CopperAndSilver(struct Treasure *treasure, 
                                                           struct rnd *rnd)
 {
-  treasure->copper += roll(rnd, "2d4") * 10000;
-  treasure->silver += (roll(rnd, "1d4") + 1) * 10000;
+  treasure->copper += roll("2d4", rnd) * 10000;
+  treasure->silver += (roll("1d4", rnd) + 1) * 10000;
 }
 
 
 static void generateMonetaryTreasure_3to5_Electrum(struct Treasure *treasure, 
                                                    struct rnd *rnd)
 {
-  treasure->electrum += roll(rnd, "5d6") * 1000;
+  treasure->electrum += roll("5d6", rnd) * 1000;
 }
 
 
 static void generateMonetaryTreasure_6to10_Gold(struct Treasure *treasure, 
                                                 struct rnd *rnd)
 {
-  treasure->gold += roll(rnd, "3d6") * 1000;
+  treasure->gold += roll("3d6", rnd) * 1000;
 }
 
 
 static void generateMonetaryTreasure_11to12_Platinum(struct Treasure *treasure, 
                                                      struct rnd *rnd)
 {
-  treasure->platinum += roll(rnd, "5d4") * 100;
+  treasure->platinum += roll("5d4", rnd) * 100;
 }
 
 
 static void generateMonetaryTreasure_13to15_Gems(struct Treasure *treasure, 
                                                  struct rnd *rnd)
 {
-  int count = roll(rnd, "1d10") * 10;
+  int count = roll("1d10", rnd) * 10;
   treasure->gems = reallocarray_or_die(treasure->gems,
                                        treasure->gemsCount + count,
                                        sizeof(struct Gem));
@@ -327,7 +327,7 @@ static void generateMonetaryTreasure_13to15_Gems(struct Treasure *treasure,
 static void generateMonetaryTreasure_16to17_Jewelry(struct Treasure *treasure, 
                                                     struct rnd *rnd)
 {
-  int count = roll(rnd, "5d10");
+  int count = roll("5d10", rnd);
   treasure->jewelry = reallocarray_or_die(treasure->jewelry,
                                           treasure->jewelryCount + count,
                                           sizeof(struct Jewelry));
@@ -343,7 +343,7 @@ static void generateMonetaryTreasure_16to17_Jewelry(struct Treasure *treasure,
 void generateTreasureMap(struct TreasureMap *treasureMap, struct rnd *rnd)
 {
   enum TreasureMapType treasureMapType;
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   if (dieRoll <= 5) {
     treasureMapType = FalseMap;
     treasureMap->isFalse = true;
@@ -360,21 +360,21 @@ void generateTreasureMap(struct TreasureMap *treasureMap, struct rnd *rnd)
   }
   
   int miles;
-  dieRoll = roll(rnd, "1D100");
+  dieRoll = roll("1d100", rnd);
   if (dieRoll <= 20) {
     miles = 0;
   } else if (dieRoll <= 60) {
-    miles = roll(rnd, "1D4") + 4;
+    miles = roll("1d4", rnd) + 4;
   } else if (dieRoll <= 90) {
-    miles = roll(rnd, "1D4") * 10;
+    miles = roll("1d4", rnd) * 10;
   } else {
-    miles = roll(rnd, "1D10") * 50;
+    miles = roll("1d10", rnd) * 50;
   }
   
-  int compassDirection = roll(rnd, "1D8-1");
+  int compassDirection = roll("1d8-1", rnd);
   if (miles) {
     char const *disposition;
-    dieRoll = roll(rnd, "1D100");
+    dieRoll = roll("1d100", rnd);
     if (dieRoll <= 10) {
       disposition = "buried and unguarded";
     } else if (dieRoll <= 20) {

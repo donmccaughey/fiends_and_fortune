@@ -672,12 +672,12 @@ static void generateTreasureCoins(int *coins,
     if (coinsType->isPerIndividual) {
       assert(individualCount > 0);
       for (int i = 0; i < individualCount; ++i) {
-        *coins += roll(rnd, coinsType->amount);
+        *coins += roll(coinsType->amount, rnd);
       }
     } else {
-      int percentRoll = roll(rnd, "1D100");
+      int percentRoll = roll("1d100", rnd);
       if (percentRoll <= coinsType->percentChance) {
-        *coins = roll(rnd, coinsType->amount) * coinsType->multiplier;
+        *coins = roll(coinsType->amount, rnd) * coinsType->multiplier;
       }
     }
   }
@@ -690,9 +690,9 @@ static void generateTreasureGems(struct Treasure *treasure,
   treasure->gems = NULL;
   treasure->gemsCount = 0;
   if (treasure->type->gems.isPossible) {
-    int percentRoll = roll(rnd, "1D100");
+    int percentRoll = roll("1d100", rnd);
     if (percentRoll <= treasure->type->gems.percentChance) {
-      treasure->gemsCount = roll(rnd, treasure->type->gems.amount);
+      treasure->gemsCount = roll(treasure->type->gems.amount, rnd);
       treasure->gems = calloc_or_die(treasure->gemsCount, sizeof(struct Gem));
       for (int i = 0; i < treasure->gemsCount; ++i) {
         initializeGem(&treasure->gems[i]);
@@ -709,9 +709,9 @@ static void generateTreasureJewelry(struct Treasure *treasure,
   treasure->jewelry = NULL;
   treasure->jewelryCount = 0;
   if (treasure->type->jewelry.isPossible) {
-    int percentRoll = roll(rnd, "1D100");
+    int percentRoll = roll("1d100", rnd);
     if (percentRoll <= treasure->type->jewelry.percentChance) {
-      treasure->jewelryCount = roll(rnd, treasure->type->jewelry.amount);
+      treasure->jewelryCount = roll(treasure->type->jewelry.amount, rnd);
       treasure->jewelry = calloc_or_die(treasure->jewelryCount,
                                         sizeof(struct Jewelry));
       for (int i = 0; i < treasure->jewelryCount; ++i) {
@@ -727,7 +727,7 @@ static void generateTreasureMapsOrMagic(struct Treasure *treasure,
                                         struct rnd *rnd)
 {
   if (treasure->type->mapsOrMagic.isPossible) {
-    int percentRoll = roll(rnd, "1d100");
+    int percentRoll = roll("1d100", rnd);
     if (percentRoll <= treasure->type->mapsOrMagic.percentChance) {
       for (int i = 0; i < treasure->type->mapsOrMagic.typeCount; ++i) {
         struct MapsOrMagicType *type = &treasure->type->mapsOrMagic.types[i];
@@ -745,7 +745,7 @@ static void generateTreasureMapsOrMagicType(struct MapsOrMagicType *type,
   int amount = type->amount;
   bool isVariable = type->variableAmount[0];
   if (isVariable) {
-    amount = roll(rnd, type->variableAmount);
+    amount = roll(type->variableAmount, rnd);
   }
   
   int magicItemsCount = 0;
@@ -754,7 +754,7 @@ static void generateTreasureMapsOrMagicType(struct MapsOrMagicType *type,
     if (type->isMapPossible) {
       bool isMagicItemPossible = type->possibleMagicItems & ANY_MAGIC_ITEM;
       if (isMagicItemPossible) {
-        (roll(rnd, "1d100") <= 10) ? ++mapsCount : ++magicItemsCount;
+        (roll("1d100", rnd) <= 10) ? ++mapsCount : ++magicItemsCount;
       } else {
         ++mapsCount;
       }

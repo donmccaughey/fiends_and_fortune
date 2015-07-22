@@ -673,7 +673,7 @@ int *generateCharacteristics(struct rnd *rnd,
       characteristics = calloc_or_die(method2CharacteristicCount,
                                       characteristicSize);
       for (size_t i = 0; i < method2CharacteristicCount; ++i) {
-        characteristics[i] = roll(rnd, "3d6");
+        characteristics[i] = roll("3d6", rnd);
       }
       qsort(characteristics, characteristicCount, characteristicSize, 
             compareCharacteristics);
@@ -682,7 +682,7 @@ int *generateCharacteristics(struct rnd *rnd,
       characteristics = calloc_or_die(characteristicCount, characteristicSize);
       for (size_t i = 0; i < characteristicCount; ++i) {
         for (int j = 0; j < method3RollCount; ++j) {
-          int characteristic = roll(rnd, "3d6");
+          int characteristic = roll("3d6", rnd);
           if (characteristic > characteristics[i]) {
             characteristics[i] = characteristic;
           }
@@ -693,7 +693,7 @@ int *generateCharacteristics(struct rnd *rnd,
       characteristics = calloc_or_die(method4CharacteristicCount,
                                       characteristicSize);
       for (size_t i = 0; i < method4CharacteristicCount; ++i) {
-        characteristics[i] = roll(rnd, "3d6");
+        characteristics[i] = roll("3d6", rnd);
       }
       qsort(characteristics, 
             method4CharacterCount, 
@@ -715,7 +715,7 @@ int *generateCharacteristics(struct rnd *rnd,
           if (characteristicFlags & characteristicFlag) {
             characteristics[i] = dice_roll_and_adjust_upwards(dice_make(3, 6), rnd);
           } else {
-            characteristics[i] = roll(rnd, "3d6");
+            characteristics[i] = roll("3d6", rnd);
           }
         }
         break;
@@ -723,7 +723,7 @@ int *generateCharacteristics(struct rnd *rnd,
     default:
       characteristics = calloc_or_die(characteristicCount, characteristicSize);
       for (size_t i = 0; i < characteristicCount; ++i) {
-        characteristics[i] = roll(rnd, "3d6");
+        characteristics[i] = roll("3d6", rnd);
       }
       break;
   }

@@ -205,7 +205,7 @@ void finalizeJewelry(struct Jewelry *jewelry)
 void generateJewelry(struct Jewelry *jewelry, struct rnd *rnd)
 {
   int rank;
-  int score = roll(rnd, "1d100");
+  int score = roll("1d100", rnd);
   if (score <= 10) {
     rank = 1;
   } else if (score <= 20) {
@@ -234,10 +234,10 @@ void generateJewelry(struct Jewelry *jewelry, struct rnd *rnd)
     jewelry->material = jewelryRanks[rank].materials[score - 1];
   }
   
-  score = roll(rnd, jewelryRanks[rank].baseValue);
+  score = roll(jewelryRanks[rank].baseValue, rnd);
   jewelry->value_cp = score * jewelryRanks[rank].baseValueMultiplier;
   
-  score = roll(rnd, "1d100");
+  score = roll("1d100", rnd);
   for (int i = 0; i < jewelryFormTableCount; ++i) {
     if (score <= jewelryFormTable[i].dieRoll) {
       jewelry->form = jewelryFormTable[i].form;
@@ -247,7 +247,7 @@ void generateJewelry(struct Jewelry *jewelry, struct rnd *rnd)
   
   int const maxWorkmanshipBonus = 12;
   do {
-    score = roll(rnd, "1d10");
+    score = roll("1d10", rnd);
     if (score == 1) {
       ++jewelry->workmanshipBonus;
     }
@@ -259,18 +259,18 @@ void generateJewelry(struct Jewelry *jewelry, struct rnd *rnd)
       jewelry->value_cp = maxValue_cp;
     } else if (rank < jewelryMaxRank) {
       ++rank;
-      score = roll(rnd, jewelryRanks[rank].baseValue);
+      score = roll(jewelryRanks[rank].baseValue, rnd);
       jewelry->value_cp = score * jewelryRanks[rank].baseValueMultiplier;
     }
   }
   
   int const maxExceptionalStoneBonus = 128;
   if (jewelry->hasGems) {
-    score = roll(rnd, "1d8");
+    score = roll("1d8", rnd);
     if (score == 1) {
       jewelry->exceptionalStoneBonus = 1;
       do {
-        score = roll(rnd, "1d6");
+        score = roll("1d6", rnd);
         if (score == 1) {
           jewelry->exceptionalStoneBonus *= 2;
         }

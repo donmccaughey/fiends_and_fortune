@@ -182,7 +182,7 @@ static void generateArmorOrShield(struct MagicItem *magicItem,
   static size_t const armorAndShieldTableCount = sizeof armorAndShieldTable 
                                                / sizeof armorAndShieldTable[0];
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   int range = 0;
   struct ArmorOrShield const *armorOrShield = NULL;
   for (int i = 0; i < armorAndShieldTableCount; ++i) {
@@ -199,7 +199,7 @@ static void generateArmorOrShield(struct MagicItem *magicItem,
   
   if (armorOrShield->isArmor) {
     char const *armorSize;
-    dieRoll = roll(rnd, "1d100");
+    dieRoll = roll("1d100", rnd);
     if (dieRoll <= 65) {
       armorSize = "human sized";
     } else if (dieRoll <= 85) {
@@ -259,7 +259,7 @@ static void generateArtifactOrRelic(struct MagicItem *magicItem,
   size_t const artifactsAndRelicsTableCount = sizeof artifactsAndRelicsTable 
                                             / sizeof artifactsAndRelicsTable[0];
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   int range = 0;
   struct ArtifactOrRelic const *artifactOrRelic = NULL;
   for (int i = 0; i < artifactsAndRelicsTableCount; ++i) {
@@ -286,7 +286,7 @@ static void generateBracersOfDefense(struct MagicItem *magicItem,
 {
   int armorClass = 0;
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   if (dieRoll <= 5) {
     armorClass = 8;
   } else if (dieRoll <= 15) {
@@ -316,7 +316,7 @@ static void generateBucknardsEverfullPurse(struct MagicItem *magicItem,
 {
   int type = 0;
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   if (dieRoll <= 50) {
     type = 1;
     magicItem->experiencePoints = 1500;
@@ -341,7 +341,7 @@ static void generateCloakOfProtection(struct MagicItem *magicItem,
 {
   int plus = 0;
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   if (dieRoll <= 35) {
     plus = 1;
   } else if (dieRoll <= 65) {
@@ -365,7 +365,7 @@ static void generateCrystalBall(struct MagicItem *magicItem, struct rnd *rnd)
 {
   char const *feature = "";
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   if (dieRoll <= 50) {
     magicItem->experiencePoints = 1000;
     magicItem->trueValue_cp = 5000 * CP_PER_GP;
@@ -392,7 +392,7 @@ static void generateEyesOfPetrification(struct MagicItem *magicItem,
 {
   char const *type;
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   if (dieRoll <= 25) {
     type = "others";
     magicItem->experiencePoints = 12500;
@@ -414,45 +414,45 @@ static void generateFigurineOfWondrousPower(struct MagicItem *magicItem,
   int hitDice;
   char *type;
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   if (dieRoll <= 15) {
     hitDice = 4;
-    asprintf_or_die(&type, "ebony fly (%i hp)", roll(rnd, "4d8+4"));
+    asprintf_or_die(&type, "ebony fly (%i hp)", roll("4d8+4", rnd));
   } else if (dieRoll <= 30) {
     asprintf_or_die(&type, "two golden lions (%i/%i hp)",
-                    roll(rnd, "5d8+2"), roll(rnd, "5d8+2"));
+                    roll("5d8+2", rnd), roll("5d8+2", rnd));
     hitDice = 10;
   } else if (dieRoll <= 40) {
     asprintf_or_die(&type, "three ivory goats (24/96/48 hp)");
     hitDice = 4 + 16 + 8;
   } else if (dieRoll <= 55) {
-    dieRoll = roll(rnd, "1d100");
+    dieRoll = roll("1d100", rnd);
     if (dieRoll <= 50) {
       hitDice = 10;
       asprintf_or_die(&type, "marble elephant, asiatic (%i hp)",
-                      roll(rnd, "10d8"));
+                      roll("10d8", rnd));
     } else if (dieRoll <= 90) {
       hitDice = 11;
       asprintf_or_die(&type, "marble elephant, african (%i hp)",
-                      roll(rnd, "11d8"));
+                      roll("11d8", rnd));
     } else if (dieRoll <= 93) {
       hitDice = 13;
       asprintf_or_die(&type, "marble elephant, mammoth (%i hp)",
-                      roll(rnd, "13d8"));
+                      roll("13d8", rnd));
     } else {
       hitDice = 12;
       asprintf_or_die(&type, "marble elephant, mastodon (%i hp)",
-                      roll(rnd, "12d8"));
+                      roll("12d8", rnd));
     }
   } else if (dieRoll <= 65) {
     hitDice = 6;
-    asprintf_or_die(&type, "obsidian steed (%i hp)", roll(rnd, "6d8+6"));
+    asprintf_or_die(&type, "obsidian steed (%i hp)", roll("6d8+6", rnd));
   } else if (dieRoll <= 85) {
     hitDice = 2;
-    asprintf_or_die(&type, "onyx dog (%i hp)", roll(rnd, "2d8+2"));
+    asprintf_or_die(&type, "onyx dog (%i hp)", roll("2d8+2", rnd));
   } else {
     hitDice = 4;
-    asprintf_or_die(&type, "serpentine owl (%i hp)", roll(rnd, "4d8"));
+    asprintf_or_die(&type, "serpentine owl (%i hp)", roll("4d8", rnd));
   }
   
   magicItem->experiencePoints = hitDice * 100;
@@ -469,7 +469,7 @@ static void generateGirdleOfGiantStrength(struct MagicItem *magicItem,
 {
   char const *type;
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   if (dieRoll <= 30) {
     type = "hill";
   } else if (dieRoll <= 50) {
@@ -498,7 +498,7 @@ static void generateHornOfValhalla(struct MagicItem *magicItem,
   char const *type;
   int multiplier;
   
-  int dieRoll = roll(rnd, "1d20");
+  int dieRoll = roll("1d20", rnd);
   if (dieRoll <= 8) {
     type = "silver";
     multiplier = 1;
@@ -517,9 +517,9 @@ static void generateHornOfValhalla(struct MagicItem *magicItem,
   magicItem->trueValue_cp = 15000 * CP_PER_GP * multiplier;
   
   char const *alignment = NULL;
-  dieRoll = roll(rnd, "1d100");
+  dieRoll = roll("1d100", rnd);
   if (dieRoll <= 50) {
-    dieRoll = roll(rnd, "1d8");
+    dieRoll = roll("1d8", rnd);
     switch (dieRoll) {
       case 1: alignment = "good"; break;
       case 2: alignment = "lawful good"; break;
@@ -541,7 +541,7 @@ static void generateHornOfValhalla(struct MagicItem *magicItem,
 
 static void generateIounStones(struct MagicItem *magicItem, struct rnd *rnd)
 {
-  int quantity = roll(rnd, "1d10");
+  int quantity = roll("1d10", rnd);
   /* TODO: generate types of stones */
   
   magicItem->experiencePoints = quantity * 300;
@@ -559,7 +559,7 @@ static void generateInstrumentOfTheBards(struct MagicItem *magicItem,
   char const *name;
   int level;
   
-  int dieRoll = roll(rnd, "1d20");
+  int dieRoll = roll("1d20", rnd);
   if (dieRoll <= 5) {
     name = "Fochlucan Bandore";
     level = 1;
@@ -594,7 +594,7 @@ static void generateInstrumentOfTheBards(struct MagicItem *magicItem,
 static void generateJewelOfFlawlessness(struct MagicItem *magicItem, 
                                         struct rnd *rnd)
 {
-  int facets = roll(rnd, "10d10");
+  int facets = roll("10d10", rnd);
   
   magicItem->experiencePoints = 0;
   magicItem->trueValue_cp = facets * 1000 * CP_PER_GP;
@@ -659,7 +659,7 @@ static void generateMedallionOfESP(struct MagicItem *magicItem,
 {
   char const *type;
   
-  int dieRoll = roll(rnd, "1d20");
+  int dieRoll = roll("1d20", rnd);
   if (15 <= dieRoll) {
     type = "30 ft range";
     magicItem->experiencePoints = 1000;
@@ -723,7 +723,7 @@ static void generateMiscMagicItemTable1(struct MagicItem *magicItem,
   size_t const miscMagicItemsTableCount = sizeof miscMagicItemsTable 
                                         / sizeof miscMagicItemsTable[0];
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   int range = 0;
   struct MiscMagicItem const *miscMagicItem = NULL;
   for (int i = 0; i < miscMagicItemsTableCount; ++i) {
@@ -783,7 +783,7 @@ static void generateMiscMagicItemTable2(struct MagicItem *magicItem,
   size_t const miscMagicItemsTableCount = sizeof miscMagicItemsTable 
                                         / sizeof miscMagicItemsTable[0];
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   int range = 0;
   struct MiscMagicItem const *miscMagicItem = NULL;
   for (int i = 0; i < miscMagicItemsTableCount; ++i) {
@@ -846,7 +846,7 @@ static void generateMiscMagicItemTable3(struct MagicItem *magicItem,
   size_t const miscMagicItemsTableCount = sizeof miscMagicItemsTable 
                                         / sizeof miscMagicItemsTable[0];
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   int range = 0;
   struct MiscMagicItem const *miscMagicItem = NULL;
   for (int i = 0; i < miscMagicItemsTableCount; ++i) {
@@ -912,7 +912,7 @@ static void generateMiscMagicItemTable4(struct MagicItem *magicItem,
   size_t const miscMagicItemsTableCount = sizeof miscMagicItemsTable 
                                         / sizeof miscMagicItemsTable[0];
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   int range = 0;
   struct MiscMagicItem const *miscMagicItem = NULL;
   for (int i = 0; i < miscMagicItemsTableCount; ++i) {
@@ -977,7 +977,7 @@ static void generateMiscMagicItemTable5(struct MagicItem *magicItem,
   size_t const miscMagicItemsTableCount = sizeof miscMagicItemsTable 
                                         / sizeof miscMagicItemsTable[0];
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   int range = 0;
   struct MiscMagicItem const *miscMagicItem = NULL;
   for (int i = 0; i < miscMagicItemsTableCount; ++i) {
@@ -1049,7 +1049,7 @@ static void generateMiscWeapon(struct MagicItem *magicItem, struct rnd *rnd)
   size_t const miscWeaponsTableCount = sizeof miscWeaponsTable 
                                      / sizeof miscWeaponsTable[0];
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   int range = 0;
   struct MiscWeapon const *miscWeapon = NULL;
   for (int i = 0; i < miscWeaponsTableCount; ++i) {
@@ -1061,7 +1061,7 @@ static void generateMiscWeapon(struct MagicItem *magicItem, struct rnd *rnd)
   }
   assert(miscWeapon);
   
-  int quantity = roll(rnd, miscWeapon->quantity);
+  int quantity = roll(miscWeapon->quantity, rnd);
   magicItem->experiencePoints = miscWeapon->experiencePoints * quantity;
   magicItem->trueValue_cp = miscWeapon->saleValue_gp * CP_PER_GP * quantity;
   
@@ -1080,7 +1080,7 @@ static void generateNecklaceOfMissiles(struct MagicItem *magicItem,
   char const *type;
   int totalHitDice;
   
-  int dieRoll = roll(rnd, "1d20");
+  int dieRoll = roll("1d20", rnd);
   if (dieRoll <= 4) {
     type = "(1) 5 hd, (2) 3 hd";
     totalHitDice = (1 * 5) + (2 * 3);
@@ -1116,9 +1116,9 @@ static void generateNecklaceOfPrayerBeads(struct MagicItem *magicItem,
 {
 # define TYPE_COUNT 6
   int specialBeadCounts[TYPE_COUNT] = {};
-  int specialBeadTotal = roll(rnd, "1d4+2");
+  int specialBeadTotal = roll("1d4+2", rnd);
   for (int i = 0; i < specialBeadTotal; ++i) {
-    int dieRoll = roll(rnd, "1d20");
+    int dieRoll = roll("1d20", rnd);
     if (dieRoll <= 5) {
       ++specialBeadCounts[0];
     } else if (dieRoll <= 10) {
@@ -1178,7 +1178,7 @@ static void generateNecklaceOfPrayerBeads(struct MagicItem *magicItem,
 static void generateNolzursMarvelousPigments(struct MagicItem *magicItem, 
                                              struct rnd *rnd)
 {
-  int quantity = roll(rnd, "1d4");
+  int quantity = roll("1d4", rnd);
   magicItem->experiencePoints = quantity * 500;
   magicItem->trueValue_cp = quantity * 3000 * CP_PER_GP;
   magicItem->trueDescription = strdup_or_die("Nolzurs' marvelous pigments");
@@ -1188,7 +1188,7 @@ static void generateNolzursMarvelousPigments(struct MagicItem *magicItem,
 static void generateOrbOfDragonkind(struct MagicItem *magicItem, 
                                     struct rnd *rnd)
 {
-  int dieRoll = roll(rnd, "1d8");
+  int dieRoll = roll("1d8", rnd);
   char const *type = NULL;
   switch (dieRoll) {
     case 1: type = "hatchling"; break;
@@ -1214,7 +1214,7 @@ static void generatePearlOfPower(struct MagicItem *magicItem,
   int spellQuantity = 1;
   int spellLevel;
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   if (dieRoll <= 25) {
     spellLevel = 1;
   } else if (dieRoll <= 45) {
@@ -1235,11 +1235,11 @@ static void generatePearlOfPower(struct MagicItem *magicItem,
     spellLevel = 9;
   } else {
     spellQuantity = 2;
-    spellLevel = roll(rnd, "1d6");
+    spellLevel = roll("1d6", rnd);
   }
   
   char const *effect;
-  if (1 == roll(rnd, "1d20")) {
+  if (1 == roll("1d20", rnd)) {
     effect = "(cursed) forget";
   } else {
     effect = "recall";
@@ -1303,7 +1303,7 @@ static void generatePotion(struct MagicItem *magicItem, struct rnd *rnd)
   };
   size_t const potionsTableCount = sizeof potionsTable / sizeof potionsTable[0];
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   int range = 0;
   struct Potion const *potion = NULL;
   for (int i = 0; i < potionsTableCount; ++i) {
@@ -1330,7 +1330,7 @@ static void generatePotionOfDragonControl(struct MagicItem *magicItem,
 {
   char const *type;
   
-  int dieRoll = roll(rnd, "1d20");
+  int dieRoll = roll("1d20", rnd);
   if (dieRoll <= 2) {
     type = "white";
     magicItem->experiencePoints = 500;
@@ -1392,7 +1392,7 @@ static void generatePotionOfGiantControl(struct MagicItem *magicItem,
   char const *type;
   int level;
   
-  int dieRoll = roll(rnd, "1d20");
+  int dieRoll = roll("1d20", rnd);
   if (dieRoll <= 5) {
     type = "hill";
     level = 1;
@@ -1426,7 +1426,7 @@ static void generatePotionOfGiantStrength(struct MagicItem *magicItem,
   char const *type;
   int level;
   
-  int dieRoll = roll(rnd, "1d20");
+  int dieRoll = roll("1d20", rnd);
   if (dieRoll <= 6) {
     type ="hill";
     level = 1;
@@ -1459,7 +1459,7 @@ static void generateQuaalsFeatherToken(struct MagicItem *magicItem,
 {
   char const *type;
   
-  int dieRoll = roll(rnd, "1d20");
+  int dieRoll = roll("1d20", rnd);
   if (dieRoll <= 4) {
     type = "anchor";
     magicItem->experiencePoints = 500;
@@ -1529,7 +1529,7 @@ static void generateRing(struct MagicItem *magicItem, struct rnd *rnd)
   };
   size_t const ringsTableCount = sizeof ringsTable / sizeof ringsTable[0];
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   int range = 0;
   struct Ring const *ring = NULL;
   for (int i = 0; i < ringsTableCount; ++i) {
@@ -1556,7 +1556,7 @@ static void generateRingOfProtection(struct MagicItem *magicItem,
 {
   char const *type;
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   if (dieRoll <= 70) {
     type = "+1";
     magicItem->experiencePoints = 2000;
@@ -1629,7 +1629,7 @@ static void generateRodStaffOrWand(struct MagicItem *magicItem,
   size_t const rodsStavesAndWandsTableCount = sizeof rodsStavesAndWandsTable 
                                             / sizeof rodsStavesAndWandsTable[0];
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   int range = 0;
   struct RodStaffOrWand const *rodStaffOrWand = NULL;
   for (int i = 0; i < rodsStavesAndWandsTableCount; ++i) {
@@ -1688,7 +1688,7 @@ static void generateScroll(struct MagicItem *magicItem, struct rnd *rnd)
   };
   size_t const scrollsTableCount = sizeof scrollsTable / sizeof scrollsTable[0];
   
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   int range = 0;
   struct Scroll const *scroll = NULL;
   for (int i = 0; i < scrollsTableCount; ++i) {
@@ -1707,9 +1707,9 @@ static void generateScroll(struct MagicItem *magicItem, struct rnd *rnd)
     enum SpellType spellType;
     char const *spellTypeName;
     char const *spellLevelRange = scroll->clericalSpellLevelRange;
-    dieRoll = roll(rnd, "1d100");
+    dieRoll = roll("1d100", rnd);
     if (dieRoll <= 70) {
-      if (roll(rnd, "1d100") <= 10) {
+      if (roll("1d100", rnd) <= 10) {
         spellType = IllusionistSpellType;
         spellTypeName = "illusionist";
       } else {
@@ -1718,7 +1718,7 @@ static void generateScroll(struct MagicItem *magicItem, struct rnd *rnd)
         spellLevelRange = scroll->magicUserSpellLevelRange;
       }
     } else {
-      if (roll(rnd, "1d100") <= 25) {
+      if (roll("1d100", rnd) <= 25) {
         spellType = DrudicalSpellType;
         spellTypeName = "druidical";
       } else { 
@@ -1729,7 +1729,7 @@ static void generateScroll(struct MagicItem *magicItem, struct rnd *rnd)
     
     int spellLevels = 0;
     for (int i = 0; i < scroll->spellCount; ++i) {
-      int spellLevel = roll(rnd, spellLevelRange);
+      int spellLevel = roll(spellLevelRange, rnd);
       char const *spellName = determineSpell(rnd, spellType, spellLevel);
       asprintf_or_die(&magicItem->trueDetails[i], "level %i: %s",
                       spellLevel, spellName);
@@ -1797,7 +1797,7 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
   };
   size_t const swordsTableCount = sizeof swordsTable / sizeof swordsTable[0];
   
-  int score = roll(rnd, "1d100");
+  int score = roll("1d100", rnd);
   int range = 0;
   struct Sword const *sword = NULL;
   for (int i = 0; i < swordsTableCount; ++i) {
@@ -1813,7 +1813,7 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
   magicItem->trueValue_cp = sword->saleValue_gp * CP_PER_GP;
   
   char const *swordType;
-  score = roll(rnd, "1d100");
+  score = roll("1d100", rnd);
   if (score <= 70) {
     swordType = "longsword";
   } else if (score <= 90) {
@@ -1844,7 +1844,7 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
   int extraordinaryPowerCount = 0;
   char const *communication = NULL;
   
-  score = roll(rnd, "1d100");
+  score = roll("1d100", rnd);
   if (score <= 75) {
     /* not an unusual magic sword */
     return;
@@ -1907,7 +1907,7 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
   assert(detailCount < detailCapacity);
   
   char const *alignment;
-  score = roll(rnd, "1d100");
+  score = roll("1d100", rnd);
   if (score <= 5) {
     alignment = "chaotic good";
   } else if (score <= 15) {
@@ -2250,7 +2250,7 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
   if (hasSpecialPurpose) {
     ego += 5;
     char const *specialPurpose;
-    score = roll(rnd, "1d100");
+    score = roll("1d100", rnd);
     if (score <= 10) {
       if (0 == strcmp(alignment, "neutral")) {
         specialPurpose = "preserve the balance by defeating/slaying powerful beings of extreme alignment (LG, LE, CG, CE)";
@@ -2281,7 +2281,7 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
     
     char const *specialPurposePower;
     char const *format = "special purpose power: %s on a hit unless save vs magic";
-    score = roll(rnd, "1d100");
+    score = roll("1d100", rnd);
     if (score <= 10) {
       specialPurposePower = "blindness for 2-12 rounds";
     } else if (score <= 20) {
@@ -2372,7 +2372,7 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
 static void generateTeethOfDahlverNar(struct MagicItem *magicItem, 
                                       struct rnd *rnd)
 {
-  int toothNumber = roll(rnd, "1d32");
+  int toothNumber = roll("1d32", rnd);
   
   magicItem->experiencePoints = 0;
   magicItem->trueValue_cp = 5000 * CP_PER_GP;

@@ -125,7 +125,7 @@ int gemValue_cp(struct Gem *gem)
 
 void generateGem(struct Gem *gem, struct rnd *rnd)
 {
-  int dieRoll = roll(rnd, "1d100");
+  int dieRoll = roll("1d100", rnd);
   if (dieRoll <= 25) {
     gem->type = OrnamentalStoneGemType;
   } else if (dieRoll <= 50) {
@@ -140,7 +140,7 @@ void generateGem(struct Gem *gem, struct rnd *rnd)
     gem->type = JewelStoneGemType;
   }
   
-  dieRoll = roll(rnd, "1d100");
+  dieRoll = roll("1d100", rnd);
   if (dieRoll <= 25) {
     gem->size = VerySmallGemSize;
   } else if (dieRoll <= 50) {
@@ -156,7 +156,7 @@ void generateGem(struct Gem *gem, struct rnd *rnd)
   }
   
   do {
-    dieRoll = roll(rnd, "1d10");
+    dieRoll = roll("1d10", rnd);
     if (dieRoll == 1) {
       if (gem->valueRankModifier >= 0 && gem->valueRankModifier < 7) {
         ++gem->valueRankModifier;
@@ -164,11 +164,11 @@ void generateGem(struct Gem *gem, struct rnd *rnd)
     } else if (dieRoll == 2) {
       gem->valuePercentModifier = 200;
     } else if (dieRoll == 3) {
-      gem->valuePercentModifier = 100 + (roll(rnd, "1d6") * 10);
+      gem->valuePercentModifier = 100 + (roll("1d6", rnd) * 10);
     } else if (dieRoll <= 8) {
       /* no change */
     } else if (dieRoll == 9) {
-      gem->valuePercentModifier = 100 - (roll(rnd, "1d4") * 10);
+      gem->valuePercentModifier = 100 - (roll("1d4", rnd) * 10);
     } else {
       if (gem->valueRankModifier > -5 && gem->valueRankModifier <= 0) {
         --gem->valueRankModifier;

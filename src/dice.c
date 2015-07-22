@@ -89,14 +89,6 @@ dice_parse(char const *dice_string)
 
 
 int
-roll(struct rnd *rnd, char const *dice_string)
-{
-    struct dice dice = dice_parse(dice_string);
-    return dice_roll(dice, rnd, NULL);
-}
-
-
-int
 dice_roll_with_average_scoring(struct dice dice, struct rnd *rnd)
 {
     int die_scores[dice.count];
@@ -190,3 +182,6 @@ dice_roll(struct dice dice, struct rnd *rnd, int die_scores[])
 
 extern inline struct dice
 dice_make(int count, int sides);
+
+extern inline int
+roll(char const *dice_string, struct rnd *rnd);

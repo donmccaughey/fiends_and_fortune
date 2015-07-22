@@ -267,7 +267,7 @@ static void generateTreasureType(struct rnd *rnd, FILE *out, char letter)
   fprintf(out, "Treasure type %c: ", letter);
   
   if (letter >= 'J' && letter <= 'N') {
-    individualCount = roll(rnd, "1D10");
+    individualCount = roll("1d10", rnd);
   } else {
     individualCount = 0;
   }

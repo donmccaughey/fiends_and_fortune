@@ -95,54 +95,54 @@ rollTest(void)
     int score;
     
     /* "roll" a constant number */
-    score = roll(always_one, "0");
+    score = roll("0", always_one);
     assert(0 == score);
     
-    score = roll(always_one, "3");
+    score = roll("3", always_one);
     assert(3 == score);
     
-    score = roll(always_two, "1+1");
+    score = roll("1+1", always_two);
     assert(2 == score);
     
-    score = roll(always_two, "5-1");
+    score = roll("5-1", always_two);
     assert(4 == score);
     
-    score = roll(always_two, "5*10");
+    score = roll("5*10", always_two);
     assert(50 == score);
     
     /* roll dice that always roll 1's */
-    score = roll(always_one, "0d4+1");
+    score = roll("0d4+1", always_one);
     assert(0 == score);
     
-    score = roll(always_one, "1D6+2");
+    score = roll("1D6+2", always_one);
     assert(3 == score);
     
-    score = roll(always_one, "2d10+1");
+    score = roll("2d10+1", always_one);
     assert(3 == score);
     
-    score = roll(always_one, "3d4+5");
+    score = roll("3d4+5", always_one);
     assert(8 == score);
     
-    score = roll(always_one, "1d12*5");
+    score = roll("1d12*5", always_one);
     assert(5 == score);
     
-    score = roll(always_one, "2d20+1*10");
+    score = roll("2d20+1*10", always_one);
     assert(30 == score);
     
     /* roll dice that always roll 2's */
-    score = roll(always_two, "1D6-2");
+    score = roll("1D6-2", always_two);
     assert(0 == score);
     
-    score = roll(always_two, "2d10-2");
+    score = roll("2d10-2", always_two);
     assert(2 == score);
     
-    score = roll(always_two, "3d4-3");
+    score = roll("3d4-3", always_two);
     assert(3 == score);
     
-    score = roll(always_two, "2d8*5");
+    score = roll("2d8*5", always_two);
     assert(20 == score);
     
-    score = roll(always_two, "2d20+1*10");
+    score = roll("2d20+1*10", always_two);
     assert(50 == score);
     
     rnd_free(always_one);
