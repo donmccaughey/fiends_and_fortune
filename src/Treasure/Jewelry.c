@@ -89,7 +89,7 @@ static struct JewelryRank const jewelryRanks[] = {
     "", 0, false, {}, 0
   },
   {
-    "1D10", 100 * CP_PER_GP, false,
+    "1D10", gp_to_cp(100), false,
     { 
       IvoryJewelryMaterial, 
       SilverJewelryMaterial
@@ -97,21 +97,21 @@ static struct JewelryRank const jewelryRanks[] = {
     2
   },
   {
-    "2D6", 100 * CP_PER_GP, false,
+    "2D6", gp_to_cp(100), false,
     { 
       SilverAndGoldJewelryMaterial
     }, 
     1
   },
   {
-    "3D6", 100 * CP_PER_GP, false,
+    "3D6", gp_to_cp(100), false,
     { 
       GoldJewelryMaterial
     }, 
     1
   },
   {
-    "5D6", 100 * CP_PER_GP, false, 
+    "5D6", gp_to_cp(100), false,
     { 
       JadeJewelryMaterial, 
       CoralJewelryMaterial,
@@ -120,21 +120,21 @@ static struct JewelryRank const jewelryRanks[] = {
     3
   },
   {
-    "1D6", 1000 * CP_PER_GP, true,
+    "1D6", gp_to_cp(1000), true,
     { 
       SilverWithGemsJewelryMaterial
     }, 
     1
   },
   {
-    "2D4", 1000 * CP_PER_GP, true,
+    "2D4", gp_to_cp(1000), true,
     { 
       GoldWithGemsJewelryMaterial
     }, 
     1
   },
   {
-    "2D6", 1000 * CP_PER_GP, true, 
+    "2D6", gp_to_cp(1000), true,
     { 
       PlatinumWithGemsJewelryMaterial
     }, 
@@ -277,7 +277,7 @@ void generateJewelry(struct Jewelry *jewelry, struct rnd *rnd)
       } while (   score == 1 
                && jewelry->exceptionalStoneBonus < maxExceptionalStoneBonus);
     }
-    jewelry->value_cp += jewelry->exceptionalStoneBonus * 5000 * CP_PER_GP;
+    jewelry->value_cp += gp_to_cp(jewelry->exceptionalStoneBonus * 5000);
   }
   
   char *description = describeJewelry(jewelry);

@@ -195,7 +195,7 @@ static void generateArmorOrShield(struct MagicItem *magicItem,
     assert(armorOrShield);
     
     magicItem->experiencePoints = armorOrShield->experiencePoints;
-    magicItem->trueValue_cp = armorOrShield->saleValue_gp * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(armorOrShield->saleValue_gp);
     
     if (armorOrShield->isArmor) {
         char const *armorSize;
@@ -275,7 +275,7 @@ static void generateArtifactOrRelic(struct MagicItem *magicItem,
         artifactOrRelic->generate(magicItem, rnd);
     } else {
         magicItem->experiencePoints = 0;
-        magicItem->trueValue_cp = artifactOrRelic->saleValue_gp * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(artifactOrRelic->saleValue_gp);
         asprintf_or_die(&magicItem->trueDescription, "%s", artifactOrRelic->name);
     }
 }
@@ -305,7 +305,7 @@ static void generateBracersOfDefense(struct MagicItem *magicItem,
     
     int level = 10 - armorClass;
     magicItem->experiencePoints = level * 500;
-    magicItem->trueValue_cp = level * 3000 * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(level * 3000);
     asprintf_or_die(&magicItem->trueDescription,
                     "bracers of defense AC %i", armorClass);
 }
@@ -320,15 +320,15 @@ static void generateBucknardsEverfullPurse(struct MagicItem *magicItem,
     if (dieRoll <= 50) {
         type = 1;
         magicItem->experiencePoints = 1500;
-        magicItem->trueValue_cp = 15000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(15000);
     } else if (dieRoll <= 90) {
         type = 2;
         magicItem->experiencePoints = 2500;
-        magicItem->trueValue_cp = 25000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(25000);
     } else {
         type = 3;
         magicItem->experiencePoints = 4000;
-        magicItem->trueValue_cp = 40000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(40000);
     }
     
     asprintf_or_die(&magicItem->trueDescription,
@@ -355,7 +355,7 @@ static void generateCloakOfProtection(struct MagicItem *magicItem,
     }
     
     magicItem->experiencePoints = 1000 * plus;
-    magicItem->trueValue_cp = 10000 * plus * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(10000 * plus);
     
     asprintf_or_die(&magicItem->trueDescription, "cloak of protection +%i", plus);
 }
@@ -368,19 +368,19 @@ static void generateCrystalBall(struct MagicItem *magicItem, struct rnd *rnd)
     int dieRoll = roll("1d100", rnd);
     if (dieRoll <= 50) {
         magicItem->experiencePoints = 1000;
-        magicItem->trueValue_cp = 5000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(5000);
     } else if (dieRoll <= 75) {
         feature = " with clairaudience";
         magicItem->experiencePoints = 2000;
-        magicItem->trueValue_cp = 10000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(10000);
     } else if (dieRoll <= 90) {
         feature = " with ESP";
         magicItem->experiencePoints = 2000;
-        magicItem->trueValue_cp = 10000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(10000);
     } else {
         feature = " with telepathy (communication only)";
         magicItem->experiencePoints = 2000;
-        magicItem->trueValue_cp = 10000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(10000);
     }
     
     asprintf_or_die(&magicItem->trueDescription, "crystal ball%s", feature);
@@ -396,7 +396,7 @@ static void generateEyesOfPetrification(struct MagicItem *magicItem,
     if (dieRoll <= 25) {
         type = "others";
         magicItem->experiencePoints = 12500;
-        magicItem->trueValue_cp = 50000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(50000);
     } else {
         type = "self";
         magicItem->experiencePoints = 0;
@@ -456,7 +456,7 @@ static void generateFigurineOfWondrousPower(struct MagicItem *magicItem,
     }
     
     magicItem->experiencePoints = hitDice * 100;
-    magicItem->trueValue_cp = hitDice * 1000 * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(hitDice * 1000);
     
     asprintf_or_die(&magicItem->trueDescription,
                     "figurine of wondrous power: %s", type);
@@ -485,7 +485,7 @@ static void generateGirdleOfGiantStrength(struct MagicItem *magicItem,
     }
     
     magicItem->experiencePoints = 200;
-    magicItem->trueValue_cp = 2500 * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(2500);
     
     asprintf_or_die(&magicItem->trueDescription,
                     "girdle of %s giant strength", type);
@@ -514,7 +514,7 @@ static void generateHornOfValhalla(struct MagicItem *magicItem,
     }
     
     magicItem->experiencePoints = 1000 * multiplier;
-    magicItem->trueValue_cp = 15000 * CP_PER_GP * multiplier;
+    magicItem->trueValue_cp = gp_to_cp(15000 * multiplier);
     
     char const *alignment = NULL;
     dieRoll = roll("1d100", rnd);
@@ -545,7 +545,7 @@ static void generateIounStones(struct MagicItem *magicItem, struct rnd *rnd)
     /* TODO: generate types of stones */
     
     magicItem->experiencePoints = quantity * 300;
-    magicItem->trueValue_cp = quantity * 5000 * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(quantity * 5000);
     
     char const *plural = (quantity == 1) ? "" : "s";
     asprintf_or_die(&magicItem->trueDescription, "(%i) ioun stone%s",
@@ -584,7 +584,7 @@ static void generateInstrumentOfTheBards(struct MagicItem *magicItem,
     }
     
     magicItem->experiencePoints = level * 1000;
-    magicItem->trueValue_cp = level * 5000 * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(level * 5000);
     
     asprintf_or_die(&magicItem->trueDescription,
                     "instrument of the bards: %s", name);
@@ -597,7 +597,7 @@ static void generateJewelOfFlawlessness(struct MagicItem *magicItem,
     int facets = roll("10d10", rnd);
     
     magicItem->experiencePoints = 0;
-    magicItem->trueValue_cp = facets * 1000 * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(facets * 1000);
     
     char const *plural = (facets == 1) ? "" : "s";
     asprintf_or_die(&magicItem->trueDescription,
@@ -663,19 +663,19 @@ static void generateMedallionOfESP(struct MagicItem *magicItem,
     if (15 <= dieRoll) {
         type = "30 ft range";
         magicItem->experiencePoints = 1000;
-        magicItem->trueValue_cp = 10000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(10000);
     } else if (18 <= dieRoll) {
         type = "30 ft range with empathy";
         magicItem->experiencePoints = 1000;
-        magicItem->trueValue_cp = 10000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(10000);
     } else if (19 <= dieRoll) {
         type = "60 ft range";
         magicItem->experiencePoints = 3000;
-        magicItem->trueValue_cp = 30000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(30000);
     } else {
         type = "90 ft range";
         magicItem->experiencePoints = 3000;
-        magicItem->trueValue_cp = 30000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(30000);
     }
     
     asprintf_or_die(&magicItem->trueDescription, "medallion of ESP, %s", type);
@@ -739,7 +739,7 @@ static void generateMiscMagicItemTable1(struct MagicItem *magicItem,
         miscMagicItem->generate(magicItem, rnd);
     } else {
         magicItem->experiencePoints = miscMagicItem->experiencePoints;
-        magicItem->trueValue_cp = miscMagicItem->saleValue_gp * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(miscMagicItem->saleValue_gp);
         asprintf_or_die(&magicItem->trueDescription, "%s", miscMagicItem->name);
     }
 }
@@ -799,7 +799,7 @@ static void generateMiscMagicItemTable2(struct MagicItem *magicItem,
         miscMagicItem->generate(magicItem, rnd);
     } else {
         magicItem->experiencePoints = miscMagicItem->experiencePoints;
-        magicItem->trueValue_cp = miscMagicItem->saleValue_gp * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(miscMagicItem->saleValue_gp);
         asprintf_or_die(&magicItem->trueDescription, "%s", miscMagicItem->name);
     }
 }
@@ -862,7 +862,7 @@ static void generateMiscMagicItemTable3(struct MagicItem *magicItem,
         miscMagicItem->generate(magicItem, rnd);
     } else {
         magicItem->experiencePoints = miscMagicItem->experiencePoints;
-        magicItem->trueValue_cp = miscMagicItem->saleValue_gp * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(miscMagicItem->saleValue_gp);
         asprintf_or_die(&magicItem->trueDescription, "%s", miscMagicItem->name);
     }
 }
@@ -928,7 +928,7 @@ static void generateMiscMagicItemTable4(struct MagicItem *magicItem,
         miscMagicItem->generate(magicItem, rnd);
     } else {
         magicItem->experiencePoints = miscMagicItem->experiencePoints;
-        magicItem->trueValue_cp = miscMagicItem->saleValue_gp * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(miscMagicItem->saleValue_gp);
         asprintf_or_die(&magicItem->trueDescription, "%s", miscMagicItem->name);
     }
 }
@@ -993,7 +993,7 @@ static void generateMiscMagicItemTable5(struct MagicItem *magicItem,
         miscMagicItem->generate(magicItem, rnd);
     } else {
         magicItem->experiencePoints = miscMagicItem->experiencePoints;
-        magicItem->trueValue_cp = miscMagicItem->saleValue_gp * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(miscMagicItem->saleValue_gp);
         asprintf_or_die(&magicItem->trueDescription, "%s", miscMagicItem->name);
     }
 }
@@ -1063,7 +1063,7 @@ static void generateMiscWeapon(struct MagicItem *magicItem, struct rnd *rnd)
     
     int quantity = roll(miscWeapon->quantity, rnd);
     magicItem->experiencePoints = miscWeapon->experiencePoints * quantity;
-    magicItem->trueValue_cp = miscWeapon->saleValue_gp * CP_PER_GP * quantity;
+    magicItem->trueValue_cp = gp_to_cp(miscWeapon->saleValue_gp * quantity);
     
     if (1 == quantity) {
         asprintf_or_die(&magicItem->trueDescription, "%s", miscWeapon->name);
@@ -1105,7 +1105,7 @@ static void generateNecklaceOfMissiles(struct MagicItem *magicItem,
     }
     
     magicItem->experiencePoints = totalHitDice * 50;
-    magicItem->trueValue_cp = totalHitDice * 200 * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(totalHitDice * 200);
     asprintf_or_die(&magicItem->trueDescription,
                     "necklace of missiles (with %s missiles)", type);
 }
@@ -1169,7 +1169,7 @@ static void generateNecklaceOfPrayerBeads(struct MagicItem *magicItem,
     assert(bufferEnd < buffer + bufferSize);
     
     magicItem->experiencePoints = specialBeadTotal * 500;
-    magicItem->trueValue_cp = specialBeadTotal * 3000 * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(specialBeadTotal * 3000);
     asprintf_or_die(&magicItem->trueDescription,
                     "necklace of prayer beads with %s", buffer);
 }
@@ -1180,7 +1180,7 @@ static void generateNolzursMarvelousPigments(struct MagicItem *magicItem,
 {
     int quantity = roll("1d4", rnd);
     magicItem->experiencePoints = quantity * 500;
-    magicItem->trueValue_cp = quantity * 3000 * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(quantity * 3000);
     magicItem->trueDescription = strdup_or_die("Nolzurs' marvelous pigments");
 }
 
@@ -1202,7 +1202,7 @@ static void generateOrbOfDragonkind(struct MagicItem *magicItem,
         default: fail("1d8 die roll is %i", dieRoll); break;
     }
     magicItem->experiencePoints = 0;
-    magicItem->trueValue_cp = dieRoll * 10000 * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(dieRoll * 10000);
     asprintf_or_die(&magicItem->trueDescription,
                     "orb of dragonkind: orb of the %s", type);
 }
@@ -1246,7 +1246,7 @@ static void generatePearlOfPower(struct MagicItem *magicItem,
     }
     
     magicItem->experiencePoints = spellLevel * spellQuantity * 200;
-    magicItem->trueValue_cp = spellLevel * spellQuantity * 2000 * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(spellLevel * spellQuantity * 2000);
     
     char const *plural = (spellQuantity == 1) ? "" : "s";
     asprintf_or_die(&magicItem->trueDescription,
@@ -1319,7 +1319,7 @@ static void generatePotion(struct MagicItem *magicItem, struct rnd *rnd)
         potion->generate(magicItem, rnd);
     } else {
         magicItem->experiencePoints = potion->experiencePoints;
-        magicItem->trueValue_cp = potion->saleValue_gp * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(potion->saleValue_gp);
         asprintf_or_die(&magicItem->trueDescription, "%s potion", potion->name);
     }
 }
@@ -1334,51 +1334,51 @@ static void generatePotionOfDragonControl(struct MagicItem *magicItem,
     if (dieRoll <= 2) {
         type = "white";
         magicItem->experiencePoints = 500;
-        magicItem->trueValue_cp = 5000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(5000);
     } else if (dieRoll <= 4) {
         type = "black";
         magicItem->experiencePoints = 500;
-        magicItem->trueValue_cp = 5000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(5000);
     } else if (dieRoll <= 7) {
         type = "green";
         magicItem->experiencePoints = 500;
-        magicItem->trueValue_cp = 5000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(5000);
     } else if (dieRoll <= 9) {
         type = "blue";
         magicItem->experiencePoints = 500;
-        magicItem->trueValue_cp = 5000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(5000);
     } else if (dieRoll <= 10) {
         type = "red";
         magicItem->experiencePoints = 500;
-        magicItem->trueValue_cp = 5000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(5000);
     } else if (dieRoll <= 12) {
         type = "brass";
         magicItem->experiencePoints = 500;
-        magicItem->trueValue_cp = 5000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(5000);
     } else if (dieRoll <= 14) {
         type = "copper";
         magicItem->experiencePoints = 500;
-        magicItem->trueValue_cp = 5000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(5000);
     } else if (dieRoll <= 15) {
         type = "bronze";
         magicItem->experiencePoints = 500;
-        magicItem->trueValue_cp = 5000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(5000);
     } else if (dieRoll <= 16) {
         type = "silver";
         magicItem->experiencePoints = 500;
-        magicItem->trueValue_cp = 5000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(5000);
     } else if (dieRoll <= 17) {
         type = "gold";
         magicItem->experiencePoints = 500;
-        magicItem->trueValue_cp = 5000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(5000);
     } else if (dieRoll <= 19) {
         type = "evil";
         magicItem->experiencePoints = 1000;
-        magicItem->trueValue_cp = 9000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(9000);
     } else {
         type = "good";
         magicItem->experiencePoints = 1000;
-        magicItem->trueValue_cp = 9000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(9000);
     }
     
     asprintf_or_die(&magicItem->trueDescription,
@@ -1414,7 +1414,7 @@ static void generatePotionOfGiantControl(struct MagicItem *magicItem,
     }
     
     magicItem->experiencePoints = level * 100 + 300;
-    magicItem->trueValue_cp = level * 1000 * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(level * 1000);
     asprintf_or_die(&magicItem->trueDescription,
                     "potion of %s giant control", type);
 }
@@ -1448,7 +1448,7 @@ static void generatePotionOfGiantStrength(struct MagicItem *magicItem,
     }
     
     magicItem->experiencePoints = level * 50 + 450;
-    magicItem->trueValue_cp = (level * 100 + 800) * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(level * 100 + 800);
     asprintf_or_die(&magicItem->trueDescription,
                     "potion of %s giant strength", type);
 }
@@ -1463,27 +1463,27 @@ static void generateQuaalsFeatherToken(struct MagicItem *magicItem,
     if (dieRoll <= 4) {
         type = "anchor";
         magicItem->experiencePoints = 500;
-        magicItem->trueValue_cp = 2000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(2000);
     } else if (dieRoll <= 7) {
         type = "bird";
         magicItem->experiencePoints = 500;
-        magicItem->trueValue_cp = 2000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(2000);
     } else if (dieRoll <= 10) {
         type = "fan";
         magicItem->experiencePoints = 500;
-        magicItem->trueValue_cp = 2000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(2000);
     } else if (dieRoll <= 13) {
         type = "swan boat";
         magicItem->experiencePoints = 500;
-        magicItem->trueValue_cp = 2000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(2000);
     } else if (dieRoll <= 18) {
         type = "tree";
         magicItem->experiencePoints = 500;
-        magicItem->trueValue_cp = 2000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(2000);
     } else {
         type = "whip";
         magicItem->experiencePoints = 1000;
-        magicItem->trueValue_cp = 7000 * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(7000);
     }
     
     asprintf_or_die(&magicItem->trueDescription,
@@ -1545,7 +1545,7 @@ static void generateRing(struct MagicItem *magicItem, struct rnd *rnd)
         ring->generate(magicItem, rnd);
     } else {
         magicItem->experiencePoints = ring->experiencePoints;
-        magicItem->trueValue_cp = ring->saleValue_gp * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(ring->saleValue_gp);
         asprintf_or_die(&magicItem->trueDescription, "ring of %s", ring->name);
     }
 }
@@ -1580,7 +1580,7 @@ static void generateRingOfProtection(struct MagicItem *magicItem,
         magicItem->experiencePoints = 4000;
     }
     
-    magicItem->trueValue_cp = magicItem->experiencePoints * 5 * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(magicItem->experiencePoints * 5);
     asprintf_or_die(&magicItem->trueDescription, "ring of protection %s", type);
 }
 
@@ -1641,7 +1641,7 @@ static void generateRodStaffOrWand(struct MagicItem *magicItem,
     }
     
     magicItem->experiencePoints = rodStaffOrWand->experiencePoints;
-    magicItem->trueValue_cp = rodStaffOrWand->saleValue_gp * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(rodStaffOrWand->saleValue_gp);
     
     asprintf_or_die(&magicItem->trueDescription, "%s", rodStaffOrWand->name);
 }
@@ -1737,14 +1737,14 @@ static void generateScroll(struct MagicItem *magicItem, struct rnd *rnd)
         }
         
         magicItem->experiencePoints = scroll->experiencePoints * spellLevels;
-        magicItem->trueValue_cp = scroll->saleValue_gp * spellLevels * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(scroll->saleValue_gp * spellLevels);
         
         char const *plural = scroll->spellCount == 1 ? "" : "s";
         asprintf_or_die(&magicItem->trueDescription, "%s scroll (%i spell%s)",
                         spellTypeName, scroll->spellCount, plural);
     } else {
         magicItem->experiencePoints = scroll->experiencePoints;
-        magicItem->trueValue_cp = scroll->saleValue_gp * CP_PER_GP;
+        magicItem->trueValue_cp = gp_to_cp(scroll->saleValue_gp);
         asprintf_or_die(&magicItem->trueDescription, "%s scroll", scroll->name);
     }
 }
@@ -1810,7 +1810,7 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
     assert(sword);
     
     magicItem->experiencePoints = sword->experiencePoints;
-    magicItem->trueValue_cp = sword->saleValue_gp * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(sword->saleValue_gp);
     
     char const *swordType;
     score = roll("1d100", rnd);
@@ -2375,7 +2375,7 @@ static void generateTeethOfDahlverNar(struct MagicItem *magicItem,
     int toothNumber = roll("1d32", rnd);
     
     magicItem->experiencePoints = 0;
-    magicItem->trueValue_cp = 5000 * CP_PER_GP;
+    magicItem->trueValue_cp = gp_to_cp(5000);
     asprintf_or_die(&magicItem->trueDescription,
                     "tooth of Dahlver-Nar (#%i)", toothNumber);
 }

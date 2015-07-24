@@ -167,10 +167,10 @@ void initializeTreasure(struct Treasure *treasure) {
 int treasureValue_cp(struct Treasure *treasure) {
     int value_cp = 0;
     value_cp += treasure->copper;
-    value_cp += treasure->silver * CP_PER_SP;
-    value_cp += treasure->electrum * CP_PER_EP;
-    value_cp += treasure->gold * CP_PER_GP;
-    value_cp += treasure->platinum * CP_PER_PP;
+    value_cp += sp_to_cp(treasure->silver);
+    value_cp += ep_to_cp(treasure->electrum);
+    value_cp += gp_to_cp(treasure->gold);
+    value_cp += pp_to_cp(treasure->platinum);
     
     for (int i = 0; i < treasure->gemsCount; ++i) {
         value_cp += gemValue_cp(&treasure->gems[i]);
