@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "alloc_or_die.h"
-#include "coinage.h"
+#include "coins.h"
 #include "dice.h"
 
 
@@ -180,7 +180,7 @@ void generateGem(struct Gem *gem, struct rnd *rnd)
     char *description = describeGem(gem);
     char *modifiers = describeGemModifiers(gem);
     int value_cp = gemValue_cp(gem);
-    char *value_gp = goldFormat_cp(value_cp);
+    char *value_gp = coins_alloc_gp_cp_description(value_cp);
     
     char const *separator = modifiers[0] ? ": " : "";
     asprintf_or_die(&gem->trueDescription, "%s (%s%s%s)",

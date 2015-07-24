@@ -7,7 +7,7 @@
 #include <string.h>
 
 #include "alloc_or_die.h"
-#include "coinage.h"
+#include "coins.h"
 #include "dice.h"
 
 
@@ -283,7 +283,7 @@ void generateJewelry(struct Jewelry *jewelry, struct rnd *rnd)
   char *description = describeJewelry(jewelry);
   char *modifiers = describeJewelryModifiers(jewelry);
   int value_cp = jewelryValue_cp(jewelry);
-  char *value_gp = goldFormat_cp(value_cp);
+  char *value_gp = coins_alloc_gp_cp_description(value_cp);
   
   char const *separator = modifiers[0] ? ": " : "";
   asprintf_or_die(&jewelry->trueDescription, "%s (%s%s%s)",

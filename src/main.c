@@ -4,7 +4,7 @@
 
 #include "alloc_or_die.h"
 #include "Character.h"
-#include "coinage.h"
+#include "coins.h"
 #include "dice.h"
 #include "Dungeon.h"
 #include "Gem.h"
@@ -279,7 +279,7 @@ static void generateTreasureType(struct rnd *rnd, FILE *out, char letter)
     
     char *description = describeTreasure(&treasure);
     int value_cp = treasureValue_cp(&treasure);
-    char *value_gp = goldFormat_cp(value_cp);
+    char *value_gp = coins_alloc_gp_cp_description(value_cp);
     fprintf(out, "%s (total %s)\n", description, value_gp);
     free_or_die(value_gp);
     free_or_die(description);

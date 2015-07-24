@@ -8,7 +8,7 @@
 
 #include "alloc_or_die.h"
 #include "Character.h"
-#include "coinage.h"
+#include "coins.h"
 #include "dice.h"
 #include "fail.h"
 

@@ -5,7 +5,7 @@
 #include <string.h>
 
 #include "alloc_or_die.h"
-#include "coinage.h"
+#include "coins.h"
 #include "Gem.h"
 #include "Jewelry.h"
 #include "TreasureMap.h"
