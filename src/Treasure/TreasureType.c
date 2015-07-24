@@ -7,12 +7,12 @@
 
 #include "alloc_or_die.h"
 #include "dice.h"
+#include "fail.h"
 #include "Gem.h"
 #include "Jewelry.h"
 #include "MagicItem.h"
 #include "Treasure.h"
 #include "TreasureMap.h"
-#include "unexpected.h"
 
 
 struct CoinsGemsOrJewelry {
@@ -562,7 +562,7 @@ static char *describeCoinsGemsOrJewelry(struct CoinsGemsOrJewelry *coinsGemsOrJe
                 case 4: prefix = " "; suffix = ""; break;
                 case 5: prefix = ""; suffix = ""; break;
                 default:
-                    UNEXPECTED("dieRollLength = %i", dieRollLength);
+                    fail("dieRollLength = %i", dieRollLength);
                     prefix = "("; suffix = ")";
                     break;
             }
@@ -783,7 +783,7 @@ static char const *possibleMapsOrMagicName(bool isMapPossible,
             case ANY_MAGIC_ITEM: return "any";
             case NON_WEAPON_MAGIC: return "map or non weapon magic";
             default: 
-                UNEXPECTED("possibleMagicItems = %0x", possibleMagicItems); 
+                fail("possibleMagicItems = %0x", possibleMagicItems);
                 return "(map or magic)";
         }
     } else {
@@ -800,7 +800,7 @@ static char const *possibleMapsOrMagicName(bool isMapPossible,
             case ANY_MAGIC_ITEM: return "any magic";
             case MAGIC_WEAPON_OR_ARMOR: return "sword, armor or misc weapon";
             default: 
-                UNEXPECTED("possibleMagicItems = %0x", possibleMagicItems); 
+                fail("possibleMagicItems = %0x", possibleMagicItems); 
                 return "(magic)";
         }
     }

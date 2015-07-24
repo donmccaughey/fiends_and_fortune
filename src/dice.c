@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "fail.h"
 #include "rnd.h"
-#include "unexpected.h"
 
 
 static int

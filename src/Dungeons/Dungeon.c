@@ -9,7 +9,7 @@
 #include "Direction.h"
 #include "Tile.h"
 #include "Tiles.h"
-#include "unexpected.h"
+#include "fail.h"
 
 
 static struct Point advancePoint(struct Point start, int32_t steps, enum Direction direction);
@@ -25,7 +25,7 @@ static struct Point advancePoint(struct Point start, int32_t steps, enum Directi
         case South: return makePoint(start.x, start.y - steps, start.z);
         case East: return makePoint(start.x + steps, start.y, start.z);
         case West: return makePoint(start.x - steps, start.y, start.z);
-        default: UNEXPECTED("Unrecognized direction %i", direction); break;
+        default: fail("Unrecognized direction %i", direction); break;
     }
     return start;
 }
@@ -73,7 +73,7 @@ static struct Point area(struct Dungeon *dungeon, struct Point fromPoint, uint32
         }
             break;
         default:
-            UNEXPECTED("Unrecognized direction %i", direction);
+            fail("Unrecognized direction %i", direction);
             return fromPoint;
     }
     

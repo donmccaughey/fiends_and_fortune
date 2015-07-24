@@ -10,7 +10,7 @@
 #include "Character.h"
 #include "coinage.h"
 #include "dice.h"
-#include "unexpected.h"
+#include "fail.h"
 
 
 typedef void(*GenerateFunction)(struct MagicItem *magicItem, struct rnd *rnd);
@@ -529,7 +529,7 @@ static void generateHornOfValhalla(struct MagicItem *magicItem,
             case 6: alignment = "chaotic evil"; break;
             case 7: alignment = "chaotic"; break;
             case 8: alignment = "chaotic good"; break;
-            default: UNEXPECTED("1d8 die roll is %i", dieRoll); break;
+            default: fail("1d8 die roll is %i", dieRoll); break;
         }
         asprintf_or_die(&magicItem->trueDescription, "%s horn of Valhalla (%s)",
                         type, alignment);
@@ -1199,7 +1199,7 @@ static void generateOrbOfDragonkind(struct MagicItem *magicItem,
         case 6: type = "fire drake"; break;
         case 7: type = "elder wyrm"; break;
         case 8: type = "eternal grand dragon"; break;
-        default: UNEXPECTED("1d8 die roll is %i", dieRoll); break;
+        default: fail("1d8 die roll is %i", dieRoll); break;
     }
     magicItem->experiencePoints = 0;
     magicItem->trueValue_cp = dieRoll * 10000 * CP_PER_GP;
