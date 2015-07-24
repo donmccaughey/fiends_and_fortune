@@ -109,8 +109,8 @@ void destroyTiles(struct Tiles *tiles)
       destroyTile(tiles->tiles[i]);
     }
   }
-  free(tiles->tiles);
-  free(tiles);
+  free_or_die(tiles->tiles);
+  free_or_die(tiles);
 }
 
 

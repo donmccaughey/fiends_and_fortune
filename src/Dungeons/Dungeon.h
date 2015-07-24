@@ -8,8 +8,8 @@ struct Tiles;
 
 
 struct Dungeon {
-  struct Areas *areas;
-  struct Tiles *tiles;
+    struct Areas *areas;
+    struct Tiles *tiles;
 };
 
 

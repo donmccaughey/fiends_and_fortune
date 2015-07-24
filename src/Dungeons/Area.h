@@ -11,9 +11,9 @@ struct Tiles;
 
 
 struct Area {
-  char *description;
-  struct Tiles *tiles;
-  enum AreaType type;
+    char *description;
+    struct Tiles *tiles;
+    enum AreaType type;
 };
 
 

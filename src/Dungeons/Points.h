@@ -7,8 +7,8 @@
 
 
 struct Points {
-  struct Points *next;
-  struct Point point;
+    struct Points *next;
+    struct Point point;
 };
 
 

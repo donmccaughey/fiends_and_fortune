@@ -7,8 +7,8 @@
 
 
 struct Tile {
-  struct Point point;
-  enum TileType type;
+    struct Point point;
+    enum TileType type;
 };
 
 

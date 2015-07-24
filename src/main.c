@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "alloc_or_die.h"
 #include "Character.h"
 #include "coinage.h"
 #include "dice.h"
@@ -339,6 +340,7 @@ int main(int argc, char *argv[])
   }
   
   fprintf(out, "\n");
+  alloc_count_is_zero_or_die();
   return EXIT_SUCCESS;
 }
 

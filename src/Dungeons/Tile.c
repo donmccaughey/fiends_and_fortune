@@ -16,5 +16,5 @@ struct Tile *createTile(struct Point point, enum TileType type)
 
 void destroyTile(struct Tile *tile)
 {
-  free(tile);
+  free_or_die(tile);
 }
