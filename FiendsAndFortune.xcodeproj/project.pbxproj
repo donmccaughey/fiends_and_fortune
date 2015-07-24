@@ -111,7 +111,7 @@
 		D4783B1315ABDF8B004E7F2C /* Jewelry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Jewelry.h; sourceTree = "<group>"; };
 		D4783B1415ABDF8B004E7F2C /* MagicItem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = MagicItem.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		D4783B1515ABDF8B004E7F2C /* MagicItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagicItem.h; sourceTree = "<group>"; };
-		D4783B1615ABDF8B004E7F2C /* Treasure.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.c; path = Treasure.c; sourceTree = "<group>"; tabWidth = 2; };
+		D4783B1615ABDF8B004E7F2C /* Treasure.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.c; path = Treasure.c; sourceTree = "<group>"; tabWidth = 4; };
 		D4783B1715ABDF8B004E7F2C /* Treasure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Treasure.h; sourceTree = "<group>"; };
 		D4783B1815ABDF8B004E7F2C /* TreasureMap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = TreasureMap.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		D4783B1915ABDF8B004E7F2C /* TreasureMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreasureMap.h; sourceTree = "<group>"; };
@@ -145,7 +145,7 @@
 		D4F244A114181FF5003BDED5 /* check */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = check; sourceTree = "<group>"; };
 		D4F244A31418207C003BDED5 /* check.out */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = check.out; sourceTree = "<group>"; };
 		D4F7344F140EF3E00096618F /* FiendsAndFortune */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FiendsAndFortune; sourceTree = BUILT_PRODUCTS_DIR; };
-		D4F73461140EF4380096618F /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; tabWidth = 2; };
+		D4F73461140EF4380096618F /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; tabWidth = 4; };
 		D4F73465140EF55C00966190 /* Point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Point.h; sourceTree = "<group>"; };
 		D4F73465140EF55C00966191 /* Point.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Point.c; sourceTree = "<group>"; };
 		D4F73465140EF55C00966194 /* TextGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextGraph.h; sourceTree = "<group>"; };

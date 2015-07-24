@@ -11,11 +11,11 @@ struct Treasure;
 struct TreasureType;
 
 
-char *describeTreasureType(struct TreasureType *treasureType, 
+char *describeTreasureType(struct TreasureType *treasureType,
                            bool includeHeader);
 
-void generateTreasure(struct TreasureType *treasureType, 
-                      struct Treasure *treasure, 
+void generateTreasure(struct TreasureType *treasureType,
+                      struct Treasure *treasure,
                       struct rnd *rnd,
                       int individualCount);
 

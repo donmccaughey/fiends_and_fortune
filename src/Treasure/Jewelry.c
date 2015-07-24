@@ -190,15 +190,15 @@ static char *describeJewelryModifiers(struct Jewelry *jewelry)
     description = strdup_or_die("");
   }
   
-  free(exceptionalStoneBonus);
-  free(workmanshipBonus);
+  free_or_die(exceptionalStoneBonus);
+  free_or_die(workmanshipBonus);
   return description;
 }
 
 
 void finalizeJewelry(struct Jewelry *jewelry)
 {
-  free(jewelry->trueDescription);
+  free_or_die(jewelry->trueDescription);
 }
 
 
@@ -289,9 +289,9 @@ void generateJewelry(struct Jewelry *jewelry, struct rnd *rnd)
   asprintf_or_die(&jewelry->trueDescription, "%s (%s%s%s)",
                   description, modifiers, separator, value_gp);
   
-  free(modifiers);
-  free(value_gp);
-  free(description);
+  free_or_die(modifiers);
+  free_or_die(value_gp);
+  free_or_die(description);
 }
 
 

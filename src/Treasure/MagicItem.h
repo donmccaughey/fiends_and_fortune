@@ -24,12 +24,12 @@
 #define MISC_WEAPON     ((uint32_t) 0x0080u)
 
 #define ANY_MAGIC_ITEM (POTION | SCROLL | RING | ROD_STAFF_WAND | MISC_MAGIC \
-                       | ARMOR_SHIELD | SWORD | MISC_WEAPON)
+| ARMOR_SHIELD | SWORD | MISC_WEAPON)
 
 #define MAGIC_WEAPON_OR_ARMOR (SWORD | MISC_WEAPON)
 
 #define NON_WEAPON_MAGIC (POTION | SCROLL | RING | ROD_STAFF_WAND | MISC_MAGIC \
-                         | ARMOR_SHIELD)
+| ARMOR_SHIELD)
 
 
 typedef uint32_t ClassRestrictions;
@@ -40,30 +40,30 @@ struct rnd;
 
 
 enum MagicItemType {
-  UnknownMagicItemType = 0,
-  PotionMagicItemType,
-  ScrollMagicItemType,
-  RingMagicItemType,
-  RodStaffOrWandMagicItemType,
-  MiscMagicItemType,
-  ArmorOrShieldMagicItemType,
-  SwordMagicItemType,
-  MiscWeaponMagicItemType
+    UnknownMagicItemType = 0,
+    PotionMagicItemType,
+    ScrollMagicItemType,
+    RingMagicItemType,
+    RodStaffOrWandMagicItemType,
+    MiscMagicItemType,
+    ArmorOrShieldMagicItemType,
+    SwordMagicItemType,
+    MiscWeaponMagicItemType
 };
 
 
 struct MagicItem {
-  int experiencePoints;
-  char *trueDescription;
-  char **trueDetails;
-  int trueValue_cp;
-  enum MagicItemType type;
+    int experiencePoints;
+    char *trueDescription;
+    char **trueDetails;
+    int trueValue_cp;
+    enum MagicItemType type;
 };
 
 
 void finalizeMagicItem(struct MagicItem *magicItem);
 
-void generateMagicItem(struct MagicItem *magicItem, 
+void generateMagicItem(struct MagicItem *magicItem,
                        struct rnd *rnd,
                        PossibleMagicItems possibleMagicItems);
 

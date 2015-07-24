@@ -15,170 +15,170 @@ static void describeTreasureCoins(int *coins, char const *name, char **phrase);
 
 
 char *describeTreasure(struct Treasure *treasure) {
-  enum Phrase {
-    CopperPhrase = 0,
-    SilverPhrase,
-    ElectrumPhrase,
-    GoldPhrase,
-    PlatinumPhrase,
-    GemsPhrase,
-    JewelryPhrase,
-    MapsPhrase,
-    MagicPhrase,
-    PhraseCount
-  };
-  char *phrases[PhraseCount] = {};
-  size_t phrasesCount = sizeof(phrases) / sizeof(char *);
-  
-  describeTreasureCoins(&treasure->copper, "copper", &phrases[CopperPhrase]);
-  describeTreasureCoins(&treasure->silver, "silver", &phrases[SilverPhrase]);
-  describeTreasureCoins(&treasure->electrum, 
-                        "electrum", &phrases[ElectrumPhrase]);
-  describeTreasureCoins(&treasure->gold, "gold", &phrases[GoldPhrase]);
-  describeTreasureCoins(&treasure->platinum, 
-                        "platinum", &phrases[PlatinumPhrase]);
-  
-  if (treasure->gemsCount) {
-    char const *plural = (treasure->gemsCount == 1) ? "" : "s";
-    asprintf_or_die(&phrases[GemsPhrase], "%d gem%s",
-                    treasure->gemsCount, plural);
-  }
-  
-  if (treasure->jewelryCount) {
-    char const *plural = (treasure->jewelryCount == 1) ? "" : "s";
-    asprintf_or_die(&phrases[JewelryPhrase], "%d piece%s of jewelry",
-                    treasure->jewelryCount, plural);
-  }
-  
-  if (treasure->mapsCount) {
-    char const *plural = (treasure->mapsCount == 1) ? "" : "s";
-    asprintf_or_die(&phrases[MapsPhrase], "%d map%s",
-                    treasure->mapsCount, plural);
-  }
-  
-  if (treasure->magicItemsCount) {
-    char const *plural = (treasure->magicItemsCount == 1) ? "" : "s";
-    asprintf_or_die(&phrases[MagicPhrase], "%d magic item%s",
-                    treasure->magicItemsCount, plural);
-  }
-  
-  char const separator[] = ", ";
-  size_t bytes = 0; 
-  int phraseCount = 0;
-  for (int i = 0; i < phrasesCount; ++i) {
-    if (phrases[i]) {
-      if (phraseCount) {
-        bytes += strlen(separator);
-      }
-      bytes += strlen(phrases[i]);
-      ++phraseCount;
+    enum Phrase {
+        CopperPhrase = 0,
+        SilverPhrase,
+        ElectrumPhrase,
+        GoldPhrase,
+        PlatinumPhrase,
+        GemsPhrase,
+        JewelryPhrase,
+        MapsPhrase,
+        MagicPhrase,
+        PhraseCount
+    };
+    char *phrases[PhraseCount] = {};
+    size_t phrasesCount = sizeof(phrases) / sizeof(char *);
+    
+    describeTreasureCoins(&treasure->copper, "copper", &phrases[CopperPhrase]);
+    describeTreasureCoins(&treasure->silver, "silver", &phrases[SilverPhrase]);
+    describeTreasureCoins(&treasure->electrum,
+                          "electrum", &phrases[ElectrumPhrase]);
+    describeTreasureCoins(&treasure->gold, "gold", &phrases[GoldPhrase]);
+    describeTreasureCoins(&treasure->platinum,
+                          "platinum", &phrases[PlatinumPhrase]);
+    
+    if (treasure->gemsCount) {
+        char const *plural = (treasure->gemsCount == 1) ? "" : "s";
+        asprintf_or_die(&phrases[GemsPhrase], "%d gem%s",
+                        treasure->gemsCount, plural);
     }
-  }
-  bytes += sizeof('\0');
-  
-  if ( ! phraseCount) {
-    return strdup_or_die("(no treasure)");
-  }
-  
-  char *description = calloc_or_die(bytes, sizeof(char));
-  phraseCount = 0;
-  for (int i = 0; i < phrasesCount; ++i) {
-    if (phrases[i]) {
-      if (phraseCount) {
-        strcat(description, ", ");
-      }
-      strcat(description, phrases[i]);
-      free(phrases[i]);
-      ++phraseCount;
+    
+    if (treasure->jewelryCount) {
+        char const *plural = (treasure->jewelryCount == 1) ? "" : "s";
+        asprintf_or_die(&phrases[JewelryPhrase], "%d piece%s of jewelry",
+                        treasure->jewelryCount, plural);
     }
-  }
-  return description;
+    
+    if (treasure->mapsCount) {
+        char const *plural = (treasure->mapsCount == 1) ? "" : "s";
+        asprintf_or_die(&phrases[MapsPhrase], "%d map%s",
+                        treasure->mapsCount, plural);
+    }
+    
+    if (treasure->magicItemsCount) {
+        char const *plural = (treasure->magicItemsCount == 1) ? "" : "s";
+        asprintf_or_die(&phrases[MagicPhrase], "%d magic item%s",
+                        treasure->magicItemsCount, plural);
+    }
+    
+    char const separator[] = ", ";
+    size_t bytes = 0;
+    int phraseCount = 0;
+    for (int i = 0; i < phrasesCount; ++i) {
+        if (phrases[i]) {
+            if (phraseCount) {
+                bytes += strlen(separator);
+            }
+            bytes += strlen(phrases[i]);
+            ++phraseCount;
+        }
+    }
+    bytes += sizeof('\0');
+    
+    if ( ! phraseCount) {
+        return strdup_or_die("(no treasure)");
+    }
+    
+    char *description = calloc_or_die(bytes, sizeof(char));
+    phraseCount = 0;
+    for (int i = 0; i < phrasesCount; ++i) {
+        if (phrases[i]) {
+            if (phraseCount) {
+                strcat(description, ", ");
+            }
+            strcat(description, phrases[i]);
+            free_or_die(phrases[i]);
+            ++phraseCount;
+        }
+    }
+    return description;
 }
 
 
 static void describeTreasureCoins(int *coins, char const *name, char **phrase) {
-  if (*coins) {
-    asprintf_or_die(phrase, "%d %s", *coins, name);
-  }
+    if (*coins) {
+        asprintf_or_die(phrase, "%d %s", *coins, name);
+    }
 }
 
 
 void finalizeTreasure(struct Treasure *treasure) {
-  for (int i = 0; i < treasure->gemsCount; ++i) {
-    finalizeGem(&treasure->gems[i]);
-  }
-  free(treasure->gems);
-  
-  for (int i = 0; i < treasure->jewelryCount; ++i) {
-    finalizeJewelry(&treasure->jewelry[i]);
-  }
-  free(treasure->jewelry);
-  
-  for (int i = 0; i < treasure->mapsCount; ++i) {
-    finalizeTreasureMap(&treasure->maps[i]);
-  }
-  free(treasure->maps);
-  
-  for (int i = 0; i < treasure->magicItemsCount; ++i) {
-    finalizeMagicItem(&treasure->magicItems[i]);
-  }
-  free(treasure->magicItems);
+    for (int i = 0; i < treasure->gemsCount; ++i) {
+        finalizeGem(&treasure->gems[i]);
+    }
+    free_or_die(treasure->gems);
+    
+    for (int i = 0; i < treasure->jewelryCount; ++i) {
+        finalizeJewelry(&treasure->jewelry[i]);
+    }
+    free_or_die(treasure->jewelry);
+    
+    for (int i = 0; i < treasure->mapsCount; ++i) {
+        finalizeTreasureMap(&treasure->maps[i]);
+    }
+    free_or_die(treasure->maps);
+    
+    for (int i = 0; i < treasure->magicItemsCount; ++i) {
+        finalizeMagicItem(&treasure->magicItems[i]);
+    }
+    free_or_die(treasure->magicItems);
 }
 
 
-void generateMagicItemsForTreasure(struct Treasure *treasure, 
+void generateMagicItemsForTreasure(struct Treasure *treasure,
                                    struct rnd *rnd,
-                                   int count, 
+                                   int count,
                                    PossibleMagicItems possibleMagicItems)
 {
-  treasure->magicItems = reallocarray_or_die(treasure->magicItems,
-                                             treasure->magicItemsCount + count,
-                                             sizeof(struct MagicItem));
-  for (int i = 0; i < count; ++i) {
-    int j = treasure->magicItemsCount + i;
-    initializeMagicItem(&treasure->magicItems[j]);
-    generateMagicItem(&treasure->magicItems[j], rnd, possibleMagicItems);
-  }
-  treasure->magicItemsCount += count;
+    treasure->magicItems = reallocarray_or_die(treasure->magicItems,
+                                               treasure->magicItemsCount + count,
+                                               sizeof(struct MagicItem));
+    for (int i = 0; i < count; ++i) {
+        int j = treasure->magicItemsCount + i;
+        initializeMagicItem(&treasure->magicItems[j]);
+        generateMagicItem(&treasure->magicItems[j], rnd, possibleMagicItems);
+    }
+    treasure->magicItemsCount += count;
 }
 
 
-void generateMapsForTreasure(struct Treasure *treasure, 
+void generateMapsForTreasure(struct Treasure *treasure,
                              struct rnd *rnd,
                              int count)
 {
-  treasure->maps = reallocarray_or_die(treasure->maps,
-                                       treasure->mapsCount + count,
-                                       sizeof(struct TreasureMap));
-  for (int i = 0; i < count; ++i) {
-    int j = treasure->mapsCount + i;
-    initializeTreasureMap(&treasure->maps[j]);
-    generateTreasureMap(&treasure->maps[j], rnd);
-  }
-  treasure->mapsCount += count;
+    treasure->maps = reallocarray_or_die(treasure->maps,
+                                         treasure->mapsCount + count,
+                                         sizeof(struct TreasureMap));
+    for (int i = 0; i < count; ++i) {
+        int j = treasure->mapsCount + i;
+        initializeTreasureMap(&treasure->maps[j]);
+        generateTreasureMap(&treasure->maps[j], rnd);
+    }
+    treasure->mapsCount += count;
 }
 
 
 void initializeTreasure(struct Treasure *treasure) {
-  memset(treasure, 0, sizeof(struct Treasure));
+    memset(treasure, 0, sizeof(struct Treasure));
 }
 
 
 int treasureValue_cp(struct Treasure *treasure) {
-  int value_cp = 0;
-  value_cp += treasure->copper;
-  value_cp += treasure->silver * CP_PER_SP;
-  value_cp += treasure->electrum * CP_PER_EP;
-  value_cp += treasure->gold * CP_PER_GP;
-  value_cp += treasure->platinum * CP_PER_PP;
-  
-  for (int i = 0; i < treasure->gemsCount; ++i) {
-    value_cp += gemValue_cp(&treasure->gems[i]);
-  }
-  
-  for (int i = 0; i < treasure->jewelryCount; ++i) {
-    value_cp += jewelryValue_cp(&treasure->jewelry[i]);
-  }
-  
-  return value_cp;
+    int value_cp = 0;
+    value_cp += treasure->copper;
+    value_cp += treasure->silver * CP_PER_SP;
+    value_cp += treasure->electrum * CP_PER_EP;
+    value_cp += treasure->gold * CP_PER_GP;
+    value_cp += treasure->platinum * CP_PER_PP;
+    
+    for (int i = 0; i < treasure->gemsCount; ++i) {
+        value_cp += gemValue_cp(&treasure->gems[i]);
+    }
+    
+    for (int i = 0; i < treasure->jewelryCount; ++i) {
+        value_cp += jewelryValue_cp(&treasure->jewelry[i]);
+    }
+    
+    return value_cp;
 }

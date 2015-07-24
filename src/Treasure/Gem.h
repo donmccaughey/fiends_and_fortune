@@ -6,32 +6,32 @@ struct rnd;
 
 
 enum GemSize {
-  VerySmallGemSize = -2,
-  SmallGemSize,
-  AverageGemSize,
-  LargeGemSize,
-  VeryLargeGemSize,
-  HugeGemSize
+    VerySmallGemSize = -2,
+    SmallGemSize,
+    AverageGemSize,
+    LargeGemSize,
+    VeryLargeGemSize,
+    HugeGemSize
 };
 
 
 enum GemType {
-  FakeGemType = 0,
-  OrnamentalStoneGemType,
-  SemiPreciousStoneGemType,
-  FancyStoneGemType,
-  PreciousStoneGemType,
-  GemStoneGemType,
-  JewelStoneGemType
+    FakeGemType = 0,
+    OrnamentalStoneGemType,
+    SemiPreciousStoneGemType,
+    FancyStoneGemType,
+    PreciousStoneGemType,
+    GemStoneGemType,
+    JewelStoneGemType
 };
 
 
 struct Gem {
-  enum GemSize size;
-  enum GemType type;
-  int valuePercentModifier;
-  int valueRankModifier;
-  char *trueDescription;
+    enum GemSize size;
+    enum GemType type;
+    int valuePercentModifier;
+    int valueRankModifier;
+    char *trueDescription;
 };
 
 

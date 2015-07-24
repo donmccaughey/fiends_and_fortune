@@ -14,20 +14,20 @@ struct TreasureType;
 
 
 struct Treasure {
-  struct TreasureType *type;
-  int copper;
-  int silver;
-  int electrum;
-  int gold;
-  int platinum;
-  struct Gem *gems;
-  int gemsCount;
-  struct Jewelry *jewelry;
-  int jewelryCount;
-  struct TreasureMap *maps;
-  int mapsCount;
-  struct MagicItem *magicItems;
-  int magicItemsCount;
+    struct TreasureType *type;
+    int copper;
+    int silver;
+    int electrum;
+    int gold;
+    int platinum;
+    struct Gem *gems;
+    int gemsCount;
+    struct Jewelry *jewelry;
+    int jewelryCount;
+    struct TreasureMap *maps;
+    int mapsCount;
+    struct MagicItem *magicItems;
+    int magicItemsCount;
 };
 
 
@@ -35,12 +35,12 @@ char *describeTreasure(struct Treasure *treasure);
 
 void finalizeTreasure(struct Treasure *treasure);
 
-void generateMagicItemsForTreasure(struct Treasure *treasure, 
+void generateMagicItemsForTreasure(struct Treasure *treasure,
                                    struct rnd *rnd,
-                                   int count, 
+                                   int count,
                                    PossibleMagicItems possibleMagicItems);
 
-void generateMapsForTreasure(struct Treasure *treasure, 
+void generateMapsForTreasure(struct Treasure *treasure,
                              struct rnd *rnd,
                              int count);
 

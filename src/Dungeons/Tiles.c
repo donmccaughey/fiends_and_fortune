@@ -16,184 +16,184 @@ static void updateRanges(struct Tiles *tiles);
 
 
 struct Tiles {
-  size_t capacity;
-  int (*compare)(void const *, void const *);
-  size_t count;
-  struct Tiles *parent;
-  struct Tile **tiles;
-  struct Range xRange;
-  struct Range yRange;
-  struct Range zRange;
+    size_t capacity;
+    int (*compare)(void const *, void const *);
+    size_t count;
+    struct Tiles *parent;
+    struct Tile **tiles;
+    struct Range xRange;
+    struct Range yRange;
+    struct Range zRange;
 };
 
 
 void addTileToTiles(struct Tiles *tiles, struct Tile *tile)
 {
-  if (tiles->parent) addTileToTiles(tiles->parent, tile);
-  appendTileToTiles(tiles, tile);
-  sort(tiles);
+    if (tiles->parent) addTileToTiles(tiles->parent, tile);
+    appendTileToTiles(tiles, tile);
+    sort(tiles);
 }
 
 
 static void appendTileToTiles(struct Tiles *tiles, struct Tile  *tile)
 {
-  if (tiles->capacity == tiles->count) {
-    if (tiles->capacity) {
-      tiles->capacity *= 2;
-    } else {
-      tiles->capacity = 256;
+    if (tiles->capacity == tiles->count) {
+        if (tiles->capacity) {
+            tiles->capacity *= 2;
+        } else {
+            tiles->capacity = 256;
+        }
+        tiles->tiles = reallocarray_or_die(tiles->tiles,
+                                           tiles->capacity,
+                                           sizeof(struct Tile *));
     }
-    tiles->tiles = reallocarray_or_die(tiles->tiles,
-                                       tiles->capacity,
-                                       sizeof(struct Tile *));
-  }
-  tiles->tiles[tiles->count] = tile;
-  ++tiles->count;
-  tiles->xRange = extendRangeToIncludeValue(tiles->xRange, tile->point.x);
-  tiles->yRange = extendRangeToIncludeValue(tiles->yRange, tile->point.y);
-  tiles->zRange = extendRangeToIncludeValue(tiles->zRange, tile->point.z);
+    tiles->tiles[tiles->count] = tile;
+    ++tiles->count;
+    tiles->xRange = extendRangeToIncludeValue(tiles->xRange, tile->point.x);
+    tiles->yRange = extendRangeToIncludeValue(tiles->yRange, tile->point.y);
+    tiles->zRange = extendRangeToIncludeValue(tiles->zRange, tile->point.z);
 }
 
 
 static int compareTilesByCoordinate(void const *item1, void const *item2)
 {
-  struct Tile *const *pointer1 = item1;
-  struct Tile *const *pointer2 = item2;
-  struct Tile *tile1 = *pointer1;
-  struct Tile *tile2 = *pointer2;
-
-  return comparePoints(tile1->point, tile2->point);
+    struct Tile *const *pointer1 = item1;
+    struct Tile *const *pointer2 = item2;
+    struct Tile *tile1 = *pointer1;
+    struct Tile *tile2 = *pointer2;
+    
+    return comparePoints(tile1->point, tile2->point);
 }
 
 
 struct Tiles *createEmptyTilesWithParent(struct Tiles *tiles)
 {
-  struct Tiles *emptyTiles = createTiles();
-  emptyTiles->parent = tiles;
-  return emptyTiles;
+    struct Tiles *emptyTiles = createTiles();
+    emptyTiles->parent = tiles;
+    return emptyTiles;
 }
 
 
 struct Tiles *createTiles(void)
 {
-  struct Tiles *tiles = calloc_or_die(1, sizeof(struct Tiles));
-  tiles->compare = compareTilesByCoordinate;
-  tiles->tiles = calloc_or_die(0, sizeof(struct Tile *));
-  return tiles;
+    struct Tiles *tiles = calloc_or_die(1, sizeof(struct Tiles));
+    tiles->compare = compareTilesByCoordinate;
+    tiles->tiles = calloc_or_die(0, sizeof(struct Tile *));
+    return tiles;
 }
 
 
 struct Tiles *createTilesOnLevel(struct Tiles *tiles, int32_t z)
 {
-  struct Tiles *tilesOnLevel = createEmptyTilesWithParent(tiles);
-
-  // TODO: replace linear search with binary lower/upper bound search
-  // and memcpy the whole block of tiles
-  for (size_t i = 0; i < tiles->count; ++i) {
-    struct Tile *tile = tiles->tiles[i];
-    if (tile->point.z == z) {
-      appendTileToTiles(tilesOnLevel, tile);
-    } else if (tile->point.z > z) {
-      break;
+    struct Tiles *tilesOnLevel = createEmptyTilesWithParent(tiles);
+    
+    // TODO: replace linear search with binary lower/upper bound search
+    // and memcpy the whole block of tiles
+    for (size_t i = 0; i < tiles->count; ++i) {
+        struct Tile *tile = tiles->tiles[i];
+        if (tile->point.z == z) {
+            appendTileToTiles(tilesOnLevel, tile);
+        } else if (tile->point.z > z) {
+            break;
+        }
     }
-  }
-
-  return tilesOnLevel;
+    
+    return tilesOnLevel;
 }
 
 
 void destroyTiles(struct Tiles *tiles)
 {
-  if ( ! tiles->parent) {
-    for (size_t i = 0; i < tiles->count; ++i) {
-      destroyTile(tiles->tiles[i]);
+    if ( ! tiles->parent) {
+        for (size_t i = 0; i < tiles->count; ++i) {
+            destroyTile(tiles->tiles[i]);
+        }
     }
-  }
-  free_or_die(tiles->tiles);
-  free_or_die(tiles);
+    free_or_die(tiles->tiles);
+    free_or_die(tiles);
 }
 
 
 static struct Tile **find(struct Tiles const *tiles, struct Tile const *criteria)
 {
-  return bsearch(&criteria, tiles->tiles, tiles->count, sizeof(struct Tile *), tiles->compare);
+    return bsearch(&criteria, tiles->tiles, tiles->count, sizeof(struct Tile *), tiles->compare);
 }
 
 
 struct Tile *findTileInTilesAt(struct Tiles const *tiles, struct Point point)
 {
-  struct Tile tile = { .point = point };
-  struct Tile **tileInTiles = find(tiles, &tile);
-  return tileInTiles ? *tileInTiles : NULL;
+    struct Tile tile = { .point = point };
+    struct Tile **tileInTiles = find(tiles, &tile);
+    return tileInTiles ? *tileInTiles : NULL;
 }
 
 
 bool removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile)
 {
-  // TODO: if tile isn't unique by compare criteria, the wrong tile may be removed
-  // is this a problem?
-  struct Tile **found = find(tiles, tile);
-  if ( ! found) {
-    // TODO: should we search the parent in this case?
-    return tiles->parent ? removeTileFromTiles(tiles->parent, tile) : false;
-  }
-
-  struct Tile **tail = found + 1;
-  struct Tile **end = tiles->tiles + tiles->count;
-  memmove(found, tail, (end - tail) * sizeof(struct Tile));
-  --tiles->count;
-  updateRanges(tiles);
-
-  return tiles->parent ? removeTileFromTiles(tiles->parent, tile) : true;
+    // TODO: if tile isn't unique by compare criteria, the wrong tile may be removed
+    // is this a problem?
+    struct Tile **found = find(tiles, tile);
+    if ( ! found) {
+        // TODO: should we search the parent in this case?
+        return tiles->parent ? removeTileFromTiles(tiles->parent, tile) : false;
+    }
+    
+    struct Tile **tail = found + 1;
+    struct Tile **end = tiles->tiles + tiles->count;
+    memmove(found, tail, (end - tail) * sizeof(struct Tile));
+    --tiles->count;
+    updateRanges(tiles);
+    
+    return tiles->parent ? removeTileFromTiles(tiles->parent, tile) : true;
 }
 
 
 static void sort(struct Tiles *tiles)
 {
-  qsort(tiles->tiles, tiles->count, sizeof(struct Tile *), tiles->compare);
+    qsort(tiles->tiles, tiles->count, sizeof(struct Tile *), tiles->compare);
 }
 
 
 struct Tile *tileInTilesAtIndex(struct Tiles const *tiles, size_t index)
 {
-  assert(index < tiles->count);
-  return tiles->tiles[index];
+    assert(index < tiles->count);
+    return tiles->tiles[index];
 }
 
 
 size_t tilesCount(struct Tiles const *tiles)
 {
-  return tiles->count;
+    return tiles->count;
 }
 
 
 static void updateRanges(struct Tiles *tiles)
 {
-  tiles->xRange = makeRange(0, 0);
-  tiles->yRange = makeRange(0, 0);
-  tiles->zRange = makeRange(0, 0);
-  for (size_t i = 0; i < tiles->count; ++i) {
-    struct Tile *tile = tiles->tiles[i];
-    tiles->xRange = extendRangeToIncludeValue(tiles->xRange, tile->point.x);
-    tiles->yRange = extendRangeToIncludeValue(tiles->yRange, tile->point.y);
-    tiles->zRange = extendRangeToIncludeValue(tiles->zRange, tile->point.z);
-  }
+    tiles->xRange = makeRange(0, 0);
+    tiles->yRange = makeRange(0, 0);
+    tiles->zRange = makeRange(0, 0);
+    for (size_t i = 0; i < tiles->count; ++i) {
+        struct Tile *tile = tiles->tiles[i];
+        tiles->xRange = extendRangeToIncludeValue(tiles->xRange, tile->point.x);
+        tiles->yRange = extendRangeToIncludeValue(tiles->yRange, tile->point.y);
+        tiles->zRange = extendRangeToIncludeValue(tiles->zRange, tile->point.z);
+    }
 }
 
 
 struct Range xRangeOfTiles(struct Tiles const *tiles)
 {
-  return tiles->xRange;
+    return tiles->xRange;
 }
 
 
 struct Range yRangeOfTiles(struct Tiles const *tiles)
 {
-  return tiles->yRange;
+    return tiles->yRange;
 }
 
 
 struct Range zRangeOfTiles(struct Tiles const *tiles)
 {
-  return tiles->zRange;
+    return tiles->zRange;
 }

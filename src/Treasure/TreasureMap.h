@@ -11,9 +11,9 @@ struct rnd;
 
 
 struct TreasureMap {
-  bool isFalse;
-  struct Treasure treasure;
-  char *trueDescription;
+    bool isFalse;
+    struct Treasure treasure;
+    char *trueDescription;
 };
 
 
