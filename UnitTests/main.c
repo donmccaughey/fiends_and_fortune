@@ -19,6 +19,9 @@ void
 rangeTest(void);
 
 void
+str_test(void);
+
+void
 tilesTest(void);
 
 
@@ -32,6 +35,7 @@ int main (int argc, const char *argv[])
     pointTest();
     pointsTest();
     rangeTest();
+    str_test();
     tilesTest();
     
     fprintf(out, "Okay\n");

@@ -2,6 +2,9 @@
 #define COINAGE_H_INCLUDED
 
 
+#include <stdbool.h>
+
+
 ///// core downward conversions
 
 #define pp_to_gp(pp) (5 * (pp))
@@ -32,7 +35,13 @@ struct coins {
 
 
 char *
+coins_alloc_description(struct coins coins);
+
+char *
 coins_alloc_gp_cp_description(int cp);
+
+bool
+coins_is_zero(struct coins coins);
 
 struct coins
 coins_make(int pp, int gp, int ep, int sp, int cp);

@@ -1,6 +1,43 @@
 #include "coins.h"
 
+#include <stdio.h>
+
 #include "alloc_or_die.h"
+#include "str.h"
+
+
+char *
+coins_alloc_description(struct coins coins)
+{
+    char *description = str_alloc_empty();
+    char const *separator = "";
+    if (coins.cp) {
+        description = str_realloc_append_format(description,
+                                                "%d copper", coins.cp);
+        separator = ", ";
+    }
+    if (coins.sp) {
+        description = str_realloc_append_format(description,
+                                                "%s%d silver", separator, coins.sp);
+        separator = ", ";
+    }
+    if (coins.ep) {
+        description = str_realloc_append_format(description,
+                                                "%s%d electrum", separator, coins.ep);
+        separator = ", ";
+    }
+    if (coins.gp) {
+        description = str_realloc_append_format(description,
+                                                "%s%d gold", separator, coins.gp);
+        separator = ", ";
+    }
+    if (coins.pp) {
+        description = str_realloc_append_format(description,
+                                                "%s%d platinum", separator, coins.pp);
+        separator = ", ";
+    }
+    return description;
+}
 
 
 char *
@@ -64,6 +101,17 @@ coins_gp_to_pp(struct coins coins)
     coins.pp += from_gp / 5;
     coins.gp = from_gp % 5;
     return coins;
+}
+
+
+bool
+coins_is_zero(struct coins coins)
+{
+    return 0 == coins.pp
+        && 0 == coins.gp
+        && 0 == coins.ep
+        && 0 == coins.sp
+        && 0 == coins.cp;
 }
 
 

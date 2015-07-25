@@ -11,16 +11,9 @@
 #include "TreasureMap.h"
 
 
-static void describeTreasureCoins(int *coins, char const *name, char **phrase);
-
-
 char *describeTreasure(struct Treasure *treasure) {
     enum Phrase {
-        CopperPhrase = 0,
-        SilverPhrase,
-        ElectrumPhrase,
-        GoldPhrase,
-        PlatinumPhrase,
+        CoinsPhrase = 0,
         GemsPhrase,
         JewelryPhrase,
         MapsPhrase,
@@ -30,16 +23,9 @@ char *describeTreasure(struct Treasure *treasure) {
     char *phrases[PhraseCount] = {};
     size_t phrasesCount = sizeof(phrases) / sizeof(char *);
     
-    // TODO: extract coins_alloc_description() from this
-    describeTreasureCoins(&treasure->coins.cp,
-                          "copper", &phrases[CopperPhrase]);
-    describeTreasureCoins(&treasure->coins.sp,
-                          "silver", &phrases[SilverPhrase]);
-    describeTreasureCoins(&treasure->coins.ep,
-                          "electrum", &phrases[ElectrumPhrase]);
-    describeTreasureCoins(&treasure->coins.gp, "gold", &phrases[GoldPhrase]);
-    describeTreasureCoins(&treasure->coins.pp,
-                          "platinum", &phrases[PlatinumPhrase]);
+    if (!coins_is_zero(treasure->coins)) {
+        phrases[CoinsPhrase] = coins_alloc_description(treasure->coins);
+    }
     
     if (treasure->gemsCount) {
         char const *plural = (treasure->gemsCount == 1) ? "" : "s";
@@ -96,13 +82,6 @@ char *describeTreasure(struct Treasure *treasure) {
         }
     }
     return description;
-}
-
-
-static void describeTreasureCoins(int *coins, char const *name, char **phrase) {
-    if (*coins) {
-        asprintf_or_die(phrase, "%d %s", *coins, name);
-    }
 }
 
 

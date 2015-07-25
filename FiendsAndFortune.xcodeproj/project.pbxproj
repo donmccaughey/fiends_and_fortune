@@ -20,6 +20,9 @@
 		D45178471B5CB43600F26844 /* dice_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178461B5CB43600F26844 /* dice_test.c */; };
 		D451786F1B61FFE200F26844 /* fail.c in Sources */ = {isa = PBXBuildFile; fileRef = D451786D1B61FFE200F26844 /* fail.c */; };
 		D45178701B61FFE200F26844 /* fail.c in Sources */ = {isa = PBXBuildFile; fileRef = D451786D1B61FFE200F26844 /* fail.c */; };
+		D45178731B63663F00F26844 /* str.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178711B63663F00F26844 /* str.c */; };
+		D45178741B63663F00F26844 /* str.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178711B63663F00F26844 /* str.c */; };
+		D45178761B63679200F26844 /* str_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178751B63679200F26844 /* str_test.c */; };
 		D45BB9521B5A12BF0096E525 /* alloc_or_die.c in Sources */ = {isa = PBXBuildFile; fileRef = D45BB9501B5A12BF0096E525 /* alloc_or_die.c */; };
 		D45BB9531B5A12BF0096E525 /* alloc_or_die.c in Sources */ = {isa = PBXBuildFile; fileRef = D45BB9501B5A12BF0096E525 /* alloc_or_die.c */; };
 		D4783B1C15ABDF8B004E7F2C /* Gem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1015ABDF8B004E7F2C /* Gem.c */; };
@@ -106,6 +109,9 @@
 		D45178461B5CB43600F26844 /* dice_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dice_test.c; sourceTree = "<group>"; };
 		D451786D1B61FFE200F26844 /* fail.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fail.c; sourceTree = "<group>"; };
 		D451786E1B61FFE200F26844 /* fail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fail.h; sourceTree = "<group>"; };
+		D45178711B63663F00F26844 /* str.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = str.c; sourceTree = "<group>"; };
+		D45178721B63663F00F26844 /* str.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = str.h; sourceTree = "<group>"; };
+		D45178751B63679200F26844 /* str_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = str_test.c; sourceTree = "<group>"; };
 		D45BB9501B5A12BF0096E525 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
 		D45BB9511B5A12BF0096E525 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
 		D4783B1015ABDF8B004E7F2C /* Gem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = Gem.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
@@ -179,6 +185,7 @@
 				D4783B3A15ABE155004E7F2C /* Dungeons */,
 				D45178461B5CB43600F26844 /* dice_test.c */,
 				D43ED593142146F800D25EEC /* main.c */,
+				D45178751B63679200F26844 /* str_test.c */,
 			);
 			path = UnitTests;
 			sourceTree = "<group>";
@@ -300,6 +307,8 @@
 				D4F73461140EF4380096618F /* main.c */,
 				D451783F1B5B684D00F26844 /* rnd.h */,
 				D451783E1B5B684D00F26844 /* rnd.c */,
+				D45178721B63663F00F26844 /* str.h */,
+				D45178711B63663F00F26844 /* str.c */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -421,6 +430,7 @@
 				D4092FB715B2A5AA0002FB34 /* Tile.c in Sources */,
 				D4230D1B15B3B298007A7762 /* RangeTest.c in Sources */,
 				D4EA732F1606BF2400B01DB5 /* Areas.c in Sources */,
+				D45178741B63663F00F26844 /* str.c in Sources */,
 				D45178451B5CAFBE00F26844 /* dice.c in Sources */,
 				D4EA73301606BF3600B01DB5 /* Area.c in Sources */,
 				D45BB9531B5A12BF0096E525 /* alloc_or_die.c in Sources */,
@@ -429,6 +439,7 @@
 				D45178701B61FFE200F26844 /* fail.c in Sources */,
 				D4BCC61817D597C500C76D11 /* PointsTest.c in Sources */,
 				D45178471B5CB43600F26844 /* dice_test.c in Sources */,
+				D45178761B63679200F26844 /* str_test.c in Sources */,
 				D4BCC61C17D5984D00C76D11 /* Points.c in Sources */,
 				D4BCC62017D5A25E00C76D11 /* Direction.c in Sources */,
 			);
@@ -453,6 +464,7 @@
 				D4783B2915ABDFF0004E7F2C /* Dungeon.c in Sources */,
 				D4783B2C15ABE045004E7F2C /* coins.c in Sources */,
 				D4783B4A15ABE7F7004E7F2C /* Tiles.c in Sources */,
+				D45178731B63663F00F26844 /* str.c in Sources */,
 				D4F73465140EF55C00966192 /* Point.c in Sources */,
 				D4F73465140EF55C00966196 /* TextGraph.c in Sources */,
 				D4F73465140EF55C00966199 /* Range.c in Sources */,
