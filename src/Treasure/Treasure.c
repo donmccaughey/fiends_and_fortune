@@ -30,12 +30,15 @@ char *describeTreasure(struct Treasure *treasure) {
     char *phrases[PhraseCount] = {};
     size_t phrasesCount = sizeof(phrases) / sizeof(char *);
     
-    describeTreasureCoins(&treasure->copper, "copper", &phrases[CopperPhrase]);
-    describeTreasureCoins(&treasure->silver, "silver", &phrases[SilverPhrase]);
-    describeTreasureCoins(&treasure->electrum,
+    // TODO: extract coins_alloc_description() from this
+    describeTreasureCoins(&treasure->coins.cp,
+                          "copper", &phrases[CopperPhrase]);
+    describeTreasureCoins(&treasure->coins.sp,
+                          "silver", &phrases[SilverPhrase]);
+    describeTreasureCoins(&treasure->coins.ep,
                           "electrum", &phrases[ElectrumPhrase]);
-    describeTreasureCoins(&treasure->gold, "gold", &phrases[GoldPhrase]);
-    describeTreasureCoins(&treasure->platinum,
+    describeTreasureCoins(&treasure->coins.gp, "gold", &phrases[GoldPhrase]);
+    describeTreasureCoins(&treasure->coins.pp,
                           "platinum", &phrases[PlatinumPhrase]);
     
     if (treasure->gemsCount) {
@@ -165,12 +168,7 @@ void initializeTreasure(struct Treasure *treasure) {
 
 
 int treasureValue_cp(struct Treasure *treasure) {
-    int value_cp = 0;
-    value_cp += treasure->copper;
-    value_cp += sp_to_cp(treasure->silver);
-    value_cp += ep_to_cp(treasure->electrum);
-    value_cp += gp_to_cp(treasure->gold);
-    value_cp += pp_to_cp(treasure->platinum);
+    int value_cp = coins_to_cp(treasure->coins);
     
     for (int i = 0; i < treasure->gemsCount; ++i) {
         value_cp += gemValue_cp(&treasure->gems[i]);

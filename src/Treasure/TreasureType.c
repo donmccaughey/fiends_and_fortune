@@ -647,15 +647,15 @@ void generateTreasure(struct TreasureType *treasureType,
 {
     treasure->type = treasureType;
     
-    generateTreasureCoins(&treasure->copper, rnd,
+    generateTreasureCoins(&treasure->coins.cp, rnd,
                           &treasureType->copper, individualCount);
-    generateTreasureCoins(&treasure->silver, rnd,
+    generateTreasureCoins(&treasure->coins.sp, rnd,
                           &treasureType->silver, individualCount);
-    generateTreasureCoins(&treasure->electrum, rnd,
+    generateTreasureCoins(&treasure->coins.ep, rnd,
                           &treasureType->electrum, individualCount);
-    generateTreasureCoins(&treasure->gold, rnd,
+    generateTreasureCoins(&treasure->coins.gp, rnd,
                           &treasureType->gold, individualCount);
-    generateTreasureCoins(&treasure->platinum, rnd,
+    generateTreasureCoins(&treasure->coins.pp, rnd,
                           &treasureType->platinum, individualCount);
     generateTreasureGems(treasure, rnd);
     generateTreasureJewelry(treasure, rnd);

@@ -282,29 +282,29 @@ static void generateMonetaryTreasure(struct Treasure *treasure,
 static void generateMonetaryTreasure_1to2_CopperAndSilver(struct Treasure *treasure,
                                                           struct rnd *rnd)
 {
-    treasure->copper += roll("2d4", rnd) * 10000;
-    treasure->silver += (roll("1d4", rnd) + 1) * 10000;
+    treasure->coins.cp += roll("2d4", rnd) * 10000;
+    treasure->coins.sp += (roll("1d4", rnd) + 1) * 10000;
 }
 
 
 static void generateMonetaryTreasure_3to5_Electrum(struct Treasure *treasure,
                                                    struct rnd *rnd)
 {
-    treasure->electrum += roll("5d6", rnd) * 1000;
+    treasure->coins.ep += roll("5d6", rnd) * 1000;
 }
 
 
 static void generateMonetaryTreasure_6to10_Gold(struct Treasure *treasure,
                                                 struct rnd *rnd)
 {
-    treasure->gold += roll("3d6", rnd) * 1000;
+    treasure->coins.gp += roll("3d6", rnd) * 1000;
 }
 
 
 static void generateMonetaryTreasure_11to12_Platinum(struct Treasure *treasure,
                                                      struct rnd *rnd)
 {
-    treasure->platinum += roll("5d4", rnd) * 100;
+    treasure->coins.pp += roll("5d4", rnd) * 100;
 }
 
 

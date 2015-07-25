@@ -2,6 +2,7 @@
 #define TREASURE_H_INCLUDED
 
 
+#include "coins.h"
 #include "MagicItem.h"
 
 
@@ -15,11 +16,7 @@ struct TreasureType;
 
 struct Treasure {
     struct TreasureType *type;
-    int copper;
-    int silver;
-    int electrum;
-    int gold;
-    int platinum;
+    struct coins coins;
     struct Gem *gems;
     int gemsCount;
     struct Jewelry *jewelry;
@@ -49,4 +46,4 @@ void initializeTreasure(struct Treasure *treasure);
 int treasureValue_cp(struct Treasure *treasure);
 
 
-#endif /* #ifndef TREASURE_H_INCLUDED */
+#endif
