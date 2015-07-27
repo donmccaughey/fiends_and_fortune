@@ -1,5 +1,5 @@
-#ifndef COINAGE_H_INCLUDED
-#define COINAGE_H_INCLUDED
+#ifndef FNF_TREASURE_COINAGE_H_INCLUDED
+#define FNF_TREASURE_COINAGE_H_INCLUDED
 
 
 #include <stdbool.h>
@@ -93,5 +93,6 @@ coins_ep_to_sp(struct coins coins);
 
 struct coins
 coins_sp_to_cp(struct coins coins);
+
 
 #endif

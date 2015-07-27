@@ -2,8 +2,8 @@
 
 #include <stdio.h>
 
-#include "alloc_or_die.h"
-#include "str.h"
+#include "common/alloc_or_die.h"
+#include "common/str.h"
 
 
 char *

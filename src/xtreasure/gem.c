@@ -3,10 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "alloc_or_die.h"
+#include "common/alloc_or_die.h"
+#include "common/dice.h"
+#include "common/str.h"
+
 #include "coins.h"
-#include "dice.h"
-#include "str.h"
 
 
 static char const *const gem_size_names[] = {
