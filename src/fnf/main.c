@@ -8,7 +8,7 @@
 #include "coins.h"
 #include "dice.h"
 #include "Dungeon.h"
-#include "Gem.h"
+#include "gem.h"
 #include "Jewelry.h"
 #include "MagicItem.h"
 #include "rnd.h"
@@ -59,7 +59,7 @@ static void enumerateTreasureItems(struct Treasure *treasure, FILE *out)
     if (treasure->gemsCount) {
         fprintf(out, "  Gems: --------------------------------\n");
         for (int i = 0; i < treasure->gemsCount; ++i) {
-            fprintf(out, "    %2i  %s\n", i + 1, treasure->gems[i].trueDescription);
+            fprintf(out, "    %2i  %s\n", i + 1, treasure->gems[i].true_description);
         }
     }
     

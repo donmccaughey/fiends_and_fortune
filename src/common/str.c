@@ -51,7 +51,7 @@ str_realloc_append_formatted_from_va_list(char *str,
     size_t append_length = str_formatted_length_from_va_list(format, arguments);
     if ( ! append_length) return str;
     
-    size_t original_length = strlen(str);
+    size_t original_length = str ? strlen(str) : 0;
     size_t size = original_length + append_length + 1;
     str = realloc_or_die(str, size);
     

@@ -12,7 +12,6 @@
 		D4092F6A1B65D44C00BFD0B3 /* TreasureType.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1A15ABDF8B004E7F2C /* TreasureType.c */; };
 		D4092F6B1B65D45000BFD0B3 /* TreasureMap.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1815ABDF8B004E7F2C /* TreasureMap.c */; };
 		D4092F6C1B65D45700BFD0B3 /* coins.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B2A15ABE045004E7F2C /* coins.c */; };
-		D4092F6D1B65D45700BFD0B3 /* Gem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1015ABDF8B004E7F2C /* Gem.c */; };
 		D4092F6E1B65D45700BFD0B3 /* Jewelry.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1215ABDF8B004E7F2C /* Jewelry.c */; };
 		D4092F6F1B65D45700BFD0B3 /* MagicItem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1415ABDF8B004E7F2C /* MagicItem.c */; };
 		D4092F701B65D45700BFD0B3 /* Treasure.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1615ABDF8B004E7F2C /* Treasure.c */; };
@@ -42,6 +41,8 @@
 		D43ED594142146F800D25EEC /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D43ED593142146F800D25EEC /* main.c */; };
 		D45178471B5CB43600F26844 /* dice_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178461B5CB43600F26844 /* dice_test.c */; };
 		D45178761B63679200F26844 /* str_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178751B63679200F26844 /* str_test.c */; };
+		D451787A1B65EA6E00F26844 /* gem.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178781B65EA6E00F26844 /* gem.c */; };
+		D451787B1B65EA6E00F26844 /* gem.h in Headers */ = {isa = PBXBuildFile; fileRef = D45178791B65EA6E00F26844 /* gem.h */; };
 		D4783B3E15ABE155004E7F2C /* DungeonTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B3B15ABE155004E7F2C /* DungeonTest.c */; };
 		D4783B4C15ABEB32004E7F2C /* TilesTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B4B15ABEB32004E7F2C /* TilesTest.c */; };
 		D4BCC61617D44C2500C76D11 /* PointTest.c in Sources */ = {isa = PBXBuildFile; fileRef = B0F47782965430E75922F468 /* PointTest.c */; };
@@ -122,8 +123,8 @@
 		D43ED593142146F800D25EEC /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		D45178461B5CB43600F26844 /* dice_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dice_test.c; sourceTree = "<group>"; };
 		D45178751B63679200F26844 /* str_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = str_test.c; sourceTree = "<group>"; };
-		D4783B1015ABDF8B004E7F2C /* Gem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = Gem.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		D4783B1115ABDF8B004E7F2C /* Gem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gem.h; sourceTree = "<group>"; };
+		D45178781B65EA6E00F26844 /* gem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gem.c; sourceTree = "<group>"; };
+		D45178791B65EA6E00F26844 /* gem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gem.h; sourceTree = "<group>"; };
 		D4783B1215ABDF8B004E7F2C /* Jewelry.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = Jewelry.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		D4783B1315ABDF8B004E7F2C /* Jewelry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Jewelry.h; sourceTree = "<group>"; };
 		D4783B1415ABDF8B004E7F2C /* MagicItem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = MagicItem.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
@@ -159,7 +160,7 @@
 		D4EA732D1606BB9300B01DB5 /* Areas.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Areas.c; sourceTree = "<group>"; };
 		D4F244A114181FF5003BDED5 /* check */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = check; sourceTree = "<group>"; };
 		D4F244A31418207C003BDED5 /* check.out */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = check.out; sourceTree = "<group>"; };
-		D4F7344F140EF3E00096618F /* FiendsAndFortune */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FiendsAndFortune; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4F7344F140EF3E00096618F /* FiendsAndFortune */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = FiendsAndFortune; path = fnf; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4F73465140EF55C00966190 /* Point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Point.h; sourceTree = "<group>"; };
 		D4F73465140EF55C00966191 /* Point.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Point.c; sourceTree = "<group>"; };
 		D4F73465140EF55C00966194 /* TextGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextGraph.h; sourceTree = "<group>"; };
@@ -198,16 +199,16 @@
 		D4092F7D1B65D6C200BFD0B3 /* common */ = {
 			isa = PBXGroup;
 			children = (
-				D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */,
 				D4092F7F1B65D6C200BFD0B3 /* alloc_or_die.h */,
-				D4092F801B65D6C200BFD0B3 /* dice.c */,
+				D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */,
 				D4092F811B65D6C200BFD0B3 /* dice.h */,
-				D4092F821B65D6C200BFD0B3 /* fail.c */,
+				D4092F801B65D6C200BFD0B3 /* dice.c */,
 				D4092F831B65D6C200BFD0B3 /* fail.h */,
-				D4092F841B65D6C200BFD0B3 /* rnd.c */,
+				D4092F821B65D6C200BFD0B3 /* fail.c */,
 				D4092F851B65D6C200BFD0B3 /* rnd.h */,
-				D4092F861B65D6C200BFD0B3 /* str.c */,
+				D4092F841B65D6C200BFD0B3 /* rnd.c */,
 				D4092F871B65D6C200BFD0B3 /* str.h */,
+				D4092F861B65D6C200BFD0B3 /* str.c */,
 			);
 			path = common;
 			sourceTree = "<group>";
@@ -231,13 +232,20 @@
 			path = UnitTests;
 			sourceTree = "<group>";
 		};
+		D45178771B65EA6E00F26844 /* xtreasure */ = {
+			isa = PBXGroup;
+			children = (
+				D45178791B65EA6E00F26844 /* gem.h */,
+				D45178781B65EA6E00F26844 /* gem.c */,
+			);
+			path = xtreasure;
+			sourceTree = "<group>";
+		};
 		D4783B0F15ABDF8B004E7F2C /* Treasure */ = {
 			isa = PBXGroup;
 			children = (
 				D4783B2B15ABE045004E7F2C /* coins.h */,
 				D4783B2A15ABE045004E7F2C /* coins.c */,
-				D4783B1115ABDF8B004E7F2C /* Gem.h */,
-				D4783B1015ABDF8B004E7F2C /* Gem.c */,
 				D4783B1315ABDF8B004E7F2C /* Jewelry.h */,
 				D4783B1215ABDF8B004E7F2C /* Jewelry.c */,
 				D4783B1515ABDF8B004E7F2C /* MagicItem.h */,
@@ -342,6 +350,7 @@
 				D4783B2215ABDFE9004E7F2C /* Characters */,
 				D4783B2615ABDFF0004E7F2C /* Dungeons */,
 				D4783B0F15ABDF8B004E7F2C /* Treasure */,
+				D45178771B65EA6E00F26844 /* xtreasure */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -357,6 +366,7 @@
 				D4092F891B65D6C200BFD0B3 /* alloc_or_die.h in Headers */,
 				D4092F8D1B65D6C200BFD0B3 /* fail.h in Headers */,
 				D4092F8B1B65D6C200BFD0B3 /* dice.h in Headers */,
+				D451787B1B65EA6E00F26844 /* gem.h in Headers */,
 				D4092F8F1B65D6C200BFD0B3 /* rnd.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -494,7 +504,7 @@
 			files = (
 				D4092F8E1B65D6C200BFD0B3 /* rnd.c in Sources */,
 				D4092F711B65D46600BFD0B3 /* Area.c in Sources */,
-				D4092F6D1B65D45700BFD0B3 /* Gem.c in Sources */,
+				D451787A1B65EA6E00F26844 /* gem.c in Sources */,
 				D4092F6F1B65D45700BFD0B3 /* MagicItem.c in Sources */,
 				D4092F8C1B65D6C200BFD0B3 /* fail.c in Sources */,
 				D4092F731B65D46600BFD0B3 /* Direction.c in Sources */,
@@ -776,6 +786,7 @@
 				D4092F5E1B65D3CA00BFD0B3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D43ED599142146F800D25EEC /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
 			isa = XCConfigurationList;

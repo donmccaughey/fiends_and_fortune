@@ -12,8 +12,7 @@ str_test(void);
 static void
 str_realloc_format_test(void)
 {
-    char *str = str_alloc_empty();
-    assert('\0' == str[0]);
+    char *str = NULL;
     
     str = str_realloc_append_formatted(str, "foo");
     assert(0 == strcmp("foo", str));

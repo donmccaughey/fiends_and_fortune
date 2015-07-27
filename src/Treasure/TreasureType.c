@@ -8,7 +8,7 @@
 #include "alloc_or_die.h"
 #include "dice.h"
 #include "fail.h"
-#include "Gem.h"
+#include "gem.h"
 #include "Jewelry.h"
 #include "MagicItem.h"
 #include "Treasure.h"
@@ -694,10 +694,10 @@ static void generateTreasureGems(struct Treasure *treasure,
         int percentRoll = roll("1d100", rnd);
         if (percentRoll <= treasure->type->gems.percentChance) {
             treasure->gemsCount = roll(treasure->type->gems.amount, rnd);
-            treasure->gems = calloc_or_die(treasure->gemsCount, sizeof(struct Gem));
+            treasure->gems = calloc_or_die(treasure->gemsCount, sizeof(struct gem));
             for (int i = 0; i < treasure->gemsCount; ++i) {
-                initializeGem(&treasure->gems[i]);
-                generateGem(&treasure->gems[i], rnd);
+                gem_initialize(&treasure->gems[i]);
+                gem_generate(&treasure->gems[i], rnd);
             }
         }
     }

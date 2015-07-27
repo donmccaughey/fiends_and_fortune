@@ -1,5 +1,5 @@
-#ifndef FAIL_H_INCLUDED
-#define FAIL_H_INCLUDED
+#ifndef FNF_COMMON_FAIL_H_INCLUDED
+#define FNF_COMMON_FAIL_H_INCLUDED
 
 
 void

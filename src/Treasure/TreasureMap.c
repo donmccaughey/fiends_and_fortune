@@ -5,7 +5,7 @@
 
 #include "alloc_or_die.h"
 #include "dice.h"
-#include "Gem.h"
+#include "gem.h"
 #include "Jewelry.h"
 #include "MagicItem.h"
 
@@ -314,11 +314,11 @@ static void generateMonetaryTreasure_13to15_Gems(struct Treasure *treasure,
     int count = roll("1d10", rnd) * 10;
     treasure->gems = reallocarray_or_die(treasure->gems,
                                          treasure->gemsCount + count,
-                                         sizeof(struct Gem));
+                                         sizeof(struct gem));
     for (int i = 0; i < count; ++i) {
         int j = treasure->gemsCount + i;
-        initializeGem(&treasure->gems[j]);
-        generateGem(&treasure->gems[j], rnd);
+        gem_initialize(&treasure->gems[j]);
+        gem_generate(&treasure->gems[j], rnd);
     }
     treasure->gemsCount += count;
 }

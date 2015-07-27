@@ -1,5 +1,5 @@
-#ifndef DICE_H_INCLUDED
-#define DICE_H_INCLUDED
+#ifndef FNF_COMMON_DICE_H_INCLUDED
+#define FNF_COMMON_DICE_H_INCLUDED
 
 
 #include <assert.h>

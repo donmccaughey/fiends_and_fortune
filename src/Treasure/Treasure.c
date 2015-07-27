@@ -6,7 +6,7 @@
 
 #include "alloc_or_die.h"
 #include "coins.h"
-#include "Gem.h"
+#include "gem.h"
 #include "Jewelry.h"
 #include "TreasureMap.h"
 
@@ -87,7 +87,7 @@ char *describeTreasure(struct Treasure *treasure) {
 
 void finalizeTreasure(struct Treasure *treasure) {
     for (int i = 0; i < treasure->gemsCount; ++i) {
-        finalizeGem(&treasure->gems[i]);
+        gem_finalize(&treasure->gems[i]);
     }
     free_or_die(treasure->gems);
     
@@ -150,7 +150,7 @@ int treasureValue_cp(struct Treasure *treasure) {
     int value_cp = coins_to_cp(treasure->coins);
     
     for (int i = 0; i < treasure->gemsCount; ++i) {
-        value_cp += gemValue_cp(&treasure->gems[i]);
+        value_cp += gem_value_in_cp(&treasure->gems[i]);
     }
     
     for (int i = 0; i < treasure->jewelryCount; ++i) {

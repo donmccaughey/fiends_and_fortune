@@ -6,7 +6,7 @@
 #include "MagicItem.h"
 
 
-struct Gem;
+struct gem;
 struct Jewelry;
 struct MagicItem;
 struct rnd;
@@ -17,7 +17,7 @@ struct TreasureType;
 struct Treasure {
     struct TreasureType *type;
     struct coins coins;
-    struct Gem *gems;
+    struct gem *gems;
     int gemsCount;
     struct Jewelry *jewelry;
     int jewelryCount;
