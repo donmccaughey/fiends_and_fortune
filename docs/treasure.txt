@@ -108,25 +108,25 @@ Combined Hoard Treasures
   generateMonetaryTreasure_6to10_Gold()
   --
   generateMagicTreasure_1to5_ItemAndPotions()
-  generateMagicTreasure_15to18_PotionsAndScrolls()
+  generate_magic_treasure_15_to_18_potions_and_scrolls()
 56-65
   generateMonetaryTreasure_1to2_CopperAndSilver()
   generateMonetaryTreasure_3to5_Electrum()
   generateMonetaryTreasure_6to10_Gold()
   --
-  generateMagicTreasure_9to12_SwordArmorAndWeapon()
-  generateMagicTreasure_13to14_ThreeItems()
+  generate_magic_treasure_9_to_12_sword_armor_and_weapon()
+  generate_magic_treasure_13_to_14_three_items()
 66-75
-  generateMonetaryTreasure_6to10_Gold()
+  generate_monetary_treasure_6_to_10_gold()
   generateMonetaryTreasure_11to12_Platinum()
   --
-  generateMagicTreasure_6to8_TwoItems()
+  generate_magic_treasure_6_to_8_two_items()
   generateMagicTreasure_15to18_PotionsAndScrolls()
 76-80
   generateMonetaryTreasure_3to5_Electrum()
   generateMonetaryTreasure_6to10_Gold()
   generateMonetaryTreasure_11to12_Platinum()
-  generateMonetaryTreasure_16to17_Jewelry()
+  generate_monetary_treasure_16_to_17_jewelry()
   --
   generateMagicTreasure_1to5_ItemAndPotions()
   generateMagicTreasure_9to12_SwordArmorAndWeapon()
@@ -135,26 +135,26 @@ Combined Hoard Treasures
   generateMonetaryTreasure_3to5_Electrum()
   generateMonetaryTreasure_6to10_Gold()
   generateMonetaryTreasure_11to12_Platinum()
-  generateMonetaryTreasure_13to15_Gems()
+  generate_monetary_treasure_13_to_15_gems()
   generateMonetaryTreasure_16to17_Jewelry()
   --
-  map to generateMagicTreasure_1to5_ItemAndPotions()
+  map to generate_magic_treasure_1_to_5_item_and_potions()
 86-90
   generateMonetaryTreasure_1to2_CopperAndSilver()
-  generateMonetaryTreasure_3to5_Electrum()
+  generate_monetary_treasure_3_to_5_electrum()
   generateMonetaryTreasure_6to10_Gold()
   generateMonetaryTreasure_11to12_Platinum()
   generateMonetaryTreasure_13to15_Gems()
   generateMonetaryTreasure_16to17_Jewelry()
   --
-  map to generateMagicTreasure_19_FourItems()
+  map to generate_magic_treasure_19_four_items()
 91-96
-  map to generateMonetaryTreasure_1to2_CopperAndSilver(), 
+  map to generate_monetary_treasure_1_to_2_copper_and_silver(),
          generateMonetaryTreasure_3to5_Electrum()
   --
-  generateMagicTreasure_20_FiveItems()
+  generate_magic_treasure_20_five_items()
 97-00
-  map to generateMonetaryTreasure_11to12_Platinum(), 
+  map to generate_monetary_treasure_11_to_12_platinum(),
          generateMonetaryTreasure_13to15_Gems()
   --
   generateMagicTreasure_15to18_PotionsAndScrolls()

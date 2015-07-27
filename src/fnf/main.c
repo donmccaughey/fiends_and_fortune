@@ -15,7 +15,7 @@
 #include "MagicItem.h"
 #include "TextGraph.h"
 #include "Treasure.h"
-#include "TreasureMap.h"
+#include "treasure_map.h"
 #include "TreasureType.h"
 
 
@@ -75,7 +75,7 @@ static void enumerateTreasureItems(struct Treasure *treasure, FILE *out)
     if (treasure->mapsCount) {
         fprintf(out, "  Maps: --------------------------------\n");
         for (int i = 0; i < treasure->mapsCount; ++i) {
-            fprintf(out, "    %2i  %s\n", i + 1, treasure->maps[i].trueDescription);
+            fprintf(out, "    %2i  %s\n", i + 1, treasure->maps[i].true_description);
         }
     }
     
@@ -189,12 +189,12 @@ static void generateEachTreasure(struct rnd *rnd, FILE *out)
 
 static void generateMap(struct rnd *rnd, FILE *out)
 {
-    struct TreasureMap treasureMap;
-    initializeTreasureMap(&treasureMap);
-    generateTreasureMap(&treasureMap, rnd);
-    fprintf(out, "%s\n", treasureMap.trueDescription);
+    struct treasure_map treasureMap;
+  treasure_map_initialize(&treasureMap);
+  treasure_map_generate(&treasureMap, rnd);
+    fprintf(out, "%s\n", treasureMap.true_description);
     enumerateTreasureItems(&treasureMap.treasure, out);
-    finalizeTreasureMap(&treasureMap);
+  treasure_map_finalize(&treasureMap);
 }
 
 

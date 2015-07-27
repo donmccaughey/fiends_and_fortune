@@ -14,7 +14,7 @@
 #include "jewelry.h"
 #include "MagicItem.h"
 #include "Treasure.h"
-#include "TreasureMap.h"
+#include "treasure_map.h"
 
 
 struct CoinsGemsOrJewelry {

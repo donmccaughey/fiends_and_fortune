@@ -10,7 +10,7 @@ struct gem;
 struct jewelry;
 struct MagicItem;
 struct rnd;
-struct TreasureMap;
+struct treasure_map;
 struct TreasureType;
 
 
@@ -21,7 +21,7 @@ struct Treasure {
     int gemsCount;
     struct jewelry *jewelry;
     int jewelryCount;
-    struct TreasureMap *maps;
+    struct treasure_map *maps;
     int mapsCount;
     struct MagicItem *magicItems;
     int magicItemsCount;

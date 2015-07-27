@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B0F47F36C1E3E9EE9F5E0BD7 /* treasure_map.c in Sources */ = {isa = PBXBuildFile; fileRef = B0F4715B2BA8EE1AB8D81DB9 /* treasure_map.c */; };
 		D4092F611B65D42B00BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
 		D4092F621B65D43000BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
 		D4092F6A1B65D44C00BFD0B3 /* TreasureType.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1A15ABDF8B004E7F2C /* TreasureType.c */; };
-		D4092F6B1B65D45000BFD0B3 /* TreasureMap.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1815ABDF8B004E7F2C /* TreasureMap.c */; };
 		D4092F6F1B65D45700BFD0B3 /* MagicItem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1415ABDF8B004E7F2C /* MagicItem.c */; };
 		D4092F701B65D45700BFD0B3 /* Treasure.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1615ABDF8B004E7F2C /* Treasure.c */; };
 		D4092F711B65D46600BFD0B3 /* Area.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA732A1606B85500B01DB5 /* Area.c */; };
@@ -73,13 +73,6 @@
 			remoteGlobalIDString = D43ED58F142146F800D25EEC;
 			remoteInfo = UnitTests;
 		};
-		D4DEBAE31601A58B0031CF85 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D4F73446140EF3DF0096618F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D4F7344E140EF3DF0096618F;
-			remoteInfo = FiendsAndFortune;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -104,7 +97,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B0F4715B2BA8EE1AB8D81DB9 /* treasure_map.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = treasure_map.c; sourceTree = "<group>"; };
 		B0F47782965430E75922F468 /* PointTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PointTest.c; sourceTree = "<group>"; };
+		B0F477897B7900AC9474FF81 /* treasure_map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = treasure_map.h; sourceTree = "<group>"; };
 		D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibfnf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
 		D4092F7F1B65D6C200BFD0B3 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
@@ -135,8 +130,6 @@
 		D4783B1515ABDF8B004E7F2C /* MagicItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagicItem.h; sourceTree = "<group>"; };
 		D4783B1615ABDF8B004E7F2C /* Treasure.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.c; path = Treasure.c; sourceTree = "<group>"; tabWidth = 4; };
 		D4783B1715ABDF8B004E7F2C /* Treasure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Treasure.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		D4783B1815ABDF8B004E7F2C /* TreasureMap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = TreasureMap.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		D4783B1915ABDF8B004E7F2C /* TreasureMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreasureMap.h; sourceTree = "<group>"; };
 		D4783B1A15ABDF8B004E7F2C /* TreasureType.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = TreasureType.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		D4783B1B15ABDF8B004E7F2C /* TreasureType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreasureType.h; sourceTree = "<group>"; };
 		D4783B2315ABDFE9004E7F2C /* Character.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = Character.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
@@ -149,6 +142,7 @@
 		D4783B4715ABE698004E7F2C /* Tiles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tiles.h; sourceTree = "<group>"; };
 		D4783B4815ABE7E5004E7F2C /* Tiles.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Tiles.c; sourceTree = "<group>"; };
 		D4783B4B15ABEB32004E7F2C /* TilesTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TilesTest.c; sourceTree = "<group>"; };
+		D48C3B0C1B66E5B000A98ED7 /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; usesTabs = 1; };
 		D4BCC61517D30DD000C76D11 /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
 		D4BCC61717D597C500C76D11 /* PointsTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PointsTest.c; sourceTree = "<group>"; };
 		D4BCC61917D5984300C76D11 /* Points.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Points.h; sourceTree = "<group>"; };
@@ -160,9 +154,8 @@
 		D4DEBAE91601AD740031CF85 /* Areas.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Areas.h; sourceTree = "<group>"; };
 		D4EA732A1606B85500B01DB5 /* Area.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Area.c; sourceTree = "<group>"; };
 		D4EA732D1606BB9300B01DB5 /* Areas.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Areas.c; sourceTree = "<group>"; };
-		D4F244A114181FF5003BDED5 /* check */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = check; sourceTree = "<group>"; };
 		D4F244A31418207C003BDED5 /* check.out */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = check.out; sourceTree = "<group>"; };
-		D4F7344F140EF3E00096618F /* FiendsAndFortune */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = FiendsAndFortune; path = fnf; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4F7344F140EF3E00096618F /* fnf */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = fnf; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4F73465140EF55C00966190 /* Point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Point.h; sourceTree = "<group>"; };
 		D4F73465140EF55C00966191 /* Point.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Point.c; sourceTree = "<group>"; };
 		D4F73465140EF55C00966194 /* TextGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextGraph.h; sourceTree = "<group>"; };
@@ -243,6 +236,8 @@
 				D45178781B65EA6E00F26844 /* gem.c */,
 				D45178811B6606EE00F26844 /* jewelry.h */,
 				D45178801B6606EE00F26844 /* jewelry.c */,
+				B0F477897B7900AC9474FF81 /* treasure_map.h */,
+				B0F4715B2BA8EE1AB8D81DB9 /* treasure_map.c */,
 			);
 			path = xtreasure;
 			sourceTree = "<group>";
@@ -254,8 +249,6 @@
 				D4783B1415ABDF8B004E7F2C /* MagicItem.c */,
 				D4783B1715ABDF8B004E7F2C /* Treasure.h */,
 				D4783B1615ABDF8B004E7F2C /* Treasure.c */,
-				D4783B1915ABDF8B004E7F2C /* TreasureMap.h */,
-				D4783B1815ABDF8B004E7F2C /* TreasureMap.c */,
 				D4783B1B15ABDF8B004E7F2C /* TreasureType.h */,
 				D4783B1A15ABDF8B004E7F2C /* TreasureType.c */,
 			);
@@ -323,8 +316,8 @@
 		D4F73444140EF3DF0096618F = {
 			isa = PBXGroup;
 			children = (
-				D4F244A114181FF5003BDED5 /* check */,
 				D41D32CA1A4339BC00484607 /* LICENSE */,
+				D48C3B0C1B66E5B000A98ED7 /* Makefile */,
 				D41D32CB1A4339BC00484607 /* README.md */,
 				D4BCC61517D30DD000C76D11 /* docs */,
 				D4F73460140EF4380096618F /* src */,
@@ -337,7 +330,7 @@
 		D4F73450140EF3E00096618F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D4F7344F140EF3E00096618F /* FiendsAndFortune */,
+				D4F7344F140EF3E00096618F /* fnf */,
 				D43ED590142146F800D25EEC /* UnitTests */,
 				D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */,
 			);
@@ -378,20 +371,19 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXLegacyTarget section */
-		D4DEBADD1601A31B0031CF85 /* Check */ = {
+		D48C3B0D1B66E70000A98ED7 /* check */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "${PROJECT_DIR}/check";
-			buildConfigurationList = D4DEBADE1601A31B0031CF85 /* Build configuration list for PBXLegacyTarget "Check" */;
+			buildArgumentsString = "PRODUCTS=\"$(BUILT_PRODUCTS_DIR)\" TMP=\"$(DERIVED_SOURCES_DIR)\" $(ACTION)";
+			buildConfigurationList = D48C3B0E1B66E70000A98ED7 /* Build configuration list for PBXLegacyTarget "check" */;
 			buildPhases = (
 			);
-			buildToolPath = /bin/sh;
-			buildWorkingDirectory = "";
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = "$(SRCROOT)";
 			dependencies = (
-				D4DEBAE41601A58B0031CF85 /* PBXTargetDependency */,
 			);
-			name = Check;
+			name = check;
 			passBuildSettingsInEnvironment = 1;
-			productName = Check;
+			productName = check;
 		};
 /* End PBXLegacyTarget section */
 
@@ -448,7 +440,7 @@
 			);
 			name = fnf;
 			productName = FiendsAndFortune;
-			productReference = D4F7344F140EF3E00096618F /* FiendsAndFortune */;
+			productReference = D4F7344F140EF3E00096618F /* fnf */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -461,6 +453,9 @@
 				ORGANIZATIONNAME = "Able Pear Software";
 				TargetAttributes = {
 					D4092F5A1B65D3CA00BFD0B3 = {
+						CreatedOnToolsVersion = 6.4;
+					};
+					D48C3B0D1B66E70000A98ED7 = {
 						CreatedOnToolsVersion = 6.4;
 					};
 				};
@@ -479,8 +474,8 @@
 			targets = (
 				D4F7344E140EF3DF0096618F /* fnf */,
 				D43ED58F142146F800D25EEC /* UnitTests */,
-				D4DEBADD1601A31B0031CF85 /* Check */,
 				D4092F5A1B65D3CA00BFD0B3 /* libfnf */,
+				D48C3B0D1B66E70000A98ED7 /* check */,
 			);
 		};
 /* End PBXProject section */
@@ -515,7 +510,6 @@
 				D451787E1B65FAFD00F26844 /* coins.c in Sources */,
 				D4092F7C1B65D46F00BFD0B3 /* Character.c in Sources */,
 				D4092F721B65D46600BFD0B3 /* Areas.c in Sources */,
-				D4092F6B1B65D45000BFD0B3 /* TreasureMap.c in Sources */,
 				D4092F881B65D6C200BFD0B3 /* alloc_or_die.c in Sources */,
 				D4092F7A1B65D46600BFD0B3 /* Tiles.c in Sources */,
 				D4092F751B65D46600BFD0B3 /* Point.c in Sources */,
@@ -529,6 +523,7 @@
 				D4092F6A1B65D44C00BFD0B3 /* TreasureType.c in Sources */,
 				D4092F761B65D46600BFD0B3 /* Points.c in Sources */,
 				D4092F791B65D46600BFD0B3 /* Tile.c in Sources */,
+				B0F47F36C1E3E9EE9F5E0BD7 /* treasure_map.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -573,11 +568,6 @@
 			target = D43ED58F142146F800D25EEC /* UnitTests */;
 			targetProxy = D43ED5A01421483C00D25EEC /* PBXContainerItemProxy */;
 		};
-		D4DEBAE41601A58B0031CF85 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D4F7344E140EF3DF0096618F /* fnf */;
-			targetProxy = D4DEBAE31601A58B0031CF85 /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -590,6 +580,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				EXECUTABLE_PREFIX = lib;
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -621,6 +612,7 @@
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				EXECUTABLE_PREFIX = lib;
@@ -662,31 +654,50 @@
 			};
 			name = Release;
 		};
-		D4DEBADF1601A31B0031CF85 /* Debug */ = {
+		D48C3B0F1B66E70000A98ED7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COMBINE_HIDPI_IMAGES = YES;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				DEBUGGING_SYMBOLS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
-		D4DEBAE01601A31B0031CF85 /* Release */ = {
+		D48C3B101B66E70000A98ED7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -811,14 +822,13 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D4DEBADE1601A31B0031CF85 /* Build configuration list for PBXLegacyTarget "Check" */ = {
+		D48C3B0E1B66E70000A98ED7 /* Build configuration list for PBXLegacyTarget "check" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D4DEBADF1601A31B0031CF85 /* Debug */,
-				D4DEBAE01601A31B0031CF85 /* Release */,
+				D48C3B0F1B66E70000A98ED7 /* Debug */,
+				D48C3B101B66E70000A98ED7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
 		D4F73449140EF3DF0096618F /* Build configuration list for PBXProject "FiendsAndFortune" */ = {
 			isa = XCConfigurationList;

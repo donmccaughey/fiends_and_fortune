@@ -10,7 +10,7 @@
 #include "coins.h"
 #include "gem.h"
 #include "jewelry.h"
-#include "TreasureMap.h"
+#include "treasure_map.h"
 
 
 char *describeTreasure(struct Treasure *treasure) {
@@ -101,7 +101,7 @@ void finalizeTreasure(struct Treasure *treasure) {
     free_or_die(treasure->jewelry);
     
     for (int i = 0; i < treasure->mapsCount; ++i) {
-        finalizeTreasureMap(&treasure->maps[i]);
+      treasure_map_finalize(&treasure->maps[i]);
     }
     free_or_die(treasure->maps);
     
@@ -135,11 +135,11 @@ void generateMapsForTreasure(struct Treasure *treasure,
 {
     treasure->maps = reallocarray_or_die(treasure->maps,
                                          treasure->mapsCount + count,
-                                         sizeof(struct TreasureMap));
+                                         sizeof(struct treasure_map));
     for (int i = 0; i < count; ++i) {
         int j = treasure->mapsCount + i;
-        initializeTreasureMap(&treasure->maps[j]);
-        generateTreasureMap(&treasure->maps[j], rnd);
+      treasure_map_initialize(&treasure->maps[j]);
+      treasure_map_generate(&treasure->maps[j], rnd);
     }
     treasure->mapsCount += count;
 }
