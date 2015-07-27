@@ -334,8 +334,8 @@ static void generateMonetaryTreasure_16to17_Jewelry(struct Treasure *treasure,
                                             sizeof(struct jewelry));
     for (int i = 0; i < count; ++i) {
         int j = treasure->jewelryCount + i;
-        initialize_jewelry(&treasure->jewelry[j]);
-        generate_jewelry(&treasure->jewelry[j], rnd);
+        jewelry_initialize(&treasure->jewelry[j]);
+        jewelry_generate(&treasure->jewelry[j], rnd);
     }
     treasure->jewelryCount += count;
 }

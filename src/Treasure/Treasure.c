@@ -93,7 +93,7 @@ void finalizeTreasure(struct Treasure *treasure) {
     free_or_die(treasure->gems);
     
     for (int i = 0; i < treasure->jewelryCount; ++i) {
-        finalize_jewelry(&treasure->jewelry[i]);
+        jewelry_finalize(&treasure->jewelry[i]);
     }
     free_or_die(treasure->jewelry);
     

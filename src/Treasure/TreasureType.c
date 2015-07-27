@@ -718,8 +718,8 @@ static void generateTreasureJewelry(struct Treasure *treasure,
             treasure->jewelry = calloc_or_die(treasure->jewelryCount,
                                               sizeof(struct jewelry));
             for (int i = 0; i < treasure->jewelryCount; ++i) {
-                initialize_jewelry(&treasure->jewelry[i]);
-                generate_jewelry(&treasure->jewelry[i], rnd);
+                jewelry_initialize(&treasure->jewelry[i]);
+                jewelry_generate(&treasure->jewelry[i], rnd);
             }
         }
     }

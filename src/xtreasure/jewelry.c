@@ -198,14 +198,14 @@ jewelry_alloc_modifiers_description(struct jewelry *jewelry)
 
 
 void
-finalize_jewelry(struct jewelry *jewelry)
+jewelry_finalize(struct jewelry *jewelry)
 {
     free_or_die(jewelry->true_description);
 }
 
 
 void
-generate_jewelry(struct jewelry *jewelry, struct rnd *rnd)
+jewelry_generate(struct jewelry *jewelry, struct rnd *rnd)
 {
     int rank;
     int score = roll("1d100", rnd);
@@ -297,7 +297,7 @@ generate_jewelry(struct jewelry *jewelry, struct rnd *rnd)
 
 
 void
-initialize_jewelry(struct jewelry *jewelry)
+jewelry_initialize(struct jewelry *jewelry)
 {
     memset(jewelry, 0, sizeof(struct jewelry));
 }

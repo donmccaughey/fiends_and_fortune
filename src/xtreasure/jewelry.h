@@ -74,13 +74,13 @@ struct jewelry {
 
 
 void
-finalize_jewelry(struct jewelry *jewelry);
+jewelry_finalize(struct jewelry *jewelry);
 
 void
-generate_jewelry(struct jewelry *jewelry, struct rnd *rnd);
+jewelry_generate(struct jewelry *jewelry, struct rnd *rnd);
 
 void
-initialize_jewelry(struct jewelry *jewelry);
+jewelry_initialize(struct jewelry *jewelry);
 
 int
 jewelry_value_in_cp(struct jewelry *jewelry);
