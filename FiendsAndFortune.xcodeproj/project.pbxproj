@@ -7,56 +7,62 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D4092F3E15AE93DE0002FB34 /* Point.c in Sources */ = {isa = PBXBuildFile; fileRef = D4F73465140EF55C00966191 /* Point.c */; };
-		D4092F6815AFFEE70002FB34 /* Range.c in Sources */ = {isa = PBXBuildFile; fileRef = D4F73465140EF55C00966198 /* Range.c */; };
-		D4092FB615B2A1880002FB34 /* Tile.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092FB515B2A1880002FB34 /* Tile.c */; };
-		D4092FB715B2A5AA0002FB34 /* Tile.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092FB515B2A1880002FB34 /* Tile.c */; };
+		D4092F611B65D42B00BFD0B3 /* libfiends_and_fortune.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* libfiends_and_fortune.a */; };
+		D4092F621B65D43000BFD0B3 /* libfiends_and_fortune.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* libfiends_and_fortune.a */; };
+		D4092F6A1B65D44C00BFD0B3 /* TreasureType.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1A15ABDF8B004E7F2C /* TreasureType.c */; };
+		D4092F6B1B65D45000BFD0B3 /* TreasureMap.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1815ABDF8B004E7F2C /* TreasureMap.c */; };
+		D4092F6C1B65D45700BFD0B3 /* coins.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B2A15ABE045004E7F2C /* coins.c */; };
+		D4092F6D1B65D45700BFD0B3 /* Gem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1015ABDF8B004E7F2C /* Gem.c */; };
+		D4092F6E1B65D45700BFD0B3 /* Jewelry.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1215ABDF8B004E7F2C /* Jewelry.c */; };
+		D4092F6F1B65D45700BFD0B3 /* MagicItem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1415ABDF8B004E7F2C /* MagicItem.c */; };
+		D4092F701B65D45700BFD0B3 /* Treasure.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1615ABDF8B004E7F2C /* Treasure.c */; };
+		D4092F711B65D46600BFD0B3 /* Area.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA732A1606B85500B01DB5 /* Area.c */; };
+		D4092F721B65D46600BFD0B3 /* Areas.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA732D1606BB9300B01DB5 /* Areas.c */; };
+		D4092F731B65D46600BFD0B3 /* Direction.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BCC61E17D5A25E00C76D11 /* Direction.c */; };
+		D4092F741B65D46600BFD0B3 /* Dungeon.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B2715ABDFF0004E7F2C /* Dungeon.c */; };
+		D4092F751B65D46600BFD0B3 /* Point.c in Sources */ = {isa = PBXBuildFile; fileRef = D4F73465140EF55C00966191 /* Point.c */; };
+		D4092F761B65D46600BFD0B3 /* Points.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BCC61A17D5984D00C76D11 /* Points.c */; };
+		D4092F771B65D46600BFD0B3 /* Range.c in Sources */ = {isa = PBXBuildFile; fileRef = D4F73465140EF55C00966198 /* Range.c */; };
+		D4092F781B65D46600BFD0B3 /* TextGraph.c in Sources */ = {isa = PBXBuildFile; fileRef = D4F73465140EF55C00966195 /* TextGraph.c */; };
+		D4092F791B65D46600BFD0B3 /* Tile.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092FB515B2A1880002FB34 /* Tile.c */; };
+		D4092F7A1B65D46600BFD0B3 /* Tiles.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B4815ABE7E5004E7F2C /* Tiles.c */; };
+		D4092F7C1B65D46F00BFD0B3 /* Character.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B2315ABDFE9004E7F2C /* Character.c */; };
+		D4092F881B65D6C200BFD0B3 /* alloc_or_die.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */; };
+		D4092F891B65D6C200BFD0B3 /* alloc_or_die.h in Headers */ = {isa = PBXBuildFile; fileRef = D4092F7F1B65D6C200BFD0B3 /* alloc_or_die.h */; };
+		D4092F8A1B65D6C200BFD0B3 /* dice.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F801B65D6C200BFD0B3 /* dice.c */; };
+		D4092F8B1B65D6C200BFD0B3 /* dice.h in Headers */ = {isa = PBXBuildFile; fileRef = D4092F811B65D6C200BFD0B3 /* dice.h */; };
+		D4092F8C1B65D6C200BFD0B3 /* fail.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F821B65D6C200BFD0B3 /* fail.c */; };
+		D4092F8D1B65D6C200BFD0B3 /* fail.h in Headers */ = {isa = PBXBuildFile; fileRef = D4092F831B65D6C200BFD0B3 /* fail.h */; };
+		D4092F8E1B65D6C200BFD0B3 /* rnd.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F841B65D6C200BFD0B3 /* rnd.c */; };
+		D4092F8F1B65D6C200BFD0B3 /* rnd.h in Headers */ = {isa = PBXBuildFile; fileRef = D4092F851B65D6C200BFD0B3 /* rnd.h */; };
+		D4092F901B65D6C200BFD0B3 /* str.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F861B65D6C200BFD0B3 /* str.c */; };
+		D4092F911B65D6C200BFD0B3 /* str.h in Headers */ = {isa = PBXBuildFile; fileRef = D4092F871B65D6C200BFD0B3 /* str.h */; };
 		D4230D1B15B3B298007A7762 /* RangeTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4230D1A15B3B298007A7762 /* RangeTest.c */; };
 		D43ED594142146F800D25EEC /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D43ED593142146F800D25EEC /* main.c */; };
-		D45178401B5B684D00F26844 /* rnd.c in Sources */ = {isa = PBXBuildFile; fileRef = D451783E1B5B684D00F26844 /* rnd.c */; };
-		D45178411B5B684D00F26844 /* rnd.c in Sources */ = {isa = PBXBuildFile; fileRef = D451783E1B5B684D00F26844 /* rnd.c */; };
-		D45178441B5CAFBE00F26844 /* dice.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178421B5CAFBE00F26844 /* dice.c */; };
-		D45178451B5CAFBE00F26844 /* dice.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178421B5CAFBE00F26844 /* dice.c */; };
 		D45178471B5CB43600F26844 /* dice_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178461B5CB43600F26844 /* dice_test.c */; };
-		D451786F1B61FFE200F26844 /* fail.c in Sources */ = {isa = PBXBuildFile; fileRef = D451786D1B61FFE200F26844 /* fail.c */; };
-		D45178701B61FFE200F26844 /* fail.c in Sources */ = {isa = PBXBuildFile; fileRef = D451786D1B61FFE200F26844 /* fail.c */; };
-		D45178731B63663F00F26844 /* str.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178711B63663F00F26844 /* str.c */; };
-		D45178741B63663F00F26844 /* str.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178711B63663F00F26844 /* str.c */; };
 		D45178761B63679200F26844 /* str_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178751B63679200F26844 /* str_test.c */; };
-		D45BB9521B5A12BF0096E525 /* alloc_or_die.c in Sources */ = {isa = PBXBuildFile; fileRef = D45BB9501B5A12BF0096E525 /* alloc_or_die.c */; };
-		D45BB9531B5A12BF0096E525 /* alloc_or_die.c in Sources */ = {isa = PBXBuildFile; fileRef = D45BB9501B5A12BF0096E525 /* alloc_or_die.c */; };
-		D4783B1C15ABDF8B004E7F2C /* Gem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1015ABDF8B004E7F2C /* Gem.c */; };
-		D4783B1D15ABDF8B004E7F2C /* Jewelry.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1215ABDF8B004E7F2C /* Jewelry.c */; };
-		D4783B1E15ABDF8B004E7F2C /* MagicItem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1415ABDF8B004E7F2C /* MagicItem.c */; };
-		D4783B1F15ABDF8B004E7F2C /* Treasure.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1615ABDF8B004E7F2C /* Treasure.c */; };
-		D4783B2015ABDF8B004E7F2C /* TreasureMap.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1815ABDF8B004E7F2C /* TreasureMap.c */; };
-		D4783B2115ABDF8B004E7F2C /* TreasureType.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1A15ABDF8B004E7F2C /* TreasureType.c */; };
-		D4783B2515ABDFE9004E7F2C /* Character.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B2315ABDFE9004E7F2C /* Character.c */; };
-		D4783B2915ABDFF0004E7F2C /* Dungeon.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B2715ABDFF0004E7F2C /* Dungeon.c */; };
-		D4783B2C15ABE045004E7F2C /* coins.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B2A15ABE045004E7F2C /* coins.c */; };
 		D4783B3E15ABE155004E7F2C /* DungeonTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B3B15ABE155004E7F2C /* DungeonTest.c */; };
-		D4783B4115ABE18A004E7F2C /* Dungeon.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B2715ABDFF0004E7F2C /* Dungeon.c */; };
-		D4783B4915ABE7E5004E7F2C /* Tiles.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B4815ABE7E5004E7F2C /* Tiles.c */; };
-		D4783B4A15ABE7F7004E7F2C /* Tiles.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B4815ABE7E5004E7F2C /* Tiles.c */; };
 		D4783B4C15ABEB32004E7F2C /* TilesTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B4B15ABEB32004E7F2C /* TilesTest.c */; };
 		D4BCC61617D44C2500C76D11 /* PointTest.c in Sources */ = {isa = PBXBuildFile; fileRef = B0F47782965430E75922F468 /* PointTest.c */; };
 		D4BCC61817D597C500C76D11 /* PointsTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BCC61717D597C500C76D11 /* PointsTest.c */; };
-		D4BCC61B17D5984D00C76D11 /* Points.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BCC61A17D5984D00C76D11 /* Points.c */; };
-		D4BCC61C17D5984D00C76D11 /* Points.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BCC61A17D5984D00C76D11 /* Points.c */; };
-		D4BCC61F17D5A25E00C76D11 /* Direction.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BCC61E17D5A25E00C76D11 /* Direction.c */; };
-		D4BCC62017D5A25E00C76D11 /* Direction.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BCC61E17D5A25E00C76D11 /* Direction.c */; };
-		D4C3003B1B62EE540002CA44 /* coins.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B2A15ABE045004E7F2C /* coins.c */; };
-		D4EA732B1606B85500B01DB5 /* Area.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA732A1606B85500B01DB5 /* Area.c */; };
-		D4EA732E1606BB9300B01DB5 /* Areas.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA732D1606BB9300B01DB5 /* Areas.c */; };
-		D4EA732F1606BF2400B01DB5 /* Areas.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA732D1606BB9300B01DB5 /* Areas.c */; };
-		D4EA73301606BF3600B01DB5 /* Area.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA732A1606B85500B01DB5 /* Area.c */; };
 		D4F73462140EF4380096618F /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D4F73461140EF4380096618F /* main.c */; };
-		D4F73465140EF55C00966192 /* Point.c in Sources */ = {isa = PBXBuildFile; fileRef = D4F73465140EF55C00966191 /* Point.c */; };
-		D4F73465140EF55C00966196 /* TextGraph.c in Sources */ = {isa = PBXBuildFile; fileRef = D4F73465140EF55C00966195 /* TextGraph.c */; };
-		D4F73465140EF55C00966199 /* Range.c in Sources */ = {isa = PBXBuildFile; fileRef = D4F73465140EF55C00966198 /* Range.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D4092F5F1B65D42700BFD0B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D4F73446140EF3DF0096618F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D4092F5A1B65D3CA00BFD0B3;
+			remoteInfo = fiends_and_fortune;
+		};
+		D4092F631B65D43300BFD0B3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D4F73446140EF3DF0096618F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D4092F5A1B65D3CA00BFD0B3;
+			remoteInfo = fiends_and_fortune;
+		};
 		D43ED5A01421483C00D25EEC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D4F73446140EF3DF0096618F /* Project object */;
@@ -96,24 +102,25 @@
 
 /* Begin PBXFileReference section */
 		B0F47782965430E75922F468 /* PointTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PointTest.c; sourceTree = "<group>"; };
+		D4092F5B1B65D3CA00BFD0B3 /* libfiends_and_fortune.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libfiends_and_fortune.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
+		D4092F7F1B65D6C200BFD0B3 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
+		D4092F801B65D6C200BFD0B3 /* dice.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dice.c; sourceTree = "<group>"; };
+		D4092F811B65D6C200BFD0B3 /* dice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dice.h; sourceTree = "<group>"; };
+		D4092F821B65D6C200BFD0B3 /* fail.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fail.c; sourceTree = "<group>"; };
+		D4092F831B65D6C200BFD0B3 /* fail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fail.h; sourceTree = "<group>"; };
+		D4092F841B65D6C200BFD0B3 /* rnd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rnd.c; sourceTree = "<group>"; };
+		D4092F851B65D6C200BFD0B3 /* rnd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rnd.h; sourceTree = "<group>"; };
+		D4092F861B65D6C200BFD0B3 /* str.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = str.c; sourceTree = "<group>"; };
+		D4092F871B65D6C200BFD0B3 /* str.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = str.h; sourceTree = "<group>"; };
 		D4092FB515B2A1880002FB34 /* Tile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Tile.c; sourceTree = "<group>"; };
 		D41D32CA1A4339BC00484607 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D41D32CB1A4339BC00484607 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D4230D1A15B3B298007A7762 /* RangeTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = RangeTest.c; sourceTree = "<group>"; };
 		D43ED590142146F800D25EEC /* UnitTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTests; sourceTree = BUILT_PRODUCTS_DIR; };
 		D43ED593142146F800D25EEC /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
-		D451783E1B5B684D00F26844 /* rnd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rnd.c; path = ../../rnd/rnd.c; sourceTree = "<group>"; };
-		D451783F1B5B684D00F26844 /* rnd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rnd.h; path = ../../rnd/rnd.h; sourceTree = "<group>"; };
-		D45178421B5CAFBE00F26844 /* dice.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dice.c; sourceTree = "<group>"; };
-		D45178431B5CAFBE00F26844 /* dice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dice.h; sourceTree = "<group>"; };
 		D45178461B5CB43600F26844 /* dice_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dice_test.c; sourceTree = "<group>"; };
-		D451786D1B61FFE200F26844 /* fail.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fail.c; sourceTree = "<group>"; };
-		D451786E1B61FFE200F26844 /* fail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fail.h; sourceTree = "<group>"; };
-		D45178711B63663F00F26844 /* str.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = str.c; sourceTree = "<group>"; };
-		D45178721B63663F00F26844 /* str.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = str.h; sourceTree = "<group>"; };
 		D45178751B63679200F26844 /* str_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = str_test.c; sourceTree = "<group>"; };
-		D45BB9501B5A12BF0096E525 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
-		D45BB9511B5A12BF0096E525 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
 		D4783B1015ABDF8B004E7F2C /* Gem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = Gem.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		D4783B1115ABDF8B004E7F2C /* Gem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gem.h; sourceTree = "<group>"; };
 		D4783B1215ABDF8B004E7F2C /* Jewelry.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = Jewelry.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
@@ -162,10 +169,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		D4092F581B65D3CA00BFD0B3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D43ED58D142146F800D25EEC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4092F621B65D43000BFD0B3 /* libfiends_and_fortune.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,12 +188,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4092F611B65D42B00BFD0B3 /* libfiends_and_fortune.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D4092F7D1B65D6C200BFD0B3 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */,
+				D4092F7F1B65D6C200BFD0B3 /* alloc_or_die.h */,
+				D4092F801B65D6C200BFD0B3 /* dice.c */,
+				D4092F811B65D6C200BFD0B3 /* dice.h */,
+				D4092F821B65D6C200BFD0B3 /* fail.c */,
+				D4092F831B65D6C200BFD0B3 /* fail.h */,
+				D4092F841B65D6C200BFD0B3 /* rnd.c */,
+				D4092F851B65D6C200BFD0B3 /* rnd.h */,
+				D4092F861B65D6C200BFD0B3 /* str.c */,
+				D4092F871B65D6C200BFD0B3 /* str.h */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
 		D43ED592142146F800D25EEC /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -288,6 +321,7 @@
 			children = (
 				D4F7344F140EF3E00096618F /* FiendsAndFortune */,
 				D43ED590142146F800D25EEC /* UnitTests */,
+				D4092F5B1B65D3CA00BFD0B3 /* libfiends_and_fortune.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -295,25 +329,31 @@
 		D4F73460140EF4380096618F /* src */ = {
 			isa = PBXGroup;
 			children = (
+				D4092F7D1B65D6C200BFD0B3 /* common */,
 				D4783B2215ABDFE9004E7F2C /* Characters */,
 				D4783B2615ABDFF0004E7F2C /* Dungeons */,
 				D4783B0F15ABDF8B004E7F2C /* Treasure */,
-				D45BB9511B5A12BF0096E525 /* alloc_or_die.h */,
-				D45BB9501B5A12BF0096E525 /* alloc_or_die.c */,
-				D45178431B5CAFBE00F26844 /* dice.h */,
-				D45178421B5CAFBE00F26844 /* dice.c */,
-				D451786E1B61FFE200F26844 /* fail.h */,
-				D451786D1B61FFE200F26844 /* fail.c */,
 				D4F73461140EF4380096618F /* main.c */,
-				D451783F1B5B684D00F26844 /* rnd.h */,
-				D451783E1B5B684D00F26844 /* rnd.c */,
-				D45178721B63663F00F26844 /* str.h */,
-				D45178711B63663F00F26844 /* str.c */,
 			);
 			path = src;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D4092F591B65D3CA00BFD0B3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4092F911B65D6C200BFD0B3 /* str.h in Headers */,
+				D4092F891B65D6C200BFD0B3 /* alloc_or_die.h in Headers */,
+				D4092F8D1B65D6C200BFD0B3 /* fail.h in Headers */,
+				D4092F8B1B65D6C200BFD0B3 /* dice.h in Headers */,
+				D4092F8F1B65D6C200BFD0B3 /* rnd.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXLegacyTarget section */
 		D4DEBADD1601A31B0031CF85 /* Check */ = {
@@ -334,6 +374,23 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		D4092F5A1B65D3CA00BFD0B3 /* fiends_and_fortune */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D4092F5C1B65D3CA00BFD0B3 /* Build configuration list for PBXNativeTarget "fiends_and_fortune" */;
+			buildPhases = (
+				D4092F571B65D3CA00BFD0B3 /* Sources */,
+				D4092F581B65D3CA00BFD0B3 /* Frameworks */,
+				D4092F591B65D3CA00BFD0B3 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = fiends_and_fortune;
+			productName = fiends_and_fortune;
+			productReference = D4092F5B1B65D3CA00BFD0B3 /* libfiends_and_fortune.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		D43ED58F142146F800D25EEC /* UnitTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = D43ED599142146F800D25EEC /* Build configuration list for PBXNativeTarget "UnitTests" */;
@@ -345,6 +402,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D4092F641B65D43300BFD0B3 /* PBXTargetDependency */,
 			);
 			name = UnitTests;
 			productName = UnitTests;
@@ -363,6 +421,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D4092F601B65D42700BFD0B3 /* PBXTargetDependency */,
 				D43ED5A11421483C00D25EEC /* PBXTargetDependency */,
 			);
 			name = FiendsAndFortune;
@@ -378,6 +437,11 @@
 			attributes = {
 				LastUpgradeCheck = 0640;
 				ORGANIZATIONNAME = "Able Pear Software";
+				TargetAttributes = {
+					D4092F5A1B65D3CA00BFD0B3 = {
+						CreatedOnToolsVersion = 6.4;
+					};
+				};
 			};
 			buildConfigurationList = D4F73449140EF3DF0096618F /* Build configuration list for PBXProject "FiendsAndFortune" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -394,6 +458,7 @@
 				D4F7344E140EF3DF0096618F /* FiendsAndFortune */,
 				D43ED58F142146F800D25EEC /* UnitTests */,
 				D4DEBADD1601A31B0031CF85 /* Check */,
+				D4092F5A1B65D3CA00BFD0B3 /* fiends_and_fortune */,
 			);
 		};
 /* End PBXProject section */
@@ -415,33 +480,48 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		D4092F571B65D3CA00BFD0B3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D4092F8E1B65D6C200BFD0B3 /* rnd.c in Sources */,
+				D4092F711B65D46600BFD0B3 /* Area.c in Sources */,
+				D4092F6D1B65D45700BFD0B3 /* Gem.c in Sources */,
+				D4092F6F1B65D45700BFD0B3 /* MagicItem.c in Sources */,
+				D4092F8C1B65D6C200BFD0B3 /* fail.c in Sources */,
+				D4092F731B65D46600BFD0B3 /* Direction.c in Sources */,
+				D4092F7C1B65D46F00BFD0B3 /* Character.c in Sources */,
+				D4092F721B65D46600BFD0B3 /* Areas.c in Sources */,
+				D4092F6B1B65D45000BFD0B3 /* TreasureMap.c in Sources */,
+				D4092F881B65D6C200BFD0B3 /* alloc_or_die.c in Sources */,
+				D4092F7A1B65D46600BFD0B3 /* Tiles.c in Sources */,
+				D4092F751B65D46600BFD0B3 /* Point.c in Sources */,
+				D4092F701B65D45700BFD0B3 /* Treasure.c in Sources */,
+				D4092F781B65D46600BFD0B3 /* TextGraph.c in Sources */,
+				D4092F741B65D46600BFD0B3 /* Dungeon.c in Sources */,
+				D4092F901B65D6C200BFD0B3 /* str.c in Sources */,
+				D4092F6C1B65D45700BFD0B3 /* coins.c in Sources */,
+				D4092F771B65D46600BFD0B3 /* Range.c in Sources */,
+				D4092F8A1B65D6C200BFD0B3 /* dice.c in Sources */,
+				D4092F6A1B65D44C00BFD0B3 /* TreasureType.c in Sources */,
+				D4092F6E1B65D45700BFD0B3 /* Jewelry.c in Sources */,
+				D4092F761B65D46600BFD0B3 /* Points.c in Sources */,
+				D4092F791B65D46600BFD0B3 /* Tile.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D43ED58C142146F800D25EEC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				D43ED594142146F800D25EEC /* main.c in Sources */,
 				D4783B3E15ABE155004E7F2C /* DungeonTest.c in Sources */,
-				D4783B4115ABE18A004E7F2C /* Dungeon.c in Sources */,
-				D4783B4915ABE7E5004E7F2C /* Tiles.c in Sources */,
 				D4783B4C15ABEB32004E7F2C /* TilesTest.c in Sources */,
-				D4092F3E15AE93DE0002FB34 /* Point.c in Sources */,
-				D4092F6815AFFEE70002FB34 /* Range.c in Sources */,
-				D45178411B5B684D00F26844 /* rnd.c in Sources */,
-				D4092FB715B2A5AA0002FB34 /* Tile.c in Sources */,
 				D4230D1B15B3B298007A7762 /* RangeTest.c in Sources */,
-				D4EA732F1606BF2400B01DB5 /* Areas.c in Sources */,
-				D45178741B63663F00F26844 /* str.c in Sources */,
-				D45178451B5CAFBE00F26844 /* dice.c in Sources */,
-				D4EA73301606BF3600B01DB5 /* Area.c in Sources */,
-				D45BB9531B5A12BF0096E525 /* alloc_or_die.c in Sources */,
 				D4BCC61617D44C2500C76D11 /* PointTest.c in Sources */,
-				D4C3003B1B62EE540002CA44 /* coins.c in Sources */,
-				D45178701B61FFE200F26844 /* fail.c in Sources */,
 				D4BCC61817D597C500C76D11 /* PointsTest.c in Sources */,
 				D45178471B5CB43600F26844 /* dice_test.c in Sources */,
 				D45178761B63679200F26844 /* str_test.c in Sources */,
-				D4BCC61C17D5984D00C76D11 /* Points.c in Sources */,
-				D4BCC62017D5A25E00C76D11 /* Direction.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -449,36 +529,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D45178401B5B684D00F26844 /* rnd.c in Sources */,
 				D4F73462140EF4380096618F /* main.c in Sources */,
-				D4783B1C15ABDF8B004E7F2C /* Gem.c in Sources */,
-				D4783B1D15ABDF8B004E7F2C /* Jewelry.c in Sources */,
-				D45178441B5CAFBE00F26844 /* dice.c in Sources */,
-				D4783B1E15ABDF8B004E7F2C /* MagicItem.c in Sources */,
-				D4783B1F15ABDF8B004E7F2C /* Treasure.c in Sources */,
-				D4783B2015ABDF8B004E7F2C /* TreasureMap.c in Sources */,
-				D451786F1B61FFE200F26844 /* fail.c in Sources */,
-				D4783B2115ABDF8B004E7F2C /* TreasureType.c in Sources */,
-				D45BB9521B5A12BF0096E525 /* alloc_or_die.c in Sources */,
-				D4783B2515ABDFE9004E7F2C /* Character.c in Sources */,
-				D4783B2915ABDFF0004E7F2C /* Dungeon.c in Sources */,
-				D4783B2C15ABE045004E7F2C /* coins.c in Sources */,
-				D4783B4A15ABE7F7004E7F2C /* Tiles.c in Sources */,
-				D45178731B63663F00F26844 /* str.c in Sources */,
-				D4F73465140EF55C00966192 /* Point.c in Sources */,
-				D4F73465140EF55C00966196 /* TextGraph.c in Sources */,
-				D4F73465140EF55C00966199 /* Range.c in Sources */,
-				D4092FB615B2A1880002FB34 /* Tile.c in Sources */,
-				D4EA732B1606B85500B01DB5 /* Area.c in Sources */,
-				D4EA732E1606BB9300B01DB5 /* Areas.c in Sources */,
-				D4BCC61B17D5984D00C76D11 /* Points.c in Sources */,
-				D4BCC61F17D5A25E00C76D11 /* Direction.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		D4092F601B65D42700BFD0B3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D4092F5A1B65D3CA00BFD0B3 /* fiends_and_fortune */;
+			targetProxy = D4092F5F1B65D42700BFD0B3 /* PBXContainerItemProxy */;
+		};
+		D4092F641B65D43300BFD0B3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D4092F5A1B65D3CA00BFD0B3 /* fiends_and_fortune */;
+			targetProxy = D4092F631B65D43300BFD0B3 /* PBXContainerItemProxy */;
+		};
 		D43ED5A11421483C00D25EEC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D43ED58F142146F800D25EEC /* UnitTests */;
@@ -492,6 +559,55 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		D4092F5D1B65D3CA00BFD0B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = "-Wall";
+			};
+			name = Debug;
+		};
+		D4092F5E1B65D3CA00BFD0B3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WARNING_CFLAGS = "-Wall";
+			};
+			name = Release;
+		};
 		D43ED597142146F800D25EEC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -573,7 +689,7 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_PEDANTIC = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
@@ -581,6 +697,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
 		};
@@ -606,13 +723,14 @@
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_PEDANTIC = NO;
+				GCC_WARN_PEDANTIC = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
 		};
@@ -643,6 +761,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		D4092F5C1B65D3CA00BFD0B3 /* Build configuration list for PBXNativeTarget "fiends_and_fortune" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D4092F5D1B65D3CA00BFD0B3 /* Debug */,
+				D4092F5E1B65D3CA00BFD0B3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		D43ED599142146F800D25EEC /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
