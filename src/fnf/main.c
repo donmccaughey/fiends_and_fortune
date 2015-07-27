@@ -1,3 +1,4 @@
+#include <libgen.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -348,7 +349,7 @@ int main(int argc, char *argv[])
 
 static void usage(int argc, char *argv[])
 {
-    fprintf(stderr, "Usage: %s ACTION\n", argv[0]);
+    fprintf(stderr, "Usage: %s ACTION\n", basename(argv[0]));
     fprintf(stderr, "\n");
     fprintf(stderr, "Available actions:\n");
     fprintf(stderr, "   character [METHOD]  Generate a character where METHOD is\n");
