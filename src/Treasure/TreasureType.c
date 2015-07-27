@@ -11,6 +11,7 @@
 #include "gem.h"
 #include "Jewelry.h"
 #include "MagicItem.h"
+#include "str.h"
 #include "Treasure.h"
 #include "TreasureMap.h"
 
@@ -590,7 +591,7 @@ static char *describeMapsOrMagic(struct MapsOrMagic *mapsOrMagic) {
             struct MapsOrMagicType *type = &mapsOrMagic->types[i];
             char const *typeName = possibleMapsOrMagicName(type->isMapPossible,
                                                            type->possibleMagicItems);
-            if (type->variableAmount[0]) {
+            if (str_not_empty(type->variableAmount)) {
                 int minAmount = dice_min_score(dice_parse(type->variableAmount));
                 int maxAmount = dice_max_score(dice_parse(type->variableAmount));
                 asprintf_or_die(&typeDescriptions[i], "%i-%i %ss",
@@ -744,8 +745,7 @@ static void generateTreasureMapsOrMagicType(struct MapsOrMagicType *type,
                                             struct rnd *rnd)
 {
     int amount = type->amount;
-    bool isVariable = type->variableAmount[0];
-    if (isVariable) {
+    if (str_not_empty(type->variableAmount)) {
         amount = roll(type->variableAmount, rnd);
     }
     

@@ -12,28 +12,23 @@ coins_alloc_description(struct coins coins)
     char *description = str_alloc_empty();
     char const *separator = "";
     if (coins.cp) {
-        description = str_realloc_append_formatted(description,
-                                                   "%d copper", coins.cp);
+        str_realloc_append_formatted(&description, "%d copper", coins.cp);
         separator = ", ";
     }
     if (coins.sp) {
-        description = str_realloc_append_formatted(description,
-                                                   "%s%d silver", separator, coins.sp);
+        str_realloc_append_formatted(&description, "%s%d silver", separator, coins.sp);
         separator = ", ";
     }
     if (coins.ep) {
-        description = str_realloc_append_formatted(description,
-                                                   "%s%d electrum", separator, coins.ep);
+        str_realloc_append_formatted(&description, "%s%d electrum", separator, coins.ep);
         separator = ", ";
     }
     if (coins.gp) {
-        description = str_realloc_append_formatted(description,
-                                                   "%s%d gold", separator, coins.gp);
+        str_realloc_append_formatted(&description, "%s%d gold", separator, coins.gp);
         separator = ", ";
     }
     if (coins.pp) {
-        description = str_realloc_append_formatted(description,
-                                                   "%s%d platinum", separator, coins.pp);
+        str_realloc_append_formatted(&description, "%s%d platinum", separator, coins.pp);
         separator = ", ";
     }
     return description;

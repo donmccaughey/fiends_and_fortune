@@ -9,6 +9,7 @@
 #include "alloc_or_die.h"
 #include "coins.h"
 #include "dice.h"
+#include "str.h"
 
 
 struct JewelryFormTable {
@@ -285,7 +286,7 @@ void generateJewelry(struct Jewelry *jewelry, struct rnd *rnd)
   int value_cp = jewelryValue_cp(jewelry);
   char *value_gp = coins_alloc_gp_cp_description(value_cp);
   
-  char const *separator = modifiers[0] ? ": " : "";
+  char const *separator = str_not_empty(modifiers) ? ": " : "";
   asprintf_or_die(&jewelry->trueDescription, "%s (%s%s%s)",
                   description, modifiers, separator, value_gp);
   

@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "alloc_or_die.h"
+#include "fail.h"
 
 
 char *
@@ -32,31 +33,36 @@ str_formatted_length_from_va_list(char const *format, va_list arguments)
 }
 
 
-char *
-str_realloc_append_formatted(char *str, char const *format, ...)
+bool
+str_not_empty(char const *str)
 {
-    va_list arguments;
-    va_start(arguments, format);
-    str = str_realloc_append_formatted_from_va_list(str, format, arguments);
-    va_end(arguments);
-    return str;
+    return str && str[0];
 }
 
 
-char *
-str_realloc_append_formatted_from_va_list(char *str,
+void
+str_realloc_append_formatted(char **str, char const *format, ...)
+{
+    va_list arguments;
+    va_start(arguments, format);
+    str_realloc_append_formatted_from_va_list(str, format, arguments);
+    va_end(arguments);
+}
+
+
+void
+str_realloc_append_formatted_from_va_list(char **str,
                                           char const *format,
                                           va_list arguments)
 {
     size_t append_length = str_formatted_length_from_va_list(format, arguments);
-    if ( ! append_length) return str;
+    if ( ! append_length) return;
     
-    size_t original_length = str ? strlen(str) : 0;
+    size_t original_length = *str ? strlen(*str) : 0;
     size_t size = original_length + append_length + 1;
-    str = realloc_or_die(str, size);
+    *str = realloc_or_die(*str, size);
     
     va_list arguments_copy;
     va_copy(arguments_copy, arguments);
-    vsprintf(str + original_length, format, arguments);
-    return str;
+    vsprintf(*str + original_length, format, arguments);
 }

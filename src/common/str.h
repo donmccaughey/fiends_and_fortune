@@ -3,6 +3,7 @@
 
 
 #include <stdarg.h>
+#include <stdbool.h>
 #include <stddef.h>
 
 
@@ -15,11 +16,14 @@ str_formatted_length(char const *format, ...);
 size_t
 str_formatted_length_from_va_list(char const *format, va_list arguments);
 
-char *
-str_realloc_append_formatted(char *str, char const *format, ...);
+bool
+str_not_empty(char const *str);
 
-char *
-str_realloc_append_formatted_from_va_list(char *str,
+void
+str_realloc_append_formatted(char **str, char const *format, ...);
+
+void
+str_realloc_append_formatted_from_va_list(char **str,
                                           char const *format,
                                           va_list arguments);
 

@@ -76,15 +76,15 @@ gem_describe_modifiers(struct gem *gem)
 {
     char *description = str_alloc_empty();
     if (gem->value_rank_modifier) {
-        description = str_realloc_append_formatted(description,
-                                                   "rank %+i", gem->value_rank_modifier);
+        str_realloc_append_formatted(&description, "rank %+i",
+                                     gem->value_rank_modifier);
     }
     if (gem->value_percent_modifier) {
-        if (description[0]) {
-            description = str_realloc_append_formatted(description, ", ");
+        if (str_not_empty(description)) {
+            str_realloc_append_formatted(&description, ", ");
         }
-        description = str_realloc_append_formatted(description,
-                                                   "%+i%%", gem->value_percent_modifier - 100);
+        str_realloc_append_formatted(&description, "%+i%%",
+                                     gem->value_percent_modifier - 100);
     }
     return description;
 }
@@ -178,7 +178,7 @@ gem_generate(struct gem *gem, struct rnd *rnd)
     int value_in_cp = gem_value_in_cp(gem);
     char *value_description = coins_alloc_gp_cp_description(value_in_cp);
     
-    char const *separator = modifiers[0] ? ": " : "";
+    char const *separator = str_not_empty(modifiers) ? ": " : "";
     asprintf_or_die(&gem->true_description, "%s (%s%s%s)",
                     description, modifiers, separator, value_description);
     
