@@ -63,7 +63,7 @@ gem_type_name(struct gem *gem);
 
 
 static char *
-gem_describe(struct gem *gem)
+gem_alloc_description(struct gem *gem)
 {
     char *description;
     asprintf_or_die(&description, "%s %s",
@@ -73,7 +73,7 @@ gem_describe(struct gem *gem)
 
 
 static char *
-gem_describe_modifiers(struct gem *gem)
+gem_alloc_modifiers_description(struct gem *gem)
 {
     char *description = str_alloc_empty();
     if (gem->value_rank_modifier) {
@@ -174,8 +174,8 @@ gem_generate(struct gem *gem, struct rnd *rnd)
              && gem->value_rank_modifier > -5
              && gem->value_rank_modifier < 7);
     
-    char *description = gem_describe(gem);
-    char *modifiers = gem_describe_modifiers(gem);
+    char *description = gem_alloc_description(gem);
+    char *modifiers = gem_alloc_modifiers_description(gem);
     int value_in_cp = gem_value_in_cp(gem);
     char *value_description = coins_alloc_gp_cp_description(value_in_cp);
     

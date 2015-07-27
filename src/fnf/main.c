@@ -3,15 +3,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "alloc_or_die.h"
+#include "common/alloc_or_die.h"
+#include "common/dice.h"
+#include "common/rnd.h"
+
 #include "Character.h"
 #include "coins.h"
-#include "dice.h"
 #include "Dungeon.h"
 #include "gem.h"
-#include "Jewelry.h"
+#include "jewelry.h"
 #include "MagicItem.h"
-#include "rnd.h"
 #include "TextGraph.h"
 #include "Treasure.h"
 #include "TreasureMap.h"
@@ -67,7 +68,7 @@ static void enumerateTreasureItems(struct Treasure *treasure, FILE *out)
         fprintf(out, "  Jewelry: -----------------------------\n");
         for (int i = 0; i < treasure->jewelryCount; ++i) {
             fprintf(out, "    %2i  %s\n",
-                    i + 1, treasure->jewelry[i].trueDescription);
+                    i + 1, treasure->jewelry[i].true_description);
         }
     }
     

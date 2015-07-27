@@ -3,10 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "alloc_or_die.h"
-#include "dice.h"
+#include "common/alloc_or_die.h"
+#include "common/dice.h"
+
 #include "gem.h"
-#include "Jewelry.h"
+#include "jewelry.h"
 #include "MagicItem.h"
 
 
@@ -330,11 +331,11 @@ static void generateMonetaryTreasure_16to17_Jewelry(struct Treasure *treasure,
     int count = roll("5d10", rnd);
     treasure->jewelry = reallocarray_or_die(treasure->jewelry,
                                             treasure->jewelryCount + count,
-                                            sizeof(struct Jewelry));
+                                            sizeof(struct jewelry));
     for (int i = 0; i < count; ++i) {
         int j = treasure->jewelryCount + i;
-        initializeJewelry(&treasure->jewelry[j]);
-        generateJewelry(&treasure->jewelry[j], rnd);
+        initialize_jewelry(&treasure->jewelry[j]);
+        generate_jewelry(&treasure->jewelry[j], rnd);
     }
     treasure->jewelryCount += count;
 }

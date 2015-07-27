@@ -5,13 +5,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "alloc_or_die.h"
-#include "dice.h"
-#include "fail.h"
+#include "common/alloc_or_die.h"
+#include "common/dice.h"
+#include "common/fail.h"
+#include "common/str.h"
+
 #include "gem.h"
-#include "Jewelry.h"
+#include "jewelry.h"
 #include "MagicItem.h"
-#include "str.h"
 #include "Treasure.h"
 #include "TreasureMap.h"
 
@@ -715,10 +716,10 @@ static void generateTreasureJewelry(struct Treasure *treasure,
         if (percentRoll <= treasure->type->jewelry.percentChance) {
             treasure->jewelryCount = roll(treasure->type->jewelry.amount, rnd);
             treasure->jewelry = calloc_or_die(treasure->jewelryCount,
-                                              sizeof(struct Jewelry));
+                                              sizeof(struct jewelry));
             for (int i = 0; i < treasure->jewelryCount; ++i) {
-                initializeJewelry(&treasure->jewelry[i]);
-                generateJewelry(&treasure->jewelry[i], rnd);
+                initialize_jewelry(&treasure->jewelry[i]);
+                generate_jewelry(&treasure->jewelry[i], rnd);
             }
         }
     }

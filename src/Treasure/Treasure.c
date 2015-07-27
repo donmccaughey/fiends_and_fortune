@@ -4,10 +4,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "alloc_or_die.h"
+#include "common/alloc_or_die.h"
+
 #include "coins.h"
 #include "gem.h"
-#include "Jewelry.h"
+#include "jewelry.h"
 #include "TreasureMap.h"
 
 
@@ -92,7 +93,7 @@ void finalizeTreasure(struct Treasure *treasure) {
     free_or_die(treasure->gems);
     
     for (int i = 0; i < treasure->jewelryCount; ++i) {
-        finalizeJewelry(&treasure->jewelry[i]);
+        finalize_jewelry(&treasure->jewelry[i]);
     }
     free_or_die(treasure->jewelry);
     
@@ -154,7 +155,7 @@ int treasureValue_cp(struct Treasure *treasure) {
     }
     
     for (int i = 0; i < treasure->jewelryCount; ++i) {
-        value_cp += jewelryValue_cp(&treasure->jewelry[i]);
+        value_cp += jewelry_value_in_cp(&treasure->jewelry[i]);
     }
     
     return value_cp;

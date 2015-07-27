@@ -7,7 +7,7 @@
 
 
 struct gem;
-struct Jewelry;
+struct jewelry;
 struct MagicItem;
 struct rnd;
 struct TreasureMap;
@@ -19,7 +19,7 @@ struct Treasure {
     struct coins coins;
     struct gem *gems;
     int gemsCount;
-    struct Jewelry *jewelry;
+    struct jewelry *jewelry;
     int jewelryCount;
     struct TreasureMap *maps;
     int mapsCount;
