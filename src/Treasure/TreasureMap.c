@@ -5,6 +5,7 @@
 
 #include "common/alloc_or_die.h"
 #include "common/dice.h"
+#include "common/str.h"
 
 #include "gem.h"
 #include "jewelry.h"
@@ -391,23 +392,21 @@ void generateTreasureMap(struct TreasureMap *treasureMap, struct rnd *rnd)
         }
         
         char *description = describeTreasure(&treasureMap->treasure);
-        asprintf_or_die(&treasureMap->trueDescription,
-                        "%smap to %s of %s %i miles to the %s, %s",
-                        (treasureMap->isFalse ? "false " : ""),
-                        treasureMapTypes[treasureMapType],
-                        description,
-                        miles,
-                        compassDirections[compassDirection],
-                        disposition);
+        treasureMap->trueDescription = str_alloc_formatted("%smap to %s of %s %i miles to the %s, %s",
+                                                           (treasureMap->isFalse ? "false " : ""),
+                                                           treasureMapTypes[treasureMapType],
+                                                           description,
+                                                           miles,
+                                                           compassDirections[compassDirection],
+                                                           disposition);
         free_or_die(description);
     } else {
         char *description = describeTreasure(&treasureMap->treasure);
-        asprintf_or_die(&treasureMap->trueDescription,
-                        "%smap to %s of %s in nearby labyrinth to the %s",
-                        (treasureMap->isFalse ? "false " : ""),
-                        treasureMapTypes[treasureMapType],
-                        description,
-                        compassDirections[compassDirection]);
+        treasureMap->trueDescription = str_alloc_formatted("%smap to %s of %s in nearby labyrinth to the %s",
+                                                           (treasureMap->isFalse ? "false " : ""),
+                                                           treasureMapTypes[treasureMapType],
+                                                           description,
+                                                           compassDirections[compassDirection]);
         free_or_die(description);
     }
 }

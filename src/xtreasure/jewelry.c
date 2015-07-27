@@ -172,9 +172,7 @@ jewelry_alloc_description(struct jewelry *jewelry)
 {
     char const *format = jewelry_material_formats[jewelry->material];
     char const *name = jewelry_form_table[jewelry->form].name;
-    char *description;
-    asprintf_or_die(&description, format, name);
-    return description;
+    return str_alloc_formatted(format, name);
 }
 
 
@@ -287,8 +285,11 @@ jewelry_generate(struct jewelry *jewelry, struct rnd *rnd)
     char *value_description = coins_alloc_gp_cp_description(value_in_cp);
     
     char const *separator = str_not_empty(modifiers) ? ": " : "";
-    asprintf_or_die(&jewelry->true_description, "%s (%s%s%s)",
-                    description, modifiers, separator, value_description);
+    jewelry->true_description = str_alloc_formatted("%s (%s%s%s)",
+                                                    description,
+                                                    modifiers,
+                                                    separator,
+                                                    value_description);
     
     free_or_die(modifiers);
     free_or_die(value_description);

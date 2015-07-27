@@ -65,10 +65,7 @@ gem_type_name(struct gem *gem);
 static char *
 gem_alloc_description(struct gem *gem)
 {
-    char *description;
-    asprintf_or_die(&description, "%s %s",
-                    gem_size_name(gem), gem_type_name(gem));
-    return description;
+    return str_alloc_formatted("%s %s", gem_size_name(gem), gem_type_name(gem));
 }
 
 
@@ -180,8 +177,9 @@ gem_generate(struct gem *gem, struct rnd *rnd)
     char *value_description = coins_alloc_gp_cp_description(value_in_cp);
     
     char const *separator = str_not_empty(modifiers) ? ": " : "";
-    asprintf_or_die(&gem->true_description, "%s (%s%s%s)",
-                    description, modifiers, separator, value_description);
+    gem->true_description = str_alloc_formatted("%s (%s%s%s)",
+                                                description, modifiers,
+                                                separator, value_description);
     
     free_or_die(value_description);
     free_or_die(modifiers);

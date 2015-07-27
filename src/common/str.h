@@ -10,6 +10,12 @@
 char *
 str_alloc_empty(void);
 
+char *
+str_alloc_formatted(char const *format, ...);
+
+char *
+str_alloc_formatted_from_va_list(char const *format, va_list arguments);
+
 size_t
 str_formatted_length(char const *format, ...);
 

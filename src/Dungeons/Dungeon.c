@@ -3,7 +3,9 @@
 #include <assert.h>
 #include <string.h>
 
-#include "alloc_or_die.h"
+#include "common/alloc_or_die.h"
+#include "common/str.h"
+
 #include "Area.h"
 #include "Areas.h"
 #include "Direction.h"
@@ -80,15 +82,17 @@ static struct Point area(struct Dungeon *dungeon, struct Point fromPoint, uint32
     char *description;
     switch (areaType) {
         case ChamberAreaType:
-            asprintf_or_die(&description, "%u' x %u' chamber",
-                            length * 10, width * 10);
+            description = str_alloc_formatted("%u' x %u' chamber",
+                                              length * 10, width * 10);
             break;
         case PassageAreaType:
-            asprintf_or_die(&description, "%u' passage %s",
-                            length * 10, directionName(direction));
+            description = str_alloc_formatted("%u' passage %s",
+                                              length * 10,
+                                              directionName(direction));
             break;
         default:
-            asprintf_or_die(&description, "%u' x %u' area", length * 10, width * 10);
+            description = str_alloc_formatted("%u' x %u' area",
+                                              length * 10, width * 10);
             break;
     }
     

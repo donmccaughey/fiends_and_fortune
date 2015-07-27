@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "common/alloc_or_die.h"
+#include "common/str.h"
 
 #include "coins.h"
 #include "gem.h"
@@ -30,26 +31,28 @@ char *describeTreasure(struct Treasure *treasure) {
     
     if (treasure->gemsCount) {
         char const *plural = (treasure->gemsCount == 1) ? "" : "s";
-        asprintf_or_die(&phrases[GemsPhrase], "%d gem%s",
-                        treasure->gemsCount, plural);
+        phrases[GemsPhrase] = str_alloc_formatted("%d gem%s",
+                                                  treasure->gemsCount, plural);
     }
     
     if (treasure->jewelryCount) {
         char const *plural = (treasure->jewelryCount == 1) ? "" : "s";
-        asprintf_or_die(&phrases[JewelryPhrase], "%d piece%s of jewelry",
-                        treasure->jewelryCount, plural);
+        phrases[JewelryPhrase] = str_alloc_formatted("%d piece%s of jewelry",
+                                                     treasure->jewelryCount,
+                                                     plural);
     }
     
     if (treasure->mapsCount) {
         char const *plural = (treasure->mapsCount == 1) ? "" : "s";
-        asprintf_or_die(&phrases[MapsPhrase], "%d map%s",
-                        treasure->mapsCount, plural);
+        phrases[MapsPhrase] = str_alloc_formatted("%d map%s",
+                                                  treasure->mapsCount, plural);
     }
     
     if (treasure->magicItemsCount) {
         char const *plural = (treasure->magicItemsCount == 1) ? "" : "s";
-        asprintf_or_die(&phrases[MagicPhrase], "%d magic item%s",
-                        treasure->magicItemsCount, plural);
+        phrases[MagicPhrase] = str_alloc_formatted("%d magic item%s",
+                                                   treasure->magicItemsCount,
+                                                   plural);
     }
     
     char const separator[] = ", ";

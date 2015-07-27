@@ -6,11 +6,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "alloc_or_die.h"
+#include "common/alloc_or_die.h"
+#include "common/dice.h"
+#include "common/fail.h"
+#include "common/str.h"
+
 #include "Character.h"
 #include "coins.h"
-#include "dice.h"
-#include "fail.h"
 
 
 typedef void(*GenerateFunction)(struct MagicItem *magicItem, struct rnd *rnd);
@@ -209,10 +211,12 @@ static void generateArmorOrShield(struct MagicItem *magicItem,
         } else {
             armorSize = "gnome or halfling sized";
         }
-        asprintf_or_die(&magicItem->trueDescription, "%s (%s)",
-                        armorOrShield->name, armorSize);
+        magicItem->trueDescription = str_alloc_formatted("%s (%s)",
+                                                         armorOrShield->name,
+                                                         armorSize);
     } else {
-        asprintf_or_die(&magicItem->trueDescription, "%s", armorOrShield->name);
+        magicItem->trueDescription = str_alloc_formatted("%s",
+                                                         armorOrShield->name);
     }
 }
 
@@ -276,7 +280,8 @@ static void generateArtifactOrRelic(struct MagicItem *magicItem,
     } else {
         magicItem->experiencePoints = 0;
         magicItem->trueValue_cp = gp_to_cp(artifactOrRelic->saleValue_gp);
-        asprintf_or_die(&magicItem->trueDescription, "%s", artifactOrRelic->name);
+        magicItem->trueDescription = str_alloc_formatted("%s",
+                                                         artifactOrRelic->name);
     }
 }
 
@@ -306,8 +311,8 @@ static void generateBracersOfDefense(struct MagicItem *magicItem,
     int level = 10 - armorClass;
     magicItem->experiencePoints = level * 500;
     magicItem->trueValue_cp = gp_to_cp(level * 3000);
-    asprintf_or_die(&magicItem->trueDescription,
-                    "bracers of defense AC %i", armorClass);
+    magicItem->trueDescription = str_alloc_formatted("bracers of defense AC %i",
+                                                     armorClass);
 }
 
 
@@ -331,8 +336,8 @@ static void generateBucknardsEverfullPurse(struct MagicItem *magicItem,
         magicItem->trueValue_cp = gp_to_cp(40000);
     }
     
-    asprintf_or_die(&magicItem->trueDescription,
-                    "Bucknards everfull purse (type %i)", type);
+    magicItem->trueDescription = str_alloc_formatted("Bucknards everfull purse (type %i)",
+                                                     type);
 }
 
 
@@ -357,7 +362,8 @@ static void generateCloakOfProtection(struct MagicItem *magicItem,
     magicItem->experiencePoints = 1000 * plus;
     magicItem->trueValue_cp = gp_to_cp(10000 * plus);
     
-    asprintf_or_die(&magicItem->trueDescription, "cloak of protection +%i", plus);
+    magicItem->trueDescription = str_alloc_formatted("cloak of protection +%i",
+                                                     plus);
 }
 
 
@@ -383,7 +389,7 @@ static void generateCrystalBall(struct MagicItem *magicItem, struct rnd *rnd)
         magicItem->trueValue_cp = gp_to_cp(10000);
     }
     
-    asprintf_or_die(&magicItem->trueDescription, "crystal ball%s", feature);
+    magicItem->trueDescription = str_alloc_formatted("crystal ball%s", feature);
 }
 
 
@@ -403,8 +409,8 @@ static void generateEyesOfPetrification(struct MagicItem *magicItem,
         magicItem->trueValue_cp = 0;
     }
     
-    asprintf_or_die(&magicItem->trueDescription,
-                    "eyes of petrification (%s)", type);
+    magicItem->trueDescription = str_alloc_formatted("eyes of petrification (%s)",
+                                                     type);
 }
 
 
@@ -417,49 +423,50 @@ static void generateFigurineOfWondrousPower(struct MagicItem *magicItem,
     int dieRoll = roll("1d100", rnd);
     if (dieRoll <= 15) {
         hitDice = 4;
-        asprintf_or_die(&type, "ebony fly (%i hp)", roll("4d8+4", rnd));
+        type = str_alloc_formatted("ebony fly (%i hp)", roll("4d8+4", rnd));
     } else if (dieRoll <= 30) {
-        asprintf_or_die(&type, "two golden lions (%i/%i hp)",
-                        roll("5d8+2", rnd), roll("5d8+2", rnd));
+        type = str_alloc_formatted("two golden lions (%i/%i hp)",
+                                   roll("5d8+2", rnd), roll("5d8+2", rnd));
         hitDice = 10;
     } else if (dieRoll <= 40) {
-        asprintf_or_die(&type, "three ivory goats (24/96/48 hp)");
+        type = str_alloc_formatted("three ivory goats (24/96/48 hp)");
         hitDice = 4 + 16 + 8;
     } else if (dieRoll <= 55) {
         dieRoll = roll("1d100", rnd);
         if (dieRoll <= 50) {
             hitDice = 10;
-            asprintf_or_die(&type, "marble elephant, asiatic (%i hp)",
-                            roll("10d8", rnd));
+            type = str_alloc_formatted("marble elephant, asiatic (%i hp)",
+                                       roll("10d8", rnd));
         } else if (dieRoll <= 90) {
             hitDice = 11;
-            asprintf_or_die(&type, "marble elephant, african (%i hp)",
-                            roll("11d8", rnd));
+            type = str_alloc_formatted("marble elephant, african (%i hp)",
+                                       roll("11d8", rnd));
         } else if (dieRoll <= 93) {
             hitDice = 13;
-            asprintf_or_die(&type, "marble elephant, mammoth (%i hp)",
-                            roll("13d8", rnd));
+            type = str_alloc_formatted("marble elephant, mammoth (%i hp)",
+                                       roll("13d8", rnd));
         } else {
             hitDice = 12;
-            asprintf_or_die(&type, "marble elephant, mastodon (%i hp)",
-                            roll("12d8", rnd));
+            type = str_alloc_formatted("marble elephant, mastodon (%i hp)",
+                                       roll("12d8", rnd));
         }
     } else if (dieRoll <= 65) {
         hitDice = 6;
-        asprintf_or_die(&type, "obsidian steed (%i hp)", roll("6d8+6", rnd));
+        type = str_alloc_formatted("obsidian steed (%i hp)",
+                                   roll("6d8+6", rnd));
     } else if (dieRoll <= 85) {
         hitDice = 2;
-        asprintf_or_die(&type, "onyx dog (%i hp)", roll("2d8+2", rnd));
+        type = str_alloc_formatted("onyx dog (%i hp)", roll("2d8+2", rnd));
     } else {
         hitDice = 4;
-        asprintf_or_die(&type, "serpentine owl (%i hp)", roll("4d8", rnd));
+        type = str_alloc_formatted("serpentine owl (%i hp)", roll("4d8", rnd));
     }
     
     magicItem->experiencePoints = hitDice * 100;
     magicItem->trueValue_cp = gp_to_cp(hitDice * 1000);
     
-    asprintf_or_die(&magicItem->trueDescription,
-                    "figurine of wondrous power: %s", type);
+    magicItem->trueDescription = str_alloc_formatted("figurine of wondrous power: %s",
+                                                     type);
     free_or_die(type);
 }
 
@@ -487,8 +494,8 @@ static void generateGirdleOfGiantStrength(struct MagicItem *magicItem,
     magicItem->experiencePoints = 200;
     magicItem->trueValue_cp = gp_to_cp(2500);
     
-    asprintf_or_die(&magicItem->trueDescription,
-                    "girdle of %s giant strength", type);
+    magicItem->trueDescription = str_alloc_formatted("girdle of %s giant strength",
+                                                     type);
 }
 
 
@@ -531,10 +538,11 @@ static void generateHornOfValhalla(struct MagicItem *magicItem,
             case 8: alignment = "chaotic good"; break;
             default: fail("1d8 die roll is %i", dieRoll); break;
         }
-        asprintf_or_die(&magicItem->trueDescription, "%s horn of Valhalla (%s)",
-                        type, alignment);
+        magicItem->trueDescription = str_alloc_formatted("%s horn of Valhalla (%s)",
+                                                         type, alignment);
     } else {
-        asprintf_or_die(&magicItem->trueDescription, "%s horn of Valhalla", type);
+        magicItem->trueDescription = str_alloc_formatted("%s horn of Valhalla",
+                                                         type);
     }
 }
 
@@ -548,8 +556,8 @@ static void generateIounStones(struct MagicItem *magicItem, struct rnd *rnd)
     magicItem->trueValue_cp = gp_to_cp(quantity * 5000);
     
     char const *plural = (quantity == 1) ? "" : "s";
-    asprintf_or_die(&magicItem->trueDescription, "(%i) ioun stone%s",
-                    quantity, plural);
+    magicItem->trueDescription = str_alloc_formatted("(%i) ioun stone%s",
+                                                     quantity, plural);
 }
 
 
@@ -586,8 +594,8 @@ static void generateInstrumentOfTheBards(struct MagicItem *magicItem,
     magicItem->experiencePoints = level * 1000;
     magicItem->trueValue_cp = gp_to_cp(level * 5000);
     
-    asprintf_or_die(&magicItem->trueDescription,
-                    "instrument of the bards: %s", name);
+    magicItem->trueDescription = str_alloc_formatted("instrument of the bards: %s",
+                                                     name);
 }
 
 
@@ -600,8 +608,8 @@ static void generateJewelOfFlawlessness(struct MagicItem *magicItem,
     magicItem->trueValue_cp = gp_to_cp(facets * 1000);
     
     char const *plural = (facets == 1) ? "" : "s";
-    asprintf_or_die(&magicItem->trueDescription,
-                    "jewel of flawlessness with %i facet%s", facets, plural);
+    magicItem->trueDescription = str_alloc_formatted("jewel of flawlessness with %i facet%s",
+                                                     facets, plural);
 }
 
 
@@ -678,7 +686,8 @@ static void generateMedallionOfESP(struct MagicItem *magicItem,
         magicItem->trueValue_cp = gp_to_cp(30000);
     }
     
-    asprintf_or_die(&magicItem->trueDescription, "medallion of ESP, %s", type);
+    magicItem->trueDescription = str_alloc_formatted("medallion of ESP, %s",
+                                                     type);
 }
 
 
@@ -740,7 +749,8 @@ static void generateMiscMagicItemTable1(struct MagicItem *magicItem,
     } else {
         magicItem->experiencePoints = miscMagicItem->experiencePoints;
         magicItem->trueValue_cp = gp_to_cp(miscMagicItem->saleValue_gp);
-        asprintf_or_die(&magicItem->trueDescription, "%s", miscMagicItem->name);
+        magicItem->trueDescription = str_alloc_formatted("%s",
+                                                         miscMagicItem->name);
     }
 }
 
@@ -800,7 +810,8 @@ static void generateMiscMagicItemTable2(struct MagicItem *magicItem,
     } else {
         magicItem->experiencePoints = miscMagicItem->experiencePoints;
         magicItem->trueValue_cp = gp_to_cp(miscMagicItem->saleValue_gp);
-        asprintf_or_die(&magicItem->trueDescription, "%s", miscMagicItem->name);
+        magicItem->trueDescription = str_alloc_formatted("%s",
+                                                         miscMagicItem->name);
     }
 }
 
@@ -863,7 +874,8 @@ static void generateMiscMagicItemTable3(struct MagicItem *magicItem,
     } else {
         magicItem->experiencePoints = miscMagicItem->experiencePoints;
         magicItem->trueValue_cp = gp_to_cp(miscMagicItem->saleValue_gp);
-        asprintf_or_die(&magicItem->trueDescription, "%s", miscMagicItem->name);
+        magicItem->trueDescription = str_alloc_formatted("%s",
+                                                         miscMagicItem->name);
     }
 }
 
@@ -929,7 +941,8 @@ static void generateMiscMagicItemTable4(struct MagicItem *magicItem,
     } else {
         magicItem->experiencePoints = miscMagicItem->experiencePoints;
         magicItem->trueValue_cp = gp_to_cp(miscMagicItem->saleValue_gp);
-        asprintf_or_die(&magicItem->trueDescription, "%s", miscMagicItem->name);
+        magicItem->trueDescription = str_alloc_formatted("%s",
+                                                         miscMagicItem->name);
     }
 }
 
@@ -994,7 +1007,8 @@ static void generateMiscMagicItemTable5(struct MagicItem *magicItem,
     } else {
         magicItem->experiencePoints = miscMagicItem->experiencePoints;
         magicItem->trueValue_cp = gp_to_cp(miscMagicItem->saleValue_gp);
-        asprintf_or_die(&magicItem->trueDescription, "%s", miscMagicItem->name);
+        magicItem->trueDescription = str_alloc_formatted("%s",
+                                                         miscMagicItem->name);
     }
 }
 
@@ -1066,10 +1080,12 @@ static void generateMiscWeapon(struct MagicItem *magicItem, struct rnd *rnd)
     magicItem->trueValue_cp = gp_to_cp(miscWeapon->saleValue_gp * quantity);
     
     if (1 == quantity) {
-        asprintf_or_die(&magicItem->trueDescription, "%s", miscWeapon->name);
+        magicItem->trueDescription = str_alloc_formatted("%s",
+                                                         miscWeapon->name);
     } else {
-        asprintf_or_die(&magicItem->trueDescription, "(%i) %s",
-                        quantity, miscWeapon->name);
+        magicItem->trueDescription = str_alloc_formatted("(%i) %s",
+                                                         quantity,
+                                                         miscWeapon->name);
     }
 }
 
@@ -1106,8 +1122,8 @@ static void generateNecklaceOfMissiles(struct MagicItem *magicItem,
     
     magicItem->experiencePoints = totalHitDice * 50;
     magicItem->trueValue_cp = gp_to_cp(totalHitDice * 200);
-    asprintf_or_die(&magicItem->trueDescription,
-                    "necklace of missiles (with %s missiles)", type);
+    magicItem->trueDescription = str_alloc_formatted("necklace of missiles (with %s missiles)",
+                                                     type);
 }
 
 
@@ -1170,8 +1186,8 @@ static void generateNecklaceOfPrayerBeads(struct MagicItem *magicItem,
     
     magicItem->experiencePoints = specialBeadTotal * 500;
     magicItem->trueValue_cp = gp_to_cp(specialBeadTotal * 3000);
-    asprintf_or_die(&magicItem->trueDescription,
-                    "necklace of prayer beads with %s", buffer);
+    magicItem->trueDescription = str_alloc_formatted("necklace of prayer beads with %s",
+                                                     buffer);
 }
 
 
@@ -1203,8 +1219,8 @@ static void generateOrbOfDragonkind(struct MagicItem *magicItem,
     }
     magicItem->experiencePoints = 0;
     magicItem->trueValue_cp = gp_to_cp(dieRoll * 10000);
-    asprintf_or_die(&magicItem->trueDescription,
-                    "orb of dragonkind: orb of the %s", type);
+    magicItem->trueDescription = str_alloc_formatted("orb of dragonkind: orb of the %s",
+                                                     type);
 }
 
 
@@ -1249,9 +1265,9 @@ static void generatePearlOfPower(struct MagicItem *magicItem,
     magicItem->trueValue_cp = gp_to_cp(spellLevel * spellQuantity * 2000);
     
     char const *plural = (spellQuantity == 1) ? "" : "s";
-    asprintf_or_die(&magicItem->trueDescription,
-                    "pearl of power: %s %i level %i spell%s",
-                    effect, spellQuantity, spellLevel, plural);
+    magicItem->trueDescription = str_alloc_formatted("pearl of power: %s %i level %i spell%s",
+                                                     effect, spellQuantity,
+                                                     spellLevel, plural);
 }
 
 
@@ -1320,7 +1336,8 @@ static void generatePotion(struct MagicItem *magicItem, struct rnd *rnd)
     } else {
         magicItem->experiencePoints = potion->experiencePoints;
         magicItem->trueValue_cp = gp_to_cp(potion->saleValue_gp);
-        asprintf_or_die(&magicItem->trueDescription, "%s potion", potion->name);
+        magicItem->trueDescription = str_alloc_formatted("%s potion",
+                                                         potion->name);
     }
 }
 
@@ -1381,8 +1398,8 @@ static void generatePotionOfDragonControl(struct MagicItem *magicItem,
         magicItem->trueValue_cp = gp_to_cp(9000);
     }
     
-    asprintf_or_die(&magicItem->trueDescription,
-                    "potion of %s dragon control", type);
+    magicItem->trueDescription = str_alloc_formatted("potion of %s dragon control",
+                                                     type);
 }
 
 
@@ -1415,8 +1432,8 @@ static void generatePotionOfGiantControl(struct MagicItem *magicItem,
     
     magicItem->experiencePoints = level * 100 + 300;
     magicItem->trueValue_cp = gp_to_cp(level * 1000);
-    asprintf_or_die(&magicItem->trueDescription,
-                    "potion of %s giant control", type);
+    magicItem->trueDescription = str_alloc_formatted("potion of %s giant control",
+                                                     type);
 }
 
 
@@ -1449,8 +1466,8 @@ static void generatePotionOfGiantStrength(struct MagicItem *magicItem,
     
     magicItem->experiencePoints = level * 50 + 450;
     magicItem->trueValue_cp = gp_to_cp(level * 100 + 800);
-    asprintf_or_die(&magicItem->trueDescription,
-                    "potion of %s giant strength", type);
+    magicItem->trueDescription = str_alloc_formatted("potion of %s giant strength",
+                                                     type);
 }
 
 
@@ -1486,8 +1503,8 @@ static void generateQuaalsFeatherToken(struct MagicItem *magicItem,
         magicItem->trueValue_cp = gp_to_cp(7000);
     }
     
-    asprintf_or_die(&magicItem->trueDescription,
-                    "Quaal's feather token: %s", type);
+    magicItem->trueDescription = str_alloc_formatted("Quaal's feather token: %s",
+                                                     type);
 }
 
 
@@ -1546,7 +1563,8 @@ static void generateRing(struct MagicItem *magicItem, struct rnd *rnd)
     } else {
         magicItem->experiencePoints = ring->experiencePoints;
         magicItem->trueValue_cp = gp_to_cp(ring->saleValue_gp);
-        asprintf_or_die(&magicItem->trueDescription, "ring of %s", ring->name);
+        magicItem->trueDescription = str_alloc_formatted("ring of %s",
+                                                         ring->name);
     }
 }
 
@@ -1581,7 +1599,8 @@ static void generateRingOfProtection(struct MagicItem *magicItem,
     }
     
     magicItem->trueValue_cp = gp_to_cp(magicItem->experiencePoints * 5);
-    asprintf_or_die(&magicItem->trueDescription, "ring of protection %s", type);
+    magicItem->trueDescription = str_alloc_formatted("ring of protection %s",
+                                                     type);
 }
 
 
@@ -1643,7 +1662,8 @@ static void generateRodStaffOrWand(struct MagicItem *magicItem,
     magicItem->experiencePoints = rodStaffOrWand->experiencePoints;
     magicItem->trueValue_cp = gp_to_cp(rodStaffOrWand->saleValue_gp);
     
-    asprintf_or_die(&magicItem->trueDescription, "%s", rodStaffOrWand->name);
+    magicItem->trueDescription = str_alloc_formatted("%s",
+                                                     rodStaffOrWand->name);
 }
 
 
@@ -1731,8 +1751,9 @@ static void generateScroll(struct MagicItem *magicItem, struct rnd *rnd)
         for (int i = 0; i < scroll->spellCount; ++i) {
             int spellLevel = roll(spellLevelRange, rnd);
             char const *spellName = determineSpell(rnd, spellType, spellLevel);
-            asprintf_or_die(&magicItem->trueDetails[i], "level %i: %s",
-                            spellLevel, spellName);
+            magicItem->trueDetails[i] = str_alloc_formatted("level %i: %s",
+                                                            spellLevel,
+                                                            spellName);
             spellLevels += spellLevel;
         }
         
@@ -1740,12 +1761,15 @@ static void generateScroll(struct MagicItem *magicItem, struct rnd *rnd)
         magicItem->trueValue_cp = gp_to_cp(scroll->saleValue_gp * spellLevels);
         
         char const *plural = scroll->spellCount == 1 ? "" : "s";
-        asprintf_or_die(&magicItem->trueDescription, "%s scroll (%i spell%s)",
-                        spellTypeName, scroll->spellCount, plural);
+        magicItem->trueDescription = str_alloc_formatted("%s scroll (%i spell%s)",
+                                                         spellTypeName,
+                                                         scroll->spellCount,
+                                                         plural);
     } else {
         magicItem->experiencePoints = scroll->experiencePoints;
         magicItem->trueValue_cp = gp_to_cp(scroll->saleValue_gp);
-        asprintf_or_die(&magicItem->trueDescription, "%s scroll", scroll->name);
+        magicItem->trueDescription = str_alloc_formatted("%s scroll",
+                                                         scroll->name);
     }
 }
 
@@ -1825,7 +1849,8 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
     } else {
         swordType = "two-handed sword";
     }
-    asprintf_or_die(&magicItem->trueDescription, sword->nameFormat, swordType);
+    magicItem->trueDescription = str_alloc_formatted(sword->nameFormat,
+                                                     swordType);
     
     int detailCount = 0;
     while (sword->details[detailCount]) {
@@ -1881,7 +1906,8 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
     assert(intelligence);
     
     char *trueDescription = magicItem->trueDescription;
-    asprintf_or_die(&magicItem->trueDescription, "%s (unusual)", trueDescription);
+    magicItem->trueDescription = str_alloc_formatted("%s (unusual)",
+                                                     trueDescription);
     free_or_die(trueDescription);
     
     int detailCapacity = detailCount +
@@ -1901,8 +1927,9 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
         memset(startOfUnused, 0, sizeOfUnused);
     }
     
-    asprintf_or_die(&magicItem->trueDetails[detailCount], "intelligence %i (%s)",
-                    intelligence, communication);
+    magicItem->trueDetails[detailCount] = str_alloc_formatted("intelligence %i (%s)",
+                                                              intelligence,
+                                                              communication);
     ++detailCount;
     assert(detailCount < detailCapacity);
     
@@ -1927,8 +1954,8 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
     } else {
         alignment = "neutral good";
     }
-    asprintf_or_die(&magicItem->trueDetails[detailCount],
-                    "%s alignment", alignment);
+    magicItem->trueDetails[detailCount] = str_alloc_formatted("%s alignment",
+                                                              alignment);
     ++detailCount;
     assert(detailCount < detailCapacity);
     
@@ -1992,63 +2019,53 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
     ego += primaryAbilities.count;
     
     if (primaryAbilities.detectElevators) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "detect \"elevator\"/shifting rooms/walls in a %.0f\" radius",
-                        primaryAbilities.detectElevators);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("detect \"elevator\"/shifting rooms/walls in a %.0f\" radius",
+                                                                  primaryAbilities.detectElevators);
         ++detailCount;
     }
     if (primaryAbilities.detectSlopingPassages) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "detect sloping passages in a %.0f\" radius",
-                        primaryAbilities.detectSlopingPassages);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("detect sloping passages in a %.0f\" radius",
+                                                                  primaryAbilities.detectSlopingPassages);
         ++detailCount;
     }
     if (primaryAbilities.detectTraps) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "detect traps of large size in a %.0f\" radius",
-                        primaryAbilities.detectTraps);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("detect traps of large size in a %.0f\" radius",
+                                                                  primaryAbilities.detectTraps);
         ++detailCount;
     }
     if (primaryAbilities.detectEvilGood) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "detect evil/good in a %.0f\" radius",
-                        primaryAbilities.detectEvilGood);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("detect evil/good in a %.0f\" radius",
+                                                                  primaryAbilities.detectEvilGood);
         ++detailCount;
     }
     if (primaryAbilities.detectPreciousMetals) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "detect precious metals, kind and amount in a %.0f\" radius",
-                        primaryAbilities.detectPreciousMetals);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("detect precious metals, kind and amount in a %.0f\" radius",
+                                                                  primaryAbilities.detectPreciousMetals);
         ++detailCount;
     }
     if (primaryAbilities.detectGems) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "detect gems, kind and number in a %.1f\" radius",
-                        primaryAbilities.detectGems);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("detect gems, kind and number in a %.1f\" radius",
+                                                                  primaryAbilities.detectGems);
         ++detailCount;
     }
     if (primaryAbilities.detectMagic) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "detect magic in a %.0f\" radius",
-                        primaryAbilities.detectMagic);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("detect magic in a %.0f\" radius",
+                                                                  primaryAbilities.detectMagic);
         ++detailCount;
     }
     if (primaryAbilities.detectSecretDoors) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "detect secret doors in a %.1f\" radius",
-                        primaryAbilities.detectSecretDoors);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("detect secret doors in a %.1f\" radius",
+                                                                  primaryAbilities.detectSecretDoors);
         ++detailCount;
     }
     if (primaryAbilities.detectInvisible) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "detect invisible objects in a %.0f\" radius",
-                        primaryAbilities.detectInvisible);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("detect invisible objects in a %.0f\" radius",
+                                                                  primaryAbilities.detectInvisible);
         ++detailCount;
     }
     if (primaryAbilities.locateObject) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "locate object in a %.0f\" radius",
-                        primaryAbilities.locateObject);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("locate object in a %.0f\" radius",
+                                                                  primaryAbilities.locateObject);
         ++detailCount;
     }
     assert(detailCount < detailCapacity);
@@ -2162,87 +2179,73 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
     ego += extraordinaryPowers.count * 2;
     
     if (extraordinaryPowers.charmPerson) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "charm person on contact - %i times/day",
-                        extraordinaryPowers.charmPerson);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("charm person on contact - %i times/day",
+                                                                  extraordinaryPowers.charmPerson);
         ++detailCount;
     }
     if (extraordinaryPowers.clairaudience) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "clairaudience, 3\" range - %i times/day, 1 round per use",
-                        extraordinaryPowers.clairaudience);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("clairaudience, 3\" range - %i times/day, 1 round per use",
+                                                                  extraordinaryPowers.clairaudience);
         ++detailCount;
     }
     if (extraordinaryPowers.clairvoyance) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "clairvoyance, 3\" range - %i times/day, 1 round per use",
-                        extraordinaryPowers.clairvoyance);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("clairvoyance, 3\" range - %i times/day, 1 round per use",
+                                                                  extraordinaryPowers.clairvoyance);
         ++detailCount;
     }
     if (extraordinaryPowers.determineDirections) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "determine directions and depth - %i times/day",
-                        extraordinaryPowers.determineDirections);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("determine directions and depth - %i times/day",
+                                                                  extraordinaryPowers.determineDirections);
         ++detailCount;
     }
     if (extraordinaryPowers.esp) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "ESP, 3\" range - %i times/day, 1 round per use",
-                        extraordinaryPowers.esp);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("ESP, 3\" range - %i times/day, 1 round per use",
+                                                                  extraordinaryPowers.esp);
         ++detailCount;
     }
     if (extraordinaryPowers.flying) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "flying, 12\"/turn - %i hours/day",
-                        extraordinaryPowers.flying);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("flying, 12\"/turn - %i hours/day",
+                                                                  extraordinaryPowers.flying);
         ++detailCount;
     }
     if (extraordinaryPowers.heal) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "heal - %i times/day",
-                        extraordinaryPowers.heal);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("heal - %i times/day",
+                                                                  extraordinaryPowers.heal);
         ++detailCount;
     }
     if (extraordinaryPowers.illusion) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "illusion, 12\" range - %i times/day, as the wand",
-                        extraordinaryPowers.illusion);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("illusion, 12\" range - %i times/day, as the wand",
+                                                                  extraordinaryPowers.illusion);
         ++detailCount;
     }
     if (extraordinaryPowers.levitation) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "levitation, 1 turn duration - %i times/day, at 6th level of magic use ability",
-                        extraordinaryPowers.levitation);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("levitation, 1 turn duration - %i times/day, at 6th level of magic use ability",
+                                                                  extraordinaryPowers.levitation);
         ++detailCount;
     }
     if (extraordinaryPowers.strength) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "strength - %i times/day (upon wielder only)",
-                        extraordinaryPowers.strength);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("strength - %i times/day (upon wielder only)",
+                                                                  extraordinaryPowers.strength);
         ++detailCount;
     }
     if (extraordinaryPowers.telekinesis) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "telekinesis, 2,500 gp wt maximum - %i times/day, 1 round each use",
-                        extraordinaryPowers.telekinesis);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("telekinesis, 2,500 gp wt maximum - %i times/day, 1 round each use",
+                                                                  extraordinaryPowers.telekinesis);
         ++detailCount;
     }
     if (extraordinaryPowers.telepathy) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "telepathy, 6\" range - %i times/day",
-                        extraordinaryPowers.telepathy);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("telepathy, 6\" range - %i times/day",
+                                                                  extraordinaryPowers.telepathy);
         ++detailCount;
     }
     if (extraordinaryPowers.teleportation) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "teleportation - %i times/day, 6,000 gp wt maximum, 2 segments to activate",
-                        extraordinaryPowers.teleportation);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("teleportation - %i times/day, 6,000 gp wt maximum, 2 segments to activate",
+                                                                  extraordinaryPowers.teleportation);
         ++detailCount;
     }
     if (extraordinaryPowers.xrayVision) {
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "X-ray vision, 4\" range - %i times/day, 1 turn per use",
-                        extraordinaryPowers.xrayVision);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("X-ray vision, 4\" range - %i times/day, 1 turn per use",
+                                                                  extraordinaryPowers.xrayVision);
         ++detailCount;
     }
     assert(detailCount < detailCapacity);
@@ -2274,8 +2277,8 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
         } else {
             specialPurpose = "slay non-human monsters";
         }
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        "special purpose: %s", specialPurpose);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted("special purpose: %s",
+                                                                  specialPurpose);
         ++detailCount;
         assert(detailCount < detailCapacity);
         
@@ -2298,8 +2301,8 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
             specialPurposePower = "+2 on all saving throws, -1 on each die of damage sustained";
             format = "special purpose power: %s";
         }
-        asprintf_or_die(&magicItem->trueDetails[detailCount],
-                        format, specialPurposePower);
+        magicItem->trueDetails[detailCount] = str_alloc_formatted(format,
+                                                                  specialPurposePower);
         ++detailCount;
         assert(detailCount < detailCapacity);
     }
@@ -2361,9 +2364,8 @@ static void generateSword(struct MagicItem *magicItem, struct rnd *rnd)
         assert(detailCount < detailCapacity);
     }
     
-    asprintf_or_die(&magicItem->trueDetails[detailCount],
-                    "personality strength %i (ego %i)",
-                    (intelligence + ego), ego);
+    magicItem->trueDetails[detailCount] = str_alloc_formatted("personality strength %i (ego %i)",
+                                                              (intelligence + ego), ego);
     ++detailCount;
     assert(detailCount < detailCapacity);
 }
@@ -2376,8 +2378,7 @@ static void generateTeethOfDahlverNar(struct MagicItem *magicItem,
     
     magicItem->experiencePoints = 0;
     magicItem->trueValue_cp = gp_to_cp(5000);
-    asprintf_or_die(&magicItem->trueDescription,
-                    "tooth of Dahlver-Nar (#%i)", toothNumber);
+    magicItem->trueDescription = str_alloc_formatted("tooth of Dahlver-Nar (#%i)", toothNumber);
 }
 
 

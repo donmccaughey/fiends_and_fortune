@@ -13,6 +13,26 @@ str_alloc_empty(void)
 }
 
 
+char *
+str_alloc_formatted(char const *format, ...)
+{
+    va_list arguments;
+    va_start(arguments, format);
+    char *str = str_alloc_formatted_from_va_list(format, arguments);
+    va_end(arguments);
+    return str;
+}
+
+
+char *
+str_alloc_formatted_from_va_list(char const *format, va_list arguments)
+{
+    char *str = NULL;
+    vasprintf_or_die(&str, format, arguments);
+    return str;
+}
+
+
 size_t
 str_formatted_length(char const *format, ...)
 {

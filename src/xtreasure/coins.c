@@ -39,15 +39,13 @@ char *
 coins_alloc_gp_cp_description(int cp)
 {
     struct coins coins = coins_make_from_gp_cp(0, cp);
-    char *description;
     if (coins.gp && coins.cp) {
-        asprintf_or_die(&description, "%i gp, %i cp", coins.gp, coins.cp);
+        return str_alloc_formatted("%i gp, %i cp", coins.gp, coins.cp);
     } else if (coins.gp) {
-        asprintf_or_die(&description, "%i gp", coins.gp);
+        return str_alloc_formatted("%i gp", coins.gp);
     } else {
-        asprintf_or_die(&description, "%i cp", coins.cp);
+        return str_alloc_formatted("%i cp", coins.cp);
     }
-    return description;
 }
 
 
