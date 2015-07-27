@@ -13,18 +13,18 @@ str_alloc_empty(void)
 
 
 size_t
-str_length_of_format(char const *format, ...)
+str_formatted_length(char const *format, ...)
 {
     va_list arguments;
     va_start(arguments, format);
-    size_t length = str_length_of_format_arguments(format, arguments);
+    size_t length = str_formatted_length_from_va_list(format, arguments);
     va_end(arguments);
     return length;
 }
 
 
 size_t
-str_length_of_format_arguments(char const *format, va_list arguments)
+str_formatted_length_from_va_list(char const *format, va_list arguments)
 {
     va_list arguments_copy;
     va_copy(arguments_copy, arguments);
@@ -33,22 +33,22 @@ str_length_of_format_arguments(char const *format, va_list arguments)
 
 
 char *
-str_realloc_append_format(char *str, char const *format, ...)
+str_realloc_append_formatted(char *str, char const *format, ...)
 {
     va_list arguments;
     va_start(arguments, format);
-    str = str_realloc_append_format_arguments(str, format, arguments);
+    str = str_realloc_append_formatted_from_va_list(str, format, arguments);
     va_end(arguments);
     return str;
 }
 
 
 char *
-str_realloc_append_format_arguments(char *str,
-                                    char const *format,
-                                    va_list arguments)
+str_realloc_append_formatted_from_va_list(char *str,
+                                          char const *format,
+                                          va_list arguments)
 {
-    size_t append_length = str_length_of_format_arguments(format, arguments);
+    size_t append_length = str_formatted_length_from_va_list(format, arguments);
     if ( ! append_length) return str;
     
     size_t original_length = strlen(str);

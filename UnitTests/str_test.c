@@ -15,19 +15,19 @@ str_realloc_format_test(void)
     char *str = str_alloc_empty();
     assert('\0' == str[0]);
     
-    str = str_realloc_append_format(str, "foo");
+    str = str_realloc_append_formatted(str, "foo");
     assert(0 == strcmp("foo", str));
     
-    str = str_realloc_append_format(str, "%s", "bar");
+    str = str_realloc_append_formatted(str, "%s", "bar");
     assert(0 == strcmp("foobar", str));
     
-    str = str_realloc_append_format(str, "%c%c%c", 'b', 'a', 'z');
+    str = str_realloc_append_formatted(str, "%c%c%c", 'b', 'a', 'z');
     assert(0 == strcmp("foobarbaz", str));
     
-    str = str_realloc_append_format(str, " %i", 42);
+    str = str_realloc_append_formatted(str, " %i", 42);
     assert(0 == strcmp("foobarbaz 42", str));
     
-    str = str_realloc_append_format(str, " x %.2f", M_PI);
+    str = str_realloc_append_formatted(str, " x %.2f", M_PI);
     assert(0 == strcmp("foobarbaz 42 x 3.14", str));
     
     free_or_die(str);

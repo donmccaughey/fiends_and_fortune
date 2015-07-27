@@ -51,7 +51,7 @@ static int const gemValuesByRank_cp[] = {
 };
 
 static size_t const gemValuesByRank_cpCount = sizeof gemValuesByRank_cp
-/ sizeof(gemValuesByRank_cp[0]);
+                                            / sizeof(gemValuesByRank_cp[0]);
 
 
 static char *describeGem(struct Gem *gem);
