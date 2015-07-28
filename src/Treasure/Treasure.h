@@ -11,11 +11,11 @@ struct jewelry;
 struct MagicItem;
 struct rnd;
 struct treasure_map;
-struct TreasureType;
+struct treasure_type;
 
 
 struct Treasure {
-    struct TreasureType *type;
+    struct treasure_type *type;
     struct coins coins;
     struct gem *gems;
     int gemsCount;

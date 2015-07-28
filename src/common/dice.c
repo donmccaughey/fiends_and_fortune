@@ -1,12 +1,10 @@
 #include "dice.h"
 
 #include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
-#include "fail.h"
-#include "rnd.h"
+#include "common/rnd.h"
+#include "common/str.h"
 
 
 static int
@@ -17,6 +15,69 @@ compare_die_scores(void const *item1, void const *item2)
     if (*score1 < *score2) return -1;
     if (*score1 > *score2) return 1;
     return 0;
+}
+
+
+char *
+dice_alloc_description(struct dice dice)
+{
+    char *description = NULL;
+    str_realloc_append_formatted(&description, "%id%i", dice.count, dice.sides);
+    if (dice.modifier) {
+        str_realloc_append_formatted(&description, "%+i", dice.modifier);
+    }
+    if (1 != dice.multiplier) {
+        str_realloc_append_formatted(&description, "x%i", dice.multiplier);
+    }
+    return description;
+}
+
+
+char *
+dice_alloc_range_description(struct dice dice)
+{
+    return str_alloc_formatted("%i-%i",
+                               dice_min_score(dice), dice_max_score(dice));
+}
+
+
+struct dice
+dice_make(int count, int sides)
+{
+    return dice_make_plus(count, sides, 0);
+}
+
+
+struct dice
+dice_make_plus(int count, int sides, int modifier)
+{
+    return dice_make_plus_times(count, sides, modifier, 1);
+}
+
+
+struct dice
+dice_make_plus_times(int count, int sides, int modifier, int multiplier)
+{
+    return (struct dice){
+        .count=count,
+        .sides=sides,
+        .modifier=modifier,
+        .multiplier=multiplier,
+    };
+}
+
+
+int
+dice_max_score(struct dice dice)
+{
+    return ((dice.count * dice.sides) + dice.modifier) * dice.multiplier;
+}
+
+
+int
+dice_min_score(struct dice dice)
+{
+    return (dice.count + dice.modifier) * dice.multiplier;
 }
 
 
@@ -162,14 +223,8 @@ dice_roll(struct dice dice, struct rnd *rnd, int die_scores[])
 }
 
 
-extern inline struct dice
-dice_make(int count, int sides);
-
-extern inline int
-dice_max_score(struct dice dice);
-
-extern inline int
-dice_min_score(struct dice dice);
-
-extern inline int
-roll(char const *dice_string, struct rnd *rnd);
+int
+roll(char const *dice_string, struct rnd *rnd)
+{
+    return dice_roll(dice_parse(dice_string), rnd, NULL);
+}

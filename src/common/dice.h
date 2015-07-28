@@ -18,28 +18,26 @@ struct dice {
 };
 
 
-inline struct dice
-dice_make(int count, int sides)
-{
-    return (struct dice){
-        .count=count,
-        .sides=sides,
-        .modifier=0,
-        .multiplier=1,
-    };
-}
+char *
+dice_alloc_description(struct dice dice);
 
-inline int
-dice_max_score(struct dice dice)
-{
-    return ((dice.count * dice.sides) + dice.modifier) * dice.multiplier;
-}
+char *
+dice_alloc_range_description(struct dice dice);
 
-inline int
-dice_min_score(struct dice dice)
-{
-    return (dice.count + dice.modifier) * dice.multiplier;
-}
+struct dice
+dice_make(int count, int sides);
+
+struct dice
+dice_make_plus(int count, int sides, int modifier);
+
+struct dice
+dice_make_plus_times(int count, int sides, int modifier, int multiplier);
+
+int
+dice_max_score(struct dice dice);
+
+int
+dice_min_score(struct dice dice);
 
 struct dice
 dice_parse(char const *dice_string);
@@ -56,11 +54,8 @@ dice_roll_and_adjust_upwards(struct dice dice, struct rnd *rnd);
 int
 dice_roll_and_drop_lowest(struct dice dice, struct rnd *rnd);
 
-inline int
-roll(char const *dice_string, struct rnd *rnd)
-{
-    return dice_roll(dice_parse(dice_string), rnd, NULL);
-}
+int
+roll(char const *dice_string, struct rnd *rnd);
 
 
 #endif /* #ifndef DICE_H_INCLUDED */

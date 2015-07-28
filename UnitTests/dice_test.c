@@ -1,11 +1,63 @@
 #include <assert.h>
+#include <string.h>
 
-#include "dice.h"
-#include "rnd.h"
+#include "common/alloc_or_die.h"
+#include "common/dice.h"
+#include "common/rnd.h"
 
 
 void
 dice_test(void);
+
+
+static void
+dice_alloc_description_test(void)
+{
+    char *description = dice_alloc_description(dice_make(3, 6));
+    assert(0 == strcmp("3d6", description));
+    free_or_die(description);
+
+    description = dice_alloc_description(dice_make_plus(2, 8, 1));
+    assert(0 == strcmp("2d8+1", description));
+    free_or_die(description);
+
+    description = dice_alloc_description(dice_make_plus(2, 4, -1));
+    assert(0 == strcmp("2d4-1", description));
+    free_or_die(description);
+
+    description = dice_alloc_description(dice_make_plus_times(1, 10, 0, 10));
+    assert(0 == strcmp("1d10x10", description));
+    free_or_die(description);
+
+    description = dice_alloc_description(dice_make_plus_times(1, 4, 1, 10000));
+    assert(0 == strcmp("1d4+1x10000", description));
+    free_or_die(description);
+}
+
+
+static void
+dice_alloc_range_description_test(void)
+{
+    char *description = dice_alloc_range_description(dice_make(3, 6));
+    assert(0 == strcmp("3-18", description));
+    free_or_die(description);
+
+    description = dice_alloc_range_description(dice_make_plus(2, 8, 1));
+    assert(0 == strcmp("3-17", description));
+    free_or_die(description);
+
+    description = dice_alloc_range_description(dice_make_plus(2, 4, -1));
+    assert(0 == strcmp("1-7", description));
+    free_or_die(description);
+
+    description = dice_alloc_range_description(dice_make_plus_times(1, 10, 0, 10));
+    assert(0 == strcmp("10-100", description));
+    free_or_die(description);
+
+    description = dice_alloc_range_description(dice_make_plus_times(1, 4, 1, 10000));
+    assert(0 == strcmp("20000-50000", description));
+    free_or_die(description);
+}
 
 
 static void
@@ -88,7 +140,7 @@ dice_parse_test(void)
 
 
 static void
-rollTest(void)
+roll_test(void)
 {
     struct rnd *always_one = rnd_alloc_fake_fixed(0);
     struct rnd *always_two = rnd_alloc_fake_fixed(1);
@@ -199,8 +251,10 @@ dice_roll_and_drop_lowest_test(void)
 void
 dice_test(void)
 {
+    dice_alloc_description_test();
+    dice_alloc_range_description_test();
     dice_parse_test();
-    rollTest();
+    roll_test();
     dice_roll_with_average_scoring_test();
     dice_roll_and_drop_lowest_test();
 }

@@ -16,7 +16,7 @@
 #include "TextGraph.h"
 #include "Treasure.h"
 #include "treasure_map.h"
-#include "TreasureType.h"
+#include "treasure_type.h"
 
 
 static void check(FILE *out, char const *constantNumber);
@@ -276,8 +276,8 @@ static void generateTreasureType(struct rnd *rnd, FILE *out, char letter)
     }
     
     initializeTreasure(&treasure);
-    generateTreasure(treasureTypeByLetter(letter),
-                     &treasure, rnd, individualCount);
+    treasure_generate(treasure_type_by_letter(letter),
+                      &treasure, rnd, individualCount);
     
     char *description = describeTreasure(&treasure);
     int value_cp = treasureValue_cp(&treasure);
@@ -294,8 +294,8 @@ static void generateTreasureType(struct rnd *rnd, FILE *out, char letter)
 static void generateTreasureTypeTable(FILE *out)
 {
     for (char letter = 'A'; letter <= 'Z'; ++letter) {
-        struct TreasureType *treasureType = treasureTypeByLetter(letter);
-        char *description = describeTreasureType(treasureType, letter == 'A');
+        struct treasure_type *treasureType = treasure_type_by_letter(letter);
+        char *description = treasure_type_alloc_description(treasureType, letter == 'A');
         fprintf(out, "%s", description);
         free_or_die(description);
     }

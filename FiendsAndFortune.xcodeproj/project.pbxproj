@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B0F471090FDB337F53271C41 /* treasure_type.c in Sources */ = {isa = PBXBuildFile; fileRef = B0F477C49D3804D0ECCD1D15 /* treasure_type.c */; };
 		B0F47F36C1E3E9EE9F5E0BD7 /* treasure_map.c in Sources */ = {isa = PBXBuildFile; fileRef = B0F4715B2BA8EE1AB8D81DB9 /* treasure_map.c */; };
 		D4092F611B65D42B00BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
 		D4092F621B65D43000BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
-		D4092F6A1B65D44C00BFD0B3 /* TreasureType.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1A15ABDF8B004E7F2C /* TreasureType.c */; };
 		D4092F6F1B65D45700BFD0B3 /* MagicItem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1415ABDF8B004E7F2C /* MagicItem.c */; };
 		D4092F701B65D45700BFD0B3 /* Treasure.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B1615ABDF8B004E7F2C /* Treasure.c */; };
 		D4092F711B65D46600BFD0B3 /* Area.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA732A1606B85500B01DB5 /* Area.c */; };
@@ -73,6 +73,13 @@
 			remoteGlobalIDString = D43ED58F142146F800D25EEC;
 			remoteInfo = UnitTests;
 		};
+		D4F150951B673E3000711F34 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D4F73446140EF3DF0096618F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D4F7344E140EF3DF0096618F;
+			remoteInfo = fnf;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -98,8 +105,10 @@
 
 /* Begin PBXFileReference section */
 		B0F4715B2BA8EE1AB8D81DB9 /* treasure_map.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = treasure_map.c; sourceTree = "<group>"; };
+		B0F472E6D137C08300255339 /* treasure_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = treasure_type.h; sourceTree = "<group>"; };
 		B0F47782965430E75922F468 /* PointTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PointTest.c; sourceTree = "<group>"; };
 		B0F477897B7900AC9474FF81 /* treasure_map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = treasure_map.h; sourceTree = "<group>"; };
+		B0F477C49D3804D0ECCD1D15 /* treasure_type.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = treasure_type.c; sourceTree = "<group>"; };
 		D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibfnf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
 		D4092F7F1B65D6C200BFD0B3 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
@@ -130,8 +139,6 @@
 		D4783B1515ABDF8B004E7F2C /* MagicItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MagicItem.h; sourceTree = "<group>"; };
 		D4783B1615ABDF8B004E7F2C /* Treasure.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.c; path = Treasure.c; sourceTree = "<group>"; tabWidth = 4; };
 		D4783B1715ABDF8B004E7F2C /* Treasure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = Treasure.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		D4783B1A15ABDF8B004E7F2C /* TreasureType.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = TreasureType.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		D4783B1B15ABDF8B004E7F2C /* TreasureType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TreasureType.h; sourceTree = "<group>"; };
 		D4783B2315ABDFE9004E7F2C /* Character.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = Character.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		D4783B2415ABDFE9004E7F2C /* Character.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Character.h; sourceTree = "<group>"; };
 		D4783B2715ABDFF0004E7F2C /* Dungeon.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.c.c; path = Dungeon.c; sourceTree = "<group>"; tabWidth = 4; };
@@ -238,6 +245,8 @@
 				D45178801B6606EE00F26844 /* jewelry.c */,
 				B0F477897B7900AC9474FF81 /* treasure_map.h */,
 				B0F4715B2BA8EE1AB8D81DB9 /* treasure_map.c */,
+				B0F472E6D137C08300255339 /* treasure_type.h */,
+				B0F477C49D3804D0ECCD1D15 /* treasure_type.c */,
 			);
 			path = xtreasure;
 			sourceTree = "<group>";
@@ -249,8 +258,6 @@
 				D4783B1415ABDF8B004E7F2C /* MagicItem.c */,
 				D4783B1715ABDF8B004E7F2C /* Treasure.h */,
 				D4783B1615ABDF8B004E7F2C /* Treasure.c */,
-				D4783B1B15ABDF8B004E7F2C /* TreasureType.h */,
-				D4783B1A15ABDF8B004E7F2C /* TreasureType.c */,
 			);
 			path = Treasure;
 			sourceTree = "<group>";
@@ -380,6 +387,7 @@
 			buildToolPath = /usr/bin/make;
 			buildWorkingDirectory = "$(SRCROOT)";
 			dependencies = (
+				D4F150961B673E3000711F34 /* PBXTargetDependency */,
 			);
 			name = check;
 			passBuildSettingsInEnvironment = 1;
@@ -520,10 +528,10 @@
 				D4092F901B65D6C200BFD0B3 /* str.c in Sources */,
 				D4092F771B65D46600BFD0B3 /* Range.c in Sources */,
 				D4092F8A1B65D6C200BFD0B3 /* dice.c in Sources */,
-				D4092F6A1B65D44C00BFD0B3 /* TreasureType.c in Sources */,
 				D4092F761B65D46600BFD0B3 /* Points.c in Sources */,
 				D4092F791B65D46600BFD0B3 /* Tile.c in Sources */,
 				B0F47F36C1E3E9EE9F5E0BD7 /* treasure_map.c in Sources */,
+				B0F471090FDB337F53271C41 /* treasure_type.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -567,6 +575,11 @@
 			isa = PBXTargetDependency;
 			target = D43ED58F142146F800D25EEC /* UnitTests */;
 			targetProxy = D43ED5A01421483C00D25EEC /* PBXContainerItemProxy */;
+		};
+		D4F150961B673E3000711F34 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D4F7344E140EF3DF0096618F /* fnf */;
+			targetProxy = D4F150951B673E3000711F34 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -829,6 +842,7 @@
 				D48C3B101B66E70000A98ED7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D4F73449140EF3DF0096618F /* Build configuration list for PBXProject "FiendsAndFortune" */ = {
 			isa = XCConfigurationList;

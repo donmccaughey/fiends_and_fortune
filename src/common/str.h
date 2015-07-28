@@ -8,6 +8,14 @@
 
 
 char *
+str_alloc_centered_and_formatted(int width, char const *format, ...);
+
+char *
+str_alloc_centered_and_formatted_from_va_list(int width,
+                                              char const *format,
+                                              va_list arguments);
+
+char *
 str_alloc_empty(void);
 
 char *

@@ -1,12 +1,49 @@
 #include <assert.h>
 #include <math.h>
 
-#include "alloc_or_die.h"
-#include "str.h"
+#include "common/alloc_or_die.h"
+#include "common/str.h"
 
 
 void
 str_test(void);
+
+
+static void
+str_alloc_centered_and_formatted_test(void)
+{
+    char *str = str_alloc_centered_and_formatted(5, "foobar");
+    assert(0 == strcmp("foobar", str));
+    free_or_die(str);
+
+    str = str_alloc_centered_and_formatted(6, "foobar");
+    assert(0 == strcmp("foobar", str));
+    free_or_die(str);
+
+    str = str_alloc_centered_and_formatted(7, "foobar");
+    assert(0 == strcmp(" foobar", str));
+    free_or_die(str);
+
+    str = str_alloc_centered_and_formatted(8, "foobar");
+    assert(0 == strcmp(" foobar ", str));
+    free_or_die(str);
+
+    str = str_alloc_centered_and_formatted(9, "foobar");
+    assert(0 == strcmp("  foobar ", str));
+    free_or_die(str);
+
+    str = str_alloc_centered_and_formatted(10, "foobar");
+    assert(0 == strcmp("  foobar  ", str));
+    free_or_die(str);
+
+    str = str_alloc_centered_and_formatted(4, "%s", "");
+    assert(0 == strcmp("    ", str));
+    free_or_die(str);
+
+    str = str_alloc_centered_and_formatted(6, "%.2f", M_PI);
+    assert(0 == strcmp(" 3.14 ", str));
+    free_or_die(str);
+}
 
 
 static void
@@ -37,4 +74,5 @@ void
 str_test(void)
 {
     str_realloc_format_test();
+    str_alloc_centered_and_formatted_test();
 }

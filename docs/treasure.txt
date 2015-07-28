@@ -256,7 +256,7 @@ int saleValue_gp;
 
 struct (Magic Item) {
 int percent;
-PossibleMagicItems possibleMagicItems;
+PossibleMagicItems possible_magic_items;
 enum MagicItemType type;
 GenerateFunction generate;
 } 
