@@ -16,11 +16,9 @@
 
 
 struct coins_gems_or_jewelry {
-    bool is_possible;
-    bool is_per_individual;
-    int percent_chance;
     char const *amount;
-    int multiplier;
+    int percent_chance;
+    bool is_per_individual;
 };
 
 
@@ -33,10 +31,9 @@ struct maps_or_magic_type {
 
 
 struct maps_or_magic {
-    bool is_possible;
     int percent_chance;
     struct maps_or_magic_type types[6];
-    int type_count;
+    int types_count;
 };
 
 
@@ -57,56 +54,41 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='A',
         .copper={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d6x1000",
             .percent_chance=25,
-            .amount="1D6",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d6x1000",
             .percent_chance=30,
-            .amount="1D6",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d6x1000",
             .percent_chance=35,
-            .amount="1D6",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d10x1000",
             .percent_chance=40,
-            .amount="1D10",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d4x100",
             .percent_chance=25,
-            .amount="1D4",
-            .multiplier=100
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="4d10",
             .percent_chance=60,
-            .amount="4D10",
-            .multiplier=1
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="3d10",
             .percent_chance=50,
-            .amount="3D10",
-            .multiplier=1
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=true,
             .percent_chance=30,
             .types={
                 {
@@ -116,62 +98,47 @@ static struct treasure_type treasure_types[] = {
                     .possible_magic_items=ANY_MAGIC_ITEM
                 }
             },
-            .type_count=1
+            .types_count=1
         }
     },
     {
         .letter='B',
         .copper={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d8x1000",
             .percent_chance=50,
-            .amount="1D8",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d6x1000",
             .percent_chance=25,
-            .amount="1D6",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d4x1000",
             .percent_chance=25,
-            .amount="1D4",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d3x1000",
             .percent_chance=25,
-            .amount="1D3",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d8",
             .percent_chance=30,
-            .amount="1D8",
-            .multiplier=1
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d4",
             .percent_chance=20,
-            .amount="1D4",
-            .multiplier=1
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=true,
             .percent_chance=10,
             .types={
                 {
@@ -181,62 +148,47 @@ static struct treasure_type treasure_types[] = {
                     .possible_magic_items=MAGIC_WEAPON_OR_ARMOR
                 }
             },
-            .type_count=1
+            .types_count=1
         }
     },
     {
         .letter='C',
         .copper={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d12x1000",
             .percent_chance=20,
-            .amount="1D12",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d6x1000",
             .percent_chance=30,
-            .amount="1D6",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d4x1000",
             .percent_chance=10,
-            .amount="1D4",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d6",
             .percent_chance=25,
-            .amount="1D6",
-            .multiplier=1
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d3",
             .percent_chance=20,
-            .amount="1D3",
-            .multiplier=1
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=true,
             .percent_chance=10,
             .types={
                 {
@@ -246,62 +198,47 @@ static struct treasure_type treasure_types[] = {
                     .possible_magic_items=ANY_MAGIC_ITEM
                 }
             },
-            .type_count=1
+            .types_count=1
         }
     },
     {
         .letter='D',
         .copper={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d8x1000",
             .percent_chance=10,
-            .amount="1D8",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d12x1000",
             .percent_chance=15,
-            .amount="1D12",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d8x1000",
             .percent_chance=15,
-            .amount="1D8",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d6x1000",
             .percent_chance=50,
-            .amount="1D6",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d10",
             .percent_chance=30,
-            .amount="1D10",
-            .multiplier=1
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d6",
             .percent_chance=25,
-            .amount="1D6",
-            .multiplier=1
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=true,
             .percent_chance=15,
             .types={
                 {
@@ -317,62 +254,47 @@ static struct treasure_type treasure_types[] = {
                     .possible_magic_items=POTION
                 }
             },
-            .type_count=2
+            .types_count=2
         }
     },
     {
         .letter='E',
         .copper={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d10x1000",
             .percent_chance=5,
-            .amount="1D10",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d12x1000",
             .percent_chance=25,
-            .amount="1D12",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d6x1000",
             .percent_chance=25,
-            .amount="1D6",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d8x1000",
             .percent_chance=25,
-            .amount="1D8",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d12",
             .percent_chance=15,
-            .amount="1D12",
-            .multiplier=1
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d8",
             .percent_chance=10,
-            .amount="1D8",
-            .multiplier=1
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=true,
             .percent_chance=25,
             .types={
                 {
@@ -388,62 +310,47 @@ static struct treasure_type treasure_types[] = {
                     .possible_magic_items=SCROLL
                 }
             },
-            .type_count=2
+            .types_count=2
         }
     },
     {
         .letter='F',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d20x1000",
             .percent_chance=10,
-            .amount="1D20",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d12x1000",
             .percent_chance=15,
-            .amount="1D12",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d10x1000",
             .percent_chance=40,
-            .amount="1D10",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d8x100",
             .percent_chance=35,
-            .amount="1D8",
-            .multiplier=100
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="3d10",
             .percent_chance=20,
-            .amount="3D10",
-            .multiplier=1
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d10",
             .percent_chance=10,
-            .amount="1D10",
-            .multiplier=1
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=true,
             .percent_chance=30,
             .types={
                 {
@@ -465,62 +372,47 @@ static struct treasure_type treasure_types[] = {
                     .possible_magic_items=SCROLL
                 }
             },
-            .type_count=3
+            .types_count=3
         }
     },
     {
         .letter='G',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="10d4x1000",
             .percent_chance=50,
-            .amount="10D4",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d20x100",
             .percent_chance=50,
-            .amount="1D20",
-            .multiplier=100
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="5d4",
             .percent_chance=30,
-            .amount="5D4",
-            .multiplier=1
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d10",
             .percent_chance=25,
-            .amount="1D10",
-            .multiplier=1
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=true,
             .percent_chance=35,
             .types={
                 {
@@ -536,62 +428,47 @@ static struct treasure_type treasure_types[] = {
                     .possible_magic_items=SCROLL
                 }
             },
-            .type_count=2
+            .types_count=2
         }
     },
     {
         .letter='H',
         .copper={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="5d6x1000",
             .percent_chance=25,
-            .amount="5D6",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d100x1000",
             .percent_chance=40,
-            .amount="1D100",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="10d4x1000",
             .percent_chance=40,
-            .amount="10D4",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="10d6x1000",
             .percent_chance=55,
-            .amount="10D6",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="5d10x100",
             .percent_chance=25,
-            .amount="5D10",
-            .multiplier=100
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d100",
             .percent_chance=50,
-            .amount="1D100",
-            .multiplier=1
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="10d4",
             .percent_chance=50,
-            .amount="10D4",
-            .multiplier=1
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=true,
             .percent_chance=15,
             .types={
                 {
@@ -613,62 +490,47 @@ static struct treasure_type treasure_types[] = {
                     .possible_magic_items=SCROLL
                 }
             },
-            .type_count=3
+            .types_count=3
         }
     },
     {
         .letter='I',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="3d6x100",
             .percent_chance=30,
-            .amount="3D6",
-            .multiplier=100
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="2d10",
             .percent_chance=55,
-            .amount="2D10",
-            .multiplier=1
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d12",
             .percent_chance=50,
-            .amount="1D12",
-            .multiplier=1
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=true,
             .percent_chance=15,
             .types={
                 {
@@ -678,584 +540,434 @@ static struct treasure_type treasure_types[] = {
                     .possible_magic_items=ANY_MAGIC_ITEM
                 }
             },
-            .type_count=1
+            .types_count=1
         }
     },
     {
         .letter='J',
         .copper={
-            .is_possible=true,
-            .is_per_individual=true,
+            .amount="3d8",
             .percent_chance=100,
-            .amount="3D8",
-            .multiplier=1
+            .is_per_individual=true
         },
         .silver={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=false,
             .percent_chance=0,
             .types={},
-            .type_count=0
+            .types_count=0
         }
     },
     {
         .letter='K',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=true,
-            .is_per_individual=true,
+            .amount="3d6",
             .percent_chance=100,
-            .amount="3D6",
-            .multiplier=1
+            .is_per_individual=true
         },
         .electrum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=false,
             .percent_chance=0,
             .types={},
-            .type_count=0
+            .types_count=0
         }
     },
     {
         .letter='L',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=true,
-            .is_per_individual=true,
+            .amount="2d6",
             .percent_chance=100,
-            .amount="2D6",
-            .multiplier=1
+            .is_per_individual=true
         },
         .gold={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=false,
             .percent_chance=0,
             .types={},
-            .type_count=0
+            .types_count=0
         }
     },
     {
         .letter='M',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=true,
-            .is_per_individual=true,
+            .amount="2d4",
             .percent_chance=100,
-            .amount="2D4",
-            .multiplier=1
+            .is_per_individual=true
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=false,
             .percent_chance=0,
             .types={},
-            .type_count=0
+            .types_count=0
         }
     },
     {
         .letter='N',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=true,
-            .is_per_individual=true,
+            .amount="1d6",
             .percent_chance=100,
-            .amount="1D6",
-            .multiplier=1
+            .is_per_individual=true
         },
         .gems={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=false,
             .percent_chance=0,
             .types={},
-            .type_count=0
+            .types_count=0
         }
     },
     {
         .letter='O',
         .copper={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d4x1000",
             .percent_chance=25,
-            .amount="1D4",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d3x1000",
             .percent_chance=20,
-            .amount="1D3",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=false,
             .percent_chance=0,
             .types={},
-            .type_count=0
+            .types_count=0
         }
     },
     {
         .letter='P',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d6x1000",
             .percent_chance=30,
-            .amount="1D6",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d2x1000",
             .percent_chance=25,
-            .amount="1D2",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=false,
             .percent_chance=0,
             .types={},
-            .type_count=0
+            .types_count=0
         }
     },
     {
         .letter='Q',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d4",
             .percent_chance=50,
-            .amount="1D4",
-            .multiplier=1
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=false,
             .percent_chance=0,
             .types={},
-            .type_count=0
+            .types_count=0
         }
     },
     {
         .letter='R',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="2d4x1000",
             .percent_chance=40,
-            .amount="2D4",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="10d6x100",
             .percent_chance=50,
-            .amount="10D6",
-            .multiplier=100
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="4d8",
             .percent_chance=55,
-            .amount="4D8",
-            .multiplier=1
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d12",
             .percent_chance=45,
-            .amount="1D12",
-            .multiplier=1
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=false,
             .percent_chance=0,
             .types={},
-            .type_count=0
+            .types_count=0
         }
     },
     {
         .letter='S',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=true,
             .percent_chance=40,
             .types={
                 {
@@ -1265,62 +977,47 @@ static struct treasure_type treasure_types[] = {
                     .possible_magic_items=POTION
                 }
             },
-            .type_count=1
+            .types_count=1
         }
     },
     {
         .letter='T',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=true,
             .percent_chance=50,
             .types={
                 {
@@ -1330,62 +1027,47 @@ static struct treasure_type treasure_types[] = {
                     .possible_magic_items=SCROLL
                 }
             },
-            .type_count=1
+            .types_count=1
         }
     },
     {
         .letter='U',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="10d8",
             .percent_chance=90,
-            .amount="10D8",
-            .multiplier=1
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="5d6",
             .percent_chance=80,
-            .amount="5D6",
-            .multiplier=1
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=true,
             .percent_chance=70,
             .types={
                 {
@@ -1425,62 +1107,47 @@ static struct treasure_type treasure_types[] = {
                     .possible_magic_items=MISC_WEAPON
                 }
             },
-            .type_count=6
+            .types_count=6
         }
     },
     {
         .letter='V',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=true,
             .percent_chance=85,
             .types={
                 {
@@ -1520,62 +1187,47 @@ static struct treasure_type treasure_types[] = {
                     .possible_magic_items=MISC_WEAPON
                 }
             },
-            .type_count=6
+            .types_count=6
         }
     },
     {
         .letter='W',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="5d6x1000",
             .percent_chance=60,
-            .amount="5D6",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d8x100",
             .percent_chance=15,
-            .amount="1D8",
-            .multiplier=100
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="10d8",
             .percent_chance=60,
-            .amount="10D8",
-            .multiplier=1
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="5d8",
             .percent_chance=50,
-            .amount="5D8",
-            .multiplier=1
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=true,
             .percent_chance=55,
             .types={
                 {
@@ -1585,62 +1237,47 @@ static struct treasure_type treasure_types[] = {
                     .possible_magic_items=NO_MAGIC_ITEM
                 }
             },
-            .type_count=1
+            .types_count=1
         }
     },
     {
         .letter='X',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=true,
             .percent_chance=60,
             .types={
                 {
@@ -1656,120 +1293,90 @@ static struct treasure_type treasure_types[] = {
                     .possible_magic_items=POTION
                 }
             },
-            .type_count=2
+            .types_count=2
         }
     },
     {
         .letter='Y',
         .copper={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="2d6x1000",
             .percent_chance=70,
-            .amount="2D6",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=false,
-            .is_per_individual=false,
-            .percent_chance=0,
             .amount="",
-            .multiplier=0
+            .percent_chance=0,
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=false,
             .percent_chance=0,
             .types={},
-            .type_count=0
+            .types_count=0
         }
     },
     {
         .letter='Z',
         .copper={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d3x1000",
             .percent_chance=20,
-            .amount="1D3",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .silver={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d4x1000",
             .percent_chance=25,
-            .amount="1D4",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .electrum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d4x1000",
             .percent_chance=25,
-            .amount="1D4",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .gold={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d4x1000",
             .percent_chance=30,
-            .amount="1D4",
-            .multiplier=1000
+            .is_per_individual=false
         },
         .platinum={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="1d6x100",
             .percent_chance=30,
-            .amount="1D6",
-            .multiplier=100
+            .is_per_individual=false
         },
         .gems={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="10d6",
             .percent_chance=55,
-            .amount="10D6",
-            .multiplier=1
+            .is_per_individual=false
         },
         .jewelry={
-            .is_possible=true,
-            .is_per_individual=false,
+            .amount="5d6",
             .percent_chance=50,
-            .amount="5D6",
-            .multiplier=1
+            .is_per_individual=false
         },
         .maps_or_magic={
-            .is_possible=true,
             .percent_chance=50,
             .types={
                 {
@@ -1779,7 +1386,7 @@ static struct treasure_type treasure_types[] = {
                     .possible_magic_items=ANY_MAGIC_ITEM
                 }
             },
-            .type_count=1
+            .types_count=1
         }
     }
 };
@@ -1868,18 +1475,18 @@ treasure_type_alloc_description(struct treasure_type *treasure_type,
 static char *
 describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry *coins_gems_or_jewelry)
 {
-    if (!coins_gems_or_jewelry->is_possible) return strdup_or_die("   nil   ");
+    if (!coins_gems_or_jewelry->percent_chance) return strdup_or_die("   nil   ");
 
     if (coins_gems_or_jewelry->is_per_individual) {
         struct dice amount = dice_parse(coins_gems_or_jewelry->amount);
-        char *range = dice_alloc_range_description(amount);
+        char *range = dice_alloc_base_range_description(amount);
         char *description = str_alloc_centered_and_formatted(9, "%s per",
                                                              range);
         free_or_die(range);
         return description;
     } else {
         struct dice amount = dice_parse(coins_gems_or_jewelry->amount);
-        char *range = dice_alloc_range_description(amount);
+        char *range = dice_alloc_base_range_description(amount);
         char *description = str_alloc_centered_and_formatted(9, "%s:%2i%%",
                                                              range,
                                                              coins_gems_or_jewelry->percent_chance);
@@ -1892,10 +1499,10 @@ describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry *coins_gems_or_jewel
 static char *
 describe_maps_or_magic(struct maps_or_magic *maps_or_magic)
 {
-    if (!maps_or_magic->is_possible) return strdup_or_die("   nil   ");
+    if (!maps_or_magic->percent_chance) return strdup_or_die("   nil   ");
     
     char *type_descriptions[6] = {};
-    for (int i = 0; i < maps_or_magic->type_count; ++i) {
+    for (int i = 0; i < maps_or_magic->types_count; ++i) {
         struct maps_or_magic_type *type = &maps_or_magic->types[i];
         char const *type_name = possible_maps_or_magic_name(type->is_map_possible,
                                                             type->possible_magic_items);
@@ -1925,7 +1532,7 @@ describe_maps_or_magic(struct maps_or_magic *maps_or_magic)
     }
 
     char *description = NULL;
-    for (int i = 0; i < maps_or_magic->type_count; ++i) {
+    for (int i = 0; i < maps_or_magic->types_count; ++i) {
         char const *separator = (i) ? ", " : "";
         str_realloc_append_formatted(&description, "%s%s",
                                      separator, type_descriptions[i]);
@@ -1968,17 +1575,16 @@ generate_treasure_coins(int *coins,
                         int individual_count)
 {
     *coins = 0;
-    if (coins_type->is_possible) {
-        if (coins_type->is_per_individual) {
-            assert(individual_count > 0);
-            for (int i = 0; i < individual_count; ++i) {
-                *coins += roll(coins_type->amount, rnd);
-            }
-        } else {
-            int percentRoll = roll("1d100", rnd);
-            if (percentRoll <= coins_type->percent_chance) {
-                *coins = roll(coins_type->amount, rnd) * coins_type->multiplier;
-            }
+    if (!coins_type->percent_chance) return;
+    if (coins_type->is_per_individual) {
+        assert(individual_count > 0);
+        for (int i = 0; i < individual_count; ++i) {
+            *coins += roll(coins_type->amount, rnd);
+        }
+    } else {
+        int percent_score = roll("1d100", rnd);
+        if (percent_score <= coins_type->percent_chance) {
+            *coins = roll(coins_type->amount, rnd); // * coins_type->multiplier;
         }
     }
 }
@@ -1989,15 +1595,14 @@ generate_treasure_gems(struct Treasure *treasure, struct rnd *rnd)
 {
     treasure->gems = NULL;
     treasure->gemsCount = 0;
-    if (treasure->type->gems.is_possible) {
-        int percent_score = roll("1d100", rnd);
-        if (percent_score <= treasure->type->gems.percent_chance) {
-            treasure->gemsCount = roll(treasure->type->gems.amount, rnd);
-            treasure->gems = calloc_or_die(treasure->gemsCount, sizeof(struct gem));
-            for (int i = 0; i < treasure->gemsCount; ++i) {
-                gem_initialize(&treasure->gems[i]);
-                gem_generate(&treasure->gems[i], rnd);
-            }
+    if (!treasure->type->gems.percent_chance) return;
+    int percent_score = roll("1d100", rnd);
+    if (percent_score <= treasure->type->gems.percent_chance) {
+        treasure->gemsCount = roll(treasure->type->gems.amount, rnd);
+        treasure->gems = calloc_or_die(treasure->gemsCount, sizeof(struct gem));
+        for (int i = 0; i < treasure->gemsCount; ++i) {
+            gem_initialize(&treasure->gems[i]);
+            gem_generate(&treasure->gems[i], rnd);
         }
     }
 }
@@ -2008,16 +1613,15 @@ generate_treasure_jewelry(struct Treasure *treasure, struct rnd *rnd)
 {
     treasure->jewelry = NULL;
     treasure->jewelryCount = 0;
-    if (treasure->type->jewelry.is_possible) {
-        int percent_score = roll("1d100", rnd);
-        if (percent_score <= treasure->type->jewelry.percent_chance) {
-            treasure->jewelryCount = roll(treasure->type->jewelry.amount, rnd);
-            treasure->jewelry = calloc_or_die(treasure->jewelryCount,
-                                              sizeof(struct jewelry));
-            for (int i = 0; i < treasure->jewelryCount; ++i) {
-                jewelry_initialize(&treasure->jewelry[i]);
-                jewelry_generate(&treasure->jewelry[i], rnd);
-            }
+    if (!treasure->type->jewelry.percent_chance) return;
+    int percent_score = roll("1d100", rnd);
+    if (percent_score <= treasure->type->jewelry.percent_chance) {
+        treasure->jewelryCount = roll(treasure->type->jewelry.amount, rnd);
+        treasure->jewelry = calloc_or_die(treasure->jewelryCount,
+                                          sizeof(struct jewelry));
+        for (int i = 0; i < treasure->jewelryCount; ++i) {
+            jewelry_initialize(&treasure->jewelry[i]);
+            jewelry_generate(&treasure->jewelry[i], rnd);
         }
     }
 }
@@ -2026,13 +1630,12 @@ generate_treasure_jewelry(struct Treasure *treasure, struct rnd *rnd)
 static void
 generate_treasure_maps_or_magic(struct Treasure *treasure, struct rnd *rnd)
 {
-    if (treasure->type->maps_or_magic.is_possible) {
-        int percent_score = roll("1d100", rnd);
-        if (percent_score <= treasure->type->maps_or_magic.percent_chance) {
-            for (int i = 0; i < treasure->type->maps_or_magic.type_count; ++i) {
-                struct maps_or_magic_type *type = &treasure->type->maps_or_magic.types[i];
-                generate_treasure_maps_or_magic_type(type, treasure, rnd);
-            }
+    if (!treasure->type->maps_or_magic.percent_chance) return;
+    int percent_score = roll("1d100", rnd);
+    if (percent_score <= treasure->type->maps_or_magic.percent_chance) {
+        for (int i = 0; i < treasure->type->maps_or_magic.types_count; ++i) {
+            struct maps_or_magic_type *type = &treasure->type->maps_or_magic.types[i];
+            generate_treasure_maps_or_magic_type(type, treasure, rnd);
         }
     }
 }

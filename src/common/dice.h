@@ -19,6 +19,9 @@ struct dice {
 
 
 char *
+dice_alloc_base_range_description(struct dice dice);
+
+char *
 dice_alloc_description(struct dice dice);
 
 char *
@@ -34,7 +37,13 @@ struct dice
 dice_make_plus_times(int count, int sides, int modifier, int multiplier);
 
 int
+dice_max_base_score(struct dice dice);
+
+int
 dice_max_score(struct dice dice);
+
+int
+dice_min_base_score(struct dice dice);
 
 int
 dice_min_score(struct dice dice);

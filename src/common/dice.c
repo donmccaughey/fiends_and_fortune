@@ -19,6 +19,15 @@ compare_die_scores(void const *item1, void const *item2)
 
 
 char *
+dice_alloc_base_range_description(struct dice dice)
+{
+    return str_alloc_formatted("%i-%i",
+                               dice_min_base_score(dice),
+                               dice_max_base_score(dice));
+}
+
+
+char *
 dice_alloc_description(struct dice dice)
 {
     char *description = NULL;
@@ -68,16 +77,30 @@ dice_make_plus_times(int count, int sides, int modifier, int multiplier)
 
 
 int
+dice_max_base_score(struct dice dice)
+{
+    return (dice.count * dice.sides) + dice.modifier;
+}
+
+
+int
 dice_max_score(struct dice dice)
 {
-    return ((dice.count * dice.sides) + dice.modifier) * dice.multiplier;
+    return dice_max_base_score(dice) * dice.multiplier;
+}
+
+
+int
+dice_min_base_score(struct dice dice)
+{
+    return dice.count + dice.modifier;
 }
 
 
 int
 dice_min_score(struct dice dice)
 {
-    return (dice.count + dice.modifier) * dice.multiplier;
+    return dice_min_base_score(dice) * dice.multiplier;
 }
 
 
@@ -123,7 +146,6 @@ dice_parse(char const *dice_string)
         assert(!errno);
         
         assert(multiplier >= INT_MIN && multiplier <= INT_MAX);
-        assert(multiplier != 0 && multiplier != 1);
         dice.multiplier = (int)multiplier;
     }
     return dice;

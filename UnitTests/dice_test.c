@@ -36,6 +36,31 @@ dice_alloc_description_test(void)
 
 
 static void
+dice_alloc_base_range_description_test(void)
+{
+    char *description = dice_alloc_base_range_description(dice_make(3, 6));
+    assert(0 == strcmp("3-18", description));
+    free_or_die(description);
+
+    description = dice_alloc_base_range_description(dice_make_plus(2, 8, 1));
+    assert(0 == strcmp("3-17", description));
+    free_or_die(description);
+
+    description = dice_alloc_base_range_description(dice_make_plus(2, 4, -1));
+    assert(0 == strcmp("1-7", description));
+    free_or_die(description);
+
+    description = dice_alloc_base_range_description(dice_make_plus_times(1, 10, 0, 10));
+    assert(0 == strcmp("1-10", description));
+    free_or_die(description);
+
+    description = dice_alloc_base_range_description(dice_make_plus_times(1, 4, 1, 10000));
+    assert(0 == strcmp("2-5", description));
+    free_or_die(description);
+}
+
+
+static void
 dice_alloc_range_description_test(void)
 {
     char *description = dice_alloc_range_description(dice_make(3, 6));
@@ -252,6 +277,7 @@ void
 dice_test(void)
 {
     dice_alloc_description_test();
+    dice_alloc_base_range_description_test();
     dice_alloc_range_description_test();
     dice_parse_test();
     roll_test();
