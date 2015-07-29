@@ -40,77 +40,77 @@ static char const *compass_directions[] = {
 
 
 static void
-generate_combined_hoard(struct Treasure *treasure, struct rnd *rnd);
+generate_combined_hoard(struct treasure *treasure, struct rnd *rnd);
 
 static void
-generate_magic_treasure(struct Treasure *treasure, struct rnd *rnd);
+generate_magic_treasure(struct treasure *treasure, struct rnd *rnd);
 
 static void
-generate_magic_treasure_1_to_5_item_and_potions(struct Treasure *treasure,
+generate_magic_treasure_1_to_5_item_and_potions(struct treasure *treasure,
                                                 struct rnd *rnd);
 
 static void
-generate_magic_treasure_6_to_8_two_items(struct Treasure *treasure,
+generate_magic_treasure_6_to_8_two_items(struct treasure *treasure,
                                          struct rnd *rnd);
 
 static void
-generate_magic_treasure_9_to_12_sword_armor_and_weapon(struct Treasure *treasure,
+generate_magic_treasure_9_to_12_sword_armor_and_weapon(struct treasure *treasure,
                                                        struct rnd *rnd);
 
 static void
-generate_magic_treasure_13_to_14_three_items(struct Treasure *treasure,
+generate_magic_treasure_13_to_14_three_items(struct treasure *treasure,
                                              struct rnd *rnd);
 
 static void
-generate_magic_treasure_15_to_18_potions_and_scrolls(struct Treasure *treasure,
+generate_magic_treasure_15_to_18_potions_and_scrolls(struct treasure *treasure,
                                                      struct rnd *rnd);
 
 static void
-generate_magic_treasure_19_four_items(struct Treasure *treasure,
+generate_magic_treasure_19_four_items(struct treasure *treasure,
                                       struct rnd *rnd);
 
 static void
-generate_magic_treasure_20_five_items(struct Treasure *treasure,
+generate_magic_treasure_20_five_items(struct treasure *treasure,
                                       struct rnd *rnd);
 
 static void
-generate_monetary_treasure(struct Treasure *treasure, struct rnd *rnd);
+generate_monetary_treasure(struct treasure *treasure, struct rnd *rnd);
 
 static void
-generate_monetary_treasure_1_to_2_copper_and_silver(struct Treasure *treasure,
+generate_monetary_treasure_1_to_2_copper_and_silver(struct treasure *treasure,
                                                     struct rnd *rnd);
 
 static void
-generate_monetary_treasure_3_to_5_electrum(struct Treasure *treasure,
+generate_monetary_treasure_3_to_5_electrum(struct treasure *treasure,
                                            struct rnd *rnd);
 
 static void
-generate_monetary_treasure_6_to_10_gold(struct Treasure *treasure,
+generate_monetary_treasure_6_to_10_gold(struct treasure *treasure,
                                         struct rnd *rnd);
 
 static void
-generate_monetary_treasure_11_to_12_platinum(struct Treasure *treasure,
+generate_monetary_treasure_11_to_12_platinum(struct treasure *treasure,
                                              struct rnd *rnd);
 
 static void
-generate_monetary_treasure_13_to_15_gems(struct Treasure *treasure,
+generate_monetary_treasure_13_to_15_gems(struct treasure *treasure,
                                          struct rnd *rnd);
 
 static void
-generate_monetary_treasure_16_to_17_jewelry(struct Treasure *treasure,
+generate_monetary_treasure_16_to_17_jewelry(struct treasure *treasure,
                                             struct rnd *rnd);
 
 
 void
 treasure_map_finalize(struct treasure_map *treasure_map)
 {
-    finalizeTreasure(&treasure_map->treasure);
+    treasure_finalize(&treasure_map->treasure);
     free_or_die(treasure_map->true_description);
 }
 
 
 static void
-generate_combined_hoard(struct Treasure *treasure, struct rnd *rnd)
+generate_combined_hoard(struct treasure *treasure, struct rnd *rnd)
 {
     int score = roll("1d100", rnd);
     if (score <= 20) {
@@ -172,7 +172,7 @@ generate_combined_hoard(struct Treasure *treasure, struct rnd *rnd)
 
 
 static void
-generate_magic_treasure(struct Treasure *treasure, struct rnd *rnd)
+generate_magic_treasure(struct treasure *treasure, struct rnd *rnd)
 {
     int score = roll("1d20", rnd);
     if (score <= 5) {
@@ -194,71 +194,71 @@ generate_magic_treasure(struct Treasure *treasure, struct rnd *rnd)
 
 
 static void
-generate_magic_treasure_1_to_5_item_and_potions(struct Treasure *treasure,
+generate_magic_treasure_1_to_5_item_and_potions(struct treasure *treasure,
                                                 struct rnd *rnd)
 {
-    generateMagicItemsForTreasure(treasure, rnd, 1, ANY_MAGIC_ITEM);
-    generateMagicItemsForTreasure(treasure, rnd, 4, POTION);
+    treasure_generate_magic_items(treasure, rnd, 1, ANY_MAGIC_ITEM);
+    treasure_generate_magic_items(treasure, rnd, 4, POTION);
 }
 
 
 static void
-generate_magic_treasure_6_to_8_two_items(struct Treasure *treasure,
+generate_magic_treasure_6_to_8_two_items(struct treasure *treasure,
                                          struct rnd *rnd)
 {
-    generateMagicItemsForTreasure(treasure, rnd, 2, ANY_MAGIC_ITEM);
+    treasure_generate_magic_items(treasure, rnd, 2, ANY_MAGIC_ITEM);
 }
 
 
 static void
-generate_magic_treasure_9_to_12_sword_armor_and_weapon(struct Treasure *treasure,
+generate_magic_treasure_9_to_12_sword_armor_and_weapon(struct treasure *treasure,
                                                        struct rnd *rnd)
 {
-    generateMagicItemsForTreasure(treasure, rnd, 1, SWORD);
-    generateMagicItemsForTreasure(treasure, rnd, 1, ARMOR_SHIELD);
-    generateMagicItemsForTreasure(treasure, rnd, 1, MISC_WEAPON);
+    treasure_generate_magic_items(treasure, rnd, 1, SWORD);
+    treasure_generate_magic_items(treasure, rnd, 1, ARMOR_SHIELD);
+    treasure_generate_magic_items(treasure, rnd, 1, MISC_WEAPON);
 }
 
 
 static void
-generate_magic_treasure_13_to_14_three_items(struct Treasure *treasure,
+generate_magic_treasure_13_to_14_three_items(struct treasure *treasure,
                                              struct rnd *rnd)
 {
-    generateMagicItemsForTreasure(treasure, rnd, 3,
+    treasure_generate_magic_items(treasure, rnd, 3,
                                   (ANY_MAGIC_ITEM & ~SWORD & ~POTION));
 }
 
 
 static void
-generate_magic_treasure_15_to_18_potions_and_scrolls(struct Treasure *treasure,
+generate_magic_treasure_15_to_18_potions_and_scrolls(struct treasure *treasure,
                                                      struct rnd *rnd)
 {
-    generateMagicItemsForTreasure(treasure, rnd, 6, POTION);
-    generateMagicItemsForTreasure(treasure, rnd, 6, SCROLL);
+    treasure_generate_magic_items(treasure, rnd, 6, POTION);
+    treasure_generate_magic_items(treasure, rnd, 6, SCROLL);
 }
 
 
-static void generate_magic_treasure_19_four_items(struct Treasure *treasure,
+static void generate_magic_treasure_19_four_items(struct treasure *treasure,
                                                   struct rnd *rnd)
 {
-    generateMagicItemsForTreasure(treasure, rnd, 1, RING);
-    generateMagicItemsForTreasure(treasure, rnd, 1, ROD_STAFF_WAND);
-    generateMagicItemsForTreasure(treasure, rnd, 2, ANY_MAGIC_ITEM);
+    treasure_generate_magic_items(treasure, rnd, 1, RING);
+    treasure_generate_magic_items(treasure, rnd, 1, ROD_STAFF_WAND);
+    treasure_generate_magic_items(treasure, rnd, 2, ANY_MAGIC_ITEM);
 }
 
 
 static void
-generate_magic_treasure_20_five_items(struct Treasure *treasure,
+generate_magic_treasure_20_five_items(struct treasure *treasure,
                                       struct rnd *rnd)
 {
-    generateMagicItemsForTreasure(treasure, rnd, 1, ROD_STAFF_WAND);
-    generateMagicItemsForTreasure(treasure, rnd, 1, MISC_MAGIC);
-    generateMagicItemsForTreasure(treasure, rnd, 3, ANY_MAGIC_ITEM);
+    treasure_generate_magic_items(treasure, rnd, 1, ROD_STAFF_WAND);
+    treasure_generate_magic_items(treasure, rnd, 1, MISC_MAGIC);
+    treasure_generate_magic_items(treasure, rnd, 3, ANY_MAGIC_ITEM);
 }
 
 
 static void
-generate_monetary_treasure(struct Treasure *treasure, struct rnd *rnd)
+generate_monetary_treasure(struct treasure *treasure, struct rnd *rnd)
 {
     int multiple_rolls = 0;
     int max_score = 20;
@@ -301,7 +301,7 @@ generate_monetary_treasure(struct Treasure *treasure, struct rnd *rnd)
 
 
 static void
-generate_monetary_treasure_1_to_2_copper_and_silver(struct Treasure *treasure,
+generate_monetary_treasure_1_to_2_copper_and_silver(struct treasure *treasure,
                                                     struct rnd *rnd)
 {
     treasure->coins.cp += roll("2d4", rnd) * 10000;
@@ -310,7 +310,7 @@ generate_monetary_treasure_1_to_2_copper_and_silver(struct Treasure *treasure,
 
 
 static void
-generate_monetary_treasure_3_to_5_electrum(struct Treasure *treasure,
+generate_monetary_treasure_3_to_5_electrum(struct treasure *treasure,
                                            struct rnd *rnd)
 {
     treasure->coins.ep += roll("5d6", rnd) * 1000;
@@ -318,7 +318,7 @@ generate_monetary_treasure_3_to_5_electrum(struct Treasure *treasure,
 
 
 static void
-generate_monetary_treasure_6_to_10_gold(struct Treasure *treasure,
+generate_monetary_treasure_6_to_10_gold(struct treasure *treasure,
                                         struct rnd *rnd)
 {
     treasure->coins.gp += roll("3d6", rnd) * 1000;
@@ -326,7 +326,7 @@ generate_monetary_treasure_6_to_10_gold(struct Treasure *treasure,
 
 
 static void
-generate_monetary_treasure_11_to_12_platinum(struct Treasure *treasure,
+generate_monetary_treasure_11_to_12_platinum(struct treasure *treasure,
                                              struct rnd *rnd)
 {
     treasure->coins.pp += roll("5d4", rnd) * 100;
@@ -334,36 +334,36 @@ generate_monetary_treasure_11_to_12_platinum(struct Treasure *treasure,
 
 
 static void
-generate_monetary_treasure_13_to_15_gems(struct Treasure *treasure,
+generate_monetary_treasure_13_to_15_gems(struct treasure *treasure,
                                          struct rnd *rnd)
 {
     int count = roll("1d10", rnd) * 10;
     treasure->gems = reallocarray_or_die(treasure->gems,
-                                         treasure->gemsCount + count,
+                                         treasure->gems_count + count,
                                          sizeof(struct gem));
     for (int i = 0; i < count; ++i) {
-        int j = treasure->gemsCount + i;
+        int j = treasure->gems_count + i;
         gem_initialize(&treasure->gems[j]);
         gem_generate(&treasure->gems[j], rnd);
     }
-    treasure->gemsCount += count;
+    treasure->gems_count += count;
 }
 
 
 static void
-generate_monetary_treasure_16_to_17_jewelry(struct Treasure *treasure,
+generate_monetary_treasure_16_to_17_jewelry(struct treasure *treasure,
                                             struct rnd *rnd)
 {
     int count = roll("5d10", rnd);
     treasure->jewelry = reallocarray_or_die(treasure->jewelry,
-                                            treasure->jewelryCount + count,
+                                            treasure->jewelry_count + count,
                                             sizeof(struct jewelry));
     for (int i = 0; i < count; ++i) {
-        int j = treasure->jewelryCount + i;
+        int j = treasure->jewelry_count + i;
         jewelry_initialize(&treasure->jewelry[j]);
         jewelry_generate(&treasure->jewelry[j], rnd);
     }
-    treasure->jewelryCount += count;
+    treasure->jewelry_count += count;
 }
 
 
@@ -417,7 +417,7 @@ treasure_map_generate(struct treasure_map *treasure_map, struct rnd *rnd)
             disposition = "secreted in a town";
         }
         
-        char *description = describeTreasure(&treasure_map->treasure);
+        char *description = treasure_alloc_description(&treasure_map->treasure);
         treasure_map->true_description = str_alloc_formatted("%smap to %s of %s %i miles to the %s, %s",
                                                              (treasure_map->is_false ? "false " : ""),
                                                              treasure_map_types[treasure_map_type],
@@ -427,7 +427,7 @@ treasure_map_generate(struct treasure_map *treasure_map, struct rnd *rnd)
                                                              disposition);
         free_or_die(description);
     } else {
-        char *description = describeTreasure(&treasure_map->treasure);
+        char *description = treasure_alloc_description(&treasure_map->treasure);
         treasure_map->true_description = str_alloc_formatted("%smap to %s of %s in nearby labyrinth to the %s",
                                                              (treasure_map->is_false ? "false " : ""),
                                                              treasure_map_types[treasure_map_type],

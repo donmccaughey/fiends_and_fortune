@@ -1,0 +1,8 @@
+- rework MagicItem
+- convert gem, jewelry, MagicItem, treasure, treasure_map to allocated types
+- reorganize treasure gen functions in treasure, treasure_type and treasure_map
+- treasure maps can contain treasure maps
+- more detailed gem description
+- casual gem description
+- more detailed jewelry description
+- casual jewelry description

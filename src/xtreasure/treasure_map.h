@@ -4,7 +4,7 @@
 
 #include <stdbool.h>
 
-#include "Treasure.h"
+#include "treasure.h"
 
 
 struct rnd;
@@ -12,7 +12,7 @@ struct rnd;
 
 struct treasure_map {
     bool is_false;
-    struct Treasure treasure;
+    struct treasure treasure;
     char *true_description;
 };
 

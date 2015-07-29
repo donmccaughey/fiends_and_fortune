@@ -1,7 +1,6 @@
 #include "treasure_type.h"
 
 #include <assert.h>
-#include <stdlib.h>
 
 #include "common/alloc_or_die.h"
 #include "common/dice.h"
@@ -11,8 +10,10 @@
 #include "gem.h"
 #include "jewelry.h"
 #include "MagicItem.h"
-#include "Treasure.h"
+#include "treasure.h"
 #include "treasure_map.h"
+
+#include "common/rnd.h"
 
 
 struct coins_gems_or_jewelry {
@@ -700,24 +701,24 @@ static char *
 describe_maps_or_magic(struct maps_or_magic *maps_or_magic);
 
 static void
-generate_treasure_coins(int *coins,
-                        struct rnd *rnd,
-                        struct coins_gems_or_jewelry *coins_type,
-                        int individual_count);
+generate_coins(int *coins,
+               struct rnd *rnd,
+               struct coins_gems_or_jewelry *coins_type,
+               int individual_count);
 
 static void
-generate_treasure_gems(struct Treasure *treasure, struct rnd *rnd);
+generate_gems(struct treasure *treasure, struct rnd *rnd);
 
 static void
-generate_treasure_jewelry(struct Treasure *treasure, struct rnd *rnd);
+generate_jewelry(struct treasure *treasure, struct rnd *rnd);
 
 static void
-generate_treasure_maps_or_magic(struct Treasure *treasure, struct rnd *rnd);
+generate_maps_or_magic(struct treasure *treasure, struct rnd *rnd);
 
 static void
-generate_treasure_maps_or_magic_type(struct maps_or_magic_type *type,
-                                     struct Treasure *treasure,
-                                     struct rnd *rnd);
+generate_maps_or_magic_items(struct maps_or_magic_type *type,
+                             struct treasure *treasure,
+                             struct rnd *rnd);
 
 static char const *
 possible_maps_or_magic_name(bool is_map_possible,
@@ -843,34 +844,34 @@ describe_maps_or_magic(struct maps_or_magic *maps_or_magic)
 
 
 void
-treasure_generate(struct treasure_type *treasure_type,
-                  struct Treasure *treasure,
-                  struct rnd *rnd,
-                  int individual_count)
+treasure_type_generate(struct treasure_type *treasure_type,
+                       struct rnd *rnd,
+                       int individual_count,
+                       struct treasure *treasure)
 {
     treasure->type = treasure_type;
     
-    generate_treasure_coins(&treasure->coins.cp, rnd,
-                            &treasure_type->copper, individual_count);
-    generate_treasure_coins(&treasure->coins.sp, rnd,
-                            &treasure_type->silver, individual_count);
-    generate_treasure_coins(&treasure->coins.ep, rnd,
-                            &treasure_type->electrum, individual_count);
-    generate_treasure_coins(&treasure->coins.gp, rnd,
-                            &treasure_type->gold, individual_count);
-    generate_treasure_coins(&treasure->coins.pp, rnd,
-                            &treasure_type->platinum, individual_count);
-    generate_treasure_gems(treasure, rnd);
-    generate_treasure_jewelry(treasure, rnd);
-    generate_treasure_maps_or_magic(treasure, rnd);
+    generate_coins(&treasure->coins.cp, rnd,
+                   &treasure_type->copper, individual_count);
+    generate_coins(&treasure->coins.sp, rnd,
+                   &treasure_type->silver, individual_count);
+    generate_coins(&treasure->coins.ep, rnd,
+                   &treasure_type->electrum, individual_count);
+    generate_coins(&treasure->coins.gp, rnd,
+                   &treasure_type->gold, individual_count);
+    generate_coins(&treasure->coins.pp, rnd,
+                   &treasure_type->platinum, individual_count);
+    generate_gems(treasure, rnd);
+    generate_jewelry(treasure, rnd);
+    generate_maps_or_magic(treasure, rnd);
 }
 
 
 static void
-generate_treasure_coins(int *coins,
-                        struct rnd *rnd,
-                        struct coins_gems_or_jewelry *coins_type,
-                        int individual_count)
+generate_coins(int *coins,
+               struct rnd *rnd,
+               struct coins_gems_or_jewelry *coins_type,
+               int individual_count)
 {
     *coins = 0;
     if (!coins_type->percent_chance) return;
@@ -889,16 +890,16 @@ generate_treasure_coins(int *coins,
 
 
 static void
-generate_treasure_gems(struct Treasure *treasure, struct rnd *rnd)
+generate_gems(struct treasure *treasure, struct rnd *rnd)
 {
     treasure->gems = NULL;
-    treasure->gemsCount = 0;
+    treasure->gems_count = 0;
     if (!treasure->type->gems.percent_chance) return;
     int percent_score = roll("1d100", rnd);
     if (percent_score <= treasure->type->gems.percent_chance) {
-        treasure->gemsCount = roll(treasure->type->gems.amount, rnd);
-        treasure->gems = calloc_or_die(treasure->gemsCount, sizeof(struct gem));
-        for (int i = 0; i < treasure->gemsCount; ++i) {
+        treasure->gems_count = roll(treasure->type->gems.amount, rnd);
+        treasure->gems = calloc_or_die(treasure->gems_count, sizeof(struct gem));
+        for (int i = 0; i < treasure->gems_count; ++i) {
             gem_initialize(&treasure->gems[i]);
             gem_generate(&treasure->gems[i], rnd);
         }
@@ -907,17 +908,17 @@ generate_treasure_gems(struct Treasure *treasure, struct rnd *rnd)
 
 
 static void
-generate_treasure_jewelry(struct Treasure *treasure, struct rnd *rnd)
+generate_jewelry(struct treasure *treasure, struct rnd *rnd)
 {
     treasure->jewelry = NULL;
-    treasure->jewelryCount = 0;
+    treasure->jewelry_count = 0;
     if (!treasure->type->jewelry.percent_chance) return;
     int percent_score = roll("1d100", rnd);
     if (percent_score <= treasure->type->jewelry.percent_chance) {
-        treasure->jewelryCount = roll(treasure->type->jewelry.amount, rnd);
-        treasure->jewelry = calloc_or_die(treasure->jewelryCount,
+        treasure->jewelry_count = roll(treasure->type->jewelry.amount, rnd);
+        treasure->jewelry = calloc_or_die(treasure->jewelry_count,
                                           sizeof(struct jewelry));
-        for (int i = 0; i < treasure->jewelryCount; ++i) {
+        for (int i = 0; i < treasure->jewelry_count; ++i) {
             jewelry_initialize(&treasure->jewelry[i]);
             jewelry_generate(&treasure->jewelry[i], rnd);
         }
@@ -926,23 +927,23 @@ generate_treasure_jewelry(struct Treasure *treasure, struct rnd *rnd)
 
 
 static void
-generate_treasure_maps_or_magic(struct Treasure *treasure, struct rnd *rnd)
+generate_maps_or_magic(struct treasure *treasure, struct rnd *rnd)
 {
     if (!treasure->type->maps_or_magic.percent_chance) return;
     int percent_score = roll("1d100", rnd);
     if (percent_score <= treasure->type->maps_or_magic.percent_chance) {
         for (int i = 0; i < treasure->type->maps_or_magic.types_count; ++i) {
             struct maps_or_magic_type *type = &treasure->type->maps_or_magic.types[i];
-            generate_treasure_maps_or_magic_type(type, treasure, rnd);
+            generate_maps_or_magic_items(type, treasure, rnd);
         }
     }
 }
 
 
 static void
-generate_treasure_maps_or_magic_type(struct maps_or_magic_type *type,
-                                     struct Treasure *treasure,
-                                     struct rnd *rnd)
+generate_maps_or_magic_items(struct maps_or_magic_type *type,
+                             struct treasure *treasure,
+                             struct rnd *rnd)
 {
     int amount = roll(type->amount, rnd);
     int magic_items_count = 0;
@@ -961,10 +962,10 @@ generate_treasure_maps_or_magic_type(struct maps_or_magic_type *type,
     }
     
     if (maps_count) {
-        generateMapsForTreasure(treasure, rnd, maps_count);
+        treasure_generate_maps(treasure, rnd, maps_count);
     }
     if (magic_items_count) {
-        generateMagicItemsForTreasure(treasure, rnd, magic_items_count,
+        treasure_generate_magic_items(treasure, rnd, magic_items_count,
                                       type->possible_magic_items);
     }
 }

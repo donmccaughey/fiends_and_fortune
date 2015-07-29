@@ -14,13 +14,13 @@
 #include "jewelry.h"
 #include "MagicItem.h"
 #include "TextGraph.h"
-#include "Treasure.h"
+#include "treasure.h"
 #include "treasure_map.h"
 #include "treasure_type.h"
 
 
 static void check(FILE *out, char const *constantNumber);
-static void enumerateTreasureItems(struct Treasure *treasure, FILE *out);
+static void enumerateTreasureItems(struct treasure *treasure, FILE *out);
 static void generateCharacter(struct rnd *rnd,
                               FILE *out,
                               char const *methodName);
@@ -55,40 +55,40 @@ static void check(FILE *out, char const *constantNumber)
 }
 
 
-static void enumerateTreasureItems(struct Treasure *treasure, FILE *out)
+static void enumerateTreasureItems(struct treasure *treasure, FILE *out)
 {
-    if (treasure->gemsCount) {
+    if (treasure->gems_count) {
         fprintf(out, "  Gems: --------------------------------\n");
-        for (int i = 0; i < treasure->gemsCount; ++i) {
+        for (int i = 0; i < treasure->gems_count; ++i) {
             fprintf(out, "    %2i  %s\n", i + 1, treasure->gems[i].true_description);
         }
     }
     
-    if (treasure->jewelryCount) {
+    if (treasure->jewelry_count) {
         fprintf(out, "  Jewelry: -----------------------------\n");
-        for (int i = 0; i < treasure->jewelryCount; ++i) {
+        for (int i = 0; i < treasure->jewelry_count; ++i) {
             fprintf(out, "    %2i  %s\n",
                     i + 1, treasure->jewelry[i].true_description);
         }
     }
     
-    if (treasure->mapsCount) {
+    if (treasure->maps_count) {
         fprintf(out, "  Maps: --------------------------------\n");
-        for (int i = 0; i < treasure->mapsCount; ++i) {
+        for (int i = 0; i < treasure->maps_count; ++i) {
             fprintf(out, "    %2i  %s\n", i + 1, treasure->maps[i].true_description);
         }
     }
     
-    if (treasure->magicItemsCount) {
+    if (treasure->magic_items_count) {
         fprintf(out, "  Magic Items: -------------------------\n");
-        for (int i = 0; i < treasure->magicItemsCount; ++i) {
+        for (int i = 0; i < treasure->magic_items_count; ++i) {
             fprintf(out, "    %2i  %s\n",
-                    i + 1, treasure->magicItems[i].trueDescription);
-            if (treasure->magicItems[i].trueDetails) {
+                    i + 1, treasure->magic_items[i].trueDescription);
+            if (treasure->magic_items[i].trueDetails) {
                 int j = 0;
-                while (treasure->magicItems[i].trueDetails[j]) {
+                while (treasure->magic_items[i].trueDetails[j]) {
                     fprintf(out, "            %s\n",
-                            treasure->magicItems[i].trueDetails[j]);
+                            treasure->magic_items[i].trueDetails[j]);
                     ++j;
                 }
             }
@@ -264,7 +264,7 @@ static void generateSampleDungeon(struct rnd *rnd, FILE *out)
 
 static void generateTreasureType(struct rnd *rnd, FILE *out, char letter)
 {
-    struct Treasure treasure;
+    struct treasure treasure;
     int individualCount;
     
     fprintf(out, "Treasure type %c: ", letter);
@@ -275,19 +275,18 @@ static void generateTreasureType(struct rnd *rnd, FILE *out, char letter)
         individualCount = 0;
     }
     
-    initializeTreasure(&treasure);
-    treasure_generate(treasure_type_by_letter(letter),
-                      &treasure, rnd, individualCount);
+    treasure_initialize(&treasure);
+    treasure_type_generate(treasure_type_by_letter(letter), rnd, individualCount, &treasure);
     
-    char *description = describeTreasure(&treasure);
-    int value_cp = treasureValue_cp(&treasure);
+    char *description = treasure_alloc_description(&treasure);
+    int value_cp = treasure_value_in_cp(&treasure);
     char *value_gp = coins_alloc_gp_cp_description(value_cp);
     fprintf(out, "%s (total %s)\n", description, value_gp);
     free_or_die(value_gp);
     free_or_die(description);
     enumerateTreasureItems(&treasure, out);
     
-    finalizeTreasure(&treasure);
+    treasure_finalize(&treasure);
 }
 
 

@@ -5,9 +5,11 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+#include "treasure.h"
+
 
 struct rnd;
-struct Treasure;
+struct treasure;
 struct treasure_type;
 
 
@@ -16,10 +18,10 @@ treasure_type_alloc_description(struct treasure_type *treasure_type,
                                 bool include_header);
 
 void
-treasure_generate(struct treasure_type *treasure_type,
-                  struct Treasure *treasure,
-                  struct rnd *rnd,
-                  int individual_count);
+treasure_type_generate(struct treasure_type *treasure_type,
+                       struct rnd *rnd,
+                       int individual_count,
+                       struct treasure *treasure);
 
 struct treasure_type *
 treasure_type_by_letter(char letter);
