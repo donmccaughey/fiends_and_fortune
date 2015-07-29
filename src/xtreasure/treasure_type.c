@@ -23,8 +23,7 @@ struct coins_gems_or_jewelry {
 
 
 struct maps_or_magic_type {
-    int amount;
-    char const *variable_amount;
+    char const *amount;
     bool is_map_possible;
     PossibleMagicItems possible_magic_items;
 };
@@ -85,8 +84,7 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=30,
             .types={
                 {
-                    .amount=3,
-                    .variable_amount="",
+                    .amount="3",
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 }
@@ -128,8 +126,7 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=10,
             .types={
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .possible_magic_items=MAGIC_WEAPON_OR_ARMOR
                 }
             },
@@ -162,8 +159,7 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=10,
             .types={
                 {
-                    .amount=2,
-                    .variable_amount="",
+                    .amount="2",
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 }
@@ -201,14 +197,12 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=15,
             .types={
                 {
-                    .amount=2,
-                    .variable_amount="",
+                    .amount="2",
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 },
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .possible_magic_items=POTION
                 }
             },
@@ -245,14 +239,12 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=25,
             .types={
                 {
-                    .amount=3,
-                    .variable_amount="",
+                    .amount="3",
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 },
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .possible_magic_items=SCROLL
                 }
             },
@@ -289,19 +281,16 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=30,
             .types={
                 {
-                    .amount=3,
-                    .variable_amount="",
+                    .amount="3",
                     .is_map_possible=true,
                     .possible_magic_items=NON_WEAPON_MAGIC
                 },
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .possible_magic_items=POTION
                 },
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .possible_magic_items=SCROLL
                 }
             },
@@ -330,14 +319,12 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=35,
             .types={
                 {
-                    .amount=4,
-                    .variable_amount="",
+                    .amount="4",
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 },
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .possible_magic_items=SCROLL
                 }
             },
@@ -378,19 +365,16 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=15,
             .types={
                 {
-                    .amount=4,
-                    .variable_amount="",
+                    .amount="4",
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 },
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .possible_magic_items=POTION
                 },
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .possible_magic_items=SCROLL
                 }
             },
@@ -415,8 +399,7 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=15,
             .types={
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 }
@@ -518,8 +501,7 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=40,
             .types={
                 {
-                    .amount=0,
-                    .variable_amount="2D4",
+                    .amount="2D4",
                     .possible_magic_items=POTION
                 }
             },
@@ -532,8 +514,7 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=50,
             .types={
                 {
-                    .amount=0,
-                    .variable_amount="1D4",
+                    .amount="1D4",
                     .possible_magic_items=SCROLL
                 }
             },
@@ -554,33 +535,27 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=70,
             .types={
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .possible_magic_items=RING
                 },
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .possible_magic_items=ROD_STAFF_WAND
                 },
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .possible_magic_items=MISC_MAGIC
                 },
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .possible_magic_items=ARMOR_SHIELD
                 },
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .possible_magic_items=SWORD
                 },
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .possible_magic_items=MISC_WEAPON
                 }
             },
@@ -593,33 +568,27 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=85,
             .types={
                 {
-                    .amount=2,
-                    .variable_amount="",
+                    .amount="2",
                     .possible_magic_items=RING
                 },
                 {
-                    .amount=2,
-                    .variable_amount="",
+                    .amount="2",
                     .possible_magic_items=ROD_STAFF_WAND
                 },
                 {
-                    .amount=2,
-                    .variable_amount="",
+                    .amount="2",
                     .possible_magic_items=MISC_MAGIC
                 },
                 {
-                    .amount=2,
-                    .variable_amount="",
+                    .amount="2",
                     .possible_magic_items=ARMOR_SHIELD
                 },
                 {
-                    .amount=2,
-                    .variable_amount="",
+                    .amount="2",
                     .possible_magic_items=SWORD
                 },
                 {
-                    .amount=2,
-                    .variable_amount="",
+                    .amount="2",
                     .possible_magic_items=MISC_WEAPON
                 }
             },
@@ -648,8 +617,7 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=55,
             .types={
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .is_map_possible=true,
                     .possible_magic_items=NO_MAGIC_ITEM
                 }
@@ -663,13 +631,11 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=60,
             .types={
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .possible_magic_items=MISC_MAGIC
                 },
                 {
-                    .amount=1,
-                    .variable_amount="",
+                    .amount="1",
                     .possible_magic_items=POTION
                 }
             },
@@ -717,8 +683,7 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=50,
             .types={
                 {
-                    .amount=3,
-                    .variable_amount="",
+                    .amount="3",
                     .possible_magic_items=ANY_MAGIC_ITEM
                 }
             },
@@ -842,29 +807,26 @@ describe_maps_or_magic(struct maps_or_magic *maps_or_magic)
         struct maps_or_magic_type *type = &maps_or_magic->types[i];
         char const *type_name = possible_maps_or_magic_name(type->is_map_possible,
                                                             type->possible_magic_items);
-        if (str_not_empty(type->variable_amount)) {
-            struct dice variable_amount = dice_parse(type->variable_amount);
-            char *range = dice_alloc_range_description(variable_amount);
+        struct dice amount = dice_parse(type->amount);
+        char *range = dice_alloc_range_description(amount);
+        if (!dice_has_constant_score(amount)) {
             type_descriptions[i] = str_alloc_formatted("%s %ss",
                                                        range, type_name);
-            free_or_die(range);
         } else if (   type->is_map_possible
                    && type->possible_magic_items == ANY_MAGIC_ITEM)
         {
-            type_descriptions[i] = str_alloc_formatted("any %i", type->amount);
+            type_descriptions[i] = str_alloc_formatted("any %s", range);
         } else if (type->possible_magic_items == NON_WEAPON_MAGIC) {
-            type_descriptions[i] = str_alloc_formatted("any %i except sword or misc weapon",
-                                                       type->amount);
+            type_descriptions[i] = str_alloc_formatted("any %s except sword or misc weapon",
+                                                       range);
         } else if (type->possible_magic_items == ANY_MAGIC_ITEM) {
-            type_descriptions[i] = str_alloc_formatted("any %i magic",
-                                                       type->amount);
+            type_descriptions[i] = str_alloc_formatted("any %s magic", range);
         } else {
-            char const *plural = (type->amount == 1) ? "" : "s";
-            type_descriptions[i] = str_alloc_formatted("%i %s%s",
-                                                       type->amount,
-                                                       type_name,
-                                                       plural);
+            char const *plural = (1 == dice_max_score(amount)) ? "" : "s";
+            type_descriptions[i] = str_alloc_formatted("%s %s%s", range,
+                                                       type_name, plural);
         }
+        free_or_die(range);
     }
 
     char *description = NULL;
@@ -982,11 +944,7 @@ generate_treasure_maps_or_magic_type(struct maps_or_magic_type *type,
                                      struct Treasure *treasure,
                                      struct rnd *rnd)
 {
-    int amount = type->amount;
-    if (str_not_empty(type->variable_amount)) {
-        amount = roll(type->variable_amount, rnd);
-    }
-    
+    int amount = roll(type->amount, rnd);
     int magic_items_count = 0;
     int maps_count = 0;
     for (int i = 0; i < amount; ++i) {

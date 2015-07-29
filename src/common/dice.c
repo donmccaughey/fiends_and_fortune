@@ -1,10 +1,16 @@
 #include "dice.h"
 
+#include <assert.h>
 #include <errno.h>
+#include <limits.h>
 #include <stdlib.h>
 
-#include "common/rnd.h"
-#include "common/str.h"
+#include "rnd.h"
+#include "str.h"
+
+
+static inline double
+max_possible_total(struct dice dice);
 
 
 static int
@@ -21,17 +27,29 @@ compare_die_scores(void const *item1, void const *item2)
 char *
 dice_alloc_base_range_description(struct dice dice)
 {
-    return str_alloc_formatted("%i-%i",
-                               dice_min_base_score(dice),
-                               dice_max_base_score(dice));
+    if (dice_has_constant_score(dice)) {
+        return str_alloc_formatted("%i", dice_min_base_score(dice));
+    } else {
+        return str_alloc_formatted("%i-%i",
+                                   dice_min_base_score(dice),
+                                   dice_max_base_score(dice));
+    }
 }
 
 
 char *
 dice_alloc_description(struct dice dice)
 {
+    assert(dice_is_valid(dice));
+
     char *description = NULL;
-    str_realloc_append_formatted(&description, "%id%i", dice.count, dice.sides);
+    if (!dice.count || !dice.sides) {
+        str_realloc_append_formatted(&description, "0");
+    } else if (1 == dice.sides) {
+        str_realloc_append_formatted(&description, "%i", dice.count);
+    } else {
+        str_realloc_append_formatted(&description, "%id%i", dice.count, dice.sides);
+    }
     if (dice.modifier) {
         str_realloc_append_formatted(&description, "%+i", dice.modifier);
     }
@@ -45,8 +63,29 @@ dice_alloc_description(struct dice dice)
 char *
 dice_alloc_range_description(struct dice dice)
 {
-    return str_alloc_formatted("%i-%i",
-                               dice_min_score(dice), dice_max_score(dice));
+    if (dice_has_constant_score(dice)) {
+        return str_alloc_formatted("%i", dice_min_score(dice));
+    } else {
+        return str_alloc_formatted("%i-%i", dice_min_score(dice), dice_max_score(dice));
+    }
+}
+
+
+bool
+dice_has_constant_score(struct dice dice)
+{
+    assert(dice_is_valid(dice));
+    return dice.count == 0 || dice.sides == 1;
+}
+
+
+bool
+dice_is_valid(struct dice dice)
+{
+    if (dice.count < 0) return false;
+    if (dice.sides < 1) return false;
+    if (max_possible_total(dice) > (double)INT_MAX) return false;
+    return true;
 }
 
 
@@ -79,6 +118,7 @@ dice_make_plus_times(int count, int sides, int modifier, int multiplier)
 int
 dice_max_base_score(struct dice dice)
 {
+    assert(dice_is_valid(dice));
     return (dice.count * dice.sides) + dice.modifier;
 }
 
@@ -86,6 +126,7 @@ dice_max_base_score(struct dice dice)
 int
 dice_max_score(struct dice dice)
 {
+    assert(dice_is_valid(dice));
     return dice_max_base_score(dice) * dice.multiplier;
 }
 
@@ -93,6 +134,7 @@ dice_max_score(struct dice dice)
 int
 dice_min_base_score(struct dice dice)
 {
+    assert(dice_is_valid(dice));
     return dice.count + dice.modifier;
 }
 
@@ -100,6 +142,7 @@ dice_min_base_score(struct dice dice)
 int
 dice_min_score(struct dice dice)
 {
+    assert(dice_is_valid(dice));
     return dice_min_base_score(dice) * dice.multiplier;
 }
 
@@ -107,8 +150,11 @@ dice_min_score(struct dice dice)
 struct dice
 dice_parse(char const *dice_string)
 {
+    assert(dice_string);
+    assert(dice_string[0]);
+
     struct dice dice = {
-        .count=1,
+        .count=0,
         .sides=1,
         .modifier=0,
         .multiplier=1,
@@ -148,6 +194,8 @@ dice_parse(char const *dice_string)
         assert(multiplier >= INT_MIN && multiplier <= INT_MAX);
         dice.multiplier = (int)multiplier;
     }
+
+    assert(dice_is_valid(dice));
     return dice;
 }
 
@@ -155,6 +203,9 @@ dice_parse(char const *dice_string)
 int
 dice_roll_with_average_scoring(struct dice dice, struct rnd *rnd)
 {
+    assert(dice_is_valid(dice));
+    assert(rnd);
+
     int die_scores[dice.count];
     dice_roll(dice, rnd, die_scores);
     
@@ -181,6 +232,9 @@ dice_roll_with_average_scoring(struct dice dice, struct rnd *rnd)
 int
 dice_roll_and_adjust_upwards(struct dice dice, struct rnd *rnd)
 {
+    assert(dice_is_valid(dice));
+    assert(rnd);
+
     int die_scores[dice.count];
     dice_roll(dice, rnd, die_scores);
     
@@ -199,6 +253,9 @@ dice_roll_and_adjust_upwards(struct dice dice, struct rnd *rnd)
 int
 dice_roll_and_drop_lowest(struct dice dice, struct rnd *rnd)
 {
+    assert(dice_is_valid(dice));
+    assert(rnd);
+
     int die_scores[dice.count];
     dice_roll(dice, rnd, die_scores);
     qsort(die_scores, (size_t)dice.count, sizeof die_scores[0], compare_die_scores);
@@ -211,24 +268,14 @@ dice_roll_and_drop_lowest(struct dice dice, struct rnd *rnd)
 }
 
 
-static inline double
-max_possible_total(struct dice dice)
-{
-    double max_possible_roll = (double)dice.count * (double)dice.sides;
-    double max_possible_total = max_possible_roll + (double)dice.modifier;
-    return max_possible_total * (double)dice.multiplier;
-}
-
-
 int
 dice_roll(struct dice dice, struct rnd *rnd, int die_scores[])
 {
-    assert(dice.count >= 0);
-    assert(dice.sides > 0);
-    assert(max_possible_total(dice) <= (double)INT_MAX);
+    assert(dice_is_valid(dice));
+    assert(rnd);
     
     if (dice.count == 0) {
-        return 0;
+        return dice.modifier * dice.multiplier;
     } else if (dice.sides == 1) {
         return (dice.count + dice.modifier) * dice.multiplier;
     } else {
@@ -242,6 +289,15 @@ dice_roll(struct dice dice, struct rnd *rnd, int die_scores[])
         }
         return score * dice.multiplier;
     }
+}
+
+
+static inline double
+max_possible_total(struct dice dice)
+{
+    double max_possible_roll = (double)dice.count * (double)dice.sides;
+    double max_possible_total = max_possible_roll + (double)dice.modifier;
+    return max_possible_total * (double)dice.multiplier;
 }
 
 

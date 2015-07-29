@@ -13,7 +13,15 @@ dice_test(void);
 static void
 dice_alloc_description_test(void)
 {
-    char *description = dice_alloc_description(dice_make(3, 6));
+    char *description = dice_alloc_description(dice_make(0, 6));
+    assert(0 == strcmp("0", description));
+    free_or_die(description);
+
+    description = dice_alloc_description(dice_make(5, 1));
+    assert(0 == strcmp("5", description));
+    free_or_die(description);
+
+    description = dice_alloc_description(dice_make(3, 6));
     assert(0 == strcmp("3d6", description));
     free_or_die(description);
 
@@ -38,7 +46,23 @@ dice_alloc_description_test(void)
 static void
 dice_alloc_base_range_description_test(void)
 {
-    char *description = dice_alloc_base_range_description(dice_make(3, 6));
+    char *description = dice_alloc_base_range_description(dice_make(0, 6));
+    assert(0 == strcmp("0", description));
+    free_or_die(description);
+
+    description = dice_alloc_base_range_description(dice_make_plus(0, 6, 2));
+    assert(0 == strcmp("2", description));
+    free_or_die(description);
+
+    description = dice_alloc_base_range_description(dice_make_plus_times(0, 4, 4, 10));
+    assert(0 == strcmp("4", description));
+    free_or_die(description);
+
+    description = dice_alloc_base_range_description(dice_make(3, 1));
+    assert(0 == strcmp("3", description));
+    free_or_die(description);
+
+    description = dice_alloc_base_range_description(dice_make(3, 6));
     assert(0 == strcmp("3-18", description));
     free_or_die(description);
 
@@ -63,7 +87,23 @@ dice_alloc_base_range_description_test(void)
 static void
 dice_alloc_range_description_test(void)
 {
-    char *description = dice_alloc_range_description(dice_make(3, 6));
+    char *description = dice_alloc_range_description(dice_make(0, 6));
+    assert(0 == strcmp("0", description));
+    free_or_die(description);
+
+    description = dice_alloc_range_description(dice_make_plus(0, 6, 2));
+    assert(0 == strcmp("2", description));
+    free_or_die(description);
+
+    description = dice_alloc_range_description(dice_make_plus_times(0, 4, 4, 10));
+    assert(0 == strcmp("40", description));
+    free_or_die(description);
+
+    description = dice_alloc_range_description(dice_make(3, 1));
+    assert(0 == strcmp("3", description));
+    free_or_die(description);
+
+    description = dice_alloc_range_description(dice_make(3, 6));
     assert(0 == strcmp("3-18", description));
     free_or_die(description);
 
@@ -89,13 +129,13 @@ static void
 dice_parse_test(void)
 {
     struct dice dice;
-    
+
     dice = dice_parse("0");
     assert(0 == dice.count);
     assert(1 == dice.sides);
     assert(0 == dice.modifier);
     assert(1 == dice.multiplier);
-    
+
     dice = dice_parse("1");
     assert(1 == dice.count);
     assert(1 == dice.sides);
@@ -108,12 +148,18 @@ dice_parse_test(void)
     assert(0 == dice.modifier);
     assert(1 == dice.multiplier);
     
+    dice = dice_parse("0d4+2");
+    assert(0 == dice.count);
+    assert(4 == dice.sides);
+    assert(2 == dice.modifier);
+    assert(1 == dice.multiplier);
+
     dice = dice_parse("1d6");
     assert(1 == dice.count);
     assert(6 == dice.sides);
     assert(0 == dice.modifier);
     assert(1 == dice.multiplier);
-    
+
     dice = dice_parse("2D6");
     assert(2 == dice.count);
     assert(6 == dice.sides);
@@ -150,17 +196,47 @@ dice_parse_test(void)
     assert(0 == dice.modifier);
     assert(10 == dice.multiplier);
     
-    dice = dice_parse("5d4*-5");
+    dice = dice_parse("5D4X-5");
     assert(5 == dice.count);
     assert(4 == dice.sides);
     assert(0 == dice.modifier);
     assert(-5 == dice.multiplier);
     
-    dice = dice_parse("2d10+4*100");
+    dice = dice_parse("2d10+4x100");
     assert(2 == dice.count);
     assert(10 == dice.sides);
     assert(4 == dice.modifier);
     assert(100 == dice.multiplier);
+}
+
+
+static void
+dice_roll_test(void)
+{
+    struct rnd *always_one = rnd_alloc_fake_fixed(0);
+    struct rnd *always_two = rnd_alloc_fake_fixed(1);
+    int score;
+
+    score = dice_roll(dice_make(0, 1), always_one, NULL);
+    assert(0 == score);
+
+    score = dice_roll(dice_make(3, 1), always_two, NULL);
+    assert(3 == score);
+
+    score = dice_roll(dice_make_plus(1, 1, 1), always_one, NULL);
+    assert(2 == score);
+
+    score = dice_roll(dice_make_plus(5, 1, -1), always_two, NULL);
+    assert(4 == score);
+
+    score = dice_roll(dice_make_plus_times(5, 1, 0, 10), always_one, NULL);
+    assert(50 == score);
+
+    score = dice_roll(dice_make_plus(0, 4, 1), always_two, NULL);
+    assert(1 == score);
+
+    rnd_free(always_one);
+    rnd_free(always_two);
 }
 
 
@@ -189,7 +265,7 @@ roll_test(void)
     
     /* roll dice that always roll 1's */
     score = roll("0d4+1", always_one);
-    assert(0 == score);
+    assert(1 == score);
     
     score = roll("1D6+2", always_one);
     assert(3 == score);
@@ -280,6 +356,7 @@ dice_test(void)
     dice_alloc_base_range_description_test();
     dice_alloc_range_description_test();
     dice_parse_test();
+    dice_roll_test();
     roll_test();
     dice_roll_with_average_scoring_test();
     dice_roll_and_drop_lowest_test();

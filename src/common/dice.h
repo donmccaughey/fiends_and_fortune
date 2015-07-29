@@ -2,9 +2,7 @@
 #define FNF_COMMON_DICE_H_INCLUDED
 
 
-#include <assert.h>
-#include <limits.h>
-#include <stddef.h>
+#include <stdbool.h>
 
 
 struct rnd;
@@ -26,6 +24,12 @@ dice_alloc_description(struct dice dice);
 
 char *
 dice_alloc_range_description(struct dice dice);
+
+bool
+dice_has_constant_score(struct dice dice);
+
+bool
+dice_is_valid(struct dice dice);
 
 struct dice
 dice_make(int count, int sides);
