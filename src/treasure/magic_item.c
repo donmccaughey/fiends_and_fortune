@@ -10,7 +10,7 @@
 #include "common/fail.h"
 #include "common/str.h"
 
-#include "Character.h"
+#include "character.h"
 #include "coins.h"
 
 
@@ -1723,25 +1723,25 @@ generate_scroll(struct magic_item *magic_item, struct rnd *rnd)
         magic_item->true_details = calloc_or_die(scroll->spell_count + 1,
                                                  sizeof(char *));
         
-        enum SpellType spell_type;
+        enum spell_type spell_type;
         char const *spell_type_name;
         char const *spell_level_range = scroll->clerical_spell_level_range;
         score = roll("1d100", rnd);
         if (score <= 70) {
             if (roll("1d100", rnd) <= 10) {
-                spell_type = IllusionistSpellType;
+                spell_type = spell_type_illusionist;
                 spell_type_name = "illusionist";
             } else {
-                spell_type = MagicUserSpellType;
+                spell_type = spell_type_magic_user;
                 spell_type_name = "magic-user";
                 spell_level_range = scroll->magic_user_spell_level_range;
             }
         } else {
             if (roll("1d100", rnd) <= 25) {
-                spell_type = DrudicalSpellType;
+                spell_type = spell_type_drudical;
                 spell_type_name = "druidical";
             } else {
-                spell_type = ClericalSpellType;
+                spell_type = spell_type_clerical;
                 spell_type_name = "clerical";
             }
         }
@@ -1749,7 +1749,7 @@ generate_scroll(struct magic_item *magic_item, struct rnd *rnd)
         int spell_levels = 0;
         for (int i = 0; i < scroll->spell_count; ++i) {
             int spell_level = roll(spell_level_range, rnd);
-            char const *spell_name = determineSpell(rnd, spell_type, spell_level);
+            char const *spell_name = determine_spell(rnd, spell_type, spell_level);
             magic_item->true_details[i] = str_alloc_formatted("level %i: %s",
                                                               spell_level,
                                                               spell_name);
@@ -2344,7 +2344,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
         char const *prefix = "speaks ";
         size_t languages_size = strlen(prefix);
         for (int i = 0; i < language_count; ++i) {
-            languages[i] = determineLanguage(rnd, languages, i);
+            languages[i] = determine_language(rnd, languages, i);
             languages_size += strlen(languages[i]);
         }
         char const *separator = ", ";

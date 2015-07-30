@@ -15,7 +15,7 @@
 #include "treasure/treasure_map.h"
 #include "treasure/treasure_type.h"
 
-#include "Character.h"
+#include "character.h"
 #include "Dungeon.h"
 #include "TextGraph.h"
 
@@ -102,36 +102,36 @@ static void generateCharacter(struct rnd *rnd,
                               FILE *out,
                               char const *methodName)
 {
-    enum CharacteristicGenerationMethod method = SimpleCharacteristicGenerationMethod;
+    enum characteristic_generation_method method = characteristic_generation_method_simple;
     uint32_t specialCharacteristics = STRENGTH;
     if (0 == strcasecmp("method1", methodName)) {
-        method = CharacteristicGenerationMethod1;
+        method = characteristic_generation_method_1;
     } else if (0 == strcasecmp("method2", methodName)) {
-        method = CharacteristicGenerationMethod2;
+        method = characteristic_generation_method_2;
     } else if (0 == strcasecmp("method3", methodName)) {
-        method = CharacteristicGenerationMethod3;
+        method = characteristic_generation_method_3;
     } else if (0 == strcasecmp("method4", methodName)) {
-        method = CharacteristicGenerationMethod4;
+        method = characteristic_generation_method_4;
     } else if (0 == strcasecmp("generalnpc", methodName)) {
-        method = GeneralNPCCharacteristicGenerationMethod;
+        method = characteristic_generation_method_general_NPC;
     } else if (0 == strcasecmp("specialnpc", methodName)) {
-        method = SpecialNPCCharacteristicGenerationMethod;
+        method = characteristic_generation_method_special_NPC;
     } else {
         methodName = "simple";
     }
     
-    int *characteristics = generateCharacteristics(rnd, method, specialCharacteristics);
-    if (   method == CharacteristicGenerationMethod1
-        || method == CharacteristicGenerationMethod2)
+    int *characteristics = alloc_characteristics(rnd, method, specialCharacteristics);
+    if (   method == characteristic_generation_method_1
+        || method == characteristic_generation_method_2)
     {
         fprintf(out, "Character (%s): -------------------------\n", methodName);
-        fprintf(out, "(%s)\n", characteristicGenerationMethodDescription(method));
+        fprintf(out, "(%s)\n", characteristic_generation_method_description(method));
         for (int i = 0; i < 6; ++i) {
             fprintf(out, "  %2i) %i\n", i + 1, characteristics[i]);
         }
-    } else if (method == CharacteristicGenerationMethod4) {
+    } else if (method == characteristic_generation_method_4) {
         fprintf(out, "Possible Characters (%s): -------------------------\n", methodName);
-        fprintf(out, "(%s)\n", characteristicGenerationMethodDescription(method));
+        fprintf(out, "(%s)\n", characteristic_generation_method_description(method));
         fprintf(out, "                 %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n",
                 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
         fprintf(out, "                 %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s\n",
@@ -168,7 +168,7 @@ static void generateCharacter(struct rnd *rnd,
                 characteristics[5 + 54], characteristics[5 + 60], characteristics[5 + 66]);
     } else {
         fprintf(out, "Character (%s): -------------------------\n", methodName);
-        fprintf(out, "(%s)\n", characteristicGenerationMethodDescription(method));
+        fprintf(out, "(%s)\n", characteristic_generation_method_description(method));
         fprintf(out, "  Strength:     %2i\n", characteristics[0]);
         fprintf(out, "  Intelligence: %2i\n", characteristics[1]);
         fprintf(out, "  Wisdom:       %2i\n", characteristics[2]);
