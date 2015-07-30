@@ -9,7 +9,7 @@
 
 
 char const *
-determine_spell(struct rnd *rnd,
+spell_determine(struct rnd *rnd,
                 enum spell_type spell_type,
                 int spell_level)
 {

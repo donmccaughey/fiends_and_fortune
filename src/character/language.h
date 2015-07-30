@@ -9,7 +9,7 @@ struct rnd;
 
 
 char const *
-determine_language(struct rnd *rnd,
+language_determine(struct rnd *rnd,
                    char const *exclude[],
                    size_t exclude_count);
 

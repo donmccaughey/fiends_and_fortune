@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "character/character.h"
 #include "character/language.h"
 #include "character/spell.h"
 
@@ -1752,7 +1751,7 @@ generate_scroll(struct magic_item *magic_item, struct rnd *rnd)
         int spell_levels = 0;
         for (int i = 0; i < scroll->spell_count; ++i) {
             int spell_level = roll(spell_level_range, rnd);
-            char const *spell_name = determine_spell(rnd, spell_type, spell_level);
+            char const *spell_name = spell_determine(rnd, spell_type, spell_level);
             magic_item->true_details[i] = str_alloc_formatted("level %i: %s",
                                                               spell_level,
                                                               spell_name);
@@ -2347,7 +2346,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
         char const *prefix = "speaks ";
         size_t languages_size = strlen(prefix);
         for (int i = 0; i < language_count; ++i) {
-            languages[i] = determine_language(rnd, languages, i);
+            languages[i] = language_determine(rnd, languages, i);
             languages_size += strlen(languages[i]);
         }
         char const *separator = ", ";
