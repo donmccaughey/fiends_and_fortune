@@ -7,6 +7,8 @@
 #include "common/dice.h"
 #include "common/rnd.h"
 
+#include "character/character.h"
+
 #include "treasure/coins.h"
 #include "treasure/gem.h"
 #include "treasure/jewelry.h"
@@ -15,7 +17,6 @@
 #include "treasure/treasure_map.h"
 #include "treasure/treasure_type.h"
 
-#include "character.h"
 #include "Dungeon.h"
 #include "TextGraph.h"
 

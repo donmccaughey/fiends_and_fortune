@@ -5,12 +5,13 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "character/character.h"
+
 #include "common/alloc_or_die.h"
 #include "common/dice.h"
 #include "common/fail.h"
 #include "common/str.h"
 
-#include "character.h"
 #include "coins.h"
 
 
