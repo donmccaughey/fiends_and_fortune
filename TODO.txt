@@ -9,3 +9,7 @@
 - more detailed jewelry description
 - casual jewelry description
 - generate types of Ioun stones
+- when determining language, implement option to include dice roll
+  "86-00 Human foreign or other*", "*Select a foreign tongue, choose an
+  unlisted creature language, or select at random by ignoring rolls over 85, if
+  the first two options are not desired." DMG:102

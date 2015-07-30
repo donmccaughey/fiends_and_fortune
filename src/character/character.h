@@ -28,13 +28,6 @@ enum characteristic_generation_method {
     characteristic_generation_method_special_NPC
 };
 
-enum spell_type {
-    spell_type_magic_user,
-    spell_type_clerical,
-    spell_type_illusionist,
-    spell_type_drudical
-};
-
 
 struct character {
     int strength;
@@ -48,14 +41,6 @@ struct character {
 
 char const *
 characteristic_generation_method_description(enum characteristic_generation_method method);
-
-char const *
-determine_language(struct rnd *rnd,
-                   char const *exclude[],
-                   size_t exclude_count);
-
-char const *
-determine_spell(struct rnd *rnd, enum spell_type spell_type, int spell_level);
 
 void
 character_finalize(struct character *character);

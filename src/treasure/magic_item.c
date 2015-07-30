@@ -6,6 +6,8 @@
 #include <string.h>
 
 #include "character/character.h"
+#include "character/language.h"
+#include "character/spell.h"
 
 #include "common/alloc_or_die.h"
 #include "common/dice.h"
