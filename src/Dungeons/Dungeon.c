@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "common/alloc_or_die.h"
+#include "common/fail.h"
 #include "common/str.h"
 
 #include "Area.h"
@@ -11,7 +12,6 @@
 #include "Direction.h"
 #include "Tile.h"
 #include "Tiles.h"
-#include "fail.h"
 
 
 static struct Point advancePoint(struct Point start, int32_t steps, enum Direction direction);

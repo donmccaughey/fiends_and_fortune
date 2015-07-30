@@ -1,7 +1,8 @@
 #include <assert.h>
 
+#include "common/rnd.h"
+
 #include "Dungeon.h"
-#include "rnd.h"
 #include "Tile.h"
 #include "Tiles.h"
 

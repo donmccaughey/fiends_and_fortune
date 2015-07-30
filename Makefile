@@ -7,6 +7,11 @@ check : | test/check.out $(TMP)/check.out
 	diff $|
 
 
+.PHONY : clean
+clean :
+	rm -f $(TMP)/check.out
+
+
 $(TMP)/check.out : $(PRODUCTS)/fnf | $(TMP)
 	$(PRODUCTS)/fnf check 0 > $@
 

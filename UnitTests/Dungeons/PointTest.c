@@ -1,4 +1,5 @@
 #include <assert.h>
+
 #include "Point.h"
 
 

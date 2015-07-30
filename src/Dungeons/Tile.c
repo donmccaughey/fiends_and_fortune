@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-#include "alloc_or_die.h"
+#include "common/alloc_or_die.h"
 
 
 struct Tile *createTile(struct Point point, enum TileType type)

@@ -7,16 +7,17 @@
 #include "common/dice.h"
 #include "common/rnd.h"
 
+#include "treasure/coins.h"
+#include "treasure/gem.h"
+#include "treasure/jewelry.h"
+#include "treasure/magic_item.h"
+#include "treasure/treasure.h"
+#include "treasure/treasure_map.h"
+#include "treasure/treasure_type.h"
+
 #include "Character.h"
-#include "coins.h"
 #include "Dungeon.h"
-#include "gem.h"
-#include "jewelry.h"
-#include "magic_item.h"
 #include "TextGraph.h"
-#include "treasure.h"
-#include "treasure_map.h"
-#include "treasure_type.h"
 
 
 static void check(FILE *out, char const *constantNumber);

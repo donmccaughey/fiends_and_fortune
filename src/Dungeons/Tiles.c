@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "alloc_or_die.h"
+#include "common/alloc_or_die.h"
+
 #include "Tile.h"
 
 

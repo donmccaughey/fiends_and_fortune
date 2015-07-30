@@ -5,6 +5,7 @@
 #include "common/alloc_or_die.h"
 #include "common/dice.h"
 #include "common/fail.h"
+#include "common/rnd.h"
 #include "common/str.h"
 
 #include "gem.h"
@@ -12,8 +13,6 @@
 #include "magic_item.h"
 #include "treasure.h"
 #include "treasure_map.h"
-
-#include "common/rnd.h"
 
 
 struct coins_gems_or_jewelry {

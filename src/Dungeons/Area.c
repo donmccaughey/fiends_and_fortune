@@ -2,7 +2,8 @@
 
 #include <stdlib.h>
 
-#include "alloc_or_die.h"
+#include "common/alloc_or_die.h"
+
 #include "Tiles.h"
 
 

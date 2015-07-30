@@ -3,7 +3,8 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "alloc_or_die.h"
+#include "common/alloc_or_die.h"
+
 #include "Area.h"
 
 
