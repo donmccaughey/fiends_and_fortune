@@ -2,9 +2,9 @@
 
 #include <string.h>
 
-#include "common/dice.h"
-#include "common/fail.h"
-#include "common/rnd.h"
+#include "dice.h"
+#include "fail.h"
+#include "rnd.h"
 
 
 static bool
