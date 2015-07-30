@@ -105,7 +105,7 @@ treasure_finalize(struct treasure *treasure)
     free_or_die(treasure->maps);
     
     for (int i = 0; i < treasure->magic_items_count; ++i) {
-        finalizeMagicItem(&treasure->magic_items[i]);
+        magic_item_finalize(&treasure->magic_items[i]);
     }
     free_or_die(treasure->magic_items);
 }
@@ -115,15 +115,15 @@ void
 treasure_generate_magic_items(struct treasure *treasure,
                               struct rnd *rnd,
                               int count,
-                              PossibleMagicItems possible_magic_items)
+                              possible_magic_items_t possible_magic_items)
 {
     treasure->magic_items = reallocarray_or_die(treasure->magic_items,
                                                 treasure->magic_items_count + count,
-                                                sizeof(struct MagicItem));
+                                                sizeof(struct magic_item));
     for (int i = 0; i < count; ++i) {
         int j = treasure->magic_items_count + i;
-        initializeMagicItem(&treasure->magic_items[j]);
-        generateMagicItem(&treasure->magic_items[j], rnd, possible_magic_items);
+        magic_item_initialize(&treasure->magic_items[j]);
+        magic_item_generate(&treasure->magic_items[j], rnd, possible_magic_items);
     }
     treasure->magic_items_count += count;
 }

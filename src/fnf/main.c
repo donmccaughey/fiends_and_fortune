@@ -12,7 +12,7 @@
 #include "Dungeon.h"
 #include "gem.h"
 #include "jewelry.h"
-#include "MagicItem.h"
+#include "magic_item.h"
 #include "TextGraph.h"
 #include "treasure.h"
 #include "treasure_map.h"
@@ -83,12 +83,12 @@ static void enumerateTreasureItems(struct treasure *treasure, FILE *out)
         fprintf(out, "  Magic Items: -------------------------\n");
         for (int i = 0; i < treasure->magic_items_count; ++i) {
             fprintf(out, "    %2i  %s\n",
-                    i + 1, treasure->magic_items[i].trueDescription);
-            if (treasure->magic_items[i].trueDetails) {
+                    i + 1, treasure->magic_items[i].true_description);
+            if (treasure->magic_items[i].true_details) {
                 int j = 0;
-                while (treasure->magic_items[i].trueDetails[j]) {
+                while (treasure->magic_items[i].true_details[j]) {
                     fprintf(out, "            %s\n",
-                            treasure->magic_items[i].trueDetails[j]);
+                            treasure->magic_items[i].true_details[j]);
                     ++j;
                 }
             }
@@ -200,21 +200,21 @@ static void generateMap(struct rnd *rnd, FILE *out)
 
 static void generateMagicItems(struct rnd *rnd, FILE *out, int count)
 {
-    struct MagicItem magicItem;
+    struct magic_item magicItem;
     
     fprintf(out, "Magic Items:\n");
     for (int i = 0; i < count; ++i) {
-        initializeMagicItem(&magicItem);
-        generateMagicItem(&magicItem, rnd, ANY_MAGIC_ITEM);
-        fprintf(out, "  %4i %s\n", (i + 1), magicItem.trueDescription);
-        if (magicItem.trueDetails) {
+        magic_item_initialize(&magicItem);
+        magic_item_generate(&magicItem, rnd, ANY_MAGIC_ITEM);
+        fprintf(out, "  %4i %s\n", (i + 1), magicItem.true_description);
+        if (magicItem.true_details) {
             int j = 0;
-            while (magicItem.trueDetails[j]) {
-                fprintf(out, "           %s\n", magicItem.trueDetails[j]);
+            while (magicItem.true_details[j]) {
+                fprintf(out, "           %s\n", magicItem.true_details[j]);
                 ++j;
             }
         }
-        finalizeMagicItem(&magicItem);
+        magic_item_finalize(&magicItem);
     }
     fprintf(out, "\n");
 }

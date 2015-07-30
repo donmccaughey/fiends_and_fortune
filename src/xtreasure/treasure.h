@@ -3,12 +3,12 @@
 
 
 #include "coins.h"
-#include "MagicItem.h"
+#include "magic_item.h"
 
 
 struct gem;
 struct jewelry;
-struct MagicItem;
+struct magic_item;
 struct rnd;
 struct treasure_map;
 struct treasure_type;
@@ -23,7 +23,7 @@ struct treasure {
     int jewelry_count;
     struct treasure_map *maps;
     int maps_count;
-    struct MagicItem *magic_items;
+    struct magic_item *magic_items;
     int magic_items_count;
 };
 
@@ -38,7 +38,7 @@ void
 treasure_generate_magic_items(struct treasure *treasure,
                               struct rnd *rnd,
                               int count,
-                              PossibleMagicItems possible_magic_items);
+                              possible_magic_items_t possible_magic_items);
 
 void
 treasure_generate_maps(struct treasure *treasure, struct rnd *rnd, int count);

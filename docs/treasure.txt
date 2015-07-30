@@ -166,97 +166,97 @@ Magic Item Generation
 
 struct Common {
 int percent;
-int experiencePoints;
-int saleValue_gp;
-ClassRestrictions classRestrictions;
-GenerateFunction generate;
+int experience_points;
+int sale_value_in_gp;
+class_restrictions_t class_restrictions;
+generate_function generate;
 };
 
 
 struct XMiscMagicItem {
 int percent;
 char const *name;
-int experiencePoints;
-int saleValue_gp;
-ClassRestrictions classRestrictions;
-GenerateFunction generate;
+int experience_points;
+int sale_value_in_gp;
+class_restrictions_t class_restrictions;
+generate_function generate;
 };
 
-struct ArmorOrShield {
+struct armor_or_shield {
 int percent;
 char const *name;
-bool isArmor;
-int experiencePoints;
-int saleValue_gp;
+bool is_armor;
+int experience_points;
+int sale_value_in_gp;
 }
 
-struct ArtifactOrRelic {
+struct artifact_or_relic {
 int percent;
 char const *name;
->>> int experiencePoints; (always 0)
-int saleValue_gp;
-GenerateFunction generate;
+>>> int experience_points; (always 0)
+int sale_value_in_gp;
+generate_function generate;
 }
 
-struct MiscWeapon {
+struct misc_weapon {
 int percent;
 char const *name;
 char const *quantity;
-int experiencePoints;
-int saleValue_gp;
+int experience_points;
+int sale_value_in_gp;
 }
 
 struct Potion {
 int percent;
 char const *name;
-char const *experiencePoints;
-char const *saleValue_gp;
-ClassRestrictions classRestrictions;
+char const *experience_points;
+char const *sale_value_in_gp;
+class_restrictions_t class_restrictions;
 } 
 
 struct Ring {
 int percent;
 char const *name;
-bool limitedCharges;
+bool limited_charges;
 >>> char const *quantity; (always 1)
-char const *experiencePoints;
-char const *saleValue_gp;
-ClassRestrictions classRestrictions;
+char const *experience_points;
+char const *sale_value_in_gp;
+class_restrictions_t class_restrictions;
 }
 
-struct RodStaffOrWand {
+struct rod_staff_or_wand {
 int percent;
 char const *name;
 >>> char const *quantity; (always 1)
-int experiencePoints;
-int saleValue_gp;
-ClassRestrictions classRestrictions;
+int experience_points;
+int sale_value_in_gp;
+class_restrictions_t class_restrictions;
 } 
 
-struct Scroll {
+struct scroll {
 int percent;
 char const *name;
 >>> char const *quantity; (always 1)
-bool isSpellScroll;
-int spellCount;
-char const *magicUserSpellLevelRange;
-char const *clericalSpellLevelRange;
-int experiencePoints;
-int saleValue_gp;
+bool is_spell_scroll;
+int spell_count;
+char const *magic_user_spell_level_range;
+char const *clerical_spell_level_range;
+int experience_points;
+int sale_value_in_gp;
 }
 
-struct Sword {
+struct sword {
 int percent;
-char const *nameFormat;
+char const *name_format;
 >>> char const *quantity; (always 1)
-int experiencePoints;
-int saleValue_gp;
+int experience_points;
+int sale_value_in_gp;
 }
 
 
 struct (Magic Item) {
 int percent;
-PossibleMagicItems possible_magic_items;
-enum MagicItemType type;
-GenerateFunction generate;
+possible_magic_items_t possible_magic_items_t;
+enum magic_item_type type;
+generate_function generate;
 } 

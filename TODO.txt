@@ -1,8 +1,11 @@
-- rework MagicItem
-- convert gem, jewelry, MagicItem, treasure, treasure_map to allocated types
+- split magic_item.c up
+- on various magic item table structs, change sale_value_in_gp to cp
+- generalize tables, e.g. armor_and_shield_table
+- convert gem, jewelry, magic_item, treasure, treasure_map to allocated types
 - reorganize treasure gen functions in treasure, treasure_type and treasure_map
 - treasure maps can contain treasure maps
 - more detailed gem description
 - casual gem description
 - more detailed jewelry description
 - casual jewelry description
+- generate types of Ioun stones

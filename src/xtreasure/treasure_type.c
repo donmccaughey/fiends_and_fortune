@@ -9,7 +9,7 @@
 
 #include "gem.h"
 #include "jewelry.h"
-#include "MagicItem.h"
+#include "magic_item.h"
 #include "treasure.h"
 #include "treasure_map.h"
 
@@ -26,7 +26,7 @@ struct coins_gems_or_jewelry {
 struct maps_or_magic_type {
     char const *amount;
     bool is_map_possible;
-    PossibleMagicItems possible_magic_items;
+    possible_magic_items_t possible_magic_items;
 };
 
 
@@ -722,7 +722,7 @@ generate_maps_or_magic_items(struct maps_or_magic_type *type,
 
 static char const *
 possible_maps_or_magic_name(bool is_map_possible,
-                            PossibleMagicItems possible_magic_items);
+                            possible_magic_items_t possible_magic_items);
 
 
 char *
@@ -973,7 +973,7 @@ generate_maps_or_magic_items(struct maps_or_magic_type *type,
 
 static char const *
 possible_maps_or_magic_name(bool is_map_possible,
-                            PossibleMagicItems possible_magic_items)
+                            possible_magic_items_t possible_magic_items)
 {
     if (is_map_possible) {
         switch (possible_magic_items) {
@@ -981,7 +981,7 @@ possible_maps_or_magic_name(bool is_map_possible,
             case ANY_MAGIC_ITEM: return "any";
             case NON_WEAPON_MAGIC: return "map or non weapon magic";
             default: 
-                fail("possible_magic_items = %0x", possible_magic_items);
+                fail("possible_magic_items_t = %0x", possible_magic_items);
                 return "(map or magic)";
         }
     } else {
@@ -998,7 +998,7 @@ possible_maps_or_magic_name(bool is_map_possible,
             case ANY_MAGIC_ITEM: return "any magic";
             case MAGIC_WEAPON_OR_ARMOR: return "sword, armor or misc weapon";
             default: 
-                fail("possible_magic_items = %0x", possible_magic_items);
+                fail("possible_magic_items_t = %0x", possible_magic_items);
                 return "(magic)";
         }
     }
