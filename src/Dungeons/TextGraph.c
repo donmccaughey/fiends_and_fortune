@@ -2,6 +2,7 @@
 
 #include "Dungeon.h"
 #include "range.h"
+#include "reverse_range.h"
 #include "Tile.h"
 #include "Tiles.h"
 

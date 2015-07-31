@@ -19,6 +19,9 @@ void
 range_test(void);
 
 void
+reverse_range_test(void);
+
+void
 str_test(void);
 
 void
@@ -35,6 +38,7 @@ int main (int argc, const char *argv[])
     pointTest();
     pointsTest();
     range_test();
+    reverse_range_test();
     str_test();
     tilesTest();
     
