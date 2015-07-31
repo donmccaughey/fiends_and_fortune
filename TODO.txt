@@ -1,3 +1,4 @@
+- remove points?
 - split magic_item.c up
 - on various magic item table structs, change sale_value_in_gp to cp
 - generalize tables, e.g. armor_and_shield_table
