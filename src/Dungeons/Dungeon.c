@@ -16,19 +16,19 @@
 #include "Tiles.h"
 
 
-static struct Point advancePoint(struct Point start, int32_t steps, enum Direction direction);
+static struct point advancePoint(struct point start, int32_t steps, enum Direction direction);
 static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, struct Area *area, int32_t x, int32_t y, int32_t z);
-static struct Point area(struct Dungeon *dungeon, struct Point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset, enum AreaType areaType);
-static struct Point chamber(struct Dungeon *dungeon, struct Point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset);
-static struct Point passage(struct Dungeon *dungeon, struct Point fromPoint, uint32_t distance, enum Direction direction);
+static struct point area(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset, enum AreaType areaType);
+static struct point chamber(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset);
+static struct point passage(struct Dungeon *dungeon, struct point fromPoint, uint32_t distance, enum Direction direction);
 
 
-static struct Point advancePoint(struct Point start, int32_t steps, enum Direction direction) {
+static struct point advancePoint(struct point start, int32_t steps, enum Direction direction) {
     switch (direction) {
-        case North: return makePoint(start.x, start.y + steps, start.z);
-        case South: return makePoint(start.x, start.y - steps, start.z);
-        case East: return makePoint(start.x + steps, start.y, start.z);
-        case West: return makePoint(start.x - steps, start.y, start.z);
+        case North: return point_make(start.x, start.y + steps, start.z);
+        case South: return point_make(start.x, start.y - steps, start.z);
+        case East: return point_make(start.x + steps, start.y, start.z);
+        case West: return point_make(start.x - steps, start.y, start.z);
         default: fail("Unrecognized direction %i", direction); break;
     }
     return start;
@@ -37,14 +37,14 @@ static struct Point advancePoint(struct Point start, int32_t steps, enum Directi
 
 static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, struct Area *area, int32_t x, int32_t y, int32_t z)
 {
-    assert(NULL == findTileInTilesAt(dungeon->tiles, makePoint(x, y, z)));
+    assert(NULL == findTileInTilesAt(dungeon->tiles, point_make(x, y, z)));
     
-    struct Tile *tile = createTile(makePoint(x, y, z), EmptyTileType);
+    struct Tile *tile = createTile(point_make(x, y, z), EmptyTileType);
     addTileToTiles(area->tiles, tile);
 }
 
 
-static struct Point area(struct Dungeon *dungeon, struct Point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset, enum AreaType areaType)
+static struct point area(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset, enum AreaType areaType)
 {
     assert(leftOffset < width);
     struct range xRange;
@@ -112,7 +112,7 @@ static struct Point area(struct Dungeon *dungeon, struct Point fromPoint, uint32
 }
 
 
-static struct Point chamber(struct Dungeon *dungeon, struct Point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset)
+static struct point chamber(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset)
 {
     return area(dungeon, fromPoint, length, width, direction, leftOffset, ChamberAreaType);
 }
@@ -146,18 +146,18 @@ void generateDungeon(struct Dungeon *dungeon, struct rnd *rnd)
 
 void generateSmallDungeon(struct Dungeon *dungeon)
 {
-    struct Point point = makePoint(0, 0, 1);
+    struct point point = point_make(0, 0, 1);
     
     point = passage(dungeon, point, 2, North);
     
     point = chamber(dungeon, point, 5, 3, North, 1);
     
     /* chamber exits */
-    struct Point pointInChamber = advancePoint(point, 2, South);
-    struct Point northWestExit = advancePoint(pointInChamber, 2, West);
-    struct Point southWestExit = advancePoint(northWestExit, 2, South);
-    struct Point northEastExit = advancePoint(pointInChamber, 2, East);
-    struct Point southEastExit = advancePoint(northEastExit, 2, South);
+    struct point pointInChamber = advancePoint(point, 2, South);
+    struct point northWestExit = advancePoint(pointInChamber, 2, West);
+    struct point southWestExit = advancePoint(northWestExit, 2, South);
+    struct point northEastExit = advancePoint(pointInChamber, 2, East);
+    struct point southEastExit = advancePoint(northEastExit, 2, South);
     
     point = passage(dungeon, point, 7, North);
     point = passage(dungeon, point, 8, East);
@@ -193,13 +193,13 @@ void generateSmallDungeon(struct Dungeon *dungeon)
     
     chamber(dungeon, point, 6, 4, East, 0);
     
-    struct Tile *tile = findTileInTilesAt(dungeon->tiles, makePoint(5, 2, 1));
+    struct Tile *tile = findTileInTilesAt(dungeon->tiles, point_make(5, 2, 1));
     removeTileFromTiles(dungeon->tiles, tile);
     destroyTile(tile);
 }
 
 
-static struct Point passage(struct Dungeon *dungeon, struct Point fromPoint, uint32_t distance, enum Direction direction)
+static struct point passage(struct Dungeon *dungeon, struct point fromPoint, uint32_t distance, enum Direction direction)
 {
     return area(dungeon, fromPoint, distance, 1, direction, 0, PassageAreaType);
 }

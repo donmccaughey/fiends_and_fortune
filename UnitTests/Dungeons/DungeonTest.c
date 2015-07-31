@@ -29,13 +29,13 @@ static void generateDungeonTest(void)
     assert(range_is_equal(range_make(0, 15), yRangeOfTiles(dungeon.tiles)));
     assert(113 == tilesCount(dungeon.tiles));
     
-    struct Tile *tile = findTileInTilesAt(dungeon.tiles, makePoint(0, 0, 1));
+    struct Tile *tile = findTileInTilesAt(dungeon.tiles, point_make(0, 0, 1));
     assert(tile);
     
-    tile = findTileInTilesAt(dungeon.tiles, makePoint(0, 1, 1));
+    tile = findTileInTilesAt(dungeon.tiles, point_make(0, 1, 1));
     assert(tile);
     
-    tile = findTileInTilesAt(dungeon.tiles, makePoint(-1, -8, 1));
+    tile = findTileInTilesAt(dungeon.tiles, point_make(-1, -8, 1));
     assert( ! tile);
     
     finalizeDungeon(&dungeon);

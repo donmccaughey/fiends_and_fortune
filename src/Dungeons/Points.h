@@ -3,16 +3,17 @@
 
 
 #include <stddef.h>
-#include "Point.h"
+
+#include "point.h"
 
 
 struct Points {
     struct Points *next;
-    struct Point point;
+    struct point point;
 };
 
 
-struct Points *addPointToPoints(struct Point point, struct Points *next);
+struct Points *addPointToPoints(struct point point, struct Points *next);
 
 struct Points *addPointsToPoints(struct Points *points1, struct Points *points2);
 

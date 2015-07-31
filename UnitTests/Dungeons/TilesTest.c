@@ -35,7 +35,7 @@ static void addTileToTilesTest(void)
   assert(range_is_equal(range_make(0, 0), yRangeOfTiles(tiles)));
   assert(range_is_equal(range_make(0, 0), zRangeOfTiles(tiles)));
 
-  struct Tile *tile1 = createTile(makePoint(0, 0, 0), EmptyTileType);
+  struct Tile *tile1 = createTile(point_make(0, 0, 0), EmptyTileType);
   addTileToTiles(tiles, tile1);
   
   assert(1 == tilesCount(tiles));
@@ -44,7 +44,7 @@ static void addTileToTilesTest(void)
   assert(range_is_equal(range_make(0, 1), yRangeOfTiles(tiles)));
   assert(range_is_equal(range_make(0, 1), zRangeOfTiles(tiles)));
 
-  struct Tile *tile2 = createTile(makePoint(1, 0, 0), EmptyTileType);
+  struct Tile *tile2 = createTile(point_make(1, 0, 0), EmptyTileType);
   addTileToTiles(tiles, tile2);
   
   assert(2 == tilesCount(tiles));
@@ -53,7 +53,7 @@ static void addTileToTilesTest(void)
   assert(range_is_equal(range_make(0, 1), yRangeOfTiles(tiles)));
   assert(range_is_equal(range_make(0, 1), zRangeOfTiles(tiles)));
 
-  struct Tile *tile3 = createTile(makePoint(-1, 0, 0), EmptyTileType);
+  struct Tile *tile3 = createTile(point_make(-1, 0, 0), EmptyTileType);
   addTileToTiles(tiles, tile3);
   
   assert(3 == tilesCount(tiles));
@@ -110,7 +110,7 @@ static void tilesOnLevel_when_empty_Test(void)
 static void tilesOnLevel_one_tile_Test(void)
 {
   struct Tiles *tiles = createTiles();
-  struct Tile *tile1 = createTile(makePoint(0, 0, 1), EmptyTileType);
+  struct Tile *tile1 = createTile(point_make(0, 0, 1), EmptyTileType);
   addTileToTiles(tiles, tile1);
   struct Tiles *level1 = createTilesOnLevel(tiles, 1);
 
@@ -125,7 +125,7 @@ static void tilesOnLevel_one_tile_Test(void)
 static void tilesOnLevel_one_tile_not_found_Test(void)
 {
   struct Tiles *tiles = createTiles();
-  struct Tile *tile1 = createTile(makePoint(0, 0, 1), EmptyTileType);
+  struct Tile *tile1 = createTile(point_make(0, 0, 1), EmptyTileType);
   addTileToTiles(tiles, tile1);
   struct Tiles *level1 = createTilesOnLevel(tiles, 2);
 
@@ -139,15 +139,15 @@ static void tilesOnLevel_one_tile_not_found_Test(void)
 static void tilesOnLevel_with_two_levels_Test(void)
 {
   struct Tiles *tiles = createTiles();
-  struct Tile *tile = createTile(makePoint(0, 0, 1), EmptyTileType);
+  struct Tile *tile = createTile(point_make(0, 0, 1), EmptyTileType);
   addTileToTiles(tiles, tile);
-  tile = createTile(makePoint(0, 1, 1), EmptyTileType);
+  tile = createTile(point_make(0, 1, 1), EmptyTileType);
   addTileToTiles(tiles, tile);
-  tile = createTile(makePoint(0, 0, 2), EmptyTileType);
+  tile = createTile(point_make(0, 0, 2), EmptyTileType);
   addTileToTiles(tiles, tile);
-  tile = createTile(makePoint(1, 0, 2), EmptyTileType);
+  tile = createTile(point_make(1, 0, 2), EmptyTileType);
   addTileToTiles(tiles, tile);
-  tile = createTile(makePoint(2, 0, 2), EmptyTileType);
+  tile = createTile(point_make(2, 0, 2), EmptyTileType);
   addTileToTiles(tiles, tile);
 
 
@@ -184,15 +184,15 @@ static void tilesOnLevel_with_two_levels_Test(void)
 static void tilesOnLevel_with_two_noncontiguous_levels_Test(void)
 {
   struct Tiles *tiles = createTiles();
-  struct Tile *tile = createTile(makePoint(0, 0, 1), EmptyTileType);
+  struct Tile *tile = createTile(point_make(0, 0, 1), EmptyTileType);
   addTileToTiles(tiles, tile);
-  tile = createTile(makePoint(0, 1, 1), EmptyTileType);
+  tile = createTile(point_make(0, 1, 1), EmptyTileType);
   addTileToTiles(tiles, tile);
-  tile = createTile(makePoint(0, 0, 3), EmptyTileType);
+  tile = createTile(point_make(0, 0, 3), EmptyTileType);
   addTileToTiles(tiles, tile);
-  tile = createTile(makePoint(1, 0, 3), EmptyTileType);
+  tile = createTile(point_make(1, 0, 3), EmptyTileType);
   addTileToTiles(tiles, tile);
-  tile = createTile(makePoint(2, 0, 3), EmptyTileType);
+  tile = createTile(point_make(2, 0, 3), EmptyTileType);
   addTileToTiles(tiles, tile);
 
 

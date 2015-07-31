@@ -63,7 +63,7 @@ static int compareTilesByCoordinate(void const *item1, void const *item2)
     struct Tile *tile1 = *pointer1;
     struct Tile *tile2 = *pointer2;
     
-    return comparePoints(tile1->point, tile2->point);
+    return point_compare(tile1->point, tile2->point);
 }
 
 
@@ -121,7 +121,7 @@ static struct Tile **find(struct Tiles const *tiles, struct Tile const *criteria
 }
 
 
-struct Tile *findTileInTilesAt(struct Tiles const *tiles, struct Point point)
+struct Tile *findTileInTilesAt(struct Tiles const *tiles, struct point point)
 {
     struct Tile tile = { .point = point };
     struct Tile **tileInTiles = find(tiles, &tile);

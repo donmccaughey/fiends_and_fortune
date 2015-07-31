@@ -5,7 +5,7 @@
 #include "common/alloc_or_die.h"
 
 
-struct Points *addPointToPoints(struct Point point, struct Points *next)
+struct Points *addPointToPoints(struct point point, struct Points *next)
 {
     struct Points *points = malloc_or_die(sizeof(struct Points));
     points->next = next;

@@ -6,7 +6,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "Point.h"
+#include "point.h"
 #include "range.h"
 
 
@@ -27,7 +27,7 @@ struct Tiles *createTilesOnLevel(struct Tiles *tiles, int32_t z);
 
 void destroyTiles(struct Tiles *tiles);
 
-struct Tile *findTileInTilesAt(struct Tiles const *tiles, struct Point point);
+struct Tile *findTileInTilesAt(struct Tiles const *tiles, struct point point);
 
 /// The caller is responsible for destroying the tile.
 bool removeTileFromTiles(struct Tiles *tiles, struct Tile const *tile);

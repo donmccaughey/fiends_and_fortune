@@ -2,17 +2,17 @@
 #define DUNGEONS_TILE_H_INCLUDED
 
 
-#include "Point.h"
+#include "point.h"
 #include "TileType.h"
 
 
 struct Tile {
-    struct Point point;
+    struct point point;
     enum TileType type;
 };
 
 
-struct Tile *createTile(struct Point point, enum TileType type);
+struct Tile *createTile(struct point point, enum TileType type);
 
 void destroyTile(struct Tile *tile);
 

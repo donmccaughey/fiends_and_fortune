@@ -10,7 +10,7 @@ void
 dungeonTest(void);
 
 void
-pointTest(void);
+point_test(void);
 
 void
 pointsTest(void);
@@ -35,7 +35,7 @@ int main (int argc, const char *argv[])
     
     dice_test();
     dungeonTest();
-    pointTest();
+    point_test();
     pointsTest();
     range_test();
     reverse_range_test();

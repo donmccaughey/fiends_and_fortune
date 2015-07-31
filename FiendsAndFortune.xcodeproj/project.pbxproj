@@ -7,13 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B0F470B6DFA53A807F7AE464 /* point.c in Sources */ = {isa = PBXBuildFile; fileRef = B0F47633C943A4FC91EBA528 /* point.c */; };
+		B0F47DECA9C4F27D4FCF08CC /* point_test.c in Sources */ = {isa = PBXBuildFile; fileRef = B0F478FB65DDF0011D7955DB /* point_test.c */; };
 		D4092F611B65D42B00BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
 		D4092F621B65D43000BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
 		D4092F711B65D46600BFD0B3 /* Area.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA732A1606B85500B01DB5 /* Area.c */; };
 		D4092F721B65D46600BFD0B3 /* Areas.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA732D1606BB9300B01DB5 /* Areas.c */; };
 		D4092F731B65D46600BFD0B3 /* Direction.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BCC61E17D5A25E00C76D11 /* Direction.c */; };
 		D4092F741B65D46600BFD0B3 /* Dungeon.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B2715ABDFF0004E7F2C /* Dungeon.c */; };
-		D4092F751B65D46600BFD0B3 /* Point.c in Sources */ = {isa = PBXBuildFile; fileRef = D4F73465140EF55C00966191 /* Point.c */; };
 		D4092F761B65D46600BFD0B3 /* Points.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BCC61A17D5984D00C76D11 /* Points.c */; };
 		D4092F781B65D46600BFD0B3 /* TextGraph.c in Sources */ = {isa = PBXBuildFile; fileRef = D4F73465140EF55C00966195 /* TextGraph.c */; };
 		D4092F791B65D46600BFD0B3 /* Tile.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092FB515B2A1880002FB34 /* Tile.c */; };
@@ -34,7 +35,6 @@
 		D45178761B63679200F26844 /* str_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D45178751B63679200F26844 /* str_test.c */; };
 		D4783B3E15ABE155004E7F2C /* DungeonTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B3B15ABE155004E7F2C /* DungeonTest.c */; };
 		D4783B4C15ABEB32004E7F2C /* TilesTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4783B4B15ABEB32004E7F2C /* TilesTest.c */; };
-		D4BCC61617D44C2500C76D11 /* PointTest.c in Sources */ = {isa = PBXBuildFile; fileRef = B0F47782965430E75922F468 /* PointTest.c */; };
 		D4BCC61817D597C500C76D11 /* PointsTest.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BCC61717D597C500C76D11 /* PointsTest.c */; };
 		D4BD32A71B6A06560007527A /* coins.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BD32991B6A06560007527A /* coins.c */; };
 		D4BD32A81B6A06560007527A /* coins.h in Headers */ = {isa = PBXBuildFile; fileRef = D4BD329A1B6A06560007527A /* coins.h */; };
@@ -117,8 +117,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B0F47633C943A4FC91EBA528 /* point.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = point.c; sourceTree = "<group>"; };
 		B0F476949E9068D9FFB2A6D8 /* TODO.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TODO.txt; sourceTree = "<group>"; };
-		B0F47782965430E75922F468 /* PointTest.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PointTest.c; sourceTree = "<group>"; };
+		B0F478FB65DDF0011D7955DB /* point_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = point_test.c; sourceTree = "<group>"; };
+		B0F47C5F87990226BA682C7E /* point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = point.h; sourceTree = "<group>"; };
 		D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibfnf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
 		D4092F7F1B65D6C200BFD0B3 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
@@ -186,8 +188,6 @@
 		D4EA732D1606BB9300B01DB5 /* Areas.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Areas.c; sourceTree = "<group>"; };
 		D4F244A31418207C003BDED5 /* check.out */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = check.out; sourceTree = "<group>"; };
 		D4F7344F140EF3E00096618F /* fnf */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = fnf; sourceTree = BUILT_PRODUCTS_DIR; };
-		D4F73465140EF55C00966190 /* Point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Point.h; sourceTree = "<group>"; };
-		D4F73465140EF55C00966191 /* Point.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Point.c; sourceTree = "<group>"; };
 		D4F73465140EF55C00966194 /* TextGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextGraph.h; sourceTree = "<group>"; };
 		D4F73465140EF55C00966195 /* TextGraph.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TextGraph.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -272,8 +272,6 @@
 				D4BCC61E17D5A25E00C76D11 /* Direction.c */,
 				D4783B2815ABDFF0004E7F2C /* Dungeon.h */,
 				D4783B2715ABDFF0004E7F2C /* Dungeon.c */,
-				D4F73465140EF55C00966190 /* Point.h */,
-				D4F73465140EF55C00966191 /* Point.c */,
 				D4BCC61917D5984300C76D11 /* Points.h */,
 				D4BCC61A17D5984D00C76D11 /* Points.c */,
 				D4F73465140EF55C00966194 /* TextGraph.h */,
@@ -291,7 +289,6 @@
 			isa = PBXGroup;
 			children = (
 				D4783B3B15ABE155004E7F2C /* DungeonTest.c */,
-				B0F47782965430E75922F468 /* PointTest.c */,
 				D4BCC61717D597C500C76D11 /* PointsTest.c */,
 				D4783B4B15ABEB32004E7F2C /* TilesTest.c */,
 			);
@@ -335,6 +332,8 @@
 				D4BD32CD1B6B1EDE0007527A /* range.c */,
 				D4BD32D31B6B2F260007527A /* reverse_range.h */,
 				D4BD32D21B6B2F260007527A /* reverse_range.c */,
+				B0F47C5F87990226BA682C7E /* point.h */,
+				B0F47633C943A4FC91EBA528 /* point.c */,
 			);
 			path = dungeon;
 			sourceTree = "<group>";
@@ -344,6 +343,7 @@
 			children = (
 				D4BD32D01B6B1EFB0007527A /* range_test.c */,
 				D4BD32D61B6B31C50007527A /* reverse_range_test.c */,
+				B0F478FB65DDF0011D7955DB /* point_test.c */,
 			);
 			path = dungeon;
 			sourceTree = "<group>";
@@ -570,7 +570,6 @@
 				D4092F7A1B65D46600BFD0B3 /* Tiles.c in Sources */,
 				D4BD32AF1B6A06560007527A /* treasure.c in Sources */,
 				D4BD32AB1B6A06560007527A /* jewelry.c in Sources */,
-				D4092F751B65D46600BFD0B3 /* Point.c in Sources */,
 				D4BD32CE1B6B1EDE0007527A /* range.c in Sources */,
 				D4BD32C61B6AECE90007527A /* language.c in Sources */,
 				D4092F781B65D46600BFD0B3 /* TextGraph.c in Sources */,
@@ -581,6 +580,7 @@
 				D4092F8A1B65D6C200BFD0B3 /* dice.c in Sources */,
 				D4092F761B65D46600BFD0B3 /* Points.c in Sources */,
 				D4092F791B65D46600BFD0B3 /* Tile.c in Sources */,
+				B0F470B6DFA53A807F7AE464 /* point.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -592,11 +592,11 @@
 				D4BD32D11B6B1EFB0007527A /* range_test.c in Sources */,
 				D4783B3E15ABE155004E7F2C /* DungeonTest.c in Sources */,
 				D4783B4C15ABEB32004E7F2C /* TilesTest.c in Sources */,
-				D4BCC61617D44C2500C76D11 /* PointTest.c in Sources */,
 				D4BCC61817D597C500C76D11 /* PointsTest.c in Sources */,
 				D45178471B5CB43600F26844 /* dice_test.c in Sources */,
 				D4BD32D71B6B31C50007527A /* reverse_range_test.c in Sources */,
 				D45178761B63679200F26844 /* str_test.c in Sources */,
+				B0F47DECA9C4F27D4FCF08CC /* point_test.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
