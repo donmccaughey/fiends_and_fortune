@@ -3,11 +3,11 @@
 
 
 enum direction {
-  Unknown = 0,
-  North,
-  South,
-  East,
-  West,
+    Unknown = 0,
+    North,
+    South,
+    East,
+    West,
 };
 
 

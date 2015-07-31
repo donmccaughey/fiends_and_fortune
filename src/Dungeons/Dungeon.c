@@ -12,8 +12,8 @@
 #include "direction.h"
 #include "range.h"
 #include "reverse_range.h"
-#include "Tile.h"
-#include "Tiles.h"
+#include "tile.h"
+#include "tiles.h"
 
 
 static struct point advancePoint(struct point start, int32_t steps, enum direction direction);
@@ -37,10 +37,10 @@ static struct point advancePoint(struct point start, int32_t steps, enum directi
 
 static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, struct Area *area, int32_t x, int32_t y, int32_t z)
 {
-    assert(NULL == findTileInTilesAt(dungeon->tiles, point_make(x, y, z)));
+    assert(NULL == tiles_find_tile_at(dungeon->tiles, point_make(x, y, z)));
     
-    struct Tile *tile = createTile(point_make(x, y, z), EmptyTileType);
-    addTileToTiles(area->tiles, tile);
+    struct tile *tile = tile_alloc(point_make(x, y, z), tile_type_empty);
+    tiles_add_tile(area->tiles, tile);
 }
 
 
@@ -134,7 +134,7 @@ char const **dungeonAreaDescriptions(struct Dungeon *dungeon)
 void finalizeDungeon(struct Dungeon *dungeon)
 {
     destroyAreas(dungeon->areas);
-    destroyTiles(dungeon->tiles);
+    tiles_free(dungeon->tiles);
 }
 
 
@@ -193,9 +193,9 @@ void generateSmallDungeon(struct Dungeon *dungeon)
     
     chamber(dungeon, point, 6, 4, East, 0);
     
-    struct Tile *tile = findTileInTilesAt(dungeon->tiles, point_make(5, 2, 1));
-    removeTileFromTiles(dungeon->tiles, tile);
-    destroyTile(tile);
+    struct tile *tile = tiles_find_tile_at(dungeon->tiles, point_make(5, 2, 1));
+    tiles_remove_tile(dungeon->tiles, tile);
+    tile_free(tile);
 }
 
 
@@ -209,5 +209,5 @@ void initializeDungeon(struct Dungeon *dungeon)
 {
     memset(dungeon, 0, sizeof(struct Dungeon));
     dungeon->areas = createAreas();
-    dungeon->tiles = createTiles();
+    dungeon->tiles = tiles_alloc();
 }

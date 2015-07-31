@@ -4,12 +4,12 @@
 
 struct Areas;
 struct rnd;
-struct Tiles;
+struct tiles;
 
 
 struct Dungeon {
     struct Areas *areas;
-    struct Tiles *tiles;
+    struct tiles *tiles;
 };
 
 

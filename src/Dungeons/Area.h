@@ -7,18 +7,18 @@
 #include "AreaType.h"
 
 
-struct Tile;
-struct Tiles;
+struct tile;
+struct tiles;
 
 
 struct Area {
     char *description;
-    struct Tiles *tiles;
+    struct tiles *tiles;
     enum AreaType type;
 };
 
 
-struct Area *createArea(char const *description, struct Tiles *parentTiles, enum AreaType type);
+struct Area *createArea(char const *description, struct tiles *parentTiles, enum AreaType type);
 
 void destroyArea(struct Area *area);
 

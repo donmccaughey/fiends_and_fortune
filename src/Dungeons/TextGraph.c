@@ -3,8 +3,8 @@
 #include "Dungeon.h"
 #include "range.h"
 #include "reverse_range.h"
-#include "Tile.h"
-#include "Tiles.h"
+#include "tile.h"
+#include "tiles.h"
 
 
 #define CORNER_EMPTY "+   "
@@ -24,14 +24,14 @@
 
 static void printHorizontalBorder(FILE *out, struct range range);
 static void printHorizontalScale(FILE *out, struct range range);
-static enum TileType tileTypeAt(struct Tiles const *tiles, int32_t x, int32_t y, int32_t z);
+static enum tile_type tileTypeAt(struct tiles const *tiles, int32_t x, int32_t y, int32_t z);
 
 
 void graphDungeonLevelUsingText(struct Dungeon *dungeon, int32_t z, FILE *out)
 {
-  struct Tiles *levelTiles = createTilesOnLevel(dungeon->tiles, z);
-  struct range xRange = range_expand(xRangeOfTiles(levelTiles), 1);
-  struct range yRange = range_expand(yRangeOfTiles(levelTiles), 1);
+  struct tiles *levelTiles = tiles_alloc_with_parent_and_level(dungeon->tiles, z);
+  struct range xRange = range_expand(tiles_x_range(levelTiles), 1);
+  struct range yRange = range_expand(tiles_y_range(levelTiles), 1);
   struct reverse_range yReverseRange = reverse_range_from_range(yRange);
 
   // top border
@@ -43,12 +43,12 @@ void graphDungeonLevelUsingText(struct Dungeon *dungeon, int32_t z, FILE *out)
     // top line of row
     fprintf(out, LMARGIN_NUM, j);
     for (int32_t i = xRange.begin; i < xRange.end; ++i) {
-      enum TileType type = tileTypeAt(levelTiles, i, j, z);
-      enum TileType westType = tileTypeAt(levelTiles, i - 1, j, z);
+      enum tile_type type = tileTypeAt(levelTiles, i, j, z);
+      enum tile_type westType = tileTypeAt(levelTiles, i - 1, j, z);
       if (xRange.begin == i || type != westType) {
-        fprintf(out, SolidTileType == type ? VWALL_SOLID : VWALL_EMPTY);
+        fprintf(out, tile_type_solid == type ? VWALL_SOLID : VWALL_EMPTY);
       } else {
-        fprintf(out, SolidTileType == type ? SOLID : EMPTY);
+        fprintf(out, tile_type_solid == type ? SOLID : EMPTY);
       }
     }
     fprintf(out, RMARGIN_NUM, j);
@@ -61,31 +61,31 @@ void graphDungeonLevelUsingText(struct Dungeon *dungeon, int32_t z, FILE *out)
         continue;
       }
 
-      enum TileType type = tileTypeAt(levelTiles, i, j, z);
-      enum TileType southType = tileTypeAt(levelTiles, i, j - 1, z);
+      enum tile_type type = tileTypeAt(levelTiles, i, j, z);
+      enum tile_type southType = tileTypeAt(levelTiles, i, j - 1, z);
       if (xRange.begin == i) {
         if (type == southType) {
-          fprintf(out, SolidTileType == type ? CORNER_SOLID : CORNER_EMPTY);
+          fprintf(out, tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY);
         } else {
           fprintf(out, CORNER_HWALL);
         }
         continue;
       }
 
-      enum TileType westType = tileTypeAt(levelTiles, i - 1, j, z);
-      enum TileType southWestType = tileTypeAt(levelTiles, i - 1, j - 1, z);
+      enum tile_type westType = tileTypeAt(levelTiles, i - 1, j, z);
+      enum tile_type southWestType = tileTypeAt(levelTiles, i - 1, j - 1, z);
       if (type == southType) {
         if (type == westType) {
           if (type == southWestType) {
-            fprintf(out, SolidTileType == type ? SOLID : EMPTY_SPAN);
+            fprintf(out, tile_type_solid == type ? SOLID : EMPTY_SPAN);
           } else {
-            fprintf(out, SolidTileType == type ? CORNER_SOLID : CORNER_EMPTY);
+            fprintf(out, tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY);
           }
         } else {
           if (type == southWestType) {
-            fprintf(out, SolidTileType == type ? CORNER_SOLID : CORNER_EMPTY);
+            fprintf(out, tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY);
           } else {
-            fprintf(out, SolidTileType == type ? VWALL_SOLID : VWALL_EMPTY);
+            fprintf(out, tile_type_solid == type ? VWALL_SOLID : VWALL_EMPTY);
           }
         }
       } else {
@@ -104,7 +104,7 @@ void graphDungeonLevelUsingText(struct Dungeon *dungeon, int32_t z, FILE *out)
   }
 
   printHorizontalScale(out, xRange);
-  destroyTiles(levelTiles);
+    tiles_free(levelTiles);
 }
 
 
@@ -128,8 +128,8 @@ static void printHorizontalScale(FILE *out, struct range range)
 }
 
 
-static enum TileType tileTypeAt(struct Tiles const *tiles, int32_t x, int32_t y, int32_t z)
+static enum tile_type tileTypeAt(struct tiles const *tiles, int32_t x, int32_t y, int32_t z)
 {
-  struct Tile *tile = findTileInTilesAt(tiles, point_make(x, y, z));
-  return tile ? tile->type : SolidTileType;
+  struct tile *tile = tiles_find_tile_at(tiles, point_make(x, y, z));
+  return tile ? tile->type : tile_type_solid;
 }

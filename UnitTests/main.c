@@ -25,7 +25,7 @@ void
 str_test(void);
 
 void
-tilesTest(void);
+tiles_test(void);
 
 
 int main (int argc, const char *argv[])
@@ -40,7 +40,7 @@ int main (int argc, const char *argv[])
     range_test();
     reverse_range_test();
     str_test();
-    tilesTest();
+    tiles_test();
     
     fprintf(out, "Okay\n");
     alloc_count_is_zero_or_die();
