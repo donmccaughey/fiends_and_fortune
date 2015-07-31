@@ -1,13 +1,14 @@
-#include "Direction.h"
+#include "direction.h"
 
 
-char const *directionName(enum Direction direction)
+char const *
+direction_name(enum direction direction)
 {
   switch (direction) {
     case North: return "North";
     case South: return "South";
     case East: return "East";
     case West: return "West";
-    default: return "Unknown";
+    default: return "unknown";
   }
 }

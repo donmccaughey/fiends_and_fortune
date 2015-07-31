@@ -9,21 +9,21 @@
 
 #include "Area.h"
 #include "Areas.h"
-#include "Direction.h"
+#include "direction.h"
 #include "range.h"
 #include "reverse_range.h"
 #include "Tile.h"
 #include "Tiles.h"
 
 
-static struct point advancePoint(struct point start, int32_t steps, enum Direction direction);
+static struct point advancePoint(struct point start, int32_t steps, enum direction direction);
 static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, struct Area *area, int32_t x, int32_t y, int32_t z);
-static struct point area(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset, enum AreaType areaType);
-static struct point chamber(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset);
-static struct point passage(struct Dungeon *dungeon, struct point fromPoint, uint32_t distance, enum Direction direction);
+static struct point area(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum direction direction, uint32_t leftOffset, enum AreaType areaType);
+static struct point chamber(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum direction direction, uint32_t leftOffset);
+static struct point passage(struct Dungeon *dungeon, struct point fromPoint, uint32_t distance, enum direction direction);
 
 
-static struct point advancePoint(struct point start, int32_t steps, enum Direction direction) {
+static struct point advancePoint(struct point start, int32_t steps, enum direction direction) {
     switch (direction) {
         case North: return point_make(start.x, start.y + steps, start.z);
         case South: return point_make(start.x, start.y - steps, start.z);
@@ -44,7 +44,7 @@ static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, struct Area *are
 }
 
 
-static struct point area(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset, enum AreaType areaType)
+static struct point area(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum direction direction, uint32_t leftOffset, enum AreaType areaType)
 {
     assert(leftOffset < width);
     struct range xRange;
@@ -90,7 +90,7 @@ static struct point area(struct Dungeon *dungeon, struct point fromPoint, uint32
         case PassageAreaType:
             description = str_alloc_formatted("%u' passage %s",
                                               length * 10,
-                                              directionName(direction));
+                                              direction_name(direction));
             break;
         default:
             description = str_alloc_formatted("%u' x %u' area",
@@ -112,7 +112,7 @@ static struct point area(struct Dungeon *dungeon, struct point fromPoint, uint32
 }
 
 
-static struct point chamber(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset)
+static struct point chamber(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum direction direction, uint32_t leftOffset)
 {
     return area(dungeon, fromPoint, length, width, direction, leftOffset, ChamberAreaType);
 }
@@ -199,7 +199,7 @@ void generateSmallDungeon(struct Dungeon *dungeon)
 }
 
 
-static struct point passage(struct Dungeon *dungeon, struct point fromPoint, uint32_t distance, enum Direction direction)
+static struct point passage(struct Dungeon *dungeon, struct point fromPoint, uint32_t distance, enum direction direction)
 {
     return area(dungeon, fromPoint, distance, 1, direction, 0, PassageAreaType);
 }
