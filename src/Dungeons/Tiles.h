@@ -7,7 +7,7 @@
 #include <stdint.h>
 
 #include "Point.h"
-#include "Range.h"
+#include "range.h"
 
 
 struct Tile;
@@ -36,11 +36,11 @@ struct Tile *tileInTilesAtIndex(struct Tiles const *tiles, size_t index);
 
 size_t tilesCount(struct Tiles const *tiles);
 
-struct Range xRangeOfTiles(struct Tiles const *tiles);
+struct range xRangeOfTiles(struct Tiles const *tiles);
 
-struct Range yRangeOfTiles(struct Tiles const *tiles);
+struct range yRangeOfTiles(struct Tiles const *tiles);
 
-struct Range zRangeOfTiles(struct Tiles const *tiles);
+struct range zRangeOfTiles(struct Tiles const *tiles);
 
 
 #endif /* #ifndef DUNGEONS_TILES_H_INCLUDED */

@@ -45,33 +45,33 @@ static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, struct Area *are
 static struct Point area(struct Dungeon *dungeon, struct Point fromPoint, uint32_t length, uint32_t width, enum Direction direction, uint32_t leftOffset, enum AreaType areaType)
 {
     assert(leftOffset < width);
-    struct Range xRange;
-    struct Range yRange;
+    struct range xRange;
+    struct range yRange;
     
     switch (direction) {
         case North:
-            xRange = makeRange(fromPoint.x - leftOffset, fromPoint.x + width - leftOffset);
-            yRange = makeRange(fromPoint.y, fromPoint.y + length);
+            xRange = range_make(fromPoint.x - leftOffset, fromPoint.x + width - leftOffset);
+            yRange = range_make(fromPoint.y, fromPoint.y + length);
             break;
         case South: {
-            struct ReverseRange xReverseRange = makeReverseRange(fromPoint.x + leftOffset,
-                                                                 fromPoint.x - width + leftOffset);
-            struct ReverseRange yReverseRange = makeReverseRange(fromPoint.y, fromPoint.y - length);
-            xRange = makeRangeFromReverseRange(xReverseRange);
-            yRange = makeRangeFromReverseRange(yReverseRange);
+            struct reverse_range xReverseRange = reverse_range_make(fromPoint.x + leftOffset,
+                                                                   fromPoint.x - width + leftOffset);
+            struct reverse_range yReverseRange = reverse_range_make(fromPoint.y, fromPoint.y - length);
+            xRange = range_from_reverse_range(xReverseRange);
+            yRange = range_from_reverse_range(yReverseRange);
         }
             break;
         case East: {
-            struct ReverseRange yReverseRange = makeReverseRange(fromPoint.y + leftOffset,
-                                                                 fromPoint.y - width + leftOffset);
-            xRange = makeRange(fromPoint.x, fromPoint.x + length);
-            yRange = makeRangeFromReverseRange(yReverseRange);
+            struct reverse_range yReverseRange = reverse_range_make(fromPoint.y + leftOffset,
+                                                                   fromPoint.y - width + leftOffset);
+            xRange = range_make(fromPoint.x, fromPoint.x + length);
+            yRange = range_from_reverse_range(yReverseRange);
         }
             break;
         case West: {
-            struct ReverseRange xReverseRange = makeReverseRange(fromPoint.x, fromPoint.x - length);
-            xRange = makeRangeFromReverseRange(xReverseRange);
-            yRange = makeRange(fromPoint.y - leftOffset, fromPoint.y + width - leftOffset);
+            struct reverse_range xReverseRange = reverse_range_make(fromPoint.x, fromPoint.x - length);
+            xRange = range_from_reverse_range(xReverseRange);
+            yRange = range_make(fromPoint.y - leftOffset, fromPoint.y + width - leftOffset);
         }
             break;
         default:

@@ -25,8 +25,8 @@ static void generateDungeonTest(void)
     generateDungeon(&dungeon, global_rnd);
     assert(113 == tilesCount(dungeon.tiles));
     
-    assert(equalRanges(makeRange(-7, 9), xRangeOfTiles(dungeon.tiles)));
-    assert(equalRanges(makeRange(0, 15), yRangeOfTiles(dungeon.tiles)));
+    assert(range_is_equal(range_make(-7, 9), xRangeOfTiles(dungeon.tiles)));
+    assert(range_is_equal(range_make(0, 15), yRangeOfTiles(dungeon.tiles)));
     assert(113 == tilesCount(dungeon.tiles));
     
     struct Tile *tile = findTileInTilesAt(dungeon.tiles, makePoint(0, 0, 1));

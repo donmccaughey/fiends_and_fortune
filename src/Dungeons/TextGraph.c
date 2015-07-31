@@ -1,7 +1,7 @@
 #include "TextGraph.h"
 
 #include "Dungeon.h"
-#include "Range.h"
+#include "range.h"
 #include "Tile.h"
 #include "Tiles.h"
 
@@ -21,17 +21,17 @@
 #define VWALL_SOLID "|:::"
 
 
-static void printHorizontalBorder(FILE *out, struct Range range);
-static void printHorizontalScale(FILE *out, struct Range range);
+static void printHorizontalBorder(FILE *out, struct range range);
+static void printHorizontalScale(FILE *out, struct range range);
 static enum TileType tileTypeAt(struct Tiles const *tiles, int32_t x, int32_t y, int32_t z);
 
 
 void graphDungeonLevelUsingText(struct Dungeon *dungeon, int32_t z, FILE *out)
 {
   struct Tiles *levelTiles = createTilesOnLevel(dungeon->tiles, z);
-  struct Range xRange = expandRange(xRangeOfTiles(levelTiles), 1);
-  struct Range yRange = expandRange(yRangeOfTiles(levelTiles), 1);
-  struct ReverseRange yReverseRange = makeReverseRangeFromRange(yRange);
+  struct range xRange = range_expand(xRangeOfTiles(levelTiles), 1);
+  struct range yRange = range_expand(yRangeOfTiles(levelTiles), 1);
+  struct reverse_range yReverseRange = reverse_range_from_range(yRange);
 
   // top border
   printHorizontalScale(out, xRange);
@@ -107,7 +107,7 @@ void graphDungeonLevelUsingText(struct Dungeon *dungeon, int32_t z, FILE *out)
 }
 
 
-static void printHorizontalBorder(FILE *out, struct Range range)
+static void printHorizontalBorder(FILE *out, struct range range)
 {
   fprintf(out, LMARGIN);
   for (int32_t i = range.begin; i < range.end; ++i) {
@@ -117,7 +117,7 @@ static void printHorizontalBorder(FILE *out, struct Range range)
 }
 
 
-static void printHorizontalScale(FILE *out, struct Range range)
+static void printHorizontalScale(FILE *out, struct range range)
 {
   fprintf(out, LMARGIN);
   for (int32_t i = range.begin; i < range.end; ++i) {

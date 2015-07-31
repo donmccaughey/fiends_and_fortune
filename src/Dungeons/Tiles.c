@@ -22,9 +22,9 @@ struct Tiles {
     size_t count;
     struct Tiles *parent;
     struct Tile **tiles;
-    struct Range xRange;
-    struct Range yRange;
-    struct Range zRange;
+    struct range xRange;
+    struct range yRange;
+    struct range zRange;
 };
 
 
@@ -50,9 +50,9 @@ static void appendTileToTiles(struct Tiles *tiles, struct Tile  *tile)
     }
     tiles->tiles[tiles->count] = tile;
     ++tiles->count;
-    tiles->xRange = extendRangeToIncludeValue(tiles->xRange, tile->point.x);
-    tiles->yRange = extendRangeToIncludeValue(tiles->yRange, tile->point.y);
-    tiles->zRange = extendRangeToIncludeValue(tiles->zRange, tile->point.z);
+    tiles->xRange = range_extend_to_include_value(tiles->xRange, tile->point.x);
+    tiles->yRange = range_extend_to_include_value(tiles->yRange, tile->point.y);
+    tiles->zRange = range_extend_to_include_value(tiles->zRange, tile->point.z);
 }
 
 
@@ -170,31 +170,31 @@ size_t tilesCount(struct Tiles const *tiles)
 
 static void updateRanges(struct Tiles *tiles)
 {
-    tiles->xRange = makeRange(0, 0);
-    tiles->yRange = makeRange(0, 0);
-    tiles->zRange = makeRange(0, 0);
+    tiles->xRange = range_make(0, 0);
+    tiles->yRange = range_make(0, 0);
+    tiles->zRange = range_make(0, 0);
     for (size_t i = 0; i < tiles->count; ++i) {
         struct Tile *tile = tiles->tiles[i];
-        tiles->xRange = extendRangeToIncludeValue(tiles->xRange, tile->point.x);
-        tiles->yRange = extendRangeToIncludeValue(tiles->yRange, tile->point.y);
-        tiles->zRange = extendRangeToIncludeValue(tiles->zRange, tile->point.z);
+        tiles->xRange = range_extend_to_include_value(tiles->xRange, tile->point.x);
+        tiles->yRange = range_extend_to_include_value(tiles->yRange, tile->point.y);
+        tiles->zRange = range_extend_to_include_value(tiles->zRange, tile->point.z);
     }
 }
 
 
-struct Range xRangeOfTiles(struct Tiles const *tiles)
+struct range xRangeOfTiles(struct Tiles const *tiles)
 {
     return tiles->xRange;
 }
 
 
-struct Range yRangeOfTiles(struct Tiles const *tiles)
+struct range yRangeOfTiles(struct Tiles const *tiles)
 {
     return tiles->yRange;
 }
 
 
-struct Range zRangeOfTiles(struct Tiles const *tiles)
+struct range zRangeOfTiles(struct Tiles const *tiles)
 {
     return tiles->zRange;
 }

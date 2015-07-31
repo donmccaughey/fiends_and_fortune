@@ -31,27 +31,27 @@ static void addTileToTilesTest(void)
 {
   struct Tiles *tiles = createTiles();
   assert(0 == tilesCount(tiles));
-  assert(equalRanges(makeRange(0, 0), xRangeOfTiles(tiles)));
-  assert(equalRanges(makeRange(0, 0), yRangeOfTiles(tiles)));
-  assert(equalRanges(makeRange(0, 0), zRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 0), xRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 0), yRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 0), zRangeOfTiles(tiles)));
 
   struct Tile *tile1 = createTile(makePoint(0, 0, 0), EmptyTileType);
   addTileToTiles(tiles, tile1);
   
   assert(1 == tilesCount(tiles));
   assert(tileInTilesAtIndex(tiles, 0)->point.x == tile1->point.x);
-  assert(equalRanges(makeRange(0, 1), xRangeOfTiles(tiles)));
-  assert(equalRanges(makeRange(0, 1), yRangeOfTiles(tiles)));
-  assert(equalRanges(makeRange(0, 1), zRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 1), xRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 1), yRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 1), zRangeOfTiles(tiles)));
 
   struct Tile *tile2 = createTile(makePoint(1, 0, 0), EmptyTileType);
   addTileToTiles(tiles, tile2);
   
   assert(2 == tilesCount(tiles));
   assert(tileInTilesAtIndex(tiles, 1)->point.x == tile2->point.x);
-  assert(equalRanges(makeRange(0, 2), xRangeOfTiles(tiles)));
-  assert(equalRanges(makeRange(0, 1), yRangeOfTiles(tiles)));
-  assert(equalRanges(makeRange(0, 1), zRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 2), xRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 1), yRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 1), zRangeOfTiles(tiles)));
 
   struct Tile *tile3 = createTile(makePoint(-1, 0, 0), EmptyTileType);
   addTileToTiles(tiles, tile3);
@@ -60,35 +60,35 @@ static void addTileToTilesTest(void)
   assert(tileInTilesAtIndex(tiles, 0)->point.x == tile3->point.x);
   assert(tileInTilesAtIndex(tiles, 1)->point.x == tile1->point.x);
   assert(tileInTilesAtIndex(tiles, 2)->point.x == tile2->point.x);
-  assert(equalRanges(makeRange(-1, 2), xRangeOfTiles(tiles)));
-  assert(equalRanges(makeRange(0, 1), yRangeOfTiles(tiles)));
-  assert(equalRanges(makeRange(0, 1), zRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(-1, 2), xRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 1), yRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 1), zRangeOfTiles(tiles)));
 
   bool found = removeTileFromTiles(tiles, tile1);
   assert(found);
   assert(2 == tilesCount(tiles));
   assert(tileInTilesAtIndex(tiles, 0)->point.x == tile3->point.x);
   assert(tileInTilesAtIndex(tiles, 1)->point.x == tile2->point.x);
-  assert(equalRanges(makeRange(-1, 2), xRangeOfTiles(tiles)));
-  assert(equalRanges(makeRange(0, 1), yRangeOfTiles(tiles)));
-  assert(equalRanges(makeRange(0, 1), zRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(-1, 2), xRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 1), yRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 1), zRangeOfTiles(tiles)));
   destroyTile(tile1);
   
   found = removeTileFromTiles(tiles, tile2);
   assert(found);
   assert(1 == tilesCount(tiles));
   assert(tileInTilesAtIndex(tiles, 0)->point.x == tile3->point.x);
-  assert(equalRanges(makeRange(-1, 0), xRangeOfTiles(tiles)));
-  assert(equalRanges(makeRange(0, 1), yRangeOfTiles(tiles)));
-  assert(equalRanges(makeRange(0, 1), zRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(-1, 0), xRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 1), yRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 1), zRangeOfTiles(tiles)));
   destroyTile(tile2);
   
   found = removeTileFromTiles(tiles, tile3);
   assert(found);
   assert(0 == tilesCount(tiles));
-  assert(equalRanges(makeRange(0, 0), xRangeOfTiles(tiles)));
-  assert(equalRanges(makeRange(0, 0), yRangeOfTiles(tiles)));
-  assert(equalRanges(makeRange(0, 0), zRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 0), xRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 0), yRangeOfTiles(tiles)));
+  assert(range_is_equal(range_make(0, 0), zRangeOfTiles(tiles)));
   destroyTile(tile3);
   
   destroyTiles(tiles);
