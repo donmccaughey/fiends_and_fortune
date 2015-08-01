@@ -252,19 +252,11 @@
 			isa = PBXGroup;
 			children = (
 				D4BD32CF1B6B1EFB0007527A /* dungeon */,
-				D4783B3A15ABE155004E7F2C /* Dungeons */,
 				D45178461B5CB43600F26844 /* dice_test.c */,
 				D43ED593142146F800D25EEC /* main.c */,
 				D45178751B63679200F26844 /* str_test.c */,
 			);
 			path = UnitTests;
-			sourceTree = "<group>";
-		};
-		D4783B3A15ABE155004E7F2C /* Dungeons */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Dungeons;
 			sourceTree = "<group>";
 		};
 		D4BD32981B6A06560007527A /* treasure */ = {

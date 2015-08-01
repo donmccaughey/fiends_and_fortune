@@ -28,7 +28,8 @@ void
 tiles_test(void);
 
 
-int main (int argc, const char *argv[])
+int
+main (int argc, const char *argv[])
 {
     FILE *out = stdout;
     fprintf(out, "Fiends and Fortune unit tests\n");
