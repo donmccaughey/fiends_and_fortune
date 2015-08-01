@@ -2,13 +2,13 @@
 #define DUNGEONS_DUNGEON_H_INCLUDED
 
 
-struct Areas;
+struct areas;
 struct rnd;
 struct tiles;
 
 
 struct Dungeon {
-    struct Areas *areas;
+    struct areas *areas;
     struct tiles *tiles;
 };
 

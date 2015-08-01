@@ -232,7 +232,7 @@ static void generateRandomDungeon(struct rnd *rnd, FILE *out)
     
     char const **descriptions = dungeonAreaDescriptions(&dungeon);
     char const **current = descriptions;
-    fprintf(out, "\nDungeon Areas:\n");
+    fprintf(out, "\nDungeon areas:\n");
     while (*current) {
         fprintf(out, "\t%s\n", *current);
         ++current;
@@ -253,7 +253,7 @@ static void generateSampleDungeon(struct rnd *rnd, FILE *out)
     
     char const **descriptions = dungeonAreaDescriptions(&dungeon);
     char const **current = descriptions;
-    fprintf(out, "\nDungeon Areas:\n");
+    fprintf(out, "\nDungeon areas:\n");
     while (*current) {
         fprintf(out, "\t%s\n", *current);
         ++current;

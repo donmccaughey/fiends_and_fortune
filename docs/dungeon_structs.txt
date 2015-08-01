@@ -12,7 +12,7 @@ Dungeon Structs
       v                    v
   +-------+            +-------+
   |       |            |       |
-  | Areas |            | tiles |
+  | areas |            | tiles |
   |       |            |       |
   +-------+            +-------+
       +                  +   +

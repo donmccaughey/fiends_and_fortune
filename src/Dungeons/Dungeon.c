@@ -7,8 +7,8 @@
 #include "common/fail.h"
 #include "common/str.h"
 
-#include "Area.h"
-#include "Areas.h"
+#include "area.h"
+#include "areas.h"
 #include "direction.h"
 #include "range.h"
 #include "reverse_range.h"
@@ -17,8 +17,8 @@
 
 
 static struct point advancePoint(struct point start, int32_t steps, enum direction direction);
-static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, struct Area *area, int32_t x, int32_t y, int32_t z);
-static struct point area(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum direction direction, uint32_t leftOffset, enum AreaType areaType);
+static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, struct area *area, int32_t x, int32_t y, int32_t z);
+static struct point area(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum direction direction, uint32_t leftOffset, enum area_type areaType);
 static struct point chamber(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum direction direction, uint32_t leftOffset);
 static struct point passage(struct Dungeon *dungeon, struct point fromPoint, uint32_t distance, enum direction direction);
 
@@ -35,7 +35,7 @@ static struct point advancePoint(struct point start, int32_t steps, enum directi
 }
 
 
-static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, struct Area *area, int32_t x, int32_t y, int32_t z)
+static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, struct area *area, int32_t x, int32_t y, int32_t z)
 {
     assert(NULL == tiles_find_tile_at(dungeon->tiles, point_make(x, y, z)));
     
@@ -44,7 +44,7 @@ static void addNewEmptyTileToDungeonAt(struct Dungeon *dungeon, struct Area *are
 }
 
 
-static struct point area(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum direction direction, uint32_t leftOffset, enum AreaType areaType)
+static struct point area(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum direction direction, uint32_t leftOffset, enum area_type areaType)
 {
     assert(leftOffset < width);
     struct range xRange;
@@ -83,11 +83,11 @@ static struct point area(struct Dungeon *dungeon, struct point fromPoint, uint32
     
     char *description;
     switch (areaType) {
-        case ChamberAreaType:
+        case area_type_chamber:
             description = str_alloc_formatted("%u' x %u' chamber",
                                               length * 10, width * 10);
             break;
-        case PassageAreaType:
+        case area_type_passage:
             description = str_alloc_formatted("%u' passage %s",
                                               length * 10,
                                               direction_name(direction));
@@ -98,9 +98,9 @@ static struct point area(struct Dungeon *dungeon, struct point fromPoint, uint32
             break;
     }
     
-    struct Area *area = createArea(description, dungeon->tiles, areaType);
+    struct area *area = area_alloc(description, dungeon->tiles, areaType);
     free_or_die(description);
-    addAreaToAreas(dungeon->areas, area);
+    areas_append_area(dungeon->areas, area);
     
     for (int32_t j = yRange.begin; j < yRange.end; ++j) {
         for (int32_t i = xRange.begin; i < xRange.end; ++i) {
@@ -114,18 +114,18 @@ static struct point area(struct Dungeon *dungeon, struct point fromPoint, uint32
 
 static struct point chamber(struct Dungeon *dungeon, struct point fromPoint, uint32_t length, uint32_t width, enum direction direction, uint32_t leftOffset)
 {
-    return area(dungeon, fromPoint, length, width, direction, leftOffset, ChamberAreaType);
+    return area(dungeon, fromPoint, length, width, direction, leftOffset, area_type_chamber);
 }
 
 
 char const **dungeonAreaDescriptions(struct Dungeon *dungeon)
 {
-    size_t descriptionsCount = areasCount(dungeon->areas);
+    size_t descriptionsCount = areas_count(dungeon->areas);
     char const **descriptions = calloc_or_die(descriptionsCount + 1,
                                               sizeof(char const *));
     
     for (size_t i = 0; i < descriptionsCount; ++i) {
-        descriptions[i] = areaInAreasAtIndex(dungeon->areas, i)->description;
+        descriptions[i] = areas_area_at_index(dungeon->areas, i)->description;
     }
     return descriptions;
 }
@@ -133,7 +133,7 @@ char const **dungeonAreaDescriptions(struct Dungeon *dungeon)
 
 void finalizeDungeon(struct Dungeon *dungeon)
 {
-    destroyAreas(dungeon->areas);
+    areas_free(dungeon->areas);
     tiles_free(dungeon->tiles);
 }
 
@@ -201,13 +201,13 @@ void generateSmallDungeon(struct Dungeon *dungeon)
 
 static struct point passage(struct Dungeon *dungeon, struct point fromPoint, uint32_t distance, enum direction direction)
 {
-    return area(dungeon, fromPoint, distance, 1, direction, 0, PassageAreaType);
+    return area(dungeon, fromPoint, distance, 1, direction, 0, area_type_passage);
 }
 
 
 void initializeDungeon(struct Dungeon *dungeon)
 {
     memset(dungeon, 0, sizeof(struct Dungeon));
-    dungeon->areas = createAreas();
+    dungeon->areas = areas_alloc();
     dungeon->tiles = tiles_alloc();
 }

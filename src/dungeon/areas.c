@@ -1,21 +1,21 @@
-#include "Areas.h"
+#include "areas.h"
 
 #include <assert.h>
-#include <stdlib.h>
 
 #include "common/alloc_or_die.h"
 
-#include "Area.h"
+#include "area.h"
 
 
-struct Areas {
-    struct Area **areas;
+struct areas {
+    struct area **areas;
     size_t capacity;
     size_t count;
 };
 
 
-void addAreaToAreas(struct Areas *areas, struct Area *area)
+void
+areas_append_area(struct areas *areas, struct area *area)
 {
     if (areas->capacity == areas->count) {
         if (areas->capacity) {
@@ -25,38 +25,42 @@ void addAreaToAreas(struct Areas *areas, struct Area *area)
         }
         areas->areas = reallocarray_or_die(areas->areas,
                                            areas->capacity,
-                                           sizeof(struct Area *));
+                                           sizeof(struct area *));
     }
     areas->areas[areas->count] = area;
     ++areas->count;
 }
 
 
-struct Area *areaInAreasAtIndex(struct Areas *areas, size_t index)
+struct area *
+areas_area_at_index(struct areas *areas, size_t index)
 {
     assert(index < areas->count);
     return areas->areas[index];
 }
 
 
-size_t areasCount(struct Areas const *areas)
+size_t
+areas_count(struct areas const *areas)
 {
     return areas->count;
 }
 
 
-struct Areas *createAreas(void)
+struct areas *
+areas_alloc(void)
 {
-    struct Areas *areas = calloc_or_die(1, sizeof(struct Areas));
-    areas->areas = calloc_or_die(0, sizeof(struct Area *));
+    struct areas *areas = calloc_or_die(1, sizeof(struct areas));
+    areas->areas = calloc_or_die(0, sizeof(struct area *));
     return areas;
 }
 
 
-void destroyAreas(struct Areas *areas)
+void
+areas_free(struct areas *areas)
 {
     for (size_t i = 0; i < areas->count; ++i) {
-        destroyArea(areas->areas[i]);
+        area_free(areas->areas[i]);
     }
     free_or_die(areas->areas);
     free_or_die(areas);
