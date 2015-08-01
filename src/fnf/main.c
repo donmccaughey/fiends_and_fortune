@@ -17,8 +17,8 @@
 #include "treasure/treasure_map.h"
 #include "treasure/treasure_type.h"
 
-#include "Dungeon.h"
-#include "TextGraph.h"
+#include "dungeon.h"
+#include "text_graph.h"
 
 
 static void check(FILE *out, char const *constantNumber);
@@ -224,13 +224,13 @@ static void generateMagicItems(struct rnd *rnd, FILE *out, int count)
 
 static void generateRandomDungeon(struct rnd *rnd, FILE *out)
 {
-    struct Dungeon dungeon;
-    initializeDungeon(&dungeon);
+    struct dungeon dungeon;
+    dungeon_initialize(&dungeon);
     
-    generateDungeon(&dungeon, rnd);
-    graphDungeonLevelUsingText(&dungeon, 1, out);
+    dungeon_generate(&dungeon, rnd);
+    dungeon_graph_level_using_text(&dungeon, 1, out);
     
-    char const **descriptions = dungeonAreaDescriptions(&dungeon);
+    char const **descriptions = dungeon_alloc_area_descriptions(&dungeon);
     char const **current = descriptions;
     fprintf(out, "\nDungeon areas:\n");
     while (*current) {
@@ -239,19 +239,19 @@ static void generateRandomDungeon(struct rnd *rnd, FILE *out)
     }
     free_or_die(descriptions);
     
-    finalizeDungeon(&dungeon);
+    dungeon_finalize(&dungeon);
 }
 
 
 static void generateSampleDungeon(struct rnd *rnd, FILE *out)
 {
-    struct Dungeon dungeon;
-    initializeDungeon(&dungeon);
+    struct dungeon dungeon;
+    dungeon_initialize(&dungeon);
     
-    generateSmallDungeon(&dungeon);
-    graphDungeonLevelUsingText(&dungeon, 1, out);
+    dungeon_generate_small(&dungeon);
+    dungeon_graph_level_using_text(&dungeon, 1, out);
     
-    char const **descriptions = dungeonAreaDescriptions(&dungeon);
+    char const **descriptions = dungeon_alloc_area_descriptions(&dungeon);
     char const **current = descriptions;
     fprintf(out, "\nDungeon areas:\n");
     while (*current) {
@@ -260,7 +260,7 @@ static void generateSampleDungeon(struct rnd *rnd, FILE *out)
     }
     free_or_die(descriptions);
     
-    finalizeDungeon(&dungeon);
+    dungeon_finalize(&dungeon);
 }
 
 

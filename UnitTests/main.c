@@ -7,7 +7,7 @@ void
 dice_test(void);
 
 void
-dungeonTest(void);
+dungeon_test(void);
 
 void
 point_test(void);
@@ -34,7 +34,7 @@ int main (int argc, const char *argv[])
     fprintf(out, "Fiends and Fortune unit tests\n");
     
     dice_test();
-    dungeonTest();
+    dungeon_test();
     point_test();
     points_test();
     range_test();

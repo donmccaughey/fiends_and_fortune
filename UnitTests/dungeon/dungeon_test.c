@@ -2,27 +2,21 @@
 
 #include "common/rnd.h"
 
-#include "Dungeon.h"
+#include "dungeon.h"
 #include "tile.h"
 #include "tiles.h"
 
 
-void dungeonTest(void);
-static void generateDungeonTest(void);
+void
+dungeon_test(void);
 
 
-void dungeonTest(void)
+static void generate_dungeon_test(void)
 {
-    generateDungeonTest();
-}
-
-
-static void generateDungeonTest(void)
-{
-    struct Dungeon dungeon;
-    initializeDungeon(&dungeon);
+    struct dungeon dungeon;
+    dungeon_initialize(&dungeon);
     
-    generateDungeon(&dungeon, global_rnd);
+    dungeon_generate(&dungeon, global_rnd);
     assert(113 == tiles_count(dungeon.tiles));
     
     assert(range_is_equal(range_make(-7, 9), tiles_x_range(dungeon.tiles)));
@@ -38,5 +32,11 @@ static void generateDungeonTest(void)
     tile = tiles_find_tile_at(dungeon.tiles, point_make(-1, -8, 1));
     assert( ! tile);
     
-    finalizeDungeon(&dungeon);
+    dungeon_finalize(&dungeon);
+}
+
+
+void dungeon_test(void)
+{
+    generate_dungeon_test();
 }

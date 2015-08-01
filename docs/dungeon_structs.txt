@@ -1,10 +1,10 @@
-Dungeon Structs
+dungeon Structs
 ---------------
 
 
            +---------+
            |         |
-           | Dungeon |
+           | dungeon |
       +---+|         |+----+
       |    +---------+     |
       |                    |
