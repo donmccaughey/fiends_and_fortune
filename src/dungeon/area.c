@@ -1,8 +1,29 @@
 #include "area.h"
 
+#include <assert.h>
+
 #include "common/alloc_or_die.h"
 
+#include "tile.h"
 #include "tiles.h"
+
+
+void
+area_add_tiles(struct area *area,
+               enum tile_type type,
+               struct range x_range,
+               struct range y_range,
+               int32_t z)
+{
+    for (int32_t y = y_range.begin; y < y_range.end; ++y) {
+        for (int32_t x = x_range.begin; x < x_range.end; ++x) {
+            assert(NULL == tiles_find_tile_at(tiles_root(area->tiles), point_make(x, y, z)));
+            
+            struct tile *tile = tile_alloc(point_make(x, y, z), type);
+            tiles_add_tile(area->tiles, tile);
+        }
+    }
+}
 
 
 struct area *

@@ -39,6 +39,9 @@ tiles_find_tile_at(struct tiles const *tiles, struct point point);
 bool
 tiles_remove_tile(struct tiles *tiles, struct tile const *tile);
 
+struct tiles *
+tiles_root(struct tiles *tiles);
+
 struct tile *
 tiles_tile_at_index(struct tiles const *tiles, size_t index);
 

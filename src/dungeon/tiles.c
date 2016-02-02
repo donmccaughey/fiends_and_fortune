@@ -51,7 +51,7 @@ append_tile(struct tiles *tiles, struct tile *tile)
 {
     if (tiles->capacity == tiles->count) {
         if (tiles->capacity) {
-            tiles->capacity *= 2;
+            tiles->capacity = tiles->capacity / 2 * 3;
         } else {
             tiles->capacity = 256;
         }
@@ -165,6 +165,14 @@ tiles_remove_tile(struct tiles *tiles, struct tile const *tile)
     update_ranges(tiles);
     
     return tiles->parent ? tiles_remove_tile(tiles->parent, tile) : true;
+}
+
+
+struct tiles *
+tiles_root(struct tiles *tiles)
+{
+    while (tiles->parent) tiles = tiles->parent;
+    return tiles;
 }
 
 

@@ -25,13 +25,6 @@ add_digger(struct generator *generator,
            enum direction direction,
            dig_fn *dig);
 
-static void
-add_new_empty_tile_to_dungeon_at(struct dungeon *dungeon,
-                                 struct area *area,
-                                 int32_t x,
-                                 int32_t y,
-                                 int32_t z);
-
 static struct point
 area(struct dungeon *dungeon,
      struct point from_point,
@@ -89,20 +82,6 @@ add_digger(struct generator *generator,
                                              sizeof(struct digger *));
     generator->diggers[index] = digger_alloc(point, direction, dig);
     return generator->diggers[index];
-}
-
-
-static void
-add_new_empty_tile_to_dungeon_at(struct dungeon *dungeon,
-                                 struct area *area,
-                                 int32_t x,
-                                 int32_t y,
-                                 int32_t z)
-{
-    //assert(NULL == tiles_find_tile_at(dungeon->tiles, point_make(x, y, z)));
-    
-    struct tile *tile = tile_alloc(point_make(x, y, z), tile_type_empty);
-    tiles_add_tile(area->tiles, tile);
 }
 
 
@@ -175,12 +154,7 @@ area(struct dungeon *dungeon,
     struct area *area = area_alloc(description, dungeon->tiles, area_type);
     free_or_die(description);
     areas_append_area(dungeon->areas, area);
-    
-    for (int32_t j = y_range.begin; j < y_range.end; ++j) {
-        for (int32_t i = x_range.begin; i < x_range.end; ++i) {
-            add_new_empty_tile_to_dungeon_at(dungeon, area, i, j, from_point.z);
-        }
-    }
+    area_add_tiles(area, tile_type_empty, x_range, y_range, from_point.z);
     
     return point_move(from_point, length, direction);
 }
@@ -232,7 +206,7 @@ generator_free(struct generator *generator)
 void
 generator_generate(struct generator *generator)
 {
-    int const max_interation_count = 5;
+    int const max_interation_count = 7;
     
     struct point point = point_make(0, 0, 1);
     point = passage(generator->dungeon, point, 2, North);

@@ -5,6 +5,9 @@
 #include <stddef.h>
 
 #include "area_type.h"
+#include "point.h"
+#include "range.h"
+#include "tile_type.h"
 
 
 struct tile;
@@ -25,6 +28,13 @@ area_alloc(char const *description,
 
 void
 area_free(struct area *area);
+
+void
+area_add_tiles(struct area *area,
+               enum tile_type type,
+               struct range x_range,
+               struct range y_range,
+               int32_t z);
 
 
 #endif
