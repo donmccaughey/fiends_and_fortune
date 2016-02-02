@@ -21,6 +21,9 @@ struct point
 point_make(int32_t x, int32_t y, int32_t z);
 
 struct point
+point_move(struct point start, int32_t steps, enum direction direction);
+
+struct point
 point_rotate_90_degrees_left(struct point point, enum direction direction);
 
 struct point

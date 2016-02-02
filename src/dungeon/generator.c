@@ -19,9 +19,6 @@
 #include "tiles.h"
 
 
-static struct point
-advance_point(struct point start, int32_t steps, enum direction direction);
-
 static struct digger *
 add_digger(struct generator *generator,
            struct point point,
@@ -110,20 +107,6 @@ add_new_empty_tile_to_dungeon_at(struct dungeon *dungeon,
 
 
 static struct point
-advance_point(struct point start, int32_t steps, enum direction direction)
-{
-    switch (direction) {
-        case North: return point_make(start.x, start.y + steps, start.z);
-        case South: return point_make(start.x, start.y - steps, start.z);
-        case East: return point_make(start.x + steps, start.y, start.z);
-        case West: return point_make(start.x - steps, start.y, start.z);
-        default: fail("Unrecognized direction %i", direction); break;
-    }
-    return start;
-}
-
-
-static struct point
 area(struct dungeon *dungeon,
      struct point from_point,
      uint32_t length,
@@ -199,7 +182,7 @@ area(struct dungeon *dungeon,
         }
     }
     
-    return advance_point(from_point, length, direction);
+    return point_move(from_point, length, direction);
 }
 
 
@@ -278,18 +261,18 @@ generator_generate_small(struct generator *generator)
     point = chamber(generator->dungeon, point, 5, 3, North, 1);
     
     /* chamber exits */
-    struct point point_in_chamber = advance_point(point, 2, South);
-    struct point north_west_exit = advance_point(point_in_chamber, 2, West);
-    struct point south_west_exit = advance_point(north_west_exit, 2, South);
-    struct point north_east_exit = advance_point(point_in_chamber, 2, East);
-    struct point south_east_exit = advance_point(north_east_exit, 2, South);
+    struct point point_in_chamber = point_move(point, 2, South);
+    struct point north_west_exit = point_move(point_in_chamber, 2, West);
+    struct point south_west_exit = point_move(north_west_exit, 2, South);
+    struct point north_east_exit = point_move(point_in_chamber, 2, East);
+    struct point south_east_exit = point_move(north_east_exit, 2, South);
     
     point = passage(generator->dungeon, point, 7, North);
     point = passage(generator->dungeon, point, 8, East);
     point = passage(generator->dungeon, point, 4, South);
     
     point = chamber(generator->dungeon, point, 3, 4, South, 0);
-    point = advance_point(point, 3, West);
+    point = point_move(point, 3, West);
     
     point = passage(generator->dungeon, point, 2, South);
     passage(generator->dungeon, point, 4, West);
@@ -308,7 +291,7 @@ generator_generate_small(struct generator *generator)
     
     point = chamber(generator->dungeon, point, 2, 2, North, 1);
     
-    point = advance_point(point, 1, West);
+    point = point_move(point, 1, West);
     point = passage(generator->dungeon, point, 3, North);
     
     chamber(generator->dungeon, point, 2, 3, North, 1);

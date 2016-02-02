@@ -1,5 +1,7 @@
 #include "point.h"
 
+#include "common/fail.h"
+
 
 int
 point_compare(struct point point1, struct point point2)
@@ -14,6 +16,20 @@ struct point
 point_make(int32_t x, int32_t y, int32_t z)
 {
     return (struct point){ .x=x, .y=y, .z=z };
+}
+
+
+struct point
+point_move(struct point start, int32_t steps, enum direction direction)
+{
+    switch (direction) {
+        case North: return point_make(start.x, start.y + steps, start.z);
+        case South: return point_make(start.x, start.y - steps, start.z);
+        case East: return point_make(start.x + steps, start.y, start.z);
+        case West: return point_make(start.x - steps, start.y, start.z);
+        default: fail("Unrecognized direction %i", direction); break;
+    }
+    return start;
 }
 
 
