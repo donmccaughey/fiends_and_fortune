@@ -37,11 +37,6 @@ chamber(struct dungeon *dungeon,
         uint32_t left_offset);
 
 static struct point
-intersection(struct dungeon *dungeon,
-             struct point from_point,
-             enum direction direction);
-
-static struct point
 passage(struct dungeon *dungeon,
         struct point from_point,
         uint32_t distance,
@@ -236,7 +231,7 @@ dungeon_generator_generate(struct dungeon_generator *generator)
 
 void
 dungeon_generator_generate_small(struct dungeon_generator *generator)
-{
+{    
     struct point point = point_make(0, 0, 1);
     
     point = passage(generator->dungeon, point, 2, North);
@@ -305,15 +300,6 @@ dungeon_generator_take_digger(struct dungeon_generator *generator,
 
 
 static struct point
-intersection(struct dungeon *dungeon,
-             struct point from_point,
-             enum direction direction)
-{
-    return area(dungeon, from_point, 1, 1, direction, 0, area_type_intersection);
-}
-
-
-static struct point
 passage(struct dungeon *dungeon, struct point from_point, uint32_t distance, enum direction direction)
 {
     return area(dungeon, from_point, distance, 1, direction, 0, area_type_passage);
@@ -325,7 +311,7 @@ periodic_check(struct digger *digger)
 {
     int score = roll("1d20", digger->generator->rnd);
     if (score <= 2) {
-        digger->point = passage(digger->generator->dungeon, digger->point, 6, digger->direction);
+        digger_dig_passage(digger, 6);
     } else if (score <= 5) {
         // door
     } else if (score <= 10) {
@@ -363,22 +349,22 @@ side_passages(struct digger *digger)
     int score = roll("1d20", digger->generator->rnd);
     if (score <= 2) {
         // left 90 degrees
-        digger->point = intersection(digger->generator->dungeon, digger->point, digger->direction);
+        digger_dig_intersection(digger);
         
         struct digger *side_digger = dungeon_generator_copy_digger(digger->generator, digger);
         digger_turn_90_degrees_left(side_digger);
-        side_digger->point = passage(digger->generator->dungeon, side_digger->point, 3, side_digger->direction);
+        digger_dig_passage(side_digger, 3);
         
-        digger->point = passage(digger->generator->dungeon, digger->point, 3, digger->direction);
+        digger_dig_passage(digger, 3);
     } else if (score <= 4) {
         // right 90 degrees
-        digger->point = intersection(digger->generator->dungeon, digger->point, digger->direction);
+        digger_dig_intersection(digger);
         
         struct digger *side_digger = dungeon_generator_copy_digger(digger->generator, digger);
         digger_turn_90_degrees_right(side_digger);
-        side_digger->point = passage(digger->generator->dungeon, side_digger->point, 3, side_digger->direction);
+        digger_dig_passage(side_digger, 3);
         
-        digger->point = passage(digger->generator->dungeon, digger->point, 3, digger->direction);
+        digger_dig_passage(digger, 3);
     } else if (score == 5) {
         // left 45 degrees ahead
     } else if (score == 6) {
@@ -393,32 +379,32 @@ side_passages(struct digger *digger)
         // right curve 45 degrees ahead
     } else if (score <= 13) {
         // passage T's
-        digger->point = intersection(digger->generator->dungeon, digger->point, digger->direction);
+        digger_dig_intersection(digger);
         
         struct digger *left_digger = dungeon_generator_copy_digger(digger->generator, digger);
         digger_turn_90_degrees_left(left_digger);
-        left_digger->point = passage(digger->generator->dungeon, left_digger->point, 3, left_digger->direction);
+        digger_dig_passage(left_digger, 3);
         
         struct digger *right_digger = dungeon_generator_copy_digger(digger->generator, digger);
         digger_turn_90_degrees_right(right_digger);
-        right_digger->point = passage(digger->generator->dungeon, right_digger->point, 3, right_digger->direction);
+        digger_dig_passage(right_digger, 3);
         
         remove_digger(digger);
     } else if (score <= 15) {
         // passage Y's
     } else if (score < 19) {
         // four way intersection
-        digger->point = intersection(digger->generator->dungeon, digger->point, digger->direction);
+        digger_dig_intersection(digger);
         
         struct digger *left_digger = dungeon_generator_copy_digger(digger->generator, digger);
         digger_turn_90_degrees_left(left_digger);
-        left_digger->point = passage(digger->generator->dungeon, left_digger->point, 3, left_digger->direction);
+        digger_dig_passage(left_digger, 3);
         
         struct digger *right_digger = dungeon_generator_copy_digger(digger->generator, digger);
         digger_turn_90_degrees_right(right_digger);
-        right_digger->point = passage(digger->generator->dungeon, right_digger->point, 3, right_digger->direction);
+        digger_dig_passage(right_digger, 3);
         
-        digger->point = passage(digger->generator->dungeon, digger->point, 3, digger->direction);
+        digger_dig_passage(digger, 3);
     } else {
         // passage X's
     }
@@ -432,7 +418,7 @@ turns(struct digger *digger)
     if (score <= 8) {
         // left 90 degrees
         digger_turn_90_degrees_left(digger);
-        digger->point = passage(digger->generator->dungeon, digger->point, 3, digger->direction);
+        digger_dig_passage(digger, 3);
     } else if (score == 9) {
         // left 45 degrees ahead
     } else if (score == 10) {
@@ -440,7 +426,7 @@ turns(struct digger *digger)
     } else if (score <= 18) {
         // right 90 degrees
         digger_turn_90_degrees_right(digger);
-        digger->point = passage(digger->generator->dungeon, digger->point, 3, digger->direction);
+        digger_dig_passage(digger, 3);
     } else if (score == 19) {
         // right 45 degrees ahead
     } else {
