@@ -2,9 +2,6 @@
 #define FNF_DUNGEON_DUNGEON_GENERATOR_H_INCLUDED
 
 
-#include <stddef.h>
-
-
 struct digger;
 struct dungeon;
 struct rnd;
@@ -30,6 +27,14 @@ dungeon_generator_generate(struct dungeon_generator *generator);
 
 void
 dungeon_generator_generate_small(struct dungeon_generator *generator);
+
+void
+dungeon_generator_take_digger(struct dungeon_generator *generator,
+                              struct digger *digger);
+
+void
+dungeon_generator_give_digger(struct dungeon_generator *generator,
+                              struct digger *digger);
 
 
 #endif

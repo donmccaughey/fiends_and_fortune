@@ -2,6 +2,8 @@
 
 #include "common/alloc_or_die.h"
 
+#include "dungeon_generator.h"
+
 
 struct digger *
 digger_alloc(struct dungeon_generator *generator,
@@ -19,12 +21,14 @@ digger_alloc(struct dungeon_generator *generator,
 
 
 struct digger *
-digger_alloc_copy(struct digger const *digger)
+digger_copy(struct digger const *digger)
 {
-    return digger_alloc(digger->generator,
-                        digger->point,
-                        digger->direction,
-                        digger->dig);
+    struct digger *copy = digger_alloc(digger->generator,
+                                       digger->point,
+                                       digger->direction,
+                                       digger->dig);
+    dungeon_generator_take_digger(copy->generator, copy);
+    return copy;
 }
 
 
