@@ -11,10 +11,11 @@ struct dungeon_generator;
 
 
 typedef void
-dig_fn(struct dungeon_generator *generator, struct digger *digger);
+dig_fn(struct digger *digger);
 
 
 struct digger {
+    struct dungeon_generator *generator;
     struct point point;
     enum direction direction;
     dig_fn *dig;
@@ -22,7 +23,10 @@ struct digger {
 
 
 struct digger *
-digger_alloc(struct point point, enum direction direction, dig_fn *dig);
+digger_alloc(struct dungeon_generator *generator,
+             struct point point,
+             enum direction direction,
+             dig_fn *dig);
 
 struct digger *
 digger_alloc_copy(struct digger const *digger);
