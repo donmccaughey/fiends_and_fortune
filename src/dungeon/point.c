@@ -15,3 +15,39 @@ point_make(int32_t x, int32_t y, int32_t z)
 {
     return (struct point){ .x=x, .y=y, .z=z };
 }
+
+
+struct point
+point_rotate_90_degrees_left(struct point point, enum direction direction)
+{
+    switch (direction) {
+        case North:
+            return point_make(point.x - 1, point.y - 1, point.z);
+        case South:
+            return point_make(point.x + 1, point.y + 1, point.z);
+        case East:
+            return point_make(point.x - 1, point.y + 1, point.z);
+        case West:
+            return point_make(point.x + 1, point.y - 1, point.z);
+        default:
+            return point;
+    }
+}
+
+
+struct point
+point_rotate_90_degrees_right(struct point point, enum direction direction)
+{
+    switch (direction) {
+        case North:
+            return point_make(point.x + 1, point.y - 1, point.z);
+        case South:
+            return point_make(point.x - 1, point.y + 1, point.z);
+        case East:
+            return point_make(point.x - 1, point.y - 1, point.z);
+        case West:
+            return point_make(point.x + 1, point.y + 1, point.z);
+        default:
+            return point;
+    }
+}
