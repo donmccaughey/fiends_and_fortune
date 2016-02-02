@@ -151,12 +151,22 @@ struct dungeon_generator *
 dungeon_generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
 {
     struct dungeon_generator *generator = calloc_or_die(1, sizeof(struct dungeon_generator));
-    
     generator->dungeon = dungeon;
     generator->rnd = rnd;
     generator->diggers = calloc_or_die(1, sizeof(struct digger *));
-    
     return generator;
+}
+
+
+struct digger *
+dungeon_generator_copy_digger(struct dungeon_generator *generator,
+                              struct digger *digger)
+{
+    struct digger *copy = digger_alloc(digger->point,
+                                       digger->direction,
+                                       digger->dig);
+    dungeon_generator_take_digger(generator, copy);
+    return copy;
 }
 
 
@@ -183,6 +193,8 @@ dungeon_generator_give_digger(struct dungeon_generator *generator,
         }
     }
     assert(index >= 0 && index < generator->diggers_count);
+    generator->diggers[index] = NULL;
+    digger->generator = NULL;
     
     int next_index = index + 1;
     int last_index = generator->diggers_count - 1;
@@ -207,7 +219,7 @@ dungeon_generator_generate(struct dungeon_generator *generator)
     struct point point = point_make(0, 0, 1);
     point = passage(generator->dungeon, point, 2, North);
     
-    struct digger *digger = digger_alloc(generator, point, North, periodic_check);
+    struct digger *digger = digger_alloc(point, North, periodic_check);
     dungeon_generator_take_digger(generator, digger);
     
     while (generator->diggers_count && generator->iteration_count < max_interation_count) {
@@ -289,6 +301,7 @@ dungeon_generator_take_digger(struct dungeon_generator *generator,
     generator->diggers = reallocarray_or_die(generator->diggers,
                                              generator->diggers_count,
                                              sizeof(struct digger *));
+    digger->generator = generator;
     generator->diggers[index] = digger;
 }
 
@@ -354,7 +367,7 @@ side_passages(struct digger *digger)
         // left 90 degrees
         digger->point = intersection(digger->generator->dungeon, digger->point, digger->direction);
         
-        struct digger *side_digger = digger_copy(digger);
+        struct digger *side_digger = dungeon_generator_copy_digger(digger->generator, digger);
         digger_turn_90_degrees_left(side_digger);
         side_digger->point = passage(digger->generator->dungeon, side_digger->point, 3, side_digger->direction);
         
@@ -363,7 +376,7 @@ side_passages(struct digger *digger)
         // right 90 degrees
         digger->point = intersection(digger->generator->dungeon, digger->point, digger->direction);
         
-        struct digger *side_digger = digger_copy(digger);
+        struct digger *side_digger = dungeon_generator_copy_digger(digger->generator, digger);
         digger_turn_90_degrees_right(side_digger);
         side_digger->point = passage(digger->generator->dungeon, side_digger->point, 3, side_digger->direction);
         
@@ -384,11 +397,11 @@ side_passages(struct digger *digger)
         // passage T's
         digger->point = intersection(digger->generator->dungeon, digger->point, digger->direction);
         
-        struct digger *left_digger = digger_copy(digger);
+        struct digger *left_digger = dungeon_generator_copy_digger(digger->generator, digger);
         digger_turn_90_degrees_left(left_digger);
         left_digger->point = passage(digger->generator->dungeon, left_digger->point, 3, left_digger->direction);
         
-        struct digger *right_digger = digger_copy(digger);
+        struct digger *right_digger = dungeon_generator_copy_digger(digger->generator, digger);
         digger_turn_90_degrees_right(right_digger);
         right_digger->point = passage(digger->generator->dungeon, right_digger->point, 3, right_digger->direction);
         
@@ -399,11 +412,11 @@ side_passages(struct digger *digger)
         // four way intersection
         digger->point = intersection(digger->generator->dungeon, digger->point, digger->direction);
         
-        struct digger *left_digger = digger_copy(digger);
+        struct digger *left_digger = dungeon_generator_copy_digger(digger->generator, digger);
         digger_turn_90_degrees_left(left_digger);
         left_digger->point = passage(digger->generator->dungeon, left_digger->point, 3, left_digger->direction);
         
-        struct digger *right_digger = digger_copy(digger);
+        struct digger *right_digger = dungeon_generator_copy_digger(digger->generator, digger);
         digger_turn_90_degrees_right(right_digger);
         right_digger->point = passage(digger->generator->dungeon, right_digger->point, 3, right_digger->direction);
         

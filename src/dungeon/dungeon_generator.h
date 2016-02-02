@@ -36,5 +36,9 @@ void
 dungeon_generator_give_digger(struct dungeon_generator *generator,
                               struct digger *digger);
 
+struct digger *
+dungeon_generator_copy_digger(struct dungeon_generator *generator,
+                              struct digger *digger);
+
 
 #endif

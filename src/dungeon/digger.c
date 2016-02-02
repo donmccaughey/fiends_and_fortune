@@ -6,29 +6,13 @@
 
 
 struct digger *
-digger_alloc(struct dungeon_generator *generator,
-             struct point point,
-             enum direction direction,
-             dig_fn *dig)
+digger_alloc(struct point point, enum direction direction, dig_fn *dig)
 {
-    struct digger *digger = malloc_or_die(sizeof(struct digger));
-    digger->generator = generator;
+    struct digger *digger = calloc_or_die(1, sizeof(struct digger));
     digger->point = point;
     digger->direction = direction;
     digger->dig = dig;
     return digger;
-}
-
-
-struct digger *
-digger_copy(struct digger const *digger)
-{
-    struct digger *copy = digger_alloc(digger->generator,
-                                       digger->point,
-                                       digger->direction,
-                                       digger->dig);
-    dungeon_generator_take_digger(copy->generator, copy);
-    return copy;
 }
 
 

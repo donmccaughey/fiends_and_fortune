@@ -23,16 +23,10 @@ struct digger {
 
 
 struct digger *
-digger_alloc(struct dungeon_generator *generator,
-             struct point point,
-             enum direction direction,
-             dig_fn *dig);
+digger_alloc(struct point point, enum direction direction, dig_fn *dig);
 
 void
 digger_free(struct digger *digger);
-
-struct digger *
-digger_copy(struct digger const *digger);
 
 void
 digger_turn_90_degrees_left(struct digger *digger);
