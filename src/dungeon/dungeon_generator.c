@@ -1,4 +1,4 @@
-#include "generator.h"
+#include "dungeon_generator.h"
 
 #include <assert.h>
 
@@ -20,7 +20,7 @@
 
 
 static struct digger *
-add_digger(struct generator *generator,
+add_digger(struct dungeon_generator *generator,
            struct point point,
            enum direction direction,
            dig_fn *dig);
@@ -43,7 +43,7 @@ chamber(struct dungeon *dungeon,
         uint32_t left_offset);
 
 static struct digger *
-dup_digger(struct generator *generator, struct digger *digger);
+dup_digger(struct dungeon_generator *generator, struct digger *digger);
 
 static struct point
 intersection(struct dungeon *dungeon,
@@ -57,20 +57,20 @@ passage(struct dungeon *dungeon,
         enum direction direction);
 
 static void
-periodic_check(struct generator *generator, struct digger *digger);
+periodic_check(struct dungeon_generator *generator, struct digger *digger);
 
 static void
-remove_digger(struct generator *generator, struct digger *digger);
+remove_digger(struct dungeon_generator *generator, struct digger *digger);
 
 static void
-side_passages(struct generator *generator, struct digger *digger);
+side_passages(struct dungeon_generator *generator, struct digger *digger);
 
 static void
-turns(struct generator *generator, struct digger *digger);
+turns(struct dungeon_generator *generator, struct digger *digger);
 
 
 static struct digger *
-add_digger(struct generator *generator,
+add_digger(struct dungeon_generator *generator,
            struct point point,
            enum direction direction,
            dig_fn *dig)
@@ -173,16 +173,16 @@ chamber(struct dungeon *dungeon,
 
 
 static struct digger *
-dup_digger(struct generator *generator, struct digger *digger)
+dup_digger(struct dungeon_generator *generator, struct digger *digger)
 {
     return add_digger(generator, digger->point, digger->direction, digger->dig);
 }
 
 
-struct generator *
-generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
+struct dungeon_generator *
+dungeon_generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
 {
-    struct generator *generator = calloc_or_die(1, sizeof(struct generator));
+    struct dungeon_generator *generator = calloc_or_die(1, sizeof(struct dungeon_generator));
     
     generator->dungeon = dungeon;
     generator->rnd = rnd;
@@ -193,7 +193,7 @@ generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
 
 
 void
-generator_free(struct generator *generator)
+dungeon_generator_free(struct dungeon_generator *generator)
 {
     for (int i = 0; i < generator->diggers_count; ++i) {
         digger_free(generator->diggers[i]);
@@ -204,7 +204,7 @@ generator_free(struct generator *generator)
 
 
 void
-generator_generate(struct generator *generator)
+dungeon_generator_generate(struct dungeon_generator *generator)
 {
     int const max_interation_count = 7;
     
@@ -226,7 +226,7 @@ generator_generate(struct generator *generator)
 
 
 void
-generator_generate_small(struct generator *generator)
+dungeon_generator_generate_small(struct dungeon_generator *generator)
 {
     struct point point = point_make(0, 0, 1);
     
@@ -298,7 +298,7 @@ passage(struct dungeon *dungeon, struct point from_point, uint32_t distance, enu
 
 
 static void
-periodic_check(struct generator *generator, struct digger *digger)
+periodic_check(struct dungeon_generator *generator, struct digger *digger)
 {
     int score = roll("1d20", generator->rnd);
     if (score <= 2) {
@@ -327,7 +327,7 @@ periodic_check(struct generator *generator, struct digger *digger)
 
 
 static void
-remove_digger(struct generator *generator, struct digger *digger)
+remove_digger(struct dungeon_generator *generator, struct digger *digger)
 {
     int index = -1;
     for (int i = 0; i < generator->diggers_count; ++i) {
@@ -355,7 +355,7 @@ remove_digger(struct generator *generator, struct digger *digger)
 
 
 static void
-side_passages(struct generator *generator, struct digger *digger)
+side_passages(struct dungeon_generator *generator, struct digger *digger)
 {
     int score = roll("1d20", generator->rnd);
     if (score <= 2) {
@@ -423,7 +423,7 @@ side_passages(struct generator *generator, struct digger *digger)
 
 
 static void
-turns(struct generator *generator, struct digger *digger)
+turns(struct dungeon_generator *generator, struct digger *digger)
 {
     int score = roll("1d20", generator->rnd);
     if (score <= 8) {

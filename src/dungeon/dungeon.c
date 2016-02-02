@@ -10,18 +10,18 @@
 
 #include "area.h"
 #include "areas.h"
-#include "generator.h"
+#include "dungeon_generator.h"
 #include "tiles.h"
 
 
 char const **
 dungeon_alloc_area_descriptions(struct dungeon *dungeon)
 {
-    size_t descriptionsCount = areas_count(dungeon->areas);
-    char const **descriptions = calloc_or_die(descriptionsCount + 1,
+    size_t descriptions_count = areas_count(dungeon->areas);
+    char const **descriptions = calloc_or_die(descriptions_count + 1,
                                               sizeof(char const *));
     
-    for (size_t i = 0; i < descriptionsCount; ++i) {
+    for (size_t i = 0; i < descriptions_count; ++i) {
         descriptions[i] = areas_area_at_index(dungeon->areas, i)->description;
     }
     return descriptions;
@@ -39,18 +39,18 @@ dungeon_finalize(struct dungeon *dungeon)
 void
 dungeon_generate(struct dungeon *dungeon, struct rnd *rnd)
 {
-    struct generator *generator = generator_alloc(dungeon, rnd);
-    generator_generate(generator);
-    generator_free(generator);
+    struct dungeon_generator *generator = dungeon_generator_alloc(dungeon, rnd);
+    dungeon_generator_generate(generator);
+    dungeon_generator_free(generator);
 }
 
 
 void
 dungeon_generate_small(struct dungeon *dungeon)
 {
-    struct generator *generator = generator_alloc(dungeon, NULL);
-    generator_generate_small(generator);
-    generator_free(generator);
+    struct dungeon_generator *generator = dungeon_generator_alloc(dungeon, NULL);
+    dungeon_generator_generate_small(generator);
+    dungeon_generator_free(generator);
 }
 
 

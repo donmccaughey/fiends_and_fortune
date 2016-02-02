@@ -7,11 +7,11 @@
 
 
 struct digger;
-struct generator;
+struct dungeon_generator;
 
 
 typedef void
-dig_fn(struct generator *generator, struct digger *digger);
+dig_fn(struct dungeon_generator *generator, struct digger *digger);
 
 
 struct digger {

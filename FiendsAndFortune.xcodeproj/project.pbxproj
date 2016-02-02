@@ -62,8 +62,8 @@
 		D4BD32D41B6B2F260007527A /* reverse_range.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BD32D21B6B2F260007527A /* reverse_range.c */; };
 		D4BD32D51B6B2F260007527A /* reverse_range.h in Headers */ = {isa = PBXBuildFile; fileRef = D4BD32D31B6B2F260007527A /* reverse_range.h */; };
 		D4BD32D71B6B31C50007527A /* reverse_range_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BD32D61B6B31C50007527A /* reverse_range_test.c */; };
-		D4EA14DA1C5EE1A400EF508F /* generator.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA14D81C5EE1A400EF508F /* generator.c */; };
-		D4EA14DB1C5EE1A400EF508F /* generator.h in Headers */ = {isa = PBXBuildFile; fileRef = D4EA14D91C5EE1A400EF508F /* generator.h */; };
+		D4EA14DA1C5EE1A400EF508F /* dungeon_generator.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA14D81C5EE1A400EF508F /* dungeon_generator.c */; };
+		D4EA14DB1C5EE1A400EF508F /* dungeon_generator.h in Headers */ = {isa = PBXBuildFile; fileRef = D4EA14D91C5EE1A400EF508F /* dungeon_generator.h */; };
 		D4EA14DE1C602CDB00EF508F /* digger.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA14DC1C602CDB00EF508F /* digger.c */; };
 		D4EA14DF1C602CDB00EF508F /* digger.h in Headers */ = {isa = PBXBuildFile; fileRef = D4EA14DD1C602CDB00EF508F /* digger.h */; };
 /* End PBXBuildFile section */
@@ -185,8 +185,8 @@
 		D4BD32D21B6B2F260007527A /* reverse_range.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = reverse_range.c; sourceTree = "<group>"; };
 		D4BD32D31B6B2F260007527A /* reverse_range.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reverse_range.h; sourceTree = "<group>"; };
 		D4BD32D61B6B31C50007527A /* reverse_range_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = reverse_range_test.c; sourceTree = "<group>"; };
-		D4EA14D81C5EE1A400EF508F /* generator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = generator.c; sourceTree = "<group>"; };
-		D4EA14D91C5EE1A400EF508F /* generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = generator.h; sourceTree = "<group>"; };
+		D4EA14D81C5EE1A400EF508F /* dungeon_generator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dungeon_generator.c; sourceTree = "<group>"; };
+		D4EA14D91C5EE1A400EF508F /* dungeon_generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dungeon_generator.h; sourceTree = "<group>"; };
 		D4EA14DC1C602CDB00EF508F /* digger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = digger.c; sourceTree = "<group>"; };
 		D4EA14DD1C602CDB00EF508F /* digger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = digger.h; sourceTree = "<group>"; };
 		D4F244A31418207C003BDED5 /* check.out */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = check.out; sourceTree = "<group>"; };
@@ -304,8 +304,8 @@
 				B0F47EED5F7346D1FF553BE5 /* direction.c */,
 				B0F4737EABC473ABC0211C7B /* dungeon.h */,
 				B0F47DEDA0B2CB7A8EA912A7 /* dungeon.c */,
-				D4EA14D91C5EE1A400EF508F /* generator.h */,
-				D4EA14D81C5EE1A400EF508F /* generator.c */,
+				D4EA14D91C5EE1A400EF508F /* dungeon_generator.h */,
+				D4EA14D81C5EE1A400EF508F /* dungeon_generator.c */,
 				B0F47C5F87990226BA682C7E /* point.h */,
 				B0F47633C943A4FC91EBA528 /* point.c */,
 				B0F47739B93DF501D8794BEB /* points.h */,
@@ -404,7 +404,7 @@
 				D4BD32CC1B6B1EB50007527A /* range.h in Headers */,
 				D4BD32AA1B6A06560007527A /* gem.h in Headers */,
 				D4092F8D1B65D6C200BFD0B3 /* fail.h in Headers */,
-				D4EA14DB1C5EE1A400EF508F /* generator.h in Headers */,
+				D4EA14DB1C5EE1A400EF508F /* dungeon_generator.h in Headers */,
 				D4BD32A81B6A06560007527A /* coins.h in Headers */,
 				D4092F8B1B65D6C200BFD0B3 /* dice.h in Headers */,
 				D4092F8F1B65D6C200BFD0B3 /* rnd.h in Headers */,
@@ -556,7 +556,7 @@
 				D4BD32A71B6A06560007527A /* coins.c in Sources */,
 				D4BD32AF1B6A06560007527A /* treasure.c in Sources */,
 				D4BD32AB1B6A06560007527A /* jewelry.c in Sources */,
-				D4EA14DA1C5EE1A400EF508F /* generator.c in Sources */,
+				D4EA14DA1C5EE1A400EF508F /* dungeon_generator.c in Sources */,
 				D4BD32CE1B6B1EDE0007527A /* range.c in Sources */,
 				D4BD32C61B6AECE90007527A /* language.c in Sources */,
 				D4BD32B11B6A06560007527A /* treasure_map.c in Sources */,
