@@ -162,9 +162,7 @@ struct digger *
 dungeon_generator_copy_digger(struct dungeon_generator *generator,
                               struct digger *digger)
 {
-    struct digger *copy = digger_alloc(digger->point,
-                                       digger->direction,
-                                       digger->dig);
+    struct digger *copy = digger_alloc(digger->point, digger->direction);
     dungeon_generator_take_digger(generator, copy);
     return copy;
 }
@@ -219,7 +217,7 @@ dungeon_generator_generate(struct dungeon_generator *generator)
     struct point point = point_make(0, 0, 1);
     point = passage(generator->dungeon, point, 2, North);
     
-    struct digger *digger = digger_alloc(point, North, periodic_check);
+    struct digger *digger = digger_alloc(point, North);
     dungeon_generator_take_digger(generator, digger);
     
     while (generator->diggers_count && generator->iteration_count < max_interation_count) {
@@ -228,7 +226,7 @@ dungeon_generator_generate(struct dungeon_generator *generator)
                                                   sizeof(struct digger *));
         int count = generator->diggers_count;
         for (int i = 0; i < count; ++i) {
-            diggers[i]->dig(diggers[i]);
+            periodic_check(diggers[i]);
         }
         free_or_die(diggers);
         ++generator->iteration_count;

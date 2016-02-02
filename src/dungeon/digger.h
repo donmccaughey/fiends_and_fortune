@@ -10,20 +10,15 @@ struct digger;
 struct dungeon_generator;
 
 
-typedef void
-dig_fn(struct digger *digger);
-
-
 struct digger {
     struct dungeon_generator *generator;
     struct point point;
     enum direction direction;
-    dig_fn *dig;
 };
 
 
 struct digger *
-digger_alloc(struct point point, enum direction direction, dig_fn *dig);
+digger_alloc(struct point point, enum direction direction);
 
 void
 digger_free(struct digger *digger);

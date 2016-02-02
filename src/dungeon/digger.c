@@ -6,12 +6,11 @@
 
 
 struct digger *
-digger_alloc(struct point point, enum direction direction, dig_fn *dig)
+digger_alloc(struct point point, enum direction direction)
 {
     struct digger *digger = calloc_or_die(1, sizeof(struct digger));
     digger->point = point;
     digger->direction = direction;
-    digger->dig = dig;
     return digger;
 }
 
