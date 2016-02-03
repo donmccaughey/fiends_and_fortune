@@ -16,9 +16,6 @@ void
 point_test(void);
 
 void
-points_test(void);
-
-void
 range_test(void);
 
 void
@@ -41,7 +38,6 @@ main (int argc, const char *argv[])
     dungeon_test();
     dungeon_generator_test();
     point_test();
-    points_test();
     range_test();
     reverse_range_test();
     str_test();
