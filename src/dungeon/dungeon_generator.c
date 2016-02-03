@@ -42,15 +42,6 @@ passage(struct dungeon *dungeon,
         uint32_t distance,
         enum direction direction);
 
-static void
-periodic_check(struct digger *digger);
-
-static void
-side_passages(struct digger *digger);
-
-static void
-turns(struct digger *digger);
-
 
 static struct point
 area(struct dungeon *dungeon,
@@ -206,7 +197,7 @@ dungeon_generator_generate(struct dungeon_generator *generator)
                                                   sizeof(struct digger *));
         int count = generator->diggers_count;
         for (int i = 0; i < count; ++i) {
-            periodic_check(diggers[i]);
+            digger_periodic_check(diggers[i]);
         }
         free_or_die(diggers);
         ++generator->iteration_count;
@@ -289,125 +280,4 @@ static struct point
 passage(struct dungeon *dungeon, struct point from_point, uint32_t distance, enum direction direction)
 {
     return area(dungeon, from_point, distance, 1, direction, 0, area_type_passage);
-}
-
-
-static void
-periodic_check(struct digger *digger)
-{
-    int score = roll("1d20", digger->generator->rnd);
-    if (score <= 2) {
-        digger_dig_passage(digger, 6);
-    } else if (score <= 5) {
-        // door
-    } else if (score <= 10) {
-        // side passage
-        side_passages(digger);
-    } else if (score <= 13) {
-        // passage turns
-        turns(digger);
-    } else if (score <= 16) {
-        // chamber
-    } else if (score == 17) {
-        // stairs
-    } else if (score == 18) {
-        // dead end
-        digger_drop(digger);
-    } else if (score == 19) {
-        // trick/trap
-    } else {
-        // wandering monster
-    }
-}
-
-
-static void
-side_passages(struct digger *digger)
-{
-    int score = roll("1d20", digger->generator->rnd);
-    if (score <= 2) {
-        // left 90 degrees
-        digger_dig_intersection(digger);
-        
-        struct digger *side_digger = digger_copy(digger);
-        digger_turn_90_degrees_left(side_digger);
-        digger_dig_passage(side_digger, 3);
-        
-        digger_dig_passage(digger, 3);
-    } else if (score <= 4) {
-        // right 90 degrees
-        digger_dig_intersection(digger);
-        
-        struct digger *side_digger = digger_copy(digger);
-        digger_turn_90_degrees_right(side_digger);
-        digger_dig_passage(side_digger, 3);
-        
-        digger_dig_passage(digger, 3);
-    } else if (score == 5) {
-        // left 45 degrees ahead
-    } else if (score == 6) {
-        // right 45 degrees ahead
-    } else if (score == 7) {
-        // left 45 degrees behind
-    } else if (score == 8) {
-        // right 45 degrees behind
-    } else if (score == 9) {
-        // left curve 45 degrees ahead
-    } else if (score == 10) {
-        // right curve 45 degrees ahead
-    } else if (score <= 13) {
-        // passage T's
-        digger_dig_intersection(digger);
-        
-        struct digger *left_digger = digger_copy(digger);
-        digger_turn_90_degrees_left(left_digger);
-        digger_dig_passage(left_digger, 3);
-        
-        struct digger *right_digger = digger_copy(digger);
-        digger_turn_90_degrees_right(right_digger);
-        digger_dig_passage(right_digger, 3);
-        
-        digger_drop(digger);
-    } else if (score <= 15) {
-        // passage Y's
-    } else if (score < 19) {
-        // four way intersection
-        digger_dig_intersection(digger);
-        
-        struct digger *left_digger = digger_copy(digger);
-        digger_turn_90_degrees_left(left_digger);
-        digger_dig_passage(left_digger, 3);
-        
-        struct digger *right_digger = digger_copy(digger);
-        digger_turn_90_degrees_right(right_digger);
-        digger_dig_passage(right_digger, 3);
-        
-        digger_dig_passage(digger, 3);
-    } else {
-        // passage X's
-    }
-}
-
-
-static void
-turns(struct digger *digger)
-{
-    int score = roll("1d20", digger->generator->rnd);
-    if (score <= 8) {
-        // left 90 degrees
-        digger_turn_90_degrees_left(digger);
-        digger_dig_passage(digger, 3);
-    } else if (score == 9) {
-        // left 45 degrees ahead
-    } else if (score == 10) {
-        // left 45 degrees behind
-    } else if (score <= 18) {
-        // right 90 degrees
-        digger_turn_90_degrees_right(digger);
-        digger_dig_passage(digger, 3);
-    } else if (score == 19) {
-        // right 45 degrees ahead
-    } else {
-        // right 45 degrees behind
-    }
 }

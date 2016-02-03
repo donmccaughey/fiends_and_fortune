@@ -57,5 +57,14 @@ digger_dig_intersection(struct digger *digger);
 void
 digger_dig_passage(struct digger *digger, uint32_t distance);
 
+void
+digger_periodic_check(struct digger *digger);
+
+void
+digger_generate_side_passage(struct digger *digger);
+
+void
+digger_generate_turn(struct digger *digger);
+
 
 #endif
