@@ -241,6 +241,13 @@ digger_generate_turn(struct digger *digger)
 
 
 void
+digger_move(struct digger *digger, int32_t steps, enum direction direction)
+{
+    digger->point = point_move(digger->point, steps, direction);
+}
+
+
+void
 digger_periodic_check(struct digger *digger)
 {
     int score = roll("1d20", digger->generator->rnd);

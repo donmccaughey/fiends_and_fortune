@@ -33,6 +33,9 @@ void
 digger_drop(struct digger *digger);
 
 void
+digger_move(struct digger *digger, int32_t steps, enum direction direction);
+
+void
 digger_turn_90_degrees_left(struct digger *digger);
 
 void

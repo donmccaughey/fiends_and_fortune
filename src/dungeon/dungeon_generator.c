@@ -3,131 +3,11 @@
 #include <assert.h>
 
 #include "common/alloc_or_die.h"
-#include "common/dice.h"
-#include "common/fail.h"
-#include "common/str.h"
 
-#include "area.h"
-#include "areas.h"
 #include "digger.h"
-#include "direction.h"
 #include "dungeon.h"
-#include "point.h"
-#include "range.h"
-#include "reverse_range.h"
 #include "tile.h"
 #include "tiles.h"
-
-
-static struct point
-area(struct dungeon *dungeon,
-     struct point from_point,
-     uint32_t length,
-     uint32_t width,
-     enum direction direction,
-     uint32_t left_offset,
-     enum area_type area_type);
-
-static struct point
-chamber(struct dungeon *dungeon,
-        struct point from_point,
-        uint32_t length,
-        uint32_t width,
-        enum direction direction,
-        uint32_t left_offset);
-
-static struct point
-passage(struct dungeon *dungeon,
-        struct point from_point,
-        uint32_t distance,
-        enum direction direction);
-
-
-static struct point
-area(struct dungeon *dungeon,
-     struct point from_point,
-     uint32_t length,
-     uint32_t width,
-     enum direction direction,
-     uint32_t left_offset,
-     enum area_type area_type)
-{
-    assert(left_offset < width);
-    struct range x_range;
-    struct range y_range;
-    
-    switch (direction) {
-        case North:
-            x_range = range_make(from_point.x - left_offset,
-                                 from_point.x + width - left_offset);
-            y_range = range_make(from_point.y, from_point.y + length);
-            break;
-        case South: {
-            struct reverse_range xReverseRange = reverse_range_make(from_point.x + left_offset,
-                                                                    from_point.x - width + left_offset);
-            struct reverse_range yReverseRange = reverse_range_make(from_point.y,
-                                                                    from_point.y - length);
-            x_range = range_from_reverse_range(xReverseRange);
-            y_range = range_from_reverse_range(yReverseRange);
-        }
-            break;
-        case East: {
-            struct reverse_range yReverseRange = reverse_range_make(from_point.y + left_offset,
-                                                                    from_point.y - width + left_offset);
-            x_range = range_make(from_point.x, from_point.x + length);
-            y_range = range_from_reverse_range(yReverseRange);
-        }
-            break;
-        case West: {
-            struct reverse_range xReverseRange = reverse_range_make(from_point.x, from_point.x - length);
-            x_range = range_from_reverse_range(xReverseRange);
-            y_range = range_make(from_point.y - left_offset, from_point.y + width - left_offset);
-        }
-            break;
-        default:
-            fail("Unrecognized direction %i", direction);
-            return from_point;
-    }
-    
-    char *description;
-    switch (area_type) {
-        case area_type_chamber:
-            description = str_alloc_formatted("%u' x %u' chamber",
-                                              length * 10, width * 10);
-            break;
-        case area_type_intersection:
-            description = strdup_or_die("intersection");
-            break;
-        case area_type_passage:
-            description = str_alloc_formatted("%u' passage %s",
-                                              length * 10,
-                                              direction_name(direction));
-            break;
-        default:
-            description = str_alloc_formatted("%u' x %u' area",
-                                              length * 10, width * 10);
-            break;
-    }
-    
-    struct area *area = area_alloc(description, dungeon->tiles, area_type);
-    free_or_die(description);
-    areas_append_area(dungeon->areas, area);
-    area_add_tiles(area, tile_type_empty, x_range, y_range, from_point.z);
-    
-    return point_move(from_point, length, direction);
-}
-
-
-static struct point
-chamber(struct dungeon *dungeon,
-        struct point from_point,
-        uint32_t length,
-        uint32_t width,
-        enum direction direction,
-        uint32_t left_offset)
-{
-    return area(dungeon, from_point, length, width, direction, left_offset, area_type_chamber);
-}
 
 
 struct dungeon_generator *
@@ -208,57 +88,73 @@ dungeon_generator_generate(struct dungeon_generator *generator)
 void
 dungeon_generator_generate_small(struct dungeon_generator *generator)
 {
-    struct digger *digger1 = digger_alloc(point_make(0, 0, 1), North);
-    dungeon_generator_take_on_digger(generator, digger1);
+    struct digger *digger = digger_alloc(point_make(0, 0, 1), North);
+    dungeon_generator_take_on_digger(generator, digger);
     
-    digger_dig_passage(digger1, 2);
-    digger_dig_chamber(digger1, 5, 3, 1);
-    
-    /* chamber exits */
-    struct point point_in_chamber = point_move(digger1->point, 2, South);
-    struct point north_west_exit = point_move(point_in_chamber, 2, West);
-    struct point south_west_exit = point_move(north_west_exit, 2, South);
-    struct point north_east_exit = point_move(point_in_chamber, 2, East);
-    struct point south_east_exit = point_move(north_east_exit, 2, South);
-    
-    struct point point = digger1->point;
-    point = passage(generator->dungeon, point, 7, North);
-    point = passage(generator->dungeon, point, 8, East);
-    point = passage(generator->dungeon, point, 4, South);
-    
-    point = chamber(generator->dungeon, point, 3, 4, South, 0);
-    point = point_move(point, 3, West);
-    
-    point = passage(generator->dungeon, point, 2, South);
-    passage(generator->dungeon, point, 4, West);
+    digger_dig_passage(digger, 2);
+    digger_dig_chamber(digger, 5, 3, 1);
     
     /* from entry chamber, north west exit */
-    point = passage(generator->dungeon, north_west_exit, 1, West);
-    point = passage(generator->dungeon, point, 7, North);
-    
-    chamber(generator->dungeon, point, 3, 2, North, 1);
+    struct digger *nw_digger = digger_copy(digger);
+    digger_turn_90_degrees_left(nw_digger);
+    digger_move(nw_digger, 1, South);
+    digger_move(nw_digger, 1, West);
+    digger_dig_passage(nw_digger, 2);
+    digger_turn_90_degrees_right(nw_digger);
+    digger_dig_passage(nw_digger, 7);
+    digger_dig_chamber(nw_digger, 3, 2, 1);
     
     /* from entry chamber, south west exit */
-    point = passage(generator->dungeon, south_west_exit, 1, West);
-    point = passage(generator->dungeon, point, 2, South);
-    point = passage(generator->dungeon, point, 2, West);
-    point = passage(generator->dungeon, point, 3, North);
-    
-    point = chamber(generator->dungeon, point, 2, 2, North, 1);
-    
-    point = point_move(point, 1, West);
-    point = passage(generator->dungeon, point, 3, North);
-    
-    chamber(generator->dungeon, point, 2, 3, North, 1);
+    struct digger *sw_digger = digger_copy(digger);
+    digger_turn_90_degrees_left(sw_digger);
+    digger_move(sw_digger, 3, South);
+    digger_move(sw_digger, 1, West);
+    digger_dig_passage(sw_digger, 2);
+    digger_turn_90_degrees_left(sw_digger);
+    digger_dig_passage(sw_digger, 2);
+    digger_turn_90_degrees_right(sw_digger);
+    digger_dig_passage(sw_digger, 2);
+    digger_turn_90_degrees_right(sw_digger);
+    digger_dig_passage(sw_digger, 2);
+    digger_dig_chamber(sw_digger, 2, 2, 1);
+    digger_move(sw_digger, 1, West);
+    digger_dig_passage(sw_digger, 3);
+    digger_dig_chamber(sw_digger, 2, 3, 1);
     
     /* from entry chamber, south east exit */
-    point = passage(generator->dungeon, south_east_exit, 1, East);
-    
-    chamber(generator->dungeon, point, 6, 4, East, 0);
-    
+    struct digger *se_digger = digger_copy(digger);
+    digger_turn_90_degrees_right(se_digger);
+    digger_move(se_digger, 3, South);
+    digger_move(se_digger, 1, East);
+    digger_dig_passage(se_digger, 1);
+    digger_dig_chamber(se_digger, 6, 4, 0);
+    // TODO: add digger_fill()
     struct tile *tile = tiles_find_tile_at(generator->dungeon->tiles, point_make(5, 2, 1));
     tiles_remove_tile(generator->dungeon->tiles, tile);
     tile_free(tile);
+    
+    /* from entry chamber, north exit */
+    digger_dig_passage(digger, 8);
+    digger_turn_90_degrees_right(digger);
+    digger_dig_passage(digger, 8);
+    digger_turn_90_degrees_right(digger);
+    digger_dig_passage(digger, 3);
+    digger_dig_chamber(digger, 3, 4, 0);
+    digger_move(digger, 3, West);
+    digger_dig_passage(digger, 3);
+    digger_turn_90_degrees_right(digger);
+    digger_dig_passage(digger, 3);
+    
+//    struct point point = digger->point;
+//    point = passage(generator->dungeon, point, 7, North);
+//    point = passage(generator->dungeon, point, 8, East);
+//    point = passage(generator->dungeon, point, 4, South);
+//    
+//    point = chamber(generator->dungeon, point, 3, 4, South, 0);
+//    point = point_move(point, 3, West);
+//    
+//    point = passage(generator->dungeon, point, 2, South);
+//    passage(generator->dungeon, point, 4, West);
 }
 
 
@@ -273,11 +169,4 @@ dungeon_generator_take_on_digger(struct dungeon_generator *generator,
                                              sizeof(struct digger *));
     digger->generator = generator;
     generator->diggers[index] = digger;
-}
-
-
-static struct point
-passage(struct dungeon *dungeon, struct point from_point, uint32_t distance, enum direction direction)
-{
-    return area(dungeon, from_point, distance, 1, direction, 0, area_type_passage);
 }
