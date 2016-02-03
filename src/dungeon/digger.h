@@ -66,6 +66,9 @@ void
 digger_periodic_check(struct digger *digger);
 
 void
+digger_generate_chamber(struct digger *digger);
+
+void
 digger_generate_side_passage(struct digger *digger);
 
 void

@@ -10,6 +10,9 @@ void
 dungeon_test(void);
 
 void
+dungeon_generator_test(void);
+
+void
 point_test(void);
 
 void
@@ -36,6 +39,7 @@ main (int argc, const char *argv[])
     
     dice_test();
     dungeon_test();
+    dungeon_generator_test();
     point_test();
     points_test();
     range_test();

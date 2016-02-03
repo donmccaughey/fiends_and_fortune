@@ -5,6 +5,7 @@
 #include "common/alloc_or_die.h"
 #include "common/dice.h"
 #include "common/fail.h"
+#include "common/rnd.h"
 #include "common/str.h"
 
 #include "area.h"
@@ -155,6 +156,60 @@ digger_free(struct digger *digger)
 
 
 void
+digger_generate_chamber(struct digger *digger)
+{
+    int score = roll("1d20", digger->generator->rnd);
+    if (score <= 2) {
+        // square 20x20
+        digger_dig_chamber(digger, 2, 2, 0);
+    } else if (score <= 4) {
+        // square 20x20
+        digger_dig_chamber(digger, 2, 2, 1);
+    } else if (score <= 6) {
+        // square 30x30
+        uint32_t left_offset = rnd_next_uniform_value(digger->generator->rnd, 3);
+        digger_dig_chamber(digger, 3, 3, left_offset);
+    } else if (score <= 8) {
+        // square 40x40
+        uint32_t left_offset = rnd_next_uniform_value(digger->generator->rnd, 4);
+        digger_dig_chamber(digger, 4, 4, left_offset);
+    } else if (score <= 10) {
+        // rectangular 20x30
+        uint32_t left_offset = rnd_next_uniform_value(digger->generator->rnd, 3);
+        digger_dig_chamber(digger, 2, 3, left_offset);
+    } else if (score <= 13) {
+        // rectangular 20x30
+        uint32_t left_offset = rnd_next_uniform_value(digger->generator->rnd, 2);
+        digger_dig_chamber(digger, 3, 2, left_offset);
+    } else if (score <= 15) {
+        // rectangular 30x50
+        uint32_t orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
+        if (orientation) {
+            uint32_t left_offset = rnd_next_uniform_value(digger->generator->rnd, 3);
+            digger_dig_chamber(digger, 5, 3, left_offset);
+        } else {
+            uint32_t left_offset = rnd_next_uniform_value(digger->generator->rnd, 5);
+            digger_dig_chamber(digger, 3, 5, left_offset);
+        }
+    } else if (score <= 17) {
+        // rectangular 40x60
+        uint32_t orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
+        if (orientation) {
+            uint32_t left_offset = rnd_next_uniform_value(digger->generator->rnd, 4);
+            digger_dig_chamber(digger, 6, 4, left_offset);
+        } else {
+            uint32_t left_offset = rnd_next_uniform_value(digger->generator->rnd, 6);
+            digger_dig_chamber(digger, 4, 6, left_offset);
+        }
+    } else {
+        // unusual shape and size
+    }
+    // TODO: exits
+    digger_drop(digger);
+}
+
+
+void
 digger_generate_side_passage(struct digger *digger)
 {
     int score = roll("1d20", digger->generator->rnd);
@@ -269,6 +324,7 @@ digger_periodic_check(struct digger *digger)
         digger_generate_turn(digger);
     } else if (score <= 16) {
         // chamber
+        digger_generate_chamber(digger);
     } else if (score == 17) {
         // stairs
     } else if (score == 18) {

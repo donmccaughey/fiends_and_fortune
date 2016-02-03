@@ -2,9 +2,9 @@
 
 #include "common/rnd.h"
 
-#include "dungeon.h"
-#include "tile.h"
-#include "tiles.h"
+#include "dungeon/dungeon.h"
+#include "dungeon/tile.h"
+#include "dungeon/tiles.h"
 
 
 void

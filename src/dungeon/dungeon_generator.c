@@ -49,7 +49,7 @@ dungeon_generator_give_up_digger(struct dungeon_generator *generator,
     
     int next_index = index + 1;
     int last_index = generator->diggers_count - 1;
-    if (next_index < last_index) {
+    if (next_index <= last_index) {
         struct digger **vacant = &generator->diggers[index];
         struct digger **next = &generator->diggers[next_index];
         size_t size = (last_index - index) * sizeof(struct digger *);
@@ -65,7 +65,7 @@ dungeon_generator_give_up_digger(struct dungeon_generator *generator,
 void
 dungeon_generator_generate(struct dungeon_generator *generator)
 {
-    int const max_interation_count = 7;
+    int const max_interation_count = 10;
     
     struct digger *digger = digger_alloc(point_make(0, 0, 1), North);
     dungeon_generator_take_on_digger(generator, digger);
