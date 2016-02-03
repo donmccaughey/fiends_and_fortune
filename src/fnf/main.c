@@ -256,7 +256,7 @@ generate_random_dungeon(struct rnd *rnd, FILE *out)
     dungeon_graph_level_using_text(dungeon, 1, out);
     fprintf(out, "\nDungeon areas:\n");
     for (int i = 0; i < dungeon->areas->count; ++i) {
-        fprintf(out, "\t%s\n", dungeon->areas->areas[i]->description);
+        fprintf(out, "\t%s\n", dungeon->areas->members[i]->description);
     }
     
     dungeon_free(dungeon);
@@ -272,7 +272,7 @@ generate_sample_dungeon(struct rnd *rnd, FILE *out)
     dungeon_graph_level_using_text(dungeon, 1, out);
     fprintf(out, "\nDungeon areas:\n");
     for (int i = 0; i < dungeon->areas->count; ++i) {
-        fprintf(out, "\t%s\n", dungeon->areas->areas[i]->description);
+        fprintf(out, "\t%s\n", dungeon->areas->members[i]->description);
     }
     
     dungeon_free(dungeon);
