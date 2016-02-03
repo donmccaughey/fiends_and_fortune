@@ -15,10 +15,9 @@ dungeon_generator_test(void);
 static void
 dungeon_generator_take_on_digger_test(void)
 {
-    struct dungeon dungeon;
-    dungeon_initialize(&dungeon);
+    struct dungeon *dungeon = dungeon_alloc();
     
-    struct dungeon_generator *generator = dungeon_generator_alloc(&dungeon, global_rnd);
+    struct dungeon_generator *generator = dungeon_generator_alloc(dungeon, global_rnd);
     assert(0 == generator->diggers_count);
     
     struct digger *digger1 = digger_alloc(point_make(1, 1, 1), North);
@@ -61,7 +60,7 @@ dungeon_generator_take_on_digger_test(void)
     assert(digger3 == generator->diggers[0]);
     
     dungeon_generator_free(generator);
-    dungeon_finalize(&dungeon);
+    dungeon_free(dungeon);
 }
 
 

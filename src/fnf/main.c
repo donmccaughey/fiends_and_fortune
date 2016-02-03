@@ -248,13 +248,12 @@ generate_magic_items(struct rnd *rnd, FILE *out, int count)
 static void
 generate_random_dungeon(struct rnd *rnd, FILE *out)
 {
-    struct dungeon dungeon;
-    dungeon_initialize(&dungeon);
+    struct dungeon *dungeon = dungeon_alloc();
     
-    dungeon_generate(&dungeon, rnd);
-    dungeon_graph_level_using_text(&dungeon, 1, out);
+    dungeon_generate(dungeon, rnd);
+    dungeon_graph_level_using_text(dungeon, 1, out);
     
-    char const **descriptions = dungeon_alloc_area_descriptions(&dungeon);
+    char const **descriptions = dungeon_alloc_area_descriptions(dungeon);
     char const **current = descriptions;
     fprintf(out, "\nDungeon areas:\n");
     while (*current) {
@@ -263,20 +262,19 @@ generate_random_dungeon(struct rnd *rnd, FILE *out)
     }
     free_or_die(descriptions);
     
-    dungeon_finalize(&dungeon);
+    dungeon_free(dungeon);
 }
 
 
 static void
 generate_sample_dungeon(struct rnd *rnd, FILE *out)
 {
-    struct dungeon dungeon;
-    dungeon_initialize(&dungeon);
+    struct dungeon *dungeon = dungeon_alloc();
     
-    dungeon_generate_small(&dungeon);
-    dungeon_graph_level_using_text(&dungeon, 1, out);
+    dungeon_generate_small(dungeon);
+    dungeon_graph_level_using_text(dungeon, 1, out);
     
-    char const **descriptions = dungeon_alloc_area_descriptions(&dungeon);
+    char const **descriptions = dungeon_alloc_area_descriptions(dungeon);
     char const **current = descriptions;
     fprintf(out, "\nDungeon areas:\n");
     while (*current) {
@@ -285,7 +283,7 @@ generate_sample_dungeon(struct rnd *rnd, FILE *out)
     }
     free_or_die(descriptions);
     
-    dungeon_finalize(&dungeon);
+    dungeon_free(dungeon);
 }
 
 

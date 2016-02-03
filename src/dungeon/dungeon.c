@@ -14,6 +14,16 @@
 #include "tiles.h"
 
 
+struct dungeon *
+dungeon_alloc(void)
+{
+    struct dungeon *dungeon = calloc_or_die(1, sizeof(struct dungeon));
+    dungeon->areas = areas_alloc();
+    dungeon->tiles = tiles_alloc();
+    return dungeon;
+}
+
+
 char const **
 dungeon_alloc_area_descriptions(struct dungeon *dungeon)
 {
@@ -29,10 +39,13 @@ dungeon_alloc_area_descriptions(struct dungeon *dungeon)
 
 
 void
-dungeon_finalize(struct dungeon *dungeon)
+dungeon_free(struct dungeon *dungeon)
 {
-    areas_free(dungeon->areas);
-    tiles_free(dungeon->tiles);
+    if (dungeon) {
+        areas_free(dungeon->areas);
+        tiles_free(dungeon->tiles);
+        free_or_die(dungeon);
+    }
 }
 
 
@@ -51,13 +64,4 @@ dungeon_generate_small(struct dungeon *dungeon)
     struct dungeon_generator *generator = dungeon_generator_alloc(dungeon, NULL);
     dungeon_generator_generate_small(generator);
     dungeon_generator_free(generator);
-}
-
-
-void
-dungeon_initialize(struct dungeon *dungeon)
-{
-    memset(dungeon, 0, sizeof(struct dungeon));
-    dungeon->areas = areas_alloc();
-    dungeon->tiles = tiles_alloc();
 }
