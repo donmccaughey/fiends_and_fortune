@@ -24,6 +24,15 @@ digger_alloc(struct point point, enum direction direction)
 }
 
 
+struct digger *
+digger_copy(struct digger *digger)
+{
+    struct digger *copy = digger_alloc(digger->point, digger->direction);
+    dungeon_generator_take_on_digger(digger->generator, copy);
+    return copy;
+}
+
+
 void
 digger_dig_area(struct digger *digger,
                 uint32_t length,
@@ -120,6 +129,14 @@ void
 digger_dig_passage(struct digger *digger, uint32_t distance)
 {
     digger_dig_area(digger, distance, 1, 0, area_type_passage);
+}
+
+
+void
+digger_drop(struct digger *digger)
+{
+    dungeon_generator_give_up_digger(digger->generator, digger);
+    digger_free(digger);
 }
 
 

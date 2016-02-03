@@ -29,16 +29,12 @@ void
 dungeon_generator_generate_small(struct dungeon_generator *generator);
 
 void
-dungeon_generator_take_digger(struct dungeon_generator *generator,
-                              struct digger *digger);
+dungeon_generator_take_on_digger(struct dungeon_generator *generator,
+                                 struct digger *digger);
 
 void
-dungeon_generator_give_digger(struct dungeon_generator *generator,
-                              struct digger *digger);
-
-struct digger *
-dungeon_generator_copy_digger(struct dungeon_generator *generator,
-                              struct digger *digger);
+dungeon_generator_give_up_digger(struct dungeon_generator *generator,
+                                 struct digger *digger);
 
 
 #endif

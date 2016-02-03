@@ -24,6 +24,14 @@ digger_alloc(struct point point, enum direction direction);
 void
 digger_free(struct digger *digger);
 
+// alloc a new digger add it to the digger's generator
+struct digger *
+digger_copy(struct digger *digger);
+
+// remove the digger from its generator and free it
+void
+digger_drop(struct digger *digger);
+
 void
 digger_turn_90_degrees_left(struct digger *digger);
 
