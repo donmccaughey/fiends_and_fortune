@@ -24,20 +24,6 @@ dungeon_alloc(void)
 }
 
 
-char const **
-dungeon_alloc_area_descriptions(struct dungeon *dungeon)
-{
-    size_t descriptions_count = areas_count(dungeon->areas);
-    char const **descriptions = calloc_or_die(descriptions_count + 1,
-                                              sizeof(char const *));
-    
-    for (size_t i = 0; i < descriptions_count; ++i) {
-        descriptions[i] = areas_area_at_index(dungeon->areas, i)->description;
-    }
-    return descriptions;
-}
-
-
 void
 dungeon_free(struct dungeon *dungeon)
 {

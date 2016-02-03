@@ -26,14 +26,14 @@ areas_add_area(struct areas *areas, struct area *area)
 
 
 struct area *
-areas_area_at_index(struct areas *areas, size_t index)
+areas_area_at_index(struct areas *areas, int index)
 {
     assert(index < areas->count);
     return areas->areas[index];
 }
 
 
-size_t
+int
 areas_count(struct areas const *areas)
 {
     return areas->count;

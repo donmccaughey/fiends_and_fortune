@@ -19,11 +19,6 @@ dungeon_alloc(void);
 void
 dungeon_free(struct dungeon *dungeon);
 
-/// Caller is responsible for freeing the array but not its contents.
-/// The array is NULL terminated.
-char const **
-dungeon_alloc_area_descriptions(struct dungeon *dungeon);
-
 void
 dungeon_generate(struct dungeon *dungeon, struct rnd *rnd);
 

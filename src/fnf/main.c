@@ -9,6 +9,8 @@
 
 #include "character/character.h"
 
+#include "dungeon/area.h"
+#include "dungeon/areas.h"
 #include "dungeon/dungeon.h"
 #include "dungeon/text_graph.h"
 
@@ -249,18 +251,13 @@ static void
 generate_random_dungeon(struct rnd *rnd, FILE *out)
 {
     struct dungeon *dungeon = dungeon_alloc();
-    
     dungeon_generate(dungeon, rnd);
-    dungeon_graph_level_using_text(dungeon, 1, out);
     
-    char const **descriptions = dungeon_alloc_area_descriptions(dungeon);
-    char const **current = descriptions;
+    dungeon_graph_level_using_text(dungeon, 1, out);
     fprintf(out, "\nDungeon areas:\n");
-    while (*current) {
-        fprintf(out, "\t%s\n", *current);
-        ++current;
+    for (int i = 0; i < dungeon->areas->count; ++i) {
+        fprintf(out, "\t%s\n", dungeon->areas->areas[i]->description);
     }
-    free_or_die(descriptions);
     
     dungeon_free(dungeon);
 }
@@ -270,18 +267,13 @@ static void
 generate_sample_dungeon(struct rnd *rnd, FILE *out)
 {
     struct dungeon *dungeon = dungeon_alloc();
-    
     dungeon_generate_small(dungeon);
-    dungeon_graph_level_using_text(dungeon, 1, out);
     
-    char const **descriptions = dungeon_alloc_area_descriptions(dungeon);
-    char const **current = descriptions;
+    dungeon_graph_level_using_text(dungeon, 1, out);
     fprintf(out, "\nDungeon areas:\n");
-    while (*current) {
-        fprintf(out, "\t%s\n", *current);
-        ++current;
+    for (int i = 0; i < dungeon->areas->count; ++i) {
+        fprintf(out, "\t%s\n", dungeon->areas->areas[i]->description);
     }
-    free_or_die(descriptions);
     
     dungeon_free(dungeon);
 }
