@@ -11,13 +11,13 @@ void
 dungeon_test(void);
 
 
-static void generate_dungeon_test(void)
+static void dungeon_generate_small_test(void)
 {
     struct dungeon dungeon;
     dungeon_initialize(&dungeon);
     
-    dungeon_generate(&dungeon, global_rnd);
-    /*
+    dungeon_generate_small(&dungeon);
+    
     assert(113 == tiles_count(dungeon.tiles));
     
     assert(range_is_equal(range_make(-7, 9), tiles_x_range(dungeon.tiles)));
@@ -31,13 +31,13 @@ static void generate_dungeon_test(void)
     assert(tile);
     
     tile = tiles_find_tile_at(dungeon.tiles, point_make(-1, -8, 1));
-    assert( ! tile);
-    */
+    assert(!tile);
+    
     dungeon_finalize(&dungeon);
 }
 
 
 void dungeon_test(void)
 {
-    generate_dungeon_test();
+    dungeon_generate_small_test();
 }

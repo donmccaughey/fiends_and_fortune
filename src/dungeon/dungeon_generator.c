@@ -101,7 +101,7 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_move(nw_digger, 1, West);
     digger_dig_passage(nw_digger, 2);
     digger_turn_90_degrees_right(nw_digger);
-    digger_dig_passage(nw_digger, 7);
+    digger_dig_passage(nw_digger, 6);
     digger_dig_chamber(nw_digger, 3, 2, 1);
     
     /* from entry chamber, south west exit */

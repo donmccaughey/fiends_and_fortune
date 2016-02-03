@@ -340,27 +340,27 @@ main(int argc, char *argv[])
     
     if (argc < 2) {
         usage(argc, argv);
-    } else if (strcasecmp(argv[1], "character") == 0) {
+    } else if (0 == strcasecmp(argv[1], "character")) {
         generate_character(rnd, out, (argc >= 3) ? argv[2] : "simple");
-    } else if (strcasecmp(argv[1], "check") == 0) {
+    } else if (0 == strcasecmp(argv[1], "check")) {
         check(out, (argc >= 3) ? argv[2] : "0");
-    } else if (strcasecmp(argv[1], "dungeon") == 0) {
-        if (argc >= 3 && strcasecmp(argv[2], "small")) {
+    } else if (0 == strcasecmp(argv[1], "dungeon")) {
+        if (argc >= 3 && 0 == strcasecmp(argv[2], "small")) {
             generate_sample_dungeon(rnd, out);
         } else {
             generate_random_dungeon(rnd, out);
         }
-    } else if (strcasecmp(argv[1], "each") == 0) {
+    } else if (0 == strcasecmp(argv[1], "each")) {
         generate_each_treasure(rnd, out);
-    } else if (strcasecmp(argv[1], "magic") == 0) {
+    } else if (0 == strcasecmp(argv[1], "magic")) {
         int count = 10;
         if (argc >= 3) {
             count = (int) strtol(argv[2], NULL, 10);
         }
         generate_magic_items(rnd, out, count);
-    } else if (strcasecmp(argv[1], "map") == 0) {
+    } else if (0 == strcasecmp(argv[1], "map")) {
         generate_map(rnd, out);
-    } else if (strcasecmp(argv[1], "table") == 0) {
+    } else if (0 == strcasecmp(argv[1], "table")) {
         generate_treasure_type_table(out);
     } else if (argv[1][0] >= 'A' && argv[1][0] <= 'Z' && argv[1][1] == '\0') {
         generate_treasure_type(rnd, out, argv[1][0]);

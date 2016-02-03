@@ -297,24 +297,24 @@ Treasure type Z: 1000 copper, 1000 silver, 1000 electrum, 1000 gold, 100 platinu
 Dungeon areas:
 	20' passage North
 	50' x 30' chamber
-	70' passage North
-	80' passage East
-	40' passage South
-	30' x 40' chamber
-	20' passage South
-	40' passage West
-	10' passage West
-	70' passage North
+	20' passage West
+	60' passage North
 	30' x 20' chamber
-	10' passage West
+	20' passage West
 	20' passage South
 	20' passage West
-	30' passage North
+	20' passage North
 	20' x 20' chamber
 	30' passage North
 	20' x 30' chamber
 	10' passage East
 	60' x 40' chamber
+	80' passage North
+	80' passage East
+	30' passage South
+	30' x 40' chamber
+	30' passage South
+	30' passage West
 Character (simple): -------------------------
 (roll 3d6 once per characteristic)
   Strength:      3
