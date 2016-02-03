@@ -13,6 +13,7 @@
 #include "dungeon_generator.h"
 #include "range.h"
 #include "reverse_range.h"
+#include "tiles.h"
 
 
 struct digger *
@@ -34,7 +35,7 @@ digger_copy(struct digger *digger)
 }
 
 
-void
+bool
 digger_dig_area(struct digger *digger,
                 uint32_t length,
                 uint32_t width,
@@ -77,7 +78,11 @@ digger_dig_area(struct digger *digger,
             break;
         default:
             fail("Unrecognized direction %i", digger->direction);
-            return;
+            return false;
+    }
+    struct range z_range = range_make(digger->point.z, digger->point.z + 1);
+    if (tiles_has_tile_in_range(digger->generator->dungeon->tiles, x_range, y_range, z_range)) {
+        return false;
     }
     
     char *description;
@@ -106,30 +111,31 @@ digger_dig_area(struct digger *digger,
     area_add_tiles(area, tile_type_empty, x_range, y_range, digger->point.z);
     
     digger->point = point_move(digger->point, length, digger->direction);
+    return true;
 }
 
 
-void
+bool
 digger_dig_chamber(struct digger *digger,
                    uint32_t length,
                    uint32_t width,
                    uint32_t left_offset)
 {
-    digger_dig_area(digger, length, width, left_offset, area_type_chamber);
+    return digger_dig_area(digger, length, width, left_offset, area_type_chamber);
 }
 
 
-void
+bool
 digger_dig_intersection(struct digger *digger)
 {
     return digger_dig_area(digger, 1, 1, 0, area_type_intersection);
 }
 
 
-void
+bool
 digger_dig_passage(struct digger *digger, uint32_t distance)
 {
-    digger_dig_area(digger, distance, 1, 0, area_type_passage);
+    return digger_dig_area(digger, distance, 1, 0, area_type_passage);
 }
 
 
@@ -154,7 +160,7 @@ digger_generate_side_passage(struct digger *digger)
     int score = roll("1d20", digger->generator->rnd);
     if (score <= 2) {
         // left 90 degrees
-        digger_dig_intersection(digger);
+        if (!digger_dig_intersection(digger)) return;
         
         struct digger *side_digger = digger_copy(digger);
         digger_turn_90_degrees_left(side_digger);
@@ -163,7 +169,7 @@ digger_generate_side_passage(struct digger *digger)
         digger_dig_passage(digger, 3);
     } else if (score <= 4) {
         // right 90 degrees
-        digger_dig_intersection(digger);
+        if (!digger_dig_intersection(digger)) return;
         
         struct digger *side_digger = digger_copy(digger);
         digger_turn_90_degrees_right(side_digger);
@@ -184,7 +190,7 @@ digger_generate_side_passage(struct digger *digger)
         // right curve 45 degrees ahead
     } else if (score <= 13) {
         // passage T's
-        digger_dig_intersection(digger);
+        if (!digger_dig_intersection(digger)) return;
         
         struct digger *left_digger = digger_copy(digger);
         digger_turn_90_degrees_left(left_digger);
@@ -199,7 +205,7 @@ digger_generate_side_passage(struct digger *digger)
         // passage Y's
     } else if (score < 19) {
         // four way intersection
-        digger_dig_intersection(digger);
+        if (!digger_dig_intersection(digger)) return;
         
         struct digger *left_digger = digger_copy(digger);
         digger_turn_90_degrees_left(left_digger);

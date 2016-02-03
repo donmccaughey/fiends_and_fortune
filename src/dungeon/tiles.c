@@ -102,7 +102,6 @@ struct tiles *
 tiles_alloc_with_parent_and_level(struct tiles *parent, int32_t level)
 {
     struct tiles *tiles = tiles_alloc_with_parent(parent);
-    
     // TODO: replace linear search with binary lower/upper bound search
     // and memcpy the whole block of tiles
     for (size_t i = 0; i < parent->count; ++i) {
@@ -113,7 +112,6 @@ tiles_alloc_with_parent_and_level(struct tiles *parent, int32_t level)
             break;
         }
     }
-    
     return tiles;
 }
 
@@ -121,7 +119,7 @@ tiles_alloc_with_parent_and_level(struct tiles *parent, int32_t level)
 void
 tiles_free(struct tiles *tiles)
 {
-    if ( ! tiles->parent) {
+    if (!tiles->parent) {
         for (size_t i = 0; i < tiles->count; ++i) {
             tile_free(tiles->tiles[i]);
         }
@@ -144,6 +142,26 @@ tiles_find_tile_at(struct tiles const *tiles, struct point point)
     struct tile tile = { .point = point };
     struct tile **tileInTiles = find(tiles, &tile);
     return tileInTiles ? *tileInTiles : NULL;
+}
+
+
+bool
+tiles_has_tile_in_range(struct tiles *tiles,
+                        struct range x_range,
+                        struct range y_range,
+                        struct range z_range)
+{
+    for (size_t i = 0; i < tiles->count; ++i) {
+        struct tile *tile = tiles->tiles[i];
+        if (   range_contains(x_range, tile->point.x)
+            && range_contains(y_range, tile->point.y)
+            && range_contains(z_range, tile->point.z))
+        {
+            return true;
+        }
+        if (tile->point.z >= z_range.end) break;
+    }
+    return false;
 }
 
 

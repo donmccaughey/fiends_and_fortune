@@ -13,6 +13,9 @@ struct range {
 
 
 bool
+range_contains(struct range range, int32_t value);
+
+bool
 range_is_equal(struct range range1, struct range range2);
 
 struct range

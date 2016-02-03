@@ -25,7 +25,6 @@ tiles_alloc_with_parent(struct tiles *parent);
 struct tiles *
 tiles_alloc(void);
 
-/// The created tiles struct is a child of the given tiles struct.
 struct tiles *
 tiles_alloc_with_parent_and_level(struct tiles *parent, int32_t level);
 
@@ -57,5 +56,10 @@ tiles_y_range(struct tiles const *tiles);
 struct range
 tiles_z_range(struct tiles const *tiles);
 
+bool
+tiles_has_tile_in_range(struct tiles *tiles,
+                        struct range x_range,
+                        struct range y_range,
+                        struct range z_range);
 
 #endif

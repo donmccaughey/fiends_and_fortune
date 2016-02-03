@@ -4,6 +4,13 @@
 
 
 bool
+range_contains(struct range range, int32_t value)
+{
+    return value >= range.begin && value < range.end;
+}
+
+
+bool
 range_is_equal(struct range range1, struct range range2)
 {
     assert(range1.begin <= range1.end);
@@ -61,9 +68,9 @@ range_length(struct range range)
 {
     assert(range.begin <= range.end);
     if (range.begin < 0 && range.end > 0) {
-        return (uint32_t) (range.end - 0) + (uint32_t) (0 - range.begin);
+        return (uint32_t)(range.end - 0) + (uint32_t)(0 - range.begin);
     } else {
-        return (uint32_t) (range.end - range.begin);
+        return (uint32_t)(range.end - range.begin);
     }
 }
 
@@ -72,5 +79,5 @@ struct range
 range_make(int32_t begin, int32_t end)
 {
     assert(begin <= end);
-    return (struct range) { .begin = begin, .end = end };
+    return (struct range){ .begin=begin, .end=end };
 }

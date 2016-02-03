@@ -15,9 +15,10 @@ area_add_tiles(struct area *area,
                struct range y_range,
                int32_t z)
 {
+    assert(!tiles_has_tile_in_range(tiles_root(area->tiles), x_range, y_range, range_make(z, z + 1)));
     for (int32_t y = y_range.begin; y < y_range.end; ++y) {
         for (int32_t x = x_range.begin; x < x_range.end; ++x) {
-            assert(NULL == tiles_find_tile_at(tiles_root(area->tiles), point_make(x, y, z)));
+            assert(!tiles_find_tile_at(tiles_root(area->tiles), point_make(x, y, z)));
             
             struct tile *tile = tile_alloc(point_make(x, y, z), type);
             tiles_add_tile(area->tiles, tile);

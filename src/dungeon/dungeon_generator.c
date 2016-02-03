@@ -144,17 +144,6 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_dig_passage(digger, 3);
     digger_turn_90_degrees_right(digger);
     digger_dig_passage(digger, 3);
-    
-//    struct point point = digger->point;
-//    point = passage(generator->dungeon, point, 7, North);
-//    point = passage(generator->dungeon, point, 8, East);
-//    point = passage(generator->dungeon, point, 4, South);
-//    
-//    point = chamber(generator->dungeon, point, 3, 4, South, 0);
-//    point = point_move(point, 3, West);
-//    
-//    point = passage(generator->dungeon, point, 2, South);
-//    passage(generator->dungeon, point, 4, West);
 }
 
 
