@@ -201,6 +201,7 @@
 		D4BD32D31B6B2F260007527A /* reverse_range.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = reverse_range.h; sourceTree = "<group>"; };
 		D4BD32D61B6B31C50007527A /* reverse_range_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = reverse_range_test.c; sourceTree = "<group>"; };
 		D4D495B31C61D2F100BC80C9 /* dungeon_generator_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dungeon_generator_test.c; sourceTree = "<group>"; };
+		D4D495B51C62B16E00BC80C9 /* api_conventions.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = api_conventions.md; sourceTree = "<group>"; };
 		D4EA14D81C5EE1A400EF508F /* dungeon_generator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dungeon_generator.c; sourceTree = "<group>"; };
 		D4EA14D91C5EE1A400EF508F /* dungeon_generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dungeon_generator.h; sourceTree = "<group>"; };
 		D4EA14DC1C602CDB00EF508F /* digger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = digger.c; sourceTree = "<group>"; };
@@ -366,6 +367,7 @@
 		D4F73444140EF3DF0096618F = {
 			isa = PBXGroup;
 			children = (
+				D4D495B51C62B16E00BC80C9 /* api_conventions.md */,
 				D41D32CA1A4339BC00484607 /* LICENSE */,
 				D48C3B0C1B66E5B000A98ED7 /* Makefile */,
 				D41D32CB1A4339BC00484607 /* README.md */,

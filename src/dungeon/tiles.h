@@ -14,7 +14,6 @@ struct tile;
 struct tiles;
 
 
-/// The tiles struct takes ownership of the given tile.
 /// The tile is added to the parent tiles struct as well.
 void
 tiles_add_tile(struct tiles *tiles, struct tile *tile);
@@ -34,7 +33,6 @@ tiles_free(struct tiles *tiles);
 struct tile *
 tiles_find_tile_at(struct tiles const *tiles, struct point point);
 
-/// The caller is responsible for destroying the tile.
 bool
 tiles_remove_tile(struct tiles *tiles, struct tile const *tile);
 

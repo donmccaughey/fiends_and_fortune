@@ -31,7 +31,7 @@ struct digger *
 digger_copy(struct digger *digger)
 {
     struct digger *copy = digger_alloc(digger->point, digger->direction);
-    dungeon_generator_take_on_digger(digger->generator, copy);
+    dungeon_generator_add_digger(digger->generator, copy);
     return copy;
 }
 
@@ -108,7 +108,7 @@ digger_dig_area(struct digger *digger,
     
     struct area *area = area_alloc(description, digger->generator->dungeon->tiles, area_type);
     free_or_die(description);
-    areas_append_area(digger->generator->dungeon->areas, area);
+    areas_add_area(digger->generator->dungeon->areas, area);
     area_add_tiles(area, tile_type_empty, x_range, y_range, digger->point.z);
     
     digger->point = point_move(digger->point, length, digger->direction);
@@ -143,7 +143,7 @@ digger_dig_passage(struct digger *digger, uint32_t distance)
 void
 digger_drop(struct digger *digger)
 {
-    dungeon_generator_give_up_digger(digger->generator, digger);
+    dungeon_generator_remove_digger(digger->generator, digger);
     digger_free(digger);
 }
 

@@ -33,8 +33,8 @@ dungeon_generator_free(struct dungeon_generator *generator)
 
 
 void
-dungeon_generator_give_up_digger(struct dungeon_generator *generator,
-                                 struct digger *digger)
+dungeon_generator_remove_digger(struct dungeon_generator *generator,
+                                struct digger *digger)
 {
     int index = -1;
     for (int i = 0; i < generator->diggers_count; ++i) {
@@ -68,7 +68,7 @@ dungeon_generator_generate(struct dungeon_generator *generator)
     int const max_interation_count = 10;
     
     struct digger *digger = digger_alloc(point_make(0, 0, 1), North);
-    dungeon_generator_take_on_digger(generator, digger);
+    dungeon_generator_add_digger(generator, digger);
     digger_dig_passage(digger, 2);
     
     while (generator->diggers_count && generator->iteration_count < max_interation_count) {
@@ -89,7 +89,7 @@ void
 dungeon_generator_generate_small(struct dungeon_generator *generator)
 {
     struct digger *digger = digger_alloc(point_make(0, 0, 1), North);
-    dungeon_generator_take_on_digger(generator, digger);
+    dungeon_generator_add_digger(generator, digger);
     
     digger_dig_passage(digger, 2);
     digger_dig_chamber(digger, 5, 3, 1);
@@ -148,8 +148,8 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
 
 
 void
-dungeon_generator_take_on_digger(struct dungeon_generator *generator,
-                                 struct digger *digger)
+dungeon_generator_add_digger(struct dungeon_generator *generator,
+                             struct digger *digger)
 {
     int index = generator->diggers_count;
     ++generator->diggers_count;

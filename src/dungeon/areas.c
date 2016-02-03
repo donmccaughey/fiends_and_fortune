@@ -7,15 +7,8 @@
 #include "area.h"
 
 
-struct areas {
-    struct area **areas;
-    size_t capacity;
-    size_t count;
-};
-
-
 void
-areas_append_area(struct areas *areas, struct area *area)
+areas_add_area(struct areas *areas, struct area *area)
 {
     if (areas->capacity == areas->count) {
         if (areas->capacity) {
