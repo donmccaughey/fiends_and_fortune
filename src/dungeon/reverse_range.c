@@ -67,9 +67,9 @@ reverse_range_length(struct reverse_range reverse_range)
 {
     assert(reverse_range.top >= reverse_range.bottom);
     if (reverse_range.top > 0 && reverse_range.bottom < 0) {
-        return (uint32_t) (reverse_range.top - 0) + (uint32_t) (0 - reverse_range.bottom);
+        return (uint32_t)(reverse_range.top - 0) + (uint32_t)(0 - reverse_range.bottom);
     } else {
-        return (uint32_t) (reverse_range.top - reverse_range.bottom);
+        return (uint32_t)(reverse_range.top - reverse_range.bottom);
     }
 }
 
@@ -87,7 +87,7 @@ struct reverse_range
 reverse_range_make(int32_t top, int32_t bottom)
 {
     assert(top >= bottom);
-    return (struct reverse_range) { .top = top, .bottom = bottom };
+    return (struct reverse_range){ .top=top, .bottom=bottom };
 }
 
 

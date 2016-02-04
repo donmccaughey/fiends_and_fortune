@@ -143,7 +143,7 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_move(se_digger, 1, direction_east);
     digger_dig_passage(se_digger, 1);
     struct area *chamber = digger_dig_chamber(se_digger, 6, 4, 0);
-    // TODO: add digger_fill()
+    // fill in one tile in room
     struct tile *tile = tiles_find_tile_at(chamber->tiles, point_make(5, 2, 1));
     tiles_remove_tile(generator->dungeon->tiles, tile);
     tile_free(tile);
@@ -158,5 +158,6 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_move(digger, 3, direction_west);
     digger_dig_passage(digger, 3);
     digger_turn_90_degrees_right(digger);
-    digger_dig_passage(digger, 3);
+    // dig connecting passage without constraints to make looping passage
+    digger_dig_area(digger, 3, 1, 0, area_type_passage);
 }
