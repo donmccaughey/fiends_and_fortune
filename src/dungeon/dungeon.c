@@ -18,7 +18,9 @@ dungeon_add_area(struct dungeon *dungeon, struct area *area)
 {
     int index = dungeon->areas_count;
     ++dungeon->areas_count;
-    dungeon->areas = reallocarray_or_die(dungeon->areas, dungeon->areas_count, sizeof(struct area *));
+    dungeon->areas = reallocarray_or_die(dungeon->areas,
+                                         dungeon->areas_count,
+                                         sizeof(struct area *));
     dungeon->areas[index] = area;
 }
 

@@ -37,6 +37,8 @@ tiles_add_tile(struct tiles *tiles, struct tile *tile)
 static void
 append_tile(struct tiles *tiles, struct tile *tile)
 {
+    assert(!tiles_find_tile_at(tiles, tile->point));
+    
     int index = tiles->count;
     assert(index >= 0);
     ++tiles->count;

@@ -3,39 +3,62 @@
 #include <assert.h>
 
 #include "common/alloc_or_die.h"
+#include "common/str.h"
 
 #include "tile.h"
 #include "tiles.h"
 
 
-void
-area_add_tiles(struct area *area,
-               enum tile_type type,
-               struct range x_range,
-               struct range y_range,
-               int32_t z)
+static char *
+alloc_description(struct area const *area)
 {
-    assert(!tiles_has_tile_in_range(tiles_root(area->tiles), x_range, y_range, range_make(z, z + 1)));
-    for (int32_t y = y_range.begin; y < y_range.end; ++y) {
-        for (int32_t x = x_range.begin; x < x_range.end; ++x) {
-            assert(!tiles_find_tile_at(tiles_root(area->tiles), point_make(x, y, z)));
-            
-            struct tile *tile = tile_alloc(point_make(x, y, z), type);
-            tiles_add_tile(area->tiles, tile);
-        }
+    uint32_t length;
+    uint32_t width;
+    if (orientation_east_west == area->orientation) {
+        length = range_length(area->tiles->x_range);
+        width = range_length(area->tiles->y_range);
+    } else {
+        length = range_length(area->tiles->y_range);
+        width = range_length(area->tiles->x_range);
+    }
+    switch (area->type) {
+        case area_type_chamber:
+            return str_alloc_formatted("%u' x %u' chamber",
+                                       length * 10, width * 10);
+        case area_type_intersection:
+            return strdup_or_die("intersection");
+        case area_type_passage:
+            return str_alloc_formatted("%u' passage %s",
+                                       length * 10,
+                                       orientation_name(area->orientation));
+            break;
+        default:
+            return str_alloc_formatted("%u' x %u' area",
+                                       length * 10, width * 10);
     }
 }
 
 
 struct area *
-area_alloc(char const *description,
-           struct tiles *parent_tiles,
-           enum area_type type)
+area_alloc(struct tiles *parent_tiles,
+           enum area_type area_type,
+           enum orientation orientation,
+           enum tile_type tile_type,
+           struct range x_range,
+           struct range y_range,
+           int32_t z)
 {
     struct area *area = malloc_or_die(sizeof(struct area));
-    area->description = strdup_or_die(description);
     area->tiles = tiles_alloc_with_parent(parent_tiles);
-    area->type = type;
+    area->type = area_type;
+    area->orientation = orientation;
+    for (int32_t y = y_range.begin; y < y_range.end; ++y) {
+        for (int32_t x = x_range.begin; x < x_range.end; ++x) {
+            struct tile *tile = tile_alloc(point_make(x, y, z), tile_type);
+            tiles_add_tile(area->tiles, tile);
+        }
+    }
+    area->description = alloc_description(area);
     return area;
 }
 

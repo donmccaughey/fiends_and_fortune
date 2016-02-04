@@ -85,30 +85,14 @@ digger_dig_area(struct digger *digger,
         return false;
     }
     
-    char *description;
-    switch (area_type) {
-        case area_type_chamber:
-            description = str_alloc_formatted("%u' x %u' chamber",
-                                              length * 10, width * 10);
-            break;
-        case area_type_intersection:
-            description = strdup_or_die("intersection");
-            break;
-        case area_type_passage:
-            description = str_alloc_formatted("%u' passage %s",
-                                              length * 10,
-                                              direction_name(digger->direction));
-            break;
-        default:
-            description = str_alloc_formatted("%u' x %u' area",
-                                              length * 10, width * 10);
-            break;
-    }
-    
-    struct area *area = area_alloc(description, digger->generator->dungeon->tiles, area_type);
-    free_or_die(description);
+    struct area *area = area_alloc(digger->generator->dungeon->tiles,
+                                   area_type,
+                                   orientation_from_direction(digger->direction),
+                                   tile_type_empty,
+                                   x_range,
+                                   y_range,
+                                   digger->point.z);
     dungeon_add_area(digger->generator->dungeon, area);
-    area_add_tiles(area, tile_type_empty, x_range, y_range, digger->point.z);
     
     digger->point = point_move(digger->point, length, digger->direction);
     return true;
