@@ -37,18 +37,13 @@ tiles_add_tile(struct tiles *tiles, struct tile *tile)
 static void
 append_tile(struct tiles *tiles, struct tile *tile)
 {
-    if (tiles->capacity == tiles->count) {
-        if (tiles->capacity) {
-            tiles->capacity = tiles->capacity / 2 * 3;
-        } else {
-            tiles->capacity = 256;
-        }
-        tiles->members = reallocarray_or_die(tiles->members,
-                                             tiles->capacity,
-                                             sizeof(struct tile *));
-    }
-    tiles->members[tiles->count] = tile;
+    int index = tiles->count;
+    assert(index >= 0);
     ++tiles->count;
+    tiles->members = reallocarray_or_die(tiles->members,
+                                         tiles->count,
+                                         sizeof(struct tile *));    
+    tiles->members[index] = tile;
     tiles->x_range = range_extend_to_include_value(tiles->x_range, tile->point.x);
     tiles->y_range = range_extend_to_include_value(tiles->y_range, tile->point.y);
     tiles->z_range = range_extend_to_include_value(tiles->z_range, tile->point.z);
@@ -155,18 +150,17 @@ tiles_has_tile_in_range(struct tiles *tiles,
 bool
 tiles_remove_tile(struct tiles *tiles, struct tile const *tile)
 {
-    // TODO: if tile isn't unique by compare criteria, the wrong tile may be removed
-    // is this a problem?
     struct tile **found = find(tiles, tile);
-    if (!found) {
-        // TODO: should we search the parent in this case?
-        return tiles->parent ? tiles_remove_tile(tiles->parent, tile) : false;
-    }
+    if (!found) return false;
     
     struct tile **next = found + 1;
     struct tile **end = tiles->members + tiles->count;
-    memmove(found, next, (end - next) * sizeof(struct tile));
+    if (next < end) {
+        size_t size = (end - next) * sizeof(struct tile *);
+        memmove(found, next, size);
+    }
     --tiles->count;
+    tiles->members = reallocarray_or_die(tiles->members, tiles->count, sizeof(struct tile *));
     update_ranges(tiles);
     
     return tiles->parent ? tiles_remove_tile(tiles->parent, tile) : true;

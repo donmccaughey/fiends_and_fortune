@@ -14,7 +14,6 @@ struct tile;
 
 
 struct tiles {
-    int capacity;
     int count;
     struct tiles *parent;
     struct tile **members;
