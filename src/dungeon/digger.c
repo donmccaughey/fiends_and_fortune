@@ -9,7 +9,6 @@
 #include "common/str.h"
 
 #include "area.h"
-#include "areas.h"
 #include "dungeon.h"
 #include "dungeon_generator.h"
 #include "range.h"
@@ -108,7 +107,7 @@ digger_dig_area(struct digger *digger,
     
     struct area *area = area_alloc(description, digger->generator->dungeon->tiles, area_type);
     free_or_die(description);
-    areas_add_area(digger->generator->dungeon->areas, area);
+    dungeon_add_area(digger->generator->dungeon, area);
     area_add_tiles(area, tile_type_empty, x_range, y_range, digger->point.z);
     
     digger->point = point_move(digger->point, length, digger->direction);
