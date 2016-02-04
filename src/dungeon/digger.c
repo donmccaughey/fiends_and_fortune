@@ -47,12 +47,12 @@ digger_dig_area(struct digger *digger,
     struct range y_range;
     
     switch (digger->direction) {
-        case North:
+        case direction_north:
             x_range = range_make(digger->point.x - left_offset,
                                  digger->point.x + width - left_offset);
             y_range = range_make(digger->point.y, digger->point.y + length);
             break;
-        case South: {
+        case direction_south: {
             struct reverse_range x_reverse_range = reverse_range_make(digger->point.x + left_offset,
                                                                       digger->point.x - width + left_offset);
             struct reverse_range y_reverse_range = reverse_range_make(digger->point.y,
@@ -61,14 +61,14 @@ digger_dig_area(struct digger *digger,
             y_range = range_from_reverse_range(y_reverse_range);
         }
             break;
-        case East: {
+        case direction_east: {
             struct reverse_range y_reverse_range = reverse_range_make(digger->point.y + left_offset,
                                                                       digger->point.y - width + left_offset);
             x_range = range_make(digger->point.x, digger->point.x + length);
             y_range = range_from_reverse_range(y_reverse_range);
         }
             break;
-        case West: {
+        case direction_west: {
             struct reverse_range x_reverse_range = reverse_range_make(digger->point.x,
                                                                       digger->point.x - length);
             x_range = range_from_reverse_range(x_reverse_range);

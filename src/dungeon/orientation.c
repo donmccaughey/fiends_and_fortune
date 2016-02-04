@@ -5,10 +5,10 @@ enum orientation
 orientation_from_direction(enum direction direction)
 {
     switch (direction) {
-        case North: return orientation_north_south;
-        case South: return orientation_north_south;
-        case East: return orientation_east_west;
-        case West: return orientation_east_west;
+        case direction_north: return orientation_north_south;
+        case direction_south: return orientation_north_south;
+        case direction_east: return orientation_east_west;
+        case direction_west: return orientation_east_west;
         default: return orientation_unknown;
     }
 }

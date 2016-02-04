@@ -81,7 +81,7 @@ dungeon_generator_generate(struct dungeon_generator *generator)
 {
     int const max_interation_count = 10;
     
-    struct digger *digger = digger_alloc(point_make(0, 0, 1), North);
+    struct digger *digger = digger_alloc(point_make(0, 0, 1), direction_north);
     dungeon_generator_add_digger(generator, digger);
     digger_dig_passage(digger, 2);
     
@@ -102,7 +102,7 @@ dungeon_generator_generate(struct dungeon_generator *generator)
 void
 dungeon_generator_generate_small(struct dungeon_generator *generator)
 {
-    struct digger *digger = digger_alloc(point_make(0, 0, 1), North);
+    struct digger *digger = digger_alloc(point_make(0, 0, 1), direction_north);
     dungeon_generator_add_digger(generator, digger);
     
     digger_dig_passage(digger, 2);
@@ -111,8 +111,8 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     /* from entry chamber, north west exit */
     struct digger *nw_digger = digger_copy(digger);
     digger_turn_90_degrees_left(nw_digger);
-    digger_move(nw_digger, 1, South);
-    digger_move(nw_digger, 1, West);
+    digger_move(nw_digger, 1, direction_south);
+    digger_move(nw_digger, 1, direction_west);
     digger_dig_passage(nw_digger, 2);
     digger_turn_90_degrees_right(nw_digger);
     digger_dig_passage(nw_digger, 6);
@@ -121,8 +121,8 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     /* from entry chamber, south west exit */
     struct digger *sw_digger = digger_copy(digger);
     digger_turn_90_degrees_left(sw_digger);
-    digger_move(sw_digger, 3, South);
-    digger_move(sw_digger, 1, West);
+    digger_move(sw_digger, 3, direction_south);
+    digger_move(sw_digger, 1, direction_west);
     digger_dig_passage(sw_digger, 2);
     digger_turn_90_degrees_left(sw_digger);
     digger_dig_passage(sw_digger, 2);
@@ -131,15 +131,15 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_turn_90_degrees_right(sw_digger);
     digger_dig_passage(sw_digger, 2);
     digger_dig_chamber(sw_digger, 2, 2, 1);
-    digger_move(sw_digger, 1, West);
+    digger_move(sw_digger, 1, direction_west);
     digger_dig_passage(sw_digger, 3);
     digger_dig_chamber(sw_digger, 2, 3, 1);
     
     /* from entry chamber, south east exit */
     struct digger *se_digger = digger_copy(digger);
     digger_turn_90_degrees_right(se_digger);
-    digger_move(se_digger, 3, South);
-    digger_move(se_digger, 1, East);
+    digger_move(se_digger, 3, direction_south);
+    digger_move(se_digger, 1, direction_east);
     digger_dig_passage(se_digger, 1);
     digger_dig_chamber(se_digger, 6, 4, 0);
     // TODO: add digger_fill()
@@ -154,7 +154,7 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_turn_90_degrees_right(digger);
     digger_dig_passage(digger, 3);
     digger_dig_chamber(digger, 3, 4, 0);
-    digger_move(digger, 3, West);
+    digger_move(digger, 3, direction_west);
     digger_dig_passage(digger, 3);
     digger_turn_90_degrees_right(digger);
     digger_dig_passage(digger, 3);

@@ -20,9 +20,9 @@ dungeon_generator_add_digger_test(void)
     struct dungeon_generator *generator = dungeon_generator_alloc(dungeon, global_rnd);
     assert(0 == generator->diggers_count);
     
-    struct digger *digger1 = digger_alloc(point_make(1, 1, 1), North);
-    struct digger *digger2 = digger_alloc(point_make(2, 2, 2), North);
-    struct digger *digger3 = digger_alloc(point_make(3, 3, 3), North);
+    struct digger *digger1 = digger_alloc(point_make(1, 1, 1), direction_north);
+    struct digger *digger2 = digger_alloc(point_make(2, 2, 2), direction_north);
+    struct digger *digger3 = digger_alloc(point_make(3, 3, 3), direction_north);
     
     dungeon_generator_add_digger(generator, digger1);
     assert(1 == generator->diggers_count);
