@@ -80,7 +80,6 @@ struct tiles *
 tiles_alloc(void)
 {
     struct tiles *tiles = calloc_or_die(1, sizeof(struct tiles));
-    tiles->compare = tile_compare_by_point;
     tiles->members = calloc_or_die(1, sizeof(struct tile *));
     return tiles;
 }
@@ -120,7 +119,7 @@ tiles_free(struct tiles *tiles)
 static struct tile **
 find(struct tiles const *tiles, struct tile const *criteria)
 {
-    return bsearch(&criteria, tiles->members, tiles->count, sizeof(struct tile *), tiles->compare);
+    return bsearch(&criteria, tiles->members, tiles->count, sizeof(struct tile *), tile_compare_by_point);
 }
 
 
@@ -185,7 +184,7 @@ tiles_root(struct tiles *tiles)
 static void
 sort(struct tiles *tiles)
 {
-    qsort(tiles->members, tiles->count, sizeof(struct tile *), tiles->compare);
+    qsort(tiles->members, tiles->count, sizeof(struct tile *), tile_compare_by_point);
 }
 
 

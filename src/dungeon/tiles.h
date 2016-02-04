@@ -15,7 +15,6 @@ struct tile;
 
 struct tiles {
     int capacity;
-    int (*compare)(void const *, void const *);
     int count;
     struct tiles *parent;
     struct tile **members;
