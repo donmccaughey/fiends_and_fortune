@@ -10,6 +10,20 @@
 #include "tiles.h"
 
 
+void
+dungeon_generator_add_digger(struct dungeon_generator *generator,
+                             struct digger *digger)
+{
+    int index = generator->diggers_count;
+    ++generator->diggers_count;
+    generator->diggers = reallocarray_or_die(generator->diggers,
+                                             generator->diggers_count,
+                                             sizeof(struct digger *));
+    digger->generator = generator;
+    generator->diggers[index] = digger;
+}
+
+
 struct dungeon_generator *
 dungeon_generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
 {
@@ -144,18 +158,4 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_dig_passage(digger, 3);
     digger_turn_90_degrees_right(digger);
     digger_dig_passage(digger, 3);
-}
-
-
-void
-dungeon_generator_add_digger(struct dungeon_generator *generator,
-                             struct digger *digger)
-{
-    int index = generator->diggers_count;
-    ++generator->diggers_count;
-    generator->diggers = reallocarray_or_die(generator->diggers,
-                                             generator->diggers_count,
-                                             sizeof(struct digger *));
-    digger->generator = generator;
-    generator->diggers[index] = digger;
 }

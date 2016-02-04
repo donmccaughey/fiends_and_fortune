@@ -11,7 +11,18 @@
 
 
 struct tile;
-struct tiles;
+
+
+struct tiles {
+    int capacity;
+    int (*compare)(void const *, void const *);
+    int count;
+    struct tiles *parent;
+    struct tile **members;
+    struct range x_range;
+    struct range y_range;
+    struct range z_range;
+};
 
 
 /// The tile is added to the parent tiles struct as well.
@@ -38,21 +49,6 @@ tiles_remove_tile(struct tiles *tiles, struct tile const *tile);
 
 struct tiles *
 tiles_root(struct tiles *tiles);
-
-struct tile *
-tiles_tile_at_index(struct tiles const *tiles, size_t index);
-
-size_t
-tiles_count(struct tiles const *tiles);
-
-struct range
-tiles_x_range(struct tiles const *tiles);
-
-struct range
-tiles_y_range(struct tiles const *tiles);
-
-struct range
-tiles_z_range(struct tiles const *tiles);
 
 bool
 tiles_has_tile_in_range(struct tiles *tiles,

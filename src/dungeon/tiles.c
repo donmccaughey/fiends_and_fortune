@@ -25,18 +25,6 @@ static void
 update_ranges(struct tiles *tiles);
 
 
-struct tiles {
-    size_t capacity;
-    int (*compare)(void const *, void const *);
-    size_t count;
-    struct tiles *parent;
-    struct tile **tiles;
-    struct range x_range;
-    struct range y_range;
-    struct range z_range;
-};
-
-
 void
 tiles_add_tile(struct tiles *tiles, struct tile *tile)
 {
@@ -55,11 +43,11 @@ append_tile(struct tiles *tiles, struct tile *tile)
         } else {
             tiles->capacity = 256;
         }
-        tiles->tiles = reallocarray_or_die(tiles->tiles,
-                                           tiles->capacity,
-                                           sizeof(struct tile *));
+        tiles->members = reallocarray_or_die(tiles->members,
+                                             tiles->capacity,
+                                             sizeof(struct tile *));
     }
-    tiles->tiles[tiles->count] = tile;
+    tiles->members[tiles->count] = tile;
     ++tiles->count;
     tiles->x_range = range_extend_to_include_value(tiles->x_range, tile->point.x);
     tiles->y_range = range_extend_to_include_value(tiles->y_range, tile->point.y);
@@ -93,7 +81,7 @@ tiles_alloc(void)
 {
     struct tiles *tiles = calloc_or_die(1, sizeof(struct tiles));
     tiles->compare = tile_compare_by_point;
-    tiles->tiles = calloc_or_die(0, sizeof(struct tile *));
+    tiles->members = calloc_or_die(1, sizeof(struct tile *));
     return tiles;
 }
 
@@ -105,7 +93,7 @@ tiles_alloc_with_parent_and_level(struct tiles *parent, int32_t level)
     // TODO: replace linear search with binary lower/upper bound search
     // and memcpy the whole block of tiles
     for (size_t i = 0; i < parent->count; ++i) {
-        struct tile *tile = parent->tiles[i];
+        struct tile *tile = parent->members[i];
         if (tile->point.z == level) {
             append_tile(tiles, tile);
         } else if (tile->point.z > level) {
@@ -120,11 +108,11 @@ void
 tiles_free(struct tiles *tiles)
 {
     if (!tiles->parent) {
-        for (size_t i = 0; i < tiles->count; ++i) {
-            tile_free(tiles->tiles[i]);
+        for (int i = 0; i < tiles->count; ++i) {
+            tile_free(tiles->members[i]);
         }
     }
-    free_or_die(tiles->tiles);
+    free_or_die(tiles->members);
     free_or_die(tiles);
 }
 
@@ -132,7 +120,7 @@ tiles_free(struct tiles *tiles)
 static struct tile **
 find(struct tiles const *tiles, struct tile const *criteria)
 {
-    return bsearch(&criteria, tiles->tiles, tiles->count, sizeof(struct tile *), tiles->compare);
+    return bsearch(&criteria, tiles->members, tiles->count, sizeof(struct tile *), tiles->compare);
 }
 
 
@@ -152,7 +140,7 @@ tiles_has_tile_in_range(struct tiles *tiles,
                         struct range z_range)
 {
     for (size_t i = 0; i < tiles->count; ++i) {
-        struct tile *tile = tiles->tiles[i];
+        struct tile *tile = tiles->members[i];
         if (   range_contains(x_range, tile->point.x)
             && range_contains(y_range, tile->point.y)
             && range_contains(z_range, tile->point.z))
@@ -171,14 +159,14 @@ tiles_remove_tile(struct tiles *tiles, struct tile const *tile)
     // TODO: if tile isn't unique by compare criteria, the wrong tile may be removed
     // is this a problem?
     struct tile **found = find(tiles, tile);
-    if ( ! found) {
+    if (!found) {
         // TODO: should we search the parent in this case?
         return tiles->parent ? tiles_remove_tile(tiles->parent, tile) : false;
     }
     
-    struct tile **tail = found + 1;
-    struct tile **end = tiles->tiles + tiles->count;
-    memmove(found, tail, (end - tail) * sizeof(struct tile));
+    struct tile **next = found + 1;
+    struct tile **end = tiles->members + tiles->count;
+    memmove(found, next, (end - next) * sizeof(struct tile));
     --tiles->count;
     update_ranges(tiles);
     
@@ -197,22 +185,7 @@ tiles_root(struct tiles *tiles)
 static void
 sort(struct tiles *tiles)
 {
-    qsort(tiles->tiles, tiles->count, sizeof(struct tile *), tiles->compare);
-}
-
-
-struct tile *
-tiles_tile_at_index(struct tiles const *tiles, size_t index)
-{
-    assert(index < tiles->count);
-    return tiles->tiles[index];
-}
-
-
-size_t
-tiles_count(struct tiles const *tiles)
-{
-    return tiles->count;
+    qsort(tiles->members, tiles->count, sizeof(struct tile *), tiles->compare);
 }
 
 
@@ -223,30 +196,9 @@ update_ranges(struct tiles *tiles)
     tiles->y_range = range_make(0, 0);
     tiles->z_range = range_make(0, 0);
     for (size_t i = 0; i < tiles->count; ++i) {
-        struct tile *tile = tiles->tiles[i];
+        struct tile *tile = tiles->members[i];
         tiles->x_range = range_extend_to_include_value(tiles->x_range, tile->point.x);
         tiles->y_range = range_extend_to_include_value(tiles->y_range, tile->point.y);
         tiles->z_range = range_extend_to_include_value(tiles->z_range, tile->point.z);
     }
-}
-
-
-struct range
-tiles_x_range(struct tiles const *tiles)
-{
-    return tiles->x_range;
-}
-
-
-struct range
-tiles_y_range(struct tiles const *tiles)
-{
-    return tiles->y_range;
-}
-
-
-struct range
-tiles_z_range(struct tiles const *tiles)
-{
-    return tiles->z_range;
 }

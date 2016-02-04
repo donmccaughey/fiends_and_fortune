@@ -38,8 +38,8 @@ dungeon_graph_level_using_text(struct dungeon *dungeon,
                                FILE *out)
 {
     struct tiles *level_tiles = tiles_alloc_with_parent_and_level(dungeon->tiles, level);
-    struct range x_range = range_expand(tiles_x_range(level_tiles), 1);
-    struct range y_range = range_expand(tiles_y_range(level_tiles), 1);
+    struct range x_range = range_expand(level_tiles->x_range, 1);
+    struct range y_range = range_expand(level_tiles->y_range, 1);
     struct reverse_range y_reverse_range = reverse_range_from_range(y_range);
     
     // top border
