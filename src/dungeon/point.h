@@ -2,6 +2,7 @@
 #define FNF_DUNGEON_POINT_H_INCLUDED
 
 
+#include <stdbool.h>
 #include <stdint.h>
 
 #include "direction.h"
@@ -16,6 +17,9 @@ struct point {
 
 int
 point_compare(struct point point1, struct point point2);
+
+bool
+point_equals(struct point point, struct point other);
 
 struct point
 point_make(int32_t x, int32_t y, int32_t z);

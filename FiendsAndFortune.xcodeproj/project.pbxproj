@@ -90,13 +90,6 @@
 			remoteGlobalIDString = D43ED58F142146F800D25EEC;
 			remoteInfo = UnitTests;
 		};
-		D4D495B11C61CBF000BC80C9 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D4F73446140EF3DF0096618F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D48C3B0D1B66E70000A98ED7;
-			remoteInfo = check;
-		};
 		D4F150951B673E3000711F34 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D4F73446140EF3DF0096618F /* Project object */;
@@ -488,13 +481,11 @@
 				D4F7344B140EF3DF0096618F /* Sources */,
 				D4F7344C140EF3DF0096618F /* Frameworks */,
 				D4F7344D140EF3DF0096618F /* CopyFiles */,
-				D43ED59D1421477400D25EEC /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				D4D495B01C61CBF000BC80C9 /* PBXTargetDependency */,
-				D4D495B21C61CBF000BC80C9 /* PBXTargetDependency */,
 				D4092F601B65D42700BFD0B3 /* PBXTargetDependency */,
 			);
 			name = fnf;
@@ -538,22 +529,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		D43ED59D1421477400D25EEC /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = $BUILT_PRODUCTS_DIR/UnitTests;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D4092F571B65D3CA00BFD0B3 /* Sources */ = {
@@ -631,11 +606,6 @@
 			isa = PBXTargetDependency;
 			target = D43ED58F142146F800D25EEC /* UnitTests */;
 			targetProxy = D4D495AF1C61CBF000BC80C9 /* PBXContainerItemProxy */;
-		};
-		D4D495B21C61CBF000BC80C9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D48C3B0D1B66E70000A98ED7 /* check */;
-			targetProxy = D4D495B11C61CBF000BC80C9 /* PBXContainerItemProxy */;
 		};
 		D4F150961B673E3000711F34 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

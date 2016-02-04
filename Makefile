@@ -4,6 +4,7 @@ export TMP ?= tmp
 
 .PHONY : check
 check : | test/check.out $(TMP)/check.out
+	$(PRODUCTS)/UnitTests
 	diff $|
 
 

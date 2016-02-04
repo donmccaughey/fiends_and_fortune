@@ -27,13 +27,7 @@ range_is_equal(struct range range1, struct range range2)
 struct range
 range_expand(struct range range, int32_t amount)
 {
-    // TODO: add test coverage for these asserts
     assert(range.begin <= range.end);
-    assert(amount < 0
-           ? (range.end - range.begin) / 2 >= -amount
-           :    INT32_MIN - range.begin <= -amount
-             && INT32_MAX - range.end >= amount
-           );
     return range_make(range.begin - amount, range.end + amount);
 }
 

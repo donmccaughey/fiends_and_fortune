@@ -48,7 +48,7 @@ digger_copy(struct digger *digger)
 }
 
 
-bool
+struct area *
 digger_dig_area(struct digger *digger,
                 uint32_t length,
                 uint32_t width,
@@ -58,8 +58,10 @@ digger_dig_area(struct digger *digger,
     struct range x_range = x_range_for_area(digger, length, width, left_offset);
     struct range y_range = y_range_for_area(digger, length, width, left_offset);
     struct range z_range = range_make(digger->point.z, digger->point.z + 1);
-    if (tiles_has_tile_in_range(digger->generator->dungeon->tiles, x_range, y_range, z_range)) {
-        return false;
+    if (tiles_has_tile_in_range(digger->generator->dungeon->tiles,
+                                x_range, y_range, z_range))
+    {
+        return NULL;
     }
     
     struct area *area = area_alloc(digger->generator->dungeon->tiles,
@@ -72,11 +74,11 @@ digger_dig_area(struct digger *digger,
     dungeon_add_area(digger->generator->dungeon, area);
     
     digger->point = point_move(digger->point, length, digger->direction);
-    return true;
+    return area;
 }
 
 
-bool
+struct area *
 digger_dig_chamber(struct digger *digger,
                    uint32_t length,
                    uint32_t width,
@@ -86,14 +88,14 @@ digger_dig_chamber(struct digger *digger,
 }
 
 
-bool
+struct area *
 digger_dig_intersection(struct digger *digger)
 {
     return digger_dig_area(digger, 1, 1, 0, area_type_intersection);
 }
 
 
-bool
+struct area *
 digger_dig_passage(struct digger *digger, uint32_t distance)
 {
     return digger_dig_area(digger, distance, 1, 0, area_type_passage);

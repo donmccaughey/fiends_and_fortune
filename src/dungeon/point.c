@@ -12,6 +12,13 @@ point_compare(struct point point1, struct point point2)
 }
 
 
+bool
+point_equals(struct point point, struct point other)
+{
+    return 0 == point_compare(point, other);
+}
+
+
 struct point
 point_make(int32_t x, int32_t y, int32_t z)
 {
