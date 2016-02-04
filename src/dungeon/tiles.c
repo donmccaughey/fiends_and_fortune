@@ -86,7 +86,7 @@ tiles_alloc(void)
 
 
 struct tiles *
-tiles_alloc_with_parent_and_level(struct tiles *parent, int32_t level)
+tiles_alloc_tiles_for_level(struct tiles *parent, int32_t level)
 {
     struct tiles *tiles = tiles_alloc_with_parent(parent);
     // TODO: replace linear search with binary lower/upper bound search
