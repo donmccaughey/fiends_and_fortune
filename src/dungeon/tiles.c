@@ -1,8 +1,6 @@
 #include "tiles.h"
 
 #include <assert.h>
-#include <stdlib.h>
-#include <string.h>
 
 #include "common/alloc_or_die.h"
 

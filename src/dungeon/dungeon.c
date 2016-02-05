@@ -10,6 +10,7 @@
 
 #include "area.h"
 #include "dungeon_generator.h"
+#include "level_map.h"
 #include "tiles.h"
 
 
@@ -64,4 +65,17 @@ dungeon_generate_small(struct dungeon *dungeon)
     struct dungeon_generator *generator = dungeon_generator_alloc(dungeon, NULL);
     dungeon_generator_generate_small(generator);
     dungeon_generator_free(generator);
+}
+
+
+void
+dungeon_print_level(struct dungeon *dungeon, int32_t level, FILE *out)
+{
+    struct level_map *level_map = level_map_alloc(dungeon, level);
+    struct lines_array *lines_array = level_map_alloc_text_graph(level_map);
+    for (int i = 0; i < lines_array->lines_count; ++i) {
+        fprintf(out, "%s", lines_array->lines[i]);
+    }
+    lines_array_free(lines_array);
+    level_map_free(level_map);
 }

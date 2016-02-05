@@ -11,7 +11,6 @@
 
 #include "dungeon/area.h"
 #include "dungeon/dungeon.h"
-#include "dungeon/text_graph.h"
 
 #include "treasure/coins.h"
 #include "treasure/gem.h"
@@ -252,7 +251,7 @@ generate_random_dungeon(struct rnd *rnd, FILE *out)
     struct dungeon *dungeon = dungeon_alloc();
     dungeon_generate(dungeon, rnd);
     
-    dungeon_graph_level_using_text(dungeon, 1, out);
+    dungeon_print_level(dungeon, 1, out);
     fprintf(out, "\nDungeon areas:\n");
     for (int i = 0; i < dungeon->areas_count; ++i) {
         fprintf(out, "\t%s\n", dungeon->areas[i]->description);
@@ -268,7 +267,7 @@ generate_sample_dungeon(struct rnd *rnd, FILE *out)
     struct dungeon *dungeon = dungeon_alloc();
     dungeon_generate_small(dungeon);
     
-    dungeon_graph_level_using_text(dungeon, 1, out);
+    dungeon_print_level(dungeon, 1, out);
     fprintf(out, "\nDungeon areas:\n");
     for (int i = 0; i < dungeon->areas_count; ++i) {
         fprintf(out, "\t%s\n", dungeon->areas[i]->description);
