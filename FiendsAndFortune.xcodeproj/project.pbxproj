@@ -16,6 +16,8 @@
 		B0F47B3923E323B22BE56B90 /* direction.c in Sources */ = {isa = PBXBuildFile; fileRef = B0F47EED5F7346D1FF553BE5 /* direction.c */; };
 		B0F47B729F1E93B0CF8E29FF /* dungeon_test.c in Sources */ = {isa = PBXBuildFile; fileRef = B0F471A404ECD13E65B8B74D /* dungeon_test.c */; };
 		B0F47DECA9C4F27D4FCF08CC /* point_test.c in Sources */ = {isa = PBXBuildFile; fileRef = B0F478FB65DDF0011D7955DB /* point_test.c */; };
+		D406B6091C65672D0037171B /* text_rectangle.c in Sources */ = {isa = PBXBuildFile; fileRef = D406B6071C65672D0037171B /* text_rectangle.c */; };
+		D406B60A1C65672D0037171B /* text_rectangle.h in Headers */ = {isa = PBXBuildFile; fileRef = D406B6081C65672D0037171B /* text_rectangle.h */; };
 		D4092F611B65D42B00BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
 		D4092F621B65D43000BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
 		D4092F881B65D6C200BFD0B3 /* alloc_or_die.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */; };
@@ -140,6 +142,8 @@
 		B0F47EC5436BEF4BA333A66A /* area.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = area.c; sourceTree = "<group>"; };
 		B0F47ECAB001875322D69DA2 /* tile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tile.h; sourceTree = "<group>"; };
 		B0F47EED5F7346D1FF553BE5 /* direction.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = direction.c; sourceTree = "<group>"; };
+		D406B6071C65672D0037171B /* text_rectangle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = text_rectangle.c; sourceTree = "<group>"; };
+		D406B6081C65672D0037171B /* text_rectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = text_rectangle.h; sourceTree = "<group>"; };
 		D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibfnf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
 		D4092F7F1B65D6C200BFD0B3 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
@@ -321,6 +325,8 @@
 				D4BD32CD1B6B1EDE0007527A /* range.c */,
 				D4BD32D31B6B2F260007527A /* reverse_range.h */,
 				D4BD32D21B6B2F260007527A /* reverse_range.c */,
+				D406B6081C65672D0037171B /* text_rectangle.h */,
+				D406B6071C65672D0037171B /* text_rectangle.c */,
 				B0F47ECAB001875322D69DA2 /* tile.h */,
 				B0F47D983F07A2F764DAF60C /* tile.c */,
 				B0F47A2D24BACF0D47681405 /* tile_type.h */,
@@ -399,6 +405,7 @@
 				D4092F911B65D6C200BFD0B3 /* str.h in Headers */,
 				D4BD32B21B6A06560007527A /* treasure_map.h in Headers */,
 				D4BD32B91B6AE3AA0007527A /* character.h in Headers */,
+				D406B60A1C65672D0037171B /* text_rectangle.h in Headers */,
 				D4BD32C91B6AECE90007527A /* spell.h in Headers */,
 				D4BD32B01B6A06560007527A /* treasure.h in Headers */,
 				D4BD32AC1B6A06560007527A /* jewelry.h in Headers */,
@@ -563,6 +570,7 @@
 				B0F4797849BFB4993181272C /* tiles.c in Sources */,
 				B0F477202981BC0C9DD1C2A6 /* area.c in Sources */,
 				B0F474635F2AC067537A8662 /* dungeon.c in Sources */,
+				D406B6091C65672D0037171B /* text_rectangle.c in Sources */,
 				D4EA14DE1C602CDB00EF508F /* digger.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,6 +1,7 @@
 #include "level_map.h"
 
 #include <assert.h>
+#include <limits.h>
 #include <stdarg.h>
 
 #include "common/alloc_or_die.h"
@@ -8,6 +9,7 @@
 #include "dungeon.h"
 #include "range.h"
 #include "reverse_range.h"
+#include "text_rectangle.h"
 #include "tile.h"
 #include "tile_type.h"
 #include "tiles.h"
@@ -29,13 +31,14 @@
 
 
 static void
-print_border_row(struct level_map *level_map, struct lines_array *lines_array);
-
-static char *
-print_format(char *buffer, char const *format, ...);
+print_border_row(struct level_map *level_map,
+                 struct text_rectangle *text_rectangle,
+                 int row_index);
 
 static void
-print_scale_row(struct level_map *level_map, struct lines_array *lines_array);
+print_scale_row(struct level_map *level_map,
+                struct text_rectangle *text_rectangle,
+                int row_index);
 
 static enum tile_type
 tile_type_at(struct level_map *level_map, int32_t x, int32_t y);
@@ -89,96 +92,115 @@ level_map_alloc(struct dungeon *dungeon, uint32_t level)
 }
 
 
-struct lines_array *
+struct text_rectangle *
 level_map_alloc_text_graph(struct level_map *level_map)
 {
+    int const top_scale_height = 1;
+    int const top_border_height = 1;
+    int const text_rows_per_map_row = 2;
+    int const bottom_scale_height = 1;
+    int row_count = top_scale_height
+                  + top_border_height
+                  + (range_length(level_map->y_range) * text_rows_per_map_row)
+                  + bottom_scale_height;
+    
     int const left_scale_width = 4;
     int const text_columns_per_map_column = 4;
     int const right_border_width = 1;
     int const right_scale_width = 4;
-    int const line_break_width = 1;
-    int line_length = left_scale_width
-                    + range_length(level_map->x_range) * text_columns_per_map_column
-                    + right_border_width
-                    + right_scale_width
-                    + line_break_width;
+    int column_count = left_scale_width
+                     + (range_length(level_map->x_range) * text_columns_per_map_column)
+                     + right_border_width
+                     + right_scale_width;
     
-    struct lines_array *lines_array = lines_array_alloc(line_length);
-    print_scale_row(level_map, lines_array);
-    print_border_row(level_map, lines_array);
+    struct text_rectangle *text_rectangle = text_rectangle_alloc(column_count,
+                                                                 row_count);
+    int row_index = 0;
+    print_scale_row(level_map, text_rectangle, row_index);
+    
+    ++row_index;
+    print_border_row(level_map, text_rectangle, row_index);
     
     // map tiles
     struct reverse_range y_reverse_range = reverse_range_from_range(level_map->y_range);
     for (int32_t j = y_reverse_range.top; j > y_reverse_range.bottom; --j) {
         // top line of row
-        char *row = lines_array_add_line(lines_array);
-        row = print_format(row, LMARGIN_NUM, j);
+        ++row_index;
+        int column_index = 0;
+        column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, LMARGIN_NUM, j);
         for (int32_t i = level_map->x_range.begin; i < level_map->x_range.end; ++i) {
             enum tile_type type = tile_type_at(level_map, i, j);
             enum tile_type west_type = tile_type_at(level_map, i - 1, j);
+            char const *format;
             if (level_map->x_range.begin == i || type != west_type) {
-                row = stpcpy(row, tile_type_solid == type ? VWALL_SOLID : VWALL_EMPTY);
+                format = tile_type_solid == type ? VWALL_SOLID : VWALL_EMPTY;
             } else {
-                row = stpcpy(row, tile_type_solid == type ? SOLID : EMPTY);
+                format = tile_type_solid == type ? SOLID : EMPTY;
             }
+            column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, format);
         }
-        print_format(row, RMARGIN_NUM, j);
-        
+        column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, RMARGIN_NUM, j);
         
         // bottom line of row
-        row = lines_array_add_line(lines_array);
-        row = stpcpy(row, LMARGIN);
+        ++row_index;
+        column_index = 0;
+        column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, LMARGIN);
         for (int32_t i = level_map->x_range.begin; i < level_map->x_range.end; ++i) {
             if (j == y_reverse_range.bottom + 1) {
-                row = stpcpy(row, CORNER_HWALL);
+                column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, CORNER_HWALL);
                 continue;
             }
             
             enum tile_type type = tile_type_at(level_map, i, j);
             enum tile_type south_type = tile_type_at(level_map, i, j - 1);
             if (level_map->x_range.begin == i) {
+                char const *format;
                 if (type == south_type) {
-                    row = stpcpy(row, tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY);
+                    format = tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY;
                 } else {
-                    row = stpcpy(row, CORNER_HWALL);
+                    format = CORNER_HWALL;
                 }
+                column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, format);
                 continue;
             }
             
             enum tile_type west_type = tile_type_at(level_map, i - 1, j);
             enum tile_type south_west_type = tile_type_at(level_map, i - 1, j - 1);
+            char const *format;
             if (type == south_type) {
                 if (type == west_type) {
                     if (type == south_west_type) {
-                        row = stpcpy(row, tile_type_solid == type ? SOLID : EMPTY_SPAN);
+                        format = tile_type_solid == type ? SOLID : EMPTY_SPAN;
                     } else {
-                        row = stpcpy(row, tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY);
+                        format = tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY;
                     }
                 } else {
                     if (type == south_west_type) {
-                        row = stpcpy(row, tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY);
+                        format = tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY;
                     } else {
-                        row = stpcpy(row, tile_type_solid == type ? VWALL_SOLID : VWALL_EMPTY);
+                        format = tile_type_solid == type ? VWALL_SOLID : VWALL_EMPTY;
                     }
                 }
             } else {
                 if (type == west_type) {
                     if (type == south_west_type) {
-                        row = stpcpy(row, CORNER_HWALL);
+                        format = CORNER_HWALL;
                     } else {
-                        row = stpcpy(row, HWALL);
+                        format = HWALL;
                     }
                 } else {
-                    row = stpcpy(row, CORNER_HWALL);
+                    format = CORNER_HWALL;
                 }
             }
+            column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, format);
         }
-        row = stpcpy(row, "+\n");
+        text_rectangle_print_format_at(text_rectangle, column_index, row_index, "+");
     }    
     
     // bottom scale
-    print_scale_row(level_map, lines_array);
-    return lines_array;
+    ++row_index;
+    print_scale_row(level_map, text_rectangle, row_index++);
+    return text_rectangle;
 }
 
 
@@ -209,76 +231,30 @@ level_map_tile_at(struct level_map *level_map, uint32_t x, uint32_t y)
 }
 
 
-char *
-lines_array_add_line(struct lines_array *lines_array)
+static void
+print_border_row(struct level_map *level_map,
+                 struct text_rectangle *text_rectangle,
+                 int row_index)
 {
-    int index = lines_array->lines_count;
-    ++lines_array->lines_count;
-    lines_array->lines = reallocarray_or_die(lines_array->lines,
-                                             lines_array->lines_count,
-                                             sizeof(char *));
-    lines_array->lines[index] = calloc_or_die(lines_array->line_length + 1,
-                                              sizeof(char));
-    return lines_array->lines[index];
-}
-
-
-struct lines_array *
-lines_array_alloc(int line_length)
-{
-    struct lines_array *lines_array = calloc_or_die(1, sizeof(struct lines_array));
-    lines_array->lines = calloc_or_die(1, sizeof(char *));
-    lines_array->line_length = line_length;
-    return lines_array;
-}
-
-
-void
-lines_array_free(struct lines_array *lines_array)
-{
-    if (lines_array) {
-        for (int i = 0; i < lines_array->lines_count; ++i) {
-            free_or_die(lines_array->lines[i]);
-        }
-        free_or_die(lines_array->lines);
-        free_or_die(lines_array);
+    int column_index = 0;
+    column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, LMARGIN);
+    for (int32_t i = level_map->x_range.begin; i < level_map->x_range.end; ++i) {
+        column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, "+---");
     }
+    text_rectangle_print_format_at(text_rectangle, column_index, row_index, "+   ");
 }
 
 
 static void
-print_border_row(struct level_map *level_map, struct lines_array *lines_array)
+print_scale_row(struct level_map *level_map,
+                struct text_rectangle *text_rectangle,
+                int row_index)
 {
-    char *row = lines_array_add_line(lines_array);
-    row = stpcpy(row, LMARGIN);
+    int column_index = 0;
+    column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, LMARGIN);
     for (int32_t i = level_map->x_range.begin; i < level_map->x_range.end; ++i) {
-        row = stpcpy(row, "+---");
+        column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, "%3i ", i);
     }
-    stpcpy(row, "+   \n");
-}
-
-
-static char *
-print_format(char *buffer, char const *format, ...)
-{
-    va_list arguments;
-    va_start(arguments, format);
-    int chars_printed = vsprintf(buffer, format, arguments);
-    assert(chars_printed >= 0);
-    va_end(arguments);
-    return buffer + chars_printed;
-}
-
-
-static void
-print_scale_row(struct level_map *level_map, struct lines_array *lines_array)
-{
-    char *row = lines_array_add_line(lines_array);
-    row = stpcpy(row, LMARGIN);
-    for (int32_t i = level_map->x_range.begin; i < level_map->x_range.end; ++i) {
-        row = print_format(row, "%3i ", i);
-    }
-    stpcpy(row, RMARGIN "\n");
 }
 
 
