@@ -48,6 +48,8 @@ text_rectangle_clear(struct text_rectangle *text_rectangle)
     for (int i = 0; i < text_rectangle->row_count; ++i) {
         *text_rectangle_row_end_at(text_rectangle, i) = '\n';
     }
+    
+    text_rectangle_home(text_rectangle);
 }
 
 
@@ -61,29 +63,51 @@ text_rectangle_free(struct text_rectangle *text_rectangle)
 }
 
 
-int
-text_rectangle_print_format_at(struct text_rectangle *text_rectangle,
-                               int column_index,
-                               int row_index,
-                               char const *format,
-                               ...)
+void
+text_rectangle_home(struct text_rectangle *text_rectangle)
+{
+    text_rectangle_move_to(text_rectangle, 0, 0);
+}
+
+
+void
+text_rectangle_move_to(struct text_rectangle *text_rectangle,
+                       int column_index,
+                       int row_index)
 {
     assert(column_index >= 0 && column_index < text_rectangle->column_count);
     assert(row_index >= 0 && row_index < text_rectangle->row_count);
-    
+    text_rectangle->caret.column_index = column_index;
+    text_rectangle->caret.row_index = row_index;
+}
+
+
+void
+text_rectangle_next_row(struct text_rectangle *text_rectangle)
+{
+    text_rectangle_move_to(text_rectangle, 0, text_rectangle->caret.row_index + 1);
+}
+
+
+void
+text_rectangle_print_format(struct text_rectangle *text_rectangle,
+                            char const *format,
+                            ...)
+{
     char *buffer;
     va_list arguments;
     va_start(arguments, format);
     int chars_printed = vasprintf_or_die(&buffer, format, arguments);
     va_end(arguments);
     
-    int chars_available = text_rectangle->column_count - column_index;
+    int chars_available = text_rectangle->column_count - text_rectangle->caret.column_index;
     int chars_to_copy = chars_printed > chars_available ? chars_available : chars_printed;
-    char *chars = text_rectangle_row_at(text_rectangle, row_index) + column_index;
+    char *chars = text_rectangle_row_at(text_rectangle, text_rectangle->caret.row_index)
+                + text_rectangle->caret.column_index;
     memcpy(chars, buffer, chars_to_copy);
     free_or_die(buffer);
     
-    return chars_printed;
+    text_rectangle->caret.column_index += chars_printed;
 }
 
 

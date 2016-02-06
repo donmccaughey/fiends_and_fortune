@@ -31,17 +31,21 @@
 
 
 static void
-print_border_row(struct level_map *level_map,
-                 struct text_rectangle *text_rectangle,
-                 int row_index);
+print_border_row(struct level_map const *level_map,
+                 struct text_rectangle *text_rectangle);
 
 static void
-print_scale_row(struct level_map *level_map,
-                struct text_rectangle *text_rectangle,
-                int row_index);
+print_scale_row(struct level_map const *level_map,
+                struct text_rectangle *text_rectangle);
+
+static char const *
+tile_bottom_half(struct level_map const *level_map, int32_t x, int32_t y);
+
+static char const *
+tile_top_half(struct level_map const *level_map, int32_t x, int32_t y);
 
 static enum tile_type
-tile_type_at(struct level_map *level_map, int32_t x, int32_t y);
+tile_type_at(struct level_map const *level_map, int32_t x, int32_t y);
 
 
 static int
@@ -115,91 +119,36 @@ level_map_alloc_text_graph(struct level_map *level_map)
     
     struct text_rectangle *text_rectangle = text_rectangle_alloc(column_count,
                                                                  row_count);
-    int row_index = 0;
-    print_scale_row(level_map, text_rectangle, row_index);
+    print_scale_row(level_map, text_rectangle);
     
-    ++row_index;
-    print_border_row(level_map, text_rectangle, row_index);
+    text_rectangle_next_row(text_rectangle);
+    print_border_row(level_map, text_rectangle);
     
     // map tiles
     struct reverse_range y_reverse_range = reverse_range_from_range(level_map->y_range);
     for (int32_t j = y_reverse_range.top; j > y_reverse_range.bottom; --j) {
         // top line of row
-        ++row_index;
-        int column_index = 0;
-        column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, LMARGIN_NUM, j);
+        text_rectangle_next_row(text_rectangle);
+        text_rectangle_print_format(text_rectangle, LMARGIN_NUM, j);
         for (int32_t i = level_map->x_range.begin; i < level_map->x_range.end; ++i) {
-            enum tile_type type = tile_type_at(level_map, i, j);
-            enum tile_type west_type = tile_type_at(level_map, i - 1, j);
-            char const *format;
-            if (level_map->x_range.begin == i || type != west_type) {
-                format = tile_type_solid == type ? VWALL_SOLID : VWALL_EMPTY;
-            } else {
-                format = tile_type_solid == type ? SOLID : EMPTY;
-            }
-            column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, format);
+            text_rectangle_print_format(text_rectangle,
+                                        tile_top_half(level_map, i, j));
         }
-        column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, RMARGIN_NUM, j);
+        text_rectangle_print_format(text_rectangle, RMARGIN_NUM, j);
         
         // bottom line of row
-        ++row_index;
-        column_index = 0;
-        column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, LMARGIN);
+        text_rectangle_next_row(text_rectangle);
+        text_rectangle_print_format(text_rectangle, LMARGIN);
         for (int32_t i = level_map->x_range.begin; i < level_map->x_range.end; ++i) {
-            if (j == y_reverse_range.bottom + 1) {
-                column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, CORNER_HWALL);
-                continue;
-            }
-            
-            enum tile_type type = tile_type_at(level_map, i, j);
-            enum tile_type south_type = tile_type_at(level_map, i, j - 1);
-            if (level_map->x_range.begin == i) {
-                char const *format;
-                if (type == south_type) {
-                    format = tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY;
-                } else {
-                    format = CORNER_HWALL;
-                }
-                column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, format);
-                continue;
-            }
-            
-            enum tile_type west_type = tile_type_at(level_map, i - 1, j);
-            enum tile_type south_west_type = tile_type_at(level_map, i - 1, j - 1);
-            char const *format;
-            if (type == south_type) {
-                if (type == west_type) {
-                    if (type == south_west_type) {
-                        format = tile_type_solid == type ? SOLID : EMPTY_SPAN;
-                    } else {
-                        format = tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY;
-                    }
-                } else {
-                    if (type == south_west_type) {
-                        format = tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY;
-                    } else {
-                        format = tile_type_solid == type ? VWALL_SOLID : VWALL_EMPTY;
-                    }
-                }
-            } else {
-                if (type == west_type) {
-                    if (type == south_west_type) {
-                        format = CORNER_HWALL;
-                    } else {
-                        format = HWALL;
-                    }
-                } else {
-                    format = CORNER_HWALL;
-                }
-            }
-            column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, format);
+            text_rectangle_print_format(text_rectangle,
+                                        tile_bottom_half(level_map, i, j));
         }
-        text_rectangle_print_format_at(text_rectangle, column_index, row_index, "+");
+        text_rectangle_print_format(text_rectangle, "+");
     }    
     
     // bottom scale
-    ++row_index;
-    print_scale_row(level_map, text_rectangle, row_index++);
+    text_rectangle_next_row(text_rectangle);
+    print_scale_row(level_map, text_rectangle);
     return text_rectangle;
 }
 
@@ -221,7 +170,7 @@ level_map_free(struct level_map *level_map)
 
 
 struct tile *
-level_map_tile_at(struct level_map *level_map, uint32_t x, uint32_t y)
+level_map_tile_at(struct level_map const *level_map, uint32_t x, uint32_t y)
 {
     assert(range_contains(level_map->x_range, x));
     assert(range_contains(level_map->y_range, y));
@@ -232,34 +181,90 @@ level_map_tile_at(struct level_map *level_map, uint32_t x, uint32_t y)
 
 
 static void
-print_border_row(struct level_map *level_map,
-                 struct text_rectangle *text_rectangle,
-                 int row_index)
+print_border_row(struct level_map const *level_map,
+                 struct text_rectangle *text_rectangle)
 {
-    int column_index = 0;
-    column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, LMARGIN);
+    text_rectangle_print_format(text_rectangle, LMARGIN);
     for (int32_t i = level_map->x_range.begin; i < level_map->x_range.end; ++i) {
-        column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, "+---");
+        text_rectangle_print_format(text_rectangle, "+---");
     }
-    text_rectangle_print_format_at(text_rectangle, column_index, row_index, "+   ");
+    text_rectangle_print_format(text_rectangle, "+   ");
 }
 
 
 static void
-print_scale_row(struct level_map *level_map,
-                struct text_rectangle *text_rectangle,
-                int row_index)
+print_scale_row(struct level_map const *level_map,
+                struct text_rectangle *text_rectangle)
 {
-    int column_index = 0;
-    column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, LMARGIN);
+    text_rectangle_print_format(text_rectangle, LMARGIN);
     for (int32_t i = level_map->x_range.begin; i < level_map->x_range.end; ++i) {
-        column_index += text_rectangle_print_format_at(text_rectangle, column_index, row_index, "%3i ", i);
+        text_rectangle_print_format(text_rectangle, "%3i ", i);
+    }
+}
+
+
+static char const *
+tile_bottom_half(struct level_map const *level_map, int32_t x, int32_t y)
+{
+    if (y == level_map->y_range.begin) return CORNER_HWALL;
+    
+    enum tile_type type = tile_type_at(level_map, x, y);
+    enum tile_type south_type = tile_type_at(level_map, x, y - 1);
+    
+    if (level_map->x_range.begin == x) {
+        if (type == south_type) {
+            return tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY;
+        } else {
+            return CORNER_HWALL;
+        }
+    }
+    
+    enum tile_type west_type = tile_type_at(level_map, x - 1, y);
+    enum tile_type south_west_type = tile_type_at(level_map, x - 1, y - 1);
+    
+    if (type == south_type) {
+        if (type == west_type) {
+            if (type == south_west_type) {
+                return tile_type_solid == type ? SOLID : EMPTY_SPAN;
+            } else {
+                return tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY;
+            }
+        } else {
+            if (type == south_west_type) {
+                return tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY;
+            } else {
+                return tile_type_solid == type ? VWALL_SOLID : VWALL_EMPTY;
+            }
+        }
+    }
+    
+    if (type == west_type) {
+        if (type == south_west_type) {
+            return CORNER_HWALL;
+        } else {
+            return HWALL;
+        }
+    }
+    
+    return CORNER_HWALL;
+}
+
+
+static char const *
+tile_top_half(struct level_map const *level_map, int32_t x, int32_t y)
+{
+    enum tile_type type = tile_type_at(level_map, x, y);
+    enum tile_type west_type = tile_type_at(level_map, x - 1, y);
+    if (level_map->x_range.begin == x || type != west_type) {
+        return tile_type_solid == type ? VWALL_SOLID : VWALL_EMPTY;
+    } else {
+        return tile_type_solid == type ? SOLID : EMPTY;
     }
 }
 
 
 static enum tile_type
-tile_type_at(struct level_map *level_map, int32_t x, int32_t y)
+tile_type_at(struct level_map const *level_map, int32_t x, int32_t y)
 {
     if (   !range_contains(level_map->x_range, x)
         || !range_contains(level_map->y_range, y))
