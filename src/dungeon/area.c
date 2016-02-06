@@ -14,7 +14,7 @@ alloc_description(struct area const *area)
 {
     int length;
     int width;
-    if (orientation_east_west == area->orientation) {
+    if (orientation_east_to_west == area->orientation) {
         length = range_length(area->tiles->x_range);
         width = range_length(area->tiles->y_range);
     } else {
