@@ -32,7 +32,7 @@ struct tiles *
 tiles_alloc(void);
 
 struct tiles *
-tiles_alloc_tiles_for_level(struct tiles *parent, int32_t level);
+tiles_alloc_tiles_for_level(struct tiles *parent, int level);
 
 void
 tiles_free(struct tiles *tiles);

@@ -12,8 +12,8 @@
 static char *
 alloc_description(struct area const *area)
 {
-    uint32_t length;
-    uint32_t width;
+    int length;
+    int width;
     if (orientation_east_west == area->orientation) {
         length = range_length(area->tiles->x_range);
         width = range_length(area->tiles->y_range);
@@ -46,14 +46,14 @@ area_alloc(struct tiles *parent_tiles,
            enum tile_type tile_type,
            struct range x_range,
            struct range y_range,
-           int32_t z)
+           int z)
 {
     struct area *area = malloc_or_die(sizeof(struct area));
     area->tiles = tiles_alloc_with_parent(parent_tiles);
     area->type = area_type;
     area->orientation = orientation;
-    for (int32_t y = y_range.begin; y < y_range.end; ++y) {
-        for (int32_t x = x_range.begin; x < x_range.end; ++x) {
+    for (int y = y_range.begin; y < y_range.end; ++y) {
+        for (int x = x_range.begin; x < x_range.end; ++x) {
             struct tile *tile = tile_alloc(point_make(x, y, z), tile_type);
             tiles_add_tile(area->tiles, tile);
         }

@@ -2,8 +2,6 @@
 #define FNF_DUNGEON_AREA_H_INCLUDED
 
 
-#include <stddef.h>
-
 #include "area_type.h"
 #include "orientation.h"
 #include "point.h"
@@ -19,7 +17,6 @@ struct area {
     char *description;
     enum orientation orientation;
     struct tiles *tiles;
-
     enum area_type type;
 };
 
@@ -31,7 +28,7 @@ area_alloc(struct tiles *parent_tiles,
            enum tile_type tile_type,
            struct range x_range,
            struct range y_range,
-           int32_t z);
+           int z);
 
 void
 area_free(struct area *area);

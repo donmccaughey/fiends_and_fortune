@@ -6,33 +6,33 @@
 
 
 struct reverse_range {
-    int32_t top;
-    int32_t bottom;
+    int top;
+    int bottom;
 };
 
 
 bool
-reverse_range_is_equal(struct reverse_range reverse_range1,
-                       struct reverse_range reverse_range2);
+reverse_range_is_equal(struct reverse_range reverse_range,
+                       struct reverse_range other);
 
 struct reverse_range
-reverse_range_expand(struct reverse_range reverse_range, int32_t amount);
+reverse_range_expand(struct reverse_range reverse_range, int amount);
 
 struct reverse_range
 reverse_range_extend_to_include_value(struct reverse_range reverse_range,
-                                      int32_t value);
+                                      int value);
 
 bool
 reverse_range_is_empty(struct reverse_range reverse_range);
 
-uint32_t
+int
 reverse_range_length(struct reverse_range reverse_range);
 
 struct range
 range_from_reverse_range(struct reverse_range reverse_range);
 
 struct reverse_range
-reverse_range_make(int32_t top, int32_t bottom);
+reverse_range_make(int top, int bottom);
 
 struct reverse_range
 reverse_range_from_range(struct range range);

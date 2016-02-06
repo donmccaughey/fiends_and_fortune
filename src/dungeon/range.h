@@ -3,38 +3,37 @@
 
 
 #include <stdbool.h>
-#include <stdint.h>
 
 
 struct range {
-    int32_t begin;
-    int32_t end;
+    int begin;
+    int end;
 };
 
 
 bool
-range_contains(struct range range, int32_t value);
+range_contains(struct range range, int value);
 
 bool
-range_is_equal(struct range range1, struct range range2);
+range_is_equal(struct range range, struct range other);
 
 struct range
-range_expand(struct range range, int32_t amount);
+range_expand(struct range range, int amount);
 
 struct range
-range_extend_to_include_value(struct range range, int32_t value);
+range_extend_to_include_value(struct range range, int value);
 
 bool
 range_is_empty(struct range range);
 
-uint32_t
+int
 range_length(struct range range);
 
 struct range
-range_make(int32_t begin, int32_t end);
+range_make(int begin, int end);
 
 struct range
-range_join(struct range range1, struct range range2);
+range_join(struct range range, struct range other);
 
 
 #endif

@@ -1,6 +1,7 @@
-#include <assert.h>
-
 #include "reverse_range.h"
+
+#include <assert.h>
+#include <limits.h>
 
 
 void
@@ -72,15 +73,20 @@ reverse_range_extend_to_include_value_test(void)
 static void
 reverse_range_length_test(void)
 {
-    assert(0u == reverse_range_length(reverse_range_make(0, 0)));
-    assert(0u == reverse_range_length(reverse_range_make(42, 42)));
+    assert(0 == reverse_range_length(reverse_range_make(0, 0)));
+    assert(0 == reverse_range_length(reverse_range_make(42, 42)));
     
-    assert(1u == reverse_range_length(reverse_range_make(1, 0)));
-    assert(1u == reverse_range_length(reverse_range_make(-1, -2)));
-    assert(2u == reverse_range_length(reverse_range_make(12, 10)));
-    assert(2u == reverse_range_length(reverse_range_make(1, -1)));
+    assert(1 == reverse_range_length(reverse_range_make(1, 0)));
+    assert(1 == reverse_range_length(reverse_range_make(-1, -2)));
+    assert(2 == reverse_range_length(reverse_range_make(12, 10)));
+    assert(2 == reverse_range_length(reverse_range_make(1, -1)));
     
-    assert(UINT32_MAX == reverse_range_length(reverse_range_make(INT32_MAX, INT32_MIN)));
+    assert(INT_MAX == reverse_range_length(reverse_range_make(-1, INT_MIN)));
+    assert(INT_MAX == reverse_range_length(reverse_range_make(0, INT_MIN + 1)));
+    assert(INT_MAX == reverse_range_length(reverse_range_make(1, INT_MIN + 2)));
+    
+    assert(INT_MAX == reverse_range_length(reverse_range_make(INT_MAX, 0)));
+    assert(INT_MAX == reverse_range_length(reverse_range_make(INT_MAX - 1, -1)));
 }
 
 

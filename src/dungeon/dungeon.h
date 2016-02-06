@@ -2,7 +2,6 @@
 #define FNF_DUNGEON_DUNGEON_H_INCLUDED
 
 
-#include <stdint.h>
 #include <stdio.h>
 
 
@@ -35,7 +34,7 @@ void
 dungeon_add_area(struct dungeon *dungeon, struct area *area);
 
 void
-dungeon_print_level(struct dungeon *dungeon, int32_t level, FILE *out);
+dungeon_print_level(struct dungeon *dungeon, int level, FILE *out);
 
 
 #endif

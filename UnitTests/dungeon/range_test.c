@@ -1,6 +1,7 @@
-#include <assert.h>
-
 #include "range.h"
+
+#include <assert.h>
+#include <limits.h>
 
 
 void range_test(void);
@@ -63,15 +64,20 @@ range_extend_to_include_value_test(void)
 static void
 range_length_test(void)
 {
-    assert(0u == range_length(range_make(0, 0)));
-    assert(0u == range_length(range_make(42, 42)));
+    assert(0 == range_length(range_make(0, 0)));
+    assert(0 == range_length(range_make(42, 42)));
     
-    assert(1u == range_length(range_make(0, 1)));
-    assert(1u == range_length(range_make(-2, -1)));
-    assert(2u == range_length(range_make(10, 12)));
-    assert(2u == range_length(range_make(-1, 1)));
+    assert(1 == range_length(range_make(0, 1)));
+    assert(1 == range_length(range_make(-2, -1)));
+    assert(2 == range_length(range_make(10, 12)));
+    assert(2 == range_length(range_make(-1, 1)));
     
-    assert(UINT32_MAX == range_length(range_make(INT32_MIN, INT32_MAX)));
+    assert(INT_MAX == range_length(range_make(INT_MIN, -1)));
+    assert(INT_MAX == range_length(range_make(INT_MIN + 1, 0)));
+    assert(INT_MAX == range_length(range_make(INT_MIN + 2, 1)));
+    
+    assert(INT_MAX == range_length(range_make(0, INT_MAX)));
+    assert(INT_MAX == range_length(range_make(-1, INT_MAX - 1)));
 }
 
 

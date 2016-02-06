@@ -18,17 +18,17 @@
 
 static struct range
 x_range_for_area(struct digger *digger,
-                 uint32_t length,
-                 uint32_t width,
-                 uint32_t left_offset,
-                 uint32_t buffer);
+                 int length,
+                 int width,
+                 int left_offset,
+                 int buffer);
 
 static struct range
 y_range_for_area(struct digger *digger,
-                 uint32_t length,
-                 uint32_t width,
-                 uint32_t left_offset,
-                 uint32_t buffer);
+                 int length,
+                 int width,
+                 int left_offset,
+                 int buffer);
 
 
 struct digger *
@@ -52,9 +52,9 @@ digger_copy(struct digger *digger)
 
 struct area *
 digger_dig_area(struct digger *digger,
-                uint32_t length,
-                uint32_t width,
-                uint32_t left_offset,
+                int length,
+                int width,
+                int left_offset,
                 enum area_type area_type)
 {
     struct range x_range = x_range_for_area(digger, length, width, left_offset, 0);
@@ -87,11 +87,11 @@ digger_dig_area(struct digger *digger,
 
 struct area *
 digger_dig_chamber(struct digger *digger,
-                   uint32_t length,
-                   uint32_t width,
-                   uint32_t left_offset)
+                   int length,
+                   int width,
+                   int left_offset)
 {
-    uint32_t const buffer = 1;
+    int const buffer = 1;
     struct range x_range = x_range_for_area(digger, length, width, left_offset, buffer);
     struct range y_range = y_range_for_area(digger, length, width, left_offset, buffer);
     struct range z_range = range_make(digger->point.z, digger->point.z + 1);
@@ -107,10 +107,10 @@ digger_dig_chamber(struct digger *digger,
 struct area *
 digger_dig_intersection(struct digger *digger)
 {
-    uint32_t const length = 1;
-    uint32_t const width = 1;
-    uint32_t const left_offset = 0;
-    uint32_t const buffer = 1;
+    int const length = 1;
+    int const width = 1;
+    int const left_offset = 0;
+    int const buffer = 1;
     struct range x_range = x_range_for_area(digger, length, width, left_offset, buffer);
     struct range y_range = y_range_for_area(digger, length, width, left_offset, buffer);
     struct range z_range = range_make(digger->point.z, digger->point.z + 1);
@@ -124,12 +124,12 @@ digger_dig_intersection(struct digger *digger)
 
 
 struct area *
-digger_dig_passage(struct digger *digger, uint32_t distance)
+digger_dig_passage(struct digger *digger, int distance)
 {
-    uint32_t const length = distance;
-    uint32_t const width = 1;
-    uint32_t const left_offset = 0;
-    uint32_t const buffer = 1;
+    int const length = distance;
+    int const width = 1;
+    int const left_offset = 0;
+    int const buffer = 1;
     struct range x_range = x_range_for_area(digger, length, width, left_offset, buffer);
     struct range y_range = y_range_for_area(digger, length, width, left_offset, buffer);
     struct range z_range = range_make(digger->point.z, digger->point.z + 1);
@@ -169,38 +169,38 @@ digger_generate_chamber(struct digger *digger)
         digger_dig_chamber(digger, 2, 2, 1);
     } else if (score <= 6) {
         // square 30x30
-        uint32_t left_offset = rnd_next_uniform_value(digger->generator->rnd, 3);
+        int left_offset = rnd_next_uniform_value(digger->generator->rnd, 3);
         digger_dig_chamber(digger, 3, 3, left_offset);
     } else if (score <= 8) {
         // square 40x40
-        uint32_t left_offset = rnd_next_uniform_value(digger->generator->rnd, 4);
+        int left_offset = rnd_next_uniform_value(digger->generator->rnd, 4);
         digger_dig_chamber(digger, 4, 4, left_offset);
     } else if (score <= 10) {
         // rectangular 20x30
-        uint32_t left_offset = rnd_next_uniform_value(digger->generator->rnd, 3);
+        int left_offset = rnd_next_uniform_value(digger->generator->rnd, 3);
         digger_dig_chamber(digger, 2, 3, left_offset);
     } else if (score <= 13) {
         // rectangular 20x30
-        uint32_t left_offset = rnd_next_uniform_value(digger->generator->rnd, 2);
+        int left_offset = rnd_next_uniform_value(digger->generator->rnd, 2);
         digger_dig_chamber(digger, 3, 2, left_offset);
     } else if (score <= 15) {
         // rectangular 30x50
-        uint32_t orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
+        int orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
         if (orientation) {
-            uint32_t left_offset = rnd_next_uniform_value(digger->generator->rnd, 3);
+            int left_offset = rnd_next_uniform_value(digger->generator->rnd, 3);
             digger_dig_chamber(digger, 5, 3, left_offset);
         } else {
-            uint32_t left_offset = rnd_next_uniform_value(digger->generator->rnd, 5);
+            int left_offset = rnd_next_uniform_value(digger->generator->rnd, 5);
             digger_dig_chamber(digger, 3, 5, left_offset);
         }
     } else if (score <= 17) {
         // rectangular 40x60
-        uint32_t orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
+        int orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
         if (orientation) {
-            uint32_t left_offset = rnd_next_uniform_value(digger->generator->rnd, 4);
+            int left_offset = rnd_next_uniform_value(digger->generator->rnd, 4);
             digger_dig_chamber(digger, 6, 4, left_offset);
         } else {
-            uint32_t left_offset = rnd_next_uniform_value(digger->generator->rnd, 6);
+            int left_offset = rnd_next_uniform_value(digger->generator->rnd, 6);
             digger_dig_chamber(digger, 4, 6, left_offset);
         }
     } else {
@@ -304,7 +304,7 @@ digger_generate_turn(struct digger *digger)
 
 
 void
-digger_move(struct digger *digger, int32_t steps, enum direction direction)
+digger_move(struct digger *digger, int steps, enum direction direction)
 {
     digger->point = point_move(digger->point, steps, direction);
 }
@@ -358,10 +358,10 @@ digger_turn_90_degrees_right(struct digger *digger)
 
 static struct range
 x_range_for_area(struct digger *digger,
-                 uint32_t length,
-                 uint32_t width,
-                 uint32_t left_offset,
-                 uint32_t buffer)
+                 int length,
+                 int width,
+                 int left_offset,
+                 int buffer)
 {
     assert(left_offset < width);
     switch (digger->direction) {
@@ -390,10 +390,10 @@ x_range_for_area(struct digger *digger,
 
 static struct range
 y_range_for_area(struct digger *digger,
-                 uint32_t length,
-                 uint32_t width,
-                 uint32_t left_offset,
-                 uint32_t buffer)
+                 int length,
+                 int width,
+                 int left_offset,
+                 int buffer)
 {
     assert(left_offset < width);
     switch (digger->direction) {

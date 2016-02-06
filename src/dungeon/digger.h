@@ -34,7 +34,7 @@ void
 digger_drop(struct digger *digger);
 
 void
-digger_move(struct digger *digger, int32_t steps, enum direction direction);
+digger_move(struct digger *digger, int steps, enum direction direction);
 
 void
 digger_turn_90_degrees_left(struct digger *digger);
@@ -44,22 +44,22 @@ digger_turn_90_degrees_right(struct digger *digger);
 
 struct area *
 digger_dig_area(struct digger *digger,
-                uint32_t length,
-                uint32_t width,
-                uint32_t left_offset,
+                int length,
+                int width,
+                int left_offset,
                 enum area_type area_type);
 
 struct area *
 digger_dig_chamber(struct digger *digger,
-                   uint32_t length,
-                   uint32_t width,
-                   uint32_t left_offset);
+                   int length,
+                   int width,
+                   int left_offset);
 
 struct area *
 digger_dig_intersection(struct digger *digger);
 
 struct area *
-digger_dig_passage(struct digger *digger, uint32_t distance);
+digger_dig_passage(struct digger *digger, int distance);
 
 void
 digger_periodic_check(struct digger *digger);

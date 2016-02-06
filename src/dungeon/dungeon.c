@@ -70,7 +70,7 @@ dungeon_generate_small(struct dungeon *dungeon)
 
 
 void
-dungeon_print_level(struct dungeon *dungeon, int32_t level, FILE *out)
+dungeon_print_level(struct dungeon *dungeon, int level, FILE *out)
 {
     struct level_map *level_map = level_map_alloc(dungeon, level);
     struct text_rectangle *text_rectangle = level_map_alloc_text_graph(level_map);
