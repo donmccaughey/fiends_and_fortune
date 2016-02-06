@@ -32,6 +32,9 @@ dungeon_generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
     generator->dungeon = dungeon;
     generator->rnd = rnd;
     generator->diggers = calloc_or_die(1, sizeof(struct digger *));
+    generator->max_depth = 5;
+    generator->max_length = 20;
+    generator->max_width = 20;
     return generator;
 }
 
@@ -80,7 +83,7 @@ dungeon_generator_remove_digger(struct dungeon_generator *generator,
 void
 dungeon_generator_generate(struct dungeon_generator *generator)
 {
-    int const max_interation_count = 10;
+    int const max_interation_count = 100;
     
     struct digger *digger = digger_alloc(point_make(0, 0, 1), direction_north);
     dungeon_generator_add_digger(generator, digger);

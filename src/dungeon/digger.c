@@ -66,6 +66,11 @@ digger_dig_area(struct digger *digger,
         return NULL;
     }
     
+    struct range new_x_range = range_join(digger->generator->dungeon->tiles->x_range, x_range);
+    if (range_length(new_x_range) > digger->generator->max_width) return NULL;
+    struct range new_y_range = range_join(digger->generator->dungeon->tiles->y_range, y_range);
+    if (range_length(new_y_range) > digger->generator->max_length) return NULL;
+    
     struct area *area = area_alloc(digger->generator->dungeon->tiles,
                                    area_type,
                                    orientation_from_direction(digger->direction),

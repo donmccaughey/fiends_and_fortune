@@ -8,11 +8,14 @@ struct rnd;
 
 
 struct dungeon_generator {
-    struct dungeon *dungeon;
-    struct rnd *rnd;
     struct digger **diggers;
     int diggers_count;
+    struct dungeon *dungeon;
     int iteration_count;
+    int max_depth;
+    int max_length;
+    int max_width;
+    struct rnd *rnd;
 };
 
 

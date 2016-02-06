@@ -57,6 +57,15 @@ range_is_empty(struct range range)
 }
 
 
+struct range
+range_join(struct range range1, struct range range2)
+{
+    int32_t begin = range1.begin < range2.begin ? range1.begin : range2.begin;
+    int32_t end = range1.end > range2.end ? range1.end : range2.end;
+    return range_make(begin, end);
+}
+
+
 uint32_t
 range_length(struct range range)
 {

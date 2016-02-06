@@ -33,5 +33,8 @@ range_length(struct range range);
 struct range
 range_make(int32_t begin, int32_t end);
 
+struct range
+range_join(struct range range1, struct range range2);
+
 
 #endif
