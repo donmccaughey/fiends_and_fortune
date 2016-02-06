@@ -19,8 +19,8 @@ static void dungeon_generate_small_test(void)
     
     assert(113 == dungeon->tiles->count);
     
-    assert(range_is_equal(range_make(-7, 9), dungeon->tiles->x_range));
-    assert(range_is_equal(range_make(0, 15), dungeon->tiles->y_range));
+    assert(range_equals(range_make(-7, 9), dungeon->tiles->x_range));
+    assert(range_equals(range_make(0, 15), dungeon->tiles->y_range));
     assert(113 == dungeon->tiles->count);
     
     struct tile *tile = tiles_find_tile_at(dungeon->tiles, point_make(0, 0, 1));

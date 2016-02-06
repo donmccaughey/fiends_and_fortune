@@ -12,8 +12,8 @@ struct reverse_range {
 
 
 bool
-reverse_range_is_equal(struct reverse_range reverse_range,
-                       struct reverse_range other);
+reverse_range_equals(struct reverse_range reverse_range,
+                     struct reverse_range other);
 
 struct reverse_range
 reverse_range_expand(struct reverse_range reverse_range, int amount);

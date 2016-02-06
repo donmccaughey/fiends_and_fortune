@@ -23,10 +23,10 @@ tile_free(struct tile *tile)
 
 
 bool
-tile_is_equal(struct tile *tile, struct tile *other_tile)
+tile_equals(struct tile *tile, struct tile *other)
 {
-    return tile->point.x == other_tile->point.x
-        && tile->point.y == other_tile->point.y
-        && tile->point.z == other_tile->point.z
-        && tile->type == other_tile->type;
+    return tile->point.x == other->point.x
+        && tile->point.y == other->point.y
+        && tile->point.z == other->point.z
+        && tile->type == other->type;
 }

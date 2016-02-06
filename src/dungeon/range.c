@@ -12,7 +12,7 @@ range_contains(struct range range, int value)
 
 
 bool
-range_is_equal(struct range range, struct range other)
+range_equals(struct range range, struct range other)
 {
     assert(range.begin <= range.end);
     assert(other.begin <= other.end);

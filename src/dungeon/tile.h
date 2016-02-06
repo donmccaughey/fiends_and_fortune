@@ -21,7 +21,7 @@ void
 tile_free(struct tile *tile);
 
 bool
-tile_is_equal(struct tile *tile, struct tile *other_tile);
+tile_equals(struct tile *tile, struct tile *other);
 
 
 #endif

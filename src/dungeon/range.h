@@ -15,7 +15,7 @@ bool
 range_contains(struct range range, int value);
 
 bool
-range_is_equal(struct range range, struct range other);
+range_equals(struct range range, struct range other);
 
 struct range
 range_expand(struct range range, int amount);

@@ -5,8 +5,8 @@
 
 
 bool
-reverse_range_is_equal(struct reverse_range reverse_range,
-                       struct reverse_range other)
+reverse_range_equals(struct reverse_range reverse_range,
+                     struct reverse_range other)
 {
     assert(reverse_range.top >= reverse_range.bottom);
     assert(other.top >= other.bottom);
