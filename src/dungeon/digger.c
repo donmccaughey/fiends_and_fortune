@@ -41,26 +41,24 @@ digger_dig_area(struct digger *digger,
     struct range x_range = x_range_for_area(digger, length, width, left_offset, 0);
     struct range y_range = y_range_for_area(digger, length, width, left_offset, 0);
     struct range z_range = range_make(digger->point.z, digger->point.z + 1);
-    if (tiles_has_tile_in_range(digger->generator->dungeon->tiles,
+    if (tiles_has_tile_in_range(digger->generator->dungeon->xtiles,
                                 x_range, y_range, z_range))
     {
         return NULL;
     }
     
-    struct range new_x_range = range_join(digger->generator->dungeon->tiles->x_range, x_range);
+    struct range new_x_range = range_join(digger->generator->dungeon->xtiles->x_range, x_range);
     if (range_length(new_x_range) > digger->generator->max_width) return NULL;
-    struct range new_y_range = range_join(digger->generator->dungeon->tiles->y_range, y_range);
+    struct range new_y_range = range_join(digger->generator->dungeon->xtiles->y_range, y_range);
     if (range_length(new_y_range) > digger->generator->max_length) return NULL;
     
-    struct area *area = area_alloc(digger->generator->dungeon->tiles,
-                                   area_type,
-                                   orientation_from_direction(digger->direction),
-                                   tile_type_empty,
-                                   x_range,
-                                   y_range,
-                                   digger->point.z);
-    dungeon_add_area(digger->generator->dungeon, area);
-    
+    struct area *area = dungeon_add_area(digger->generator->dungeon,
+                                         area_type,
+                                         orientation_from_direction(digger->direction),
+                                         tile_type_empty,
+                                         x_range,
+                                         y_range,
+                                         digger->point.z);
     digger->point = point_move(digger->point, length, digger->direction);
     return area;
 }
@@ -76,7 +74,7 @@ digger_dig_chamber(struct digger *digger,
     struct range x_range = x_range_for_area(digger, length, width, left_offset, buffer);
     struct range y_range = y_range_for_area(digger, length, width, left_offset, buffer);
     struct range z_range = range_make(digger->point.z, digger->point.z + 1);
-    if (tiles_has_tile_in_range(digger->generator->dungeon->tiles,
+    if (tiles_has_tile_in_range(digger->generator->dungeon->xtiles,
                                 x_range, y_range, z_range))
     {
         return NULL;
@@ -95,7 +93,7 @@ digger_dig_intersection(struct digger *digger)
     struct range x_range = x_range_for_area(digger, length, width, left_offset, buffer);
     struct range y_range = y_range_for_area(digger, length, width, left_offset, buffer);
     struct range z_range = range_make(digger->point.z, digger->point.z + 1);
-    if (tiles_has_tile_in_range(digger->generator->dungeon->tiles,
+    if (tiles_has_tile_in_range(digger->generator->dungeon->xtiles,
                                 x_range, y_range, z_range))
     {
         return NULL;
@@ -114,7 +112,7 @@ digger_dig_passage(struct digger *digger, int distance)
     struct range x_range = x_range_for_area(digger, length, width, left_offset, buffer);
     struct range y_range = y_range_for_area(digger, length, width, left_offset, buffer);
     struct range z_range = range_make(digger->point.z, digger->point.z + 1);
-    if (tiles_has_tile_in_range(digger->generator->dungeon->tiles,
+    if (tiles_has_tile_in_range(digger->generator->dungeon->xtiles,
                                 x_range, y_range, z_range))
     {
         return NULL;

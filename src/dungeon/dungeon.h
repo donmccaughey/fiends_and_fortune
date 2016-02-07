@@ -4,17 +4,26 @@
 
 #include <stdio.h>
 
+#include "area_type.h"
+#include "orientation.h"
+#include "point.h"
+#include "range.h"
+#include "tile_type.h"
+
 
 struct area;
 struct areas;
 struct rnd;
+struct tile;
 struct tiles;
 
 
 struct dungeon {
     struct area **areas;
     int areas_count;
-    struct tiles *tiles;
+    struct tile **tiles;
+    int tiles_count;
+    struct tiles *xtiles;
 };
 
 
@@ -30,8 +39,19 @@ dungeon_generate(struct dungeon *dungeon, struct rnd *rnd);
 void
 dungeon_generate_small(struct dungeon *dungeon);
 
-void
-dungeon_add_area(struct dungeon *dungeon, struct area *area);
+struct area *
+dungeon_add_area(struct dungeon *dungeon,
+                 enum area_type area_type,
+                 enum orientation orientation,
+                 enum tile_type tile_type,
+                 struct range x_range,
+                 struct range y_range,
+                 int level);
+
+struct tile *
+dungeon_add_tile(struct dungeon *dungeon,
+                 struct point point,
+                 enum tile_type type);
 
 void
 dungeon_print_level(struct dungeon *dungeon, int level, FILE *out);

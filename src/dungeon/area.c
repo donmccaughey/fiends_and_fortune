@@ -5,6 +5,7 @@
 #include "common/alloc_or_die.h"
 #include "common/str.h"
 
+#include "dungeon.h"
 #include "tile.h"
 #include "tiles.h"
 
@@ -39,17 +40,18 @@ alloc_description(struct area const *area)
 }
 
 
-struct area *
-area_alloc(struct tiles *parent_tiles,
-           enum area_type area_type,
-           enum orientation orientation,
-           enum tile_type tile_type,
-           struct range x_range,
-           struct range y_range,
-           int z)
+void
+area_init(struct area *area,
+          struct dungeon *dungeon,
+          enum area_type area_type,
+          enum orientation orientation,
+          enum tile_type tile_type,
+          struct range x_range,
+          struct range y_range,
+          int z)
 {
-    struct area *area = malloc_or_die(sizeof(struct area));
-    area->tiles = tiles_alloc_with_parent(parent_tiles);
+    area->dungeon = dungeon;
+    area->tiles = tiles_alloc_with_parent(dungeon->xtiles);
     area->type = area_type;
     area->orientation = orientation;
     for (int y = y_range.begin; y < y_range.end; ++y) {
@@ -59,14 +61,12 @@ area_alloc(struct tiles *parent_tiles,
         }
     }
     area->description = alloc_description(area);
-    return area;
 }
 
 
 void
-area_free(struct area *area)
+area_fin(struct area *area)
 {
     free_or_die(area->description);
     tiles_free(area->tiles);
-    free_or_die(area);
 }

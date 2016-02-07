@@ -178,7 +178,7 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     struct area *chamber = digger_dig_chamber(se_digger, 6, 4, 0);
     // fill in one tile in room
     struct tile *tile = tiles_find_tile_at(chamber->tiles, point_make(5, 2, 1));
-    tiles_remove_tile(generator->dungeon->tiles, tile);
+    tiles_remove_tile(generator->dungeon->xtiles, tile);
     tile_free(tile);
     
     /* from entry chamber, north exit */

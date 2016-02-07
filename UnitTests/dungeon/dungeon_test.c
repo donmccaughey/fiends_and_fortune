@@ -17,19 +17,19 @@ static void dungeon_generate_small_test(void)
     
     dungeon_generate_small(dungeon);
     
-    assert(113 == dungeon->tiles->count);
+    assert(113 == dungeon->xtiles->count);
     
-    assert(range_equals(range_make(-7, 9), dungeon->tiles->x_range));
-    assert(range_equals(range_make(0, 15), dungeon->tiles->y_range));
-    assert(113 == dungeon->tiles->count);
+    assert(range_equals(range_make(-7, 9), dungeon->xtiles->x_range));
+    assert(range_equals(range_make(0, 15), dungeon->xtiles->y_range));
+    assert(113 == dungeon->xtiles->count);
     
-    struct tile *tile = tiles_find_tile_at(dungeon->tiles, point_make(0, 0, 1));
+    struct tile *tile = tiles_find_tile_at(dungeon->xtiles, point_make(0, 0, 1));
     assert(tile);
     
-    tile = tiles_find_tile_at(dungeon->tiles, point_make(0, 1, 1));
+    tile = tiles_find_tile_at(dungeon->xtiles, point_make(0, 1, 1));
     assert(tile);
     
-    tile = tiles_find_tile_at(dungeon->tiles, point_make(-1, -8, 1));
+    tile = tiles_find_tile_at(dungeon->xtiles, point_make(-1, -8, 1));
     assert(!tile);
     
     dungeon_free(dungeon);

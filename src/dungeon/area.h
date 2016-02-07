@@ -9,11 +9,13 @@
 #include "tile_type.h"
 
 
+struct dungeon;
 struct tile;
 struct tiles;
 
 
 struct area {
+    struct dungeon *dungeon;
     char *description;
     enum orientation orientation;
     struct tiles *tiles;
@@ -21,17 +23,18 @@ struct area {
 };
 
 
-struct area *
-area_alloc(struct tiles *parent_tiles,
-           enum area_type area_type,
-           enum orientation orientation,
-           enum tile_type tile_type,
-           struct range x_range,
-           struct range y_range,
-           int z);
+void
+area_init(struct area *area,
+          struct dungeon *dungeon,
+          enum area_type area_type,
+          enum orientation orientation,
+          enum tile_type tile_type,
+          struct range x_range,
+          struct range y_range,
+          int z);
 
 void
-area_free(struct area *area);
+area_fin(struct area *area);
 
 
 #endif

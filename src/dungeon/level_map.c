@@ -72,7 +72,7 @@ level_map_alloc(struct dungeon *dungeon, int level)
     level_map->dungeon = dungeon;
     level_map->level = level;
     
-    struct tiles *tiles_for_level = tiles_alloc_tiles_for_level(dungeon->tiles, level);
+    struct tiles *tiles_for_level = tiles_alloc_tiles_for_level(dungeon->xtiles, level);
     level_map->x_range = range_expand(tiles_for_level->x_range, 1);
     level_map->y_range = range_expand(tiles_for_level->y_range, 1);
     
@@ -83,7 +83,7 @@ level_map_alloc(struct dungeon *dungeon, int level)
     for (int j = level_map->y_range.begin; j < level_map->y_range.end; ++j) {
         for (int i = level_map->x_range.begin; i < level_map->x_range.end; ++i) {
             struct point point = point_make(i, j, level);
-            struct tile *tile = tiles_find_tile_at(dungeon->tiles, point);
+            struct tile *tile = tiles_find_tile_at(dungeon->xtiles, point);
             if (!tile) tile = tile_alloc(point, tile_type_solid);
             int index = level_map_tile_index(level_map, point);
             level_map->grid[index] = tile;
