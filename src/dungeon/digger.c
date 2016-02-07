@@ -52,13 +52,14 @@ digger_dig_area(struct digger *digger,
     struct range new_y_range = range_join(digger->generator->dungeon->xtiles->y_range, y_range);
     if (range_length(new_y_range) > digger->generator->max_length) return NULL;
     
+    struct point origin = point_make(x_range.begin, y_range.begin, digger->point.z);
+    struct size size = size_make(range_length(x_range), range_length(y_range), 1);
+    struct box box = box_make(origin, size);
     struct area *area = dungeon_add_area(digger->generator->dungeon,
                                          area_type,
                                          orientation_from_direction(digger->direction),
-                                         tile_type_empty,
-                                         x_range,
-                                         y_range,
-                                         digger->point.z);
+                                         box,
+                                         tile_type_empty);
     digger->point = point_move(digger->point, length, digger->direction);
     return area;
 }

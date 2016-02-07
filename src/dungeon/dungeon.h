@@ -44,10 +44,8 @@ struct area *
 dungeon_add_area(struct dungeon *dungeon,
                  enum area_type area_type,
                  enum orientation orientation,
-                 enum tile_type tile_type,
-                 struct range x_range,
-                 struct range y_range,
-                 int level);
+                 struct box box,
+                 enum tile_type tile_type);
 
 struct tile *
 dungeon_add_tile(struct dungeon *dungeon,

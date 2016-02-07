@@ -3,9 +3,8 @@
 
 
 #include "area_type.h"
+#include "box.h"
 #include "orientation.h"
-#include "point.h"
-#include "range.h"
 #include "tile_type.h"
 
 
@@ -23,18 +22,15 @@ struct area {
 };
 
 
-void
-area_init(struct area *area,
-          struct dungeon *dungeon,
-          enum area_type area_type,
-          enum orientation orientation,
-          enum tile_type tile_type,
-          struct range x_range,
-          struct range y_range,
-          int level);
+struct area *
+area_alloc(struct dungeon *dungeon,
+           enum area_type area_type,
+           enum orientation orientation,
+           struct box box,
+           enum tile_type tile_type);
 
 void
-area_fin(struct area *area);
+area_free(struct area *area);
 
 
 #endif

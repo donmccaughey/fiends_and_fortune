@@ -20,25 +20,19 @@ struct area *
 dungeon_add_area(struct dungeon *dungeon,
                  enum area_type area_type,
                  enum orientation orientation,
-                 enum tile_type tile_type,
-                 struct range x_range,
-                 struct range y_range,
-                 int level)
+                 struct box box,
+                 enum tile_type tile_type)
 {
     int index = dungeon->areas_count;
     ++dungeon->areas_count;
     dungeon->areas = reallocarray_or_die(dungeon->areas,
                                          dungeon->areas_count,
                                          sizeof(struct area *));
-    dungeon->areas[index] = calloc_or_die(1, sizeof(struct area));
-    area_init(dungeon->areas[index],
-              dungeon,
-              area_type,
-              orientation,
-              tile_type,
-              x_range,
-              y_range,
-              level);
+    dungeon->areas[index] = area_alloc(dungeon,
+                                       area_type,
+                                       orientation,
+                                       box,
+                                       tile_type);
     return dungeon->areas[index];
 }
 
@@ -94,8 +88,7 @@ dungeon_free(struct dungeon *dungeon)
 {
     if (dungeon) {
         for (int i = 0; i < dungeon->areas_count; ++i) {
-            area_fin(dungeon->areas[i]);
-            free_or_die(dungeon->areas[i]);
+            area_free(dungeon->areas[i]);
         }
         free_or_die(dungeon->areas);
         /* TODO: enable when xtiles is gone
