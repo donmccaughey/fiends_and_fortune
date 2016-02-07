@@ -47,7 +47,7 @@ area_alloc(struct dungeon *dungeon,
            enum tile_type tile_type)
 {
     struct area *area = calloc_or_die(1, sizeof(struct area));
-    area->dungeon = dungeon;
+    area->box = box;
     area->description = alloc_description(area_type, orientation, box);
     area->orientation = orientation;
     area->type = area_type;

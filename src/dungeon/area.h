@@ -13,7 +13,7 @@ struct tile;
 
 
 struct area {
-    struct dungeon *dungeon;
+    struct box box;
     char *description;
     enum orientation orientation;
     struct tile **tiles;
