@@ -27,17 +27,17 @@ point_make(int x, int y, int z)
 
 
 struct point
-point_move(struct point start, int steps, enum direction direction)
+point_move(struct point start, int distance, enum direction direction)
 {
     switch (direction) {
         case direction_north:
-            return point_make(start.x, start.y + steps, start.z);
+            return point_make(start.x, start.y + distance, start.z);
         case direction_south:
-            return point_make(start.x, start.y - steps, start.z);
+            return point_make(start.x, start.y - distance, start.z);
         case direction_east:
-            return point_make(start.x + steps, start.y, start.z);
+            return point_make(start.x + distance, start.y, start.z);
         case direction_west:
-            return point_make(start.x - steps, start.y, start.z);
+            return point_make(start.x - distance, start.y, start.z);
         default:
             fail("Unrecognized direction %i", direction);
             break;

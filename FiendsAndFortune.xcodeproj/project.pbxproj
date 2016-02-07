@@ -18,6 +18,10 @@
 		B0F47DECA9C4F27D4FCF08CC /* point_test.c in Sources */ = {isa = PBXBuildFile; fileRef = B0F478FB65DDF0011D7955DB /* point_test.c */; };
 		D406B6091C65672D0037171B /* text_rectangle.c in Sources */ = {isa = PBXBuildFile; fileRef = D406B6071C65672D0037171B /* text_rectangle.c */; };
 		D406B60A1C65672D0037171B /* text_rectangle.h in Headers */ = {isa = PBXBuildFile; fileRef = D406B6081C65672D0037171B /* text_rectangle.h */; };
+		D406B6471C66C5760037171B /* box.c in Sources */ = {isa = PBXBuildFile; fileRef = D406B6451C66C5760037171B /* box.c */; };
+		D406B6481C66C5760037171B /* box.h in Headers */ = {isa = PBXBuildFile; fileRef = D406B6461C66C5760037171B /* box.h */; };
+		D406B64B1C66C60F0037171B /* size.c in Sources */ = {isa = PBXBuildFile; fileRef = D406B6491C66C60F0037171B /* size.c */; };
+		D406B64C1C66C60F0037171B /* size.h in Headers */ = {isa = PBXBuildFile; fileRef = D406B64A1C66C60F0037171B /* size.h */; };
 		D4092F611B65D42B00BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
 		D4092F621B65D43000BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
 		D4092F881B65D6C200BFD0B3 /* alloc_or_die.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */; };
@@ -144,6 +148,10 @@
 		B0F47EED5F7346D1FF553BE5 /* direction.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = direction.c; sourceTree = "<group>"; };
 		D406B6071C65672D0037171B /* text_rectangle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = text_rectangle.c; sourceTree = "<group>"; };
 		D406B6081C65672D0037171B /* text_rectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = text_rectangle.h; sourceTree = "<group>"; };
+		D406B6451C66C5760037171B /* box.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = box.c; sourceTree = "<group>"; };
+		D406B6461C66C5760037171B /* box.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = box.h; sourceTree = "<group>"; };
+		D406B6491C66C60F0037171B /* size.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = size.c; sourceTree = "<group>"; };
+		D406B64A1C66C60F0037171B /* size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = size.h; sourceTree = "<group>"; };
 		D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibfnf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
 		D4092F7F1B65D6C200BFD0B3 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
@@ -307,6 +315,8 @@
 				B0F47DF45A0BCE575009B9D0 /* area.h */,
 				B0F47EC5436BEF4BA333A66A /* area.c */,
 				B0F4781E370CABD41015CC68 /* area_type.h */,
+				D406B6461C66C5760037171B /* box.h */,
+				D406B6451C66C5760037171B /* box.c */,
 				D4EA14DD1C602CDB00EF508F /* digger.h */,
 				D4EA14DC1C602CDB00EF508F /* digger.c */,
 				B0F4724991F2E84B4A619A4A /* direction.h */,
@@ -325,6 +335,8 @@
 				D4BD32CD1B6B1EDE0007527A /* range.c */,
 				D4BD32D31B6B2F260007527A /* reverse_range.h */,
 				D4BD32D21B6B2F260007527A /* reverse_range.c */,
+				D406B64A1C66C60F0037171B /* size.h */,
+				D406B6491C66C60F0037171B /* size.c */,
 				D406B6081C65672D0037171B /* text_rectangle.h */,
 				D406B6071C65672D0037171B /* text_rectangle.c */,
 				B0F47ECAB001875322D69DA2 /* tile.h */,
@@ -408,6 +420,7 @@
 				D406B60A1C65672D0037171B /* text_rectangle.h in Headers */,
 				D4BD32C91B6AECE90007527A /* spell.h in Headers */,
 				D4BD32B01B6A06560007527A /* treasure.h in Headers */,
+				D406B6481C66C5760037171B /* box.h in Headers */,
 				D4BD32AC1B6A06560007527A /* jewelry.h in Headers */,
 				D4BD32AE1B6A06560007527A /* magic_item.h in Headers */,
 				D4BD32D51B6B2F260007527A /* reverse_range.h in Headers */,
@@ -416,6 +429,7 @@
 				D4092F891B65D6C200BFD0B3 /* alloc_or_die.h in Headers */,
 				D4BD32C71B6AECE90007527A /* language.h in Headers */,
 				D4BD32CC1B6B1EB50007527A /* range.h in Headers */,
+				D406B64C1C66C60F0037171B /* size.h in Headers */,
 				D4BD32AA1B6A06560007527A /* gem.h in Headers */,
 				D4092F8D1B65D6C200BFD0B3 /* fail.h in Headers */,
 				D4EA14DB1C5EE1A400EF508F /* dungeon_generator.h in Headers */,
@@ -561,8 +575,10 @@
 				D4BD32C61B6AECE90007527A /* language.c in Sources */,
 				D4BD32B11B6A06560007527A /* treasure_map.c in Sources */,
 				D4092F901B65D6C200BFD0B3 /* str.c in Sources */,
+				D406B6471C66C5760037171B /* box.c in Sources */,
 				D4D495B81C6321A000BC80C9 /* orientation.c in Sources */,
 				D4BD32D41B6B2F260007527A /* reverse_range.c in Sources */,
+				D406B64B1C66C60F0037171B /* size.c in Sources */,
 				D4092F8A1B65D6C200BFD0B3 /* dice.c in Sources */,
 				B0F470B6DFA53A807F7AE464 /* point.c in Sources */,
 				B0F47B3923E323B22BE56B90 /* direction.c in Sources */,

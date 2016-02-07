@@ -99,14 +99,14 @@ level_map_alloc(struct dungeon *dungeon, int level)
 struct text_rectangle *
 level_map_alloc_text_graph(struct level_map *level_map)
 {
-    int const top_scale_height = 1;
-    int const top_border_height = 1;
+    int const top_scale_length = 1;
+    int const top_border_length = 1;
     int const text_rows_per_map_row = 2;
-    int const bottom_scale_height = 1;
-    int row_count = top_scale_height
-                  + top_border_height
+    int const bottom_scale_length = 1;
+    int row_count = top_scale_length
+                  + top_border_length
                   + (range_length(level_map->y_range) * text_rows_per_map_row)
-                  + bottom_scale_height;
+                  + bottom_scale_length;
     
     int const left_scale_width = 4;
     int const text_columns_per_map_column = 4;

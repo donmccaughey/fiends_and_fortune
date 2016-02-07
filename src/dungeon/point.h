@@ -14,6 +14,9 @@ struct point {
 };
 
 
+struct point
+point_make(int x, int y, int z);
+
 int
 point_compare(struct point point, struct point other);
 
@@ -21,10 +24,7 @@ bool
 point_equals(struct point point, struct point other);
 
 struct point
-point_make(int x, int y, int z);
-
-struct point
-point_move(struct point start, int steps, enum direction direction);
+point_move(struct point start, int distance, enum direction direction);
 
 struct point
 point_rotate_90_degrees_left(struct point point, enum direction direction);
