@@ -20,43 +20,36 @@ dungeon_generator_add_digger_test(void)
     struct dungeon_generator *generator = dungeon_generator_alloc(dungeon, global_rnd);
     assert(0 == generator->diggers_count);
     
-    struct digger *digger1 = digger_alloc(point_make(1, 1, 1), direction_north);
-    struct digger *digger2 = digger_alloc(point_make(2, 2, 2), direction_north);
-    struct digger *digger3 = digger_alloc(point_make(3, 3, 3), direction_north);
-    
-    dungeon_generator_add_digger(generator, digger1);
+    struct digger *digger1 = dungeon_generator_add_digger(generator,
+                                                          point_make(1, 1, 1),
+                                                          direction_north);
     assert(1 == generator->diggers_count);
-    assert(generator == digger1->generator);
     
-    dungeon_generator_remove_digger(generator, digger1);
+    dungeon_generator_delete_digger(generator, digger1);
     assert(0 == generator->diggers_count);
-    assert(NULL == digger1->generator);
-    
-    dungeon_generator_add_digger(generator, digger1);
+
+    digger1 = dungeon_generator_add_digger(generator,
+                                           point_make(1, 1, 1),
+                                           direction_north);
     assert(1 == generator->diggers_count);
-    assert(generator == digger1->generator);
-    
-    dungeon_generator_add_digger(generator, digger2);
+
+    struct digger *digger2 = dungeon_generator_add_digger(generator,
+                                                          point_make(2, 2, 2),
+                                                          direction_north);
     assert(2 == generator->diggers_count);
-    assert(generator == digger2->generator);
     
-    dungeon_generator_add_digger(generator, digger3);
+    struct digger *digger3 = dungeon_generator_add_digger(generator,
+                                                          point_make(3, 3, 3),
+                                                          direction_north);
     assert(3 == generator->diggers_count);
-    assert(generator == digger3->generator);
     
-    dungeon_generator_remove_digger(generator, digger2);
+    dungeon_generator_delete_digger(generator, digger2);
     assert(2 == generator->diggers_count);
-    assert(NULL == digger2->generator);
-    digger_free(digger2);
-    
     assert(digger1 == generator->diggers[0]);
     assert(digger3 == generator->diggers[1]);
     
-    dungeon_generator_remove_digger(generator, digger1);
+    dungeon_generator_delete_digger(generator, digger1);
     assert(1 == generator->diggers_count);
-    assert(NULL == digger1->generator);
-    digger_free(digger1);
-    
     assert(digger3 == generator->diggers[0]);
     
     dungeon_generator_free(generator);

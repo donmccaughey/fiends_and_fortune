@@ -19,20 +19,6 @@ struct digger {
 };
 
 
-struct digger *
-digger_alloc(struct point point, enum direction direction);
-
-void
-digger_free(struct digger *digger);
-
-// alloc a new digger add it to the digger's generator
-struct digger *
-digger_copy(struct digger *digger);
-
-// remove the digger from its generator and free it
-void
-digger_drop(struct digger *digger);
-
 void
 digger_move(struct digger *digger, int steps, enum direction direction);
 

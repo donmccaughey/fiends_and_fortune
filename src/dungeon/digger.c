@@ -31,25 +31,6 @@ y_range_for_area(struct digger *digger,
                  int buffer);
 
 
-struct digger *
-digger_alloc(struct point point, enum direction direction)
-{
-    struct digger *digger = calloc_or_die(1, sizeof(struct digger));
-    digger->point = point;
-    digger->direction = direction;
-    return digger;
-}
-
-
-struct digger *
-digger_copy(struct digger *digger)
-{
-    struct digger *copy = digger_alloc(digger->point, digger->direction);
-    dungeon_generator_add_digger(digger->generator, copy);
-    return copy;
-}
-
-
 struct area *
 digger_dig_area(struct digger *digger,
                 int length,
@@ -143,21 +124,6 @@ digger_dig_passage(struct digger *digger, int distance)
 
 
 void
-digger_drop(struct digger *digger)
-{
-    dungeon_generator_remove_digger(digger->generator, digger);
-    digger_free(digger);
-}
-
-
-void
-digger_free(struct digger *digger)
-{
-    free_or_die(digger);
-}
-
-
-void
 digger_generate_chamber(struct digger *digger)
 {
     int score = roll("1d20", digger->generator->rnd);
@@ -207,7 +173,7 @@ digger_generate_chamber(struct digger *digger)
         // unusual shape and size
     }
     // TODO: exits
-    digger_drop(digger);
+    dungeon_generator_delete_digger(digger->generator, digger);
 }
 
 
@@ -219,7 +185,8 @@ digger_generate_side_passage(struct digger *digger)
         // left 90 degrees
         if (!digger_dig_intersection(digger)) return;
         
-        struct digger *side_digger = digger_copy(digger);
+        struct digger *side_digger = dungeon_generator_copy_digger(digger->generator,
+                                                                   digger);
         digger_turn_90_degrees_left(side_digger);
         digger_dig_passage(side_digger, 3);
         
@@ -228,7 +195,8 @@ digger_generate_side_passage(struct digger *digger)
         // right 90 degrees
         if (!digger_dig_intersection(digger)) return;
         
-        struct digger *side_digger = digger_copy(digger);
+        struct digger *side_digger = dungeon_generator_copy_digger(digger->generator,
+                                                                   digger);
         digger_turn_90_degrees_right(side_digger);
         digger_dig_passage(side_digger, 3);
         
@@ -249,26 +217,30 @@ digger_generate_side_passage(struct digger *digger)
         // passage T's
         if (!digger_dig_intersection(digger)) return;
         
-        struct digger *left_digger = digger_copy(digger);
+        struct digger *left_digger = dungeon_generator_copy_digger(digger->generator,
+                                                                   digger);
         digger_turn_90_degrees_left(left_digger);
         digger_dig_passage(left_digger, 3);
         
-        struct digger *right_digger = digger_copy(digger);
+        struct digger *right_digger = dungeon_generator_copy_digger(digger->generator,
+                                                                    digger);
         digger_turn_90_degrees_right(right_digger);
         digger_dig_passage(right_digger, 3);
         
-        digger_drop(digger);
+        dungeon_generator_delete_digger(digger->generator, digger);
     } else if (score <= 15) {
         // passage Y's
     } else if (score < 19) {
         // four way intersection
         if (!digger_dig_intersection(digger)) return;
         
-        struct digger *left_digger = digger_copy(digger);
+        struct digger *left_digger = dungeon_generator_copy_digger(digger->generator,
+                                                                   digger);
         digger_turn_90_degrees_left(left_digger);
         digger_dig_passage(left_digger, 3);
         
-        struct digger *right_digger = digger_copy(digger);
+        struct digger *right_digger = dungeon_generator_copy_digger(digger->generator,
+                                                                    digger);
         digger_turn_90_degrees_right(right_digger);
         digger_dig_passage(right_digger, 3);
         
@@ -331,7 +303,7 @@ digger_periodic_check(struct digger *digger)
         // stairs
     } else if (score == 18) {
         // dead end
-        digger_drop(digger);
+        dungeon_generator_delete_digger(digger->generator, digger);
     } else if (score == 19) {
         // trick/trap
     } else {

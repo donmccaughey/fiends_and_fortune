@@ -2,6 +2,10 @@
 #define FNF_DUNGEON_DUNGEON_GENERATOR_H_INCLUDED
 
 
+#include "direction.h"
+#include "point.h"
+
+
 struct digger;
 struct dungeon;
 struct rnd;
@@ -31,12 +35,17 @@ dungeon_generator_generate(struct dungeon_generator *generator);
 void
 dungeon_generator_generate_small(struct dungeon_generator *generator);
 
-void
+struct digger *
 dungeon_generator_add_digger(struct dungeon_generator *generator,
-                             struct digger *digger);
+                             struct point point,
+                             enum direction direction);
+
+struct digger *
+dungeon_generator_copy_digger(struct dungeon_generator *generator,
+                              struct digger *digger);
 
 void
-dungeon_generator_remove_digger(struct dungeon_generator *generator,
+dungeon_generator_delete_digger(struct dungeon_generator *generator,
                                 struct digger *digger);
 
 

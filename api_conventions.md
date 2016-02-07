@@ -41,67 +41,26 @@ cannot be allocated.
 Container Functions
 -------------------
 
-Add a string or struct to a container:
-
-    void
-    foo_add_description(char *description);
-
-    void
-    foo_add_bar(struct bar *bar);
-
-The string or struct must be heap allocated.  The container takes ownership of
-the given string or struct.  The function will exit the process if memory
-cannot be allocated.
+Containers should manage creating and destroying child strings and structs.
 
 
-Add a copy of a string or struct to a container:
-
-    char *
-    foo_copy_description(char const *description);
+Create a new child struct to a container:
 
     struct bar *
-    foo_copy_bar(struct bar const *bar);
+    foo_add_bar(struct foo *foo, char const *color, int weight);
 
-The container will make a copy of the given string or struct and returns a
-pointer to the copy.  The function will exit the process if memory cannot be
-allocated.
+The foo struct owns and manages the memory for the returned struct bar *.
 
 
-Remove a string or struct from a container:
-
-    void
-    foo_remove_description(char *description);
-
-    void
-    foo_remove_bar(struct bar *bar);
-
-The container will relinquish ownership of the given string or struct.  The
-caller is now responsible for freeing it.
-
-
-Container Child Functions
--------------------------
-
-Given a struct that knows its parent container:
-
-    struct bar {
-        struct foo *parent;
-        // ...
-    };
-
-
-Add a copy of the struct to its parent container:
+Copy an existing child struct into a container:
 
     struct bar *
-    bar_copy(struct bar const *bar);
-
-A pointer to the copy is returned.  The parent container has ownership of the
-copy.
+    foo_copy_bar(struct foo *foo, struct bar *bar);
 
 
-Remove the child from its parent container and free it:
+Destroy a child struct in a container:
 
     void
-    bar_drop(struct bar *bar);
+    foo_delete_bar(struct foo *foo, struct bar *bar);
 
-The pointer to the struct is invalid after this call.
+The struct bar * is invalid after calling this function.
