@@ -1,5 +1,8 @@
 #include "point.h"
 
+#include <assert.h>
+#include <limits.h>
+
 #include "common/fail.h"
 
 
@@ -9,6 +12,14 @@ point_compare(struct point point, struct point other)
     if (point.z != other.z) return point.z - other.z;
     if (point.y != other.y) return point.y - other.y;
     return point.x - other.x;
+}
+
+
+struct point
+point_east(struct point point)
+{
+    assert(point.x < INT_MAX);
+    return point_make(point.x + 1, point.y, point.z);
 }
 
 
@@ -47,6 +58,32 @@ point_move(struct point start, int distance, enum direction direction)
 
 
 struct point
+point_north(struct point point)
+{
+    assert(point.y < INT_MAX);
+    return point_make(point.x, point.y + 1, point.z);
+}
+
+
+struct point
+point_north_east(struct point point)
+{
+    assert(point.x < INT_MAX);
+    assert(point.y < INT_MAX);
+    return point_make(point.x + 1, point.y + 1, point.z);
+}
+
+
+struct point
+point_north_west(struct point point)
+{
+    assert(point.x > INT_MIN);
+    assert(point.y < INT_MAX);
+    return point_make(point.x - 1, point.y + 1, point.z);
+}
+
+
+struct point
 point_rotate_90_degrees_left(struct point point, enum direction direction)
 {
     switch (direction) {
@@ -79,4 +116,38 @@ point_rotate_90_degrees_right(struct point point, enum direction direction)
         default:
             return point;
     }
+}
+
+
+struct point
+point_south(struct point point)
+{
+    assert(point.y > INT_MIN);
+    return point_make(point.x, point.y - 1, point.z);
+}
+
+
+struct point
+point_south_east(struct point point)
+{
+    assert(point.x < INT_MAX);
+    assert(point.y > INT_MIN);
+    return point_make(point.x + 1, point.y - 1, point.z);
+}
+
+
+struct point
+point_south_west(struct point point)
+{
+    assert(point.x > INT_MIN);
+    assert(point.y > INT_MIN);
+    return point_make(point.x - 1, point.y - 1, point.z);
+}
+
+
+struct point
+point_west(struct point point)
+{
+    assert(point.x > INT_MIN);
+    return point_make(point.x - 1, point.y, point.z);
 }

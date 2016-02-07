@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #include "area_type.h"
+#include "box.h"
 #include "orientation.h"
 #include "point.h"
 #include "range.h"
@@ -52,6 +53,12 @@ struct tile *
 dungeon_add_tile(struct dungeon *dungeon,
                  struct point point,
                  enum tile_type type);
+
+struct box
+dungeon_box_for_level(struct dungeon *dungeon, int level);
+
+struct tile **
+dungeon_alloc_tiles_for_box(struct dungeon *dungeon, struct box box);
 
 struct tile *
 dungeon_tile_at(struct dungeon *dungeon, struct point point);

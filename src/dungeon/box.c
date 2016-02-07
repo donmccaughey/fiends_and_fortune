@@ -1,5 +1,9 @@
 #include "box.h"
 
+#include <assert.h>
+#include <limits.h>
+#include <stdlib.h>
+
 
 static inline int
 max(int i, int j) {
@@ -10,6 +14,16 @@ max(int i, int j) {
 static inline int
 min(int i, int j) {
     return i < j ? i : j;
+}
+
+
+static inline void
+normalize(int *box_point, int *box_size)
+{
+    if (*box_size < 0) {
+        *box_point = *box_point + *box_size + 1;
+        *box_size = -*box_size;
+    }
 }
 
 
@@ -31,6 +45,28 @@ point_min(struct point point, struct point other)
 }
 
 
+static void
+extend_to_include(int *box_point, int *box_size, int point);
+
+
+bool
+box_contains_point(struct box box, struct point point)
+{
+    struct point end = box_end_point(box);
+    return point.z >= box.origin.z && point.z < end.z
+        && point.y >= box.origin.y && point.y < end.y
+        && point.x >= box.origin.x && point.x < end.x;
+}
+
+
+bool
+box_equals(struct box box, struct box other)
+{
+    return point_equals(box.origin, other.origin)
+        && size_equals(box.size, other.size);
+}
+
+
 struct point
 box_end_point(struct box box)
 {
@@ -46,10 +82,31 @@ box_expand(struct box box, struct size size)
     struct point new_origin = point_make(box.origin.x - size.width,
                                          box.origin.y - size.length,
                                          box.origin.z - size.height);
-    struct size new_size = size_make(box.size.width + size.width,
-                                     box.size.length + size.length,
-                                     box.size.height + size.height);
+    struct size new_size = size_make(box.size.width + (2 * size.width),
+                                     box.size.length + (2 * size.length),
+                                     box.size.height + (2 * size.height));
     return box_make(new_origin, new_size);
+}
+
+
+struct box
+box_extend_to_include_point(struct box box, struct point point)
+{
+    extend_to_include(&box.origin.x, &box.size.width, point.x);
+    extend_to_include(&box.origin.y, &box.size.length, point.y);
+    extend_to_include(&box.origin.z, &box.size.height, point.z);
+    return box;
+}
+
+
+int
+box_index_for_point(struct box box, struct point point)
+{
+    assert(box_contains_point(box, point));
+    
+    return ((point.z - box.origin.z) * box.size.width * box.size.length)
+         + ((point.y - box.origin.y) * box.size.width)
+         + (point.x - box.origin.x);
 }
 
 
@@ -80,17 +137,33 @@ box_make_from_points(struct point origin, struct point end)
 struct box
 box_normalize(struct box box)
 {
-    if (box.size.width < 0) {
-        box.origin.x -= box.size.width + 1;
-        box.size.width = -box.size.width;
-    }
-    if (box.size.length < 0) {
-        box.origin.y -= box.size.length + 1;
-        box.size.length = -box.size.length;
-    }
-    if (box.size.height < 0) {
-        box.origin.z -= box.size.height + 1;
-        box.size.height = -box.size.height;
-    }
+    normalize(&box.origin.x, &box.size.width);
+    normalize(&box.origin.y, &box.size.length);
+    normalize(&box.origin.z, &box.size.height);
     return box;
+}
+
+
+int
+box_volume(struct box box)
+{
+    assert(  (float)abs(box.size.width)
+           * (float)abs(box.size.length)
+           * (float)abs(box.size.height)
+           <= (float)INT_MAX);
+    return abs(box.size.width) * abs(box.size.length) * abs(box.size.height);
+}
+
+
+static void
+extend_to_include(int *box_point, int *box_size, int point)
+{
+    if (point < *box_point) {
+        int distance = *box_point - point;
+        *box_point = point;
+        *box_size += distance;
+    } else {
+        int distance = point - *box_point + 1;
+        if (distance > *box_size) *box_size = distance;
+    }
 }

@@ -22,6 +22,7 @@
 		D406B6481C66C5760037171B /* box.h in Headers */ = {isa = PBXBuildFile; fileRef = D406B6461C66C5760037171B /* box.h */; };
 		D406B64B1C66C60F0037171B /* size.c in Sources */ = {isa = PBXBuildFile; fileRef = D406B6491C66C60F0037171B /* size.c */; };
 		D406B64C1C66C60F0037171B /* size.h in Headers */ = {isa = PBXBuildFile; fileRef = D406B64A1C66C60F0037171B /* size.h */; };
+		D406B64E1C66FFE00037171B /* box_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D406B64D1C66FFE00037171B /* box_test.c */; };
 		D4092F611B65D42B00BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
 		D4092F621B65D43000BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
 		D4092F881B65D6C200BFD0B3 /* alloc_or_die.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */; };
@@ -152,6 +153,7 @@
 		D406B6461C66C5760037171B /* box.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = box.h; sourceTree = "<group>"; };
 		D406B6491C66C60F0037171B /* size.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = size.c; sourceTree = "<group>"; };
 		D406B64A1C66C60F0037171B /* size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = size.h; sourceTree = "<group>"; };
+		D406B64D1C66FFE00037171B /* box_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = box_test.c; sourceTree = "<group>"; };
 		D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibfnf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
 		D4092F7F1B65D6C200BFD0B3 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
@@ -351,6 +353,7 @@
 		D4BD32CF1B6B1EFB0007527A /* dungeon */ = {
 			isa = PBXGroup;
 			children = (
+				D406B64D1C66FFE00037171B /* box_test.c */,
 				B0F471A404ECD13E65B8B74D /* dungeon_test.c */,
 				D4D495B31C61D2F100BC80C9 /* dungeon_generator_test.c */,
 				B0F478FB65DDF0011D7955DB /* point_test.c */,
@@ -604,6 +607,7 @@
 				D4D495B41C61D2F100BC80C9 /* dungeon_generator_test.c in Sources */,
 				B0F4771F299A519846ED5029 /* tiles_test.c in Sources */,
 				B0F47B729F1E93B0CF8E29FF /* dungeon_test.c in Sources */,
+				D406B64E1C66FFE00037171B /* box_test.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

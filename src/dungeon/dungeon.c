@@ -70,6 +70,25 @@ dungeon_alloc(void)
 }
 
 
+struct tile **
+dungeon_alloc_tiles_for_box(struct dungeon *dungeon, struct box box)
+{
+    int count = box_volume(box);
+    struct tile **tiles = calloc_or_die(count, sizeof(struct tile *));
+    struct point end = box_end_point(box);
+    for (int k = box.origin.z; k < end.z; ++k) {
+        for (int j = box.origin.y; j < end.y; ++j) {
+            for (int i = box.origin.x; i < end.x; ++i) {
+                struct point point = point_make(i, j, k);
+                int index = box_index_for_point(box, point);
+                tiles[index] = dungeon_tile_at(dungeon, point);
+            }
+        }
+    }
+    return tiles;
+}
+
+
 void
 dungeon_free(struct dungeon *dungeon)
 {
@@ -109,17 +128,6 @@ dungeon_generate_small(struct dungeon *dungeon)
 }
 
 
-struct tile *
-dungeon_tile_at(struct dungeon *dungeon, struct point point)
-{
-    struct tile *tile = tiles_find_tile_at(dungeon->xtiles, point);
-    if (!tile) {
-        tile = dungeon_add_tile(dungeon, point, tile_type_solid);
-    }
-    return tile;
-}
-
-
 void
 dungeon_print_level(struct dungeon *dungeon, int level, FILE *out)
 {
@@ -128,4 +136,29 @@ dungeon_print_level(struct dungeon *dungeon, int level, FILE *out)
     fprintf(out, "%s", text_rectangle->chars);
     text_rectangle_free(text_rectangle);
     level_map_free(level_map);
+}
+
+
+struct box
+dungeon_box_for_level(struct dungeon *dungeon, int level)
+{
+    struct box box = box_make(point_make(0, 0, level), size_make(0, 0, 1));
+    for (size_t i = 0; i < dungeon->xtiles->count; ++i) {
+        struct tile *tile = dungeon->xtiles->members[i];
+        if (tile->point.z < level) continue;
+        if (tile->point.z > level) break;
+        box = box_extend_to_include_point(box, tile->point);
+    }
+    return box;
+}
+
+
+struct tile *
+dungeon_tile_at(struct dungeon *dungeon, struct point point)
+{
+    struct tile *tile = tiles_find_tile_at(dungeon->xtiles, point);
+    if (!tile) {
+        tile = dungeon_add_tile(dungeon, point, tile_type_solid);
+    }
+    return tile;
 }

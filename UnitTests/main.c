@@ -4,6 +4,9 @@
 #include "common/alloc_or_die.h"
 
 void
+box_test(void);
+
+void
 dice_test(void);
 
 void
@@ -34,6 +37,7 @@ main (int argc, const char *argv[])
     FILE *out = stdout;
     fprintf(out, "Fiends and Fortune unit tests\n");
     
+    box_test();
     dice_test();
     dungeon_test();
     dungeon_generator_test();

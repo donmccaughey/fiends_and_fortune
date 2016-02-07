@@ -1,6 +1,22 @@
 #include "size.h"
 
 
+int
+size_compare(struct size size, struct size other)
+{
+    if (size.height != other.height) return size.height - other.height;
+    if (size.length != other.length) return size.length - other.length;
+    return size.width - other.width;
+}
+
+
+bool
+size_equals(struct size size, struct size other)
+{
+    return 0 == size_compare(size, other);
+}
+
+
 struct size
 size_make(int width, int length, int height)
 {

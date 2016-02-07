@@ -39,12 +39,12 @@ reverse_range_extend_to_include_value(struct reverse_range reverse_range,
     if (reverse_range_is_empty(reverse_range)) {
         return reverse_range_make(value, value - 1);
     } else {
-        struct reverse_range extendedReverseRange = reverse_range;
-        if (value > reverse_range.top) extendedReverseRange.top = value;
+        struct reverse_range extended_reverse_range = reverse_range;
+        if (value > reverse_range.top) extended_reverse_range.top = value;
         if (value <= reverse_range.bottom) {
-            extendedReverseRange.bottom = value - 1;
+            extended_reverse_range.bottom = value - 1;
         }
-        return extendedReverseRange;
+        return extended_reverse_range;
     }
 }
 

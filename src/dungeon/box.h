@@ -2,6 +2,8 @@
 #define FNF_DUNGEON_BOX_H_INCLUDED
 
 
+#include <stdbool.h>
+
 #include "point.h"
 #include "size.h"
 
@@ -21,15 +23,29 @@ box_make_from_boxes(struct box box, struct box other);
 struct box
 box_make_from_points(struct point origin, struct point end);
 
-struct box
-box_normalize(struct box box);
+bool
+box_equals(struct box box, struct box other);
+
+bool
+box_contains_point(struct box box, struct point point);
 
 struct point
 box_end_point(struct box box);
 
+int
+box_volume(struct box box);
+
+struct box
+box_normalize(struct box box);
+
 struct box
 box_expand(struct box box, struct size size);
 
+struct box
+box_extend_to_include_point(struct box box, struct point point);
+
+int
+box_index_for_point(struct box box, struct point point);
 
 
 #endif

@@ -1,6 +1,6 @@
-#include <assert.h>
-
 #include "point.h"
+
+#include <assert.h>
 
 
 void

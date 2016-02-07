@@ -1,18 +1,13 @@
 #include "level_map.h"
 
 #include <assert.h>
-#include <limits.h>
-#include <stdarg.h>
 
 #include "common/alloc_or_die.h"
 
 #include "dungeon.h"
-#include "range.h"
-#include "reverse_range.h"
 #include "text_rectangle.h"
 #include "tile.h"
 #include "tile_type.h"
-#include "tiles.h"
 
 
 #define CORNER_EMPTY "+   "
@@ -39,30 +34,13 @@ print_scale_row(struct level_map const *level_map,
                 struct text_rectangle *text_rectangle);
 
 static char const *
-tile_bottom_half(struct level_map const *level_map, int x, int y);
+tile_bottom_half(struct level_map const *level_map, struct point point);
 
 static char const *
-tile_top_half(struct level_map const *level_map, int x, int y);
+tile_top_half(struct level_map const *level_map, struct point point);
 
 static enum tile_type
-tile_type_at(struct level_map const *level_map, int x, int y);
-
-
-static int
-level_map_tile_index(struct level_map const *level_map, struct point point)
-{
-    int column = point.x - level_map->x_range.begin;
-    int row = point.y - level_map->y_range.begin;
-    int row_length = range_length(level_map->x_range);
-    return row * row_length + column;
-}
-
-
-static int
-level_map_tiles_count(struct level_map const *level_map)
-{
-    return range_length(level_map->x_range) * range_length(level_map->y_range);
-}
+tile_type_at(struct level_map const *level_map, struct point point);
 
 
 struct level_map *
@@ -70,27 +48,11 @@ level_map_alloc(struct dungeon *dungeon, int level)
 {
     struct level_map *level_map = calloc_or_die(1, sizeof(struct level_map));
     level_map->dungeon = dungeon;
-    level_map->level = level;
     
-    struct tiles *tiles_for_level = tiles_alloc_tiles_for_level(dungeon->xtiles, level);
-    level_map->x_range = range_expand(tiles_for_level->x_range, 1);
-    level_map->y_range = range_expand(tiles_for_level->y_range, 1);
+    struct box box = dungeon_box_for_level(dungeon, level);
+    level_map->box = box_expand(box, size_make(1, 1, 0));
+    level_map->tiles = dungeon_alloc_tiles_for_box(dungeon, level_map->box);
     
-    int tiles_count = level_map_tiles_count(level_map);
-    level_map->grid = calloc_or_die(tiles_count, sizeof(struct tile *));
-    
-    int count = 0;
-    for (int j = level_map->y_range.begin; j < level_map->y_range.end; ++j) {
-        for (int i = level_map->x_range.begin; i < level_map->x_range.end; ++i) {
-            struct point point = point_make(i, j, level);
-            struct tile *tile = dungeon_tile_at(dungeon, point);
-            int index = level_map_tile_index(level_map, point);
-            level_map->grid[index] = tile;
-            ++count;
-        }
-    }
-    
-    tiles_free(tiles_for_level);
     return level_map;
 }
 
@@ -104,7 +66,7 @@ level_map_alloc_text_graph(struct level_map *level_map)
     int const bottom_scale_length = 1;
     int row_count = top_scale_length
                   + top_border_length
-                  + (range_length(level_map->y_range) * text_rows_per_map_row)
+                  + level_map->box.size.length * text_rows_per_map_row
                   + bottom_scale_length;
     
     int const left_scale_width = 4;
@@ -112,7 +74,7 @@ level_map_alloc_text_graph(struct level_map *level_map)
     int const right_border_width = 1;
     int const right_scale_width = 4;
     int column_count = left_scale_width
-                     + (range_length(level_map->x_range) * text_columns_per_map_column)
+                     + level_map->box.size.width * text_columns_per_map_column
                      + right_border_width
                      + right_scale_width;
     
@@ -124,23 +86,29 @@ level_map_alloc_text_graph(struct level_map *level_map)
     print_border_row(level_map, text_rectangle);
     
     // map tiles
-    struct reverse_range y_reverse_range = reverse_range_from_range(level_map->y_range);
-    for (int j = y_reverse_range.top; j > y_reverse_range.bottom; --j) {
+    struct point point = level_map->box.origin;
+    point.y += level_map->box.size.length;
+    for (int j = 0; j < level_map->box.size.length; ++j) {
+        --point.y;
         // top line of row
         text_rectangle_next_row(text_rectangle);
-        text_rectangle_print_format(text_rectangle, LMARGIN_NUM, j);
-        for (int i = level_map->x_range.begin; i < level_map->x_range.end; ++i) {
+        text_rectangle_print_format(text_rectangle, LMARGIN_NUM, point.y);
+        point.x = level_map->box.origin.x;
+        for (int i = 0; i < level_map->box.size.width; ++i) {
             text_rectangle_print_format(text_rectangle,
-                                        tile_top_half(level_map, i, j));
+                                        tile_top_half(level_map, point));
+            ++point.x;
         }
-        text_rectangle_print_format(text_rectangle, RMARGIN_NUM, j);
+        text_rectangle_print_format(text_rectangle, RMARGIN_NUM, point.y);
         
         // bottom line of row
         text_rectangle_next_row(text_rectangle);
         text_rectangle_print_format(text_rectangle, LMARGIN);
-        for (int i = level_map->x_range.begin; i < level_map->x_range.end; ++i) {
+        point.x = level_map->box.origin.x;
+        for (int i = 0; i < level_map->box.size.width; ++i) {
             text_rectangle_print_format(text_rectangle,
-                                        tile_bottom_half(level_map, i, j));
+                                        tile_bottom_half(level_map, point));
+            ++point.x;
         }
         text_rectangle_print_format(text_rectangle, "+");
     }    
@@ -156,20 +124,18 @@ void
 level_map_free(struct level_map *level_map)
 {
     if (level_map) {
-        free_or_die(level_map->grid);
+        free_or_die(level_map->tiles);
         free_or_die(level_map);
     }
 }
 
 
 struct tile *
-level_map_tile_at(struct level_map const *level_map, int x, int y)
+level_map_tile_at(struct level_map const *level_map, struct point point)
 {
-    assert(range_contains(level_map->x_range, x));
-    assert(range_contains(level_map->y_range, y));
-    struct point point = point_make(x, y, level_map->level);
-    int index = level_map_tile_index(level_map, point);
-    return level_map->grid[index];
+    assert(box_contains_point(level_map->box, point));
+    int index = box_index_for_point(level_map->box, point);
+    return level_map->tiles[index];
 }
 
 
@@ -178,7 +144,7 @@ print_border_row(struct level_map const *level_map,
                  struct text_rectangle *text_rectangle)
 {
     text_rectangle_print_format(text_rectangle, LMARGIN);
-    for (int i = level_map->x_range.begin; i < level_map->x_range.end; ++i) {
+    for (int i = 0; i < level_map->box.size.width; ++i) {
         text_rectangle_print_format(text_rectangle, "+---");
     }
     text_rectangle_print_format(text_rectangle, "+   ");
@@ -190,21 +156,22 @@ print_scale_row(struct level_map const *level_map,
                 struct text_rectangle *text_rectangle)
 {
     text_rectangle_print_format(text_rectangle, LMARGIN);
-    for (int i = level_map->x_range.begin; i < level_map->x_range.end; ++i) {
-        text_rectangle_print_format(text_rectangle, "%3i ", i);
+    for (int i = 0; i < level_map->box.size.width; ++i) {
+        int x = level_map->box.origin.x + i;
+        text_rectangle_print_format(text_rectangle, "%3i ", x);
     }
 }
 
 
 static char const *
-tile_bottom_half(struct level_map const *level_map, int x, int y)
+tile_bottom_half(struct level_map const *level_map, struct point point)
 {
-    if (y == level_map->y_range.begin) return CORNER_HWALL;
+    if (point.y == level_map->box.origin.y) return CORNER_HWALL;
     
-    enum tile_type type = tile_type_at(level_map, x, y);
-    enum tile_type south_type = tile_type_at(level_map, x, y - 1);
+    enum tile_type type = tile_type_at(level_map, point);
+    enum tile_type south_type = tile_type_at(level_map, point_south(point));
     
-    if (level_map->x_range.begin == x) {
+    if (level_map->box.origin.x == point.x) {
         if (type == south_type) {
             return tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY;
         } else {
@@ -212,8 +179,8 @@ tile_bottom_half(struct level_map const *level_map, int x, int y)
         }
     }
     
-    enum tile_type west_type = tile_type_at(level_map, x - 1, y);
-    enum tile_type south_west_type = tile_type_at(level_map, x - 1, y - 1);
+    enum tile_type west_type = tile_type_at(level_map, point_west(point));
+    enum tile_type south_west_type = tile_type_at(level_map, point_south_west(point));
     
     if (type == south_type) {
         if (type == west_type) {
@@ -244,11 +211,12 @@ tile_bottom_half(struct level_map const *level_map, int x, int y)
 
 
 static char const *
-tile_top_half(struct level_map const *level_map, int x, int y)
+tile_top_half(struct level_map const *level_map, struct point point)
 {
-    enum tile_type type = tile_type_at(level_map, x, y);
-    enum tile_type west_type = tile_type_at(level_map, x - 1, y);
-    if (level_map->x_range.begin == x || type != west_type) {
+    enum tile_type type = tile_type_at(level_map, point);
+    enum tile_type west_type = tile_type_at(level_map, point_west(point));
+    
+    if (level_map->box.origin.x == point.x || type != west_type) {
         return tile_type_solid == type ? VWALL_SOLID : VWALL_EMPTY;
     } else {
         return tile_type_solid == type ? SOLID : EMPTY;
@@ -257,12 +225,8 @@ tile_top_half(struct level_map const *level_map, int x, int y)
 
 
 static enum tile_type
-tile_type_at(struct level_map const *level_map, int x, int y)
+tile_type_at(struct level_map const *level_map, struct point point)
 {
-    if (   !range_contains(level_map->x_range, x)
-        || !range_contains(level_map->y_range, y))
-    {
-        return tile_type_solid;
-    }
-    return level_map_tile_at(level_map, x, y)->type;
+    if (!box_contains_point(level_map->box, point)) return tile_type_solid;
+    return level_map_tile_at(level_map, point)->type;
 }

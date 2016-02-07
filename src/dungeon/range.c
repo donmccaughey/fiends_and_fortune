@@ -42,10 +42,10 @@ range_extend_to_include_value(struct range range, int value)
     if (range_is_empty(range)) {
         return range_make(value, value + 1);
     } else {
-        struct range extendedRange = range;
-        if (value < range.begin) extendedRange.begin = value;
-        if (value >= range.end) extendedRange.end = value + 1;
-        return extendedRange;
+        struct range extended_range = range;
+        if (value < range.begin) extended_range.begin = value;
+        if (value >= range.end) extended_range.end = value + 1;
+        return extended_range;
     }
 }
 
