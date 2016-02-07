@@ -54,6 +54,7 @@ dungeon_add_tile(struct dungeon *dungeon,
                                          dungeon->tiles_count,
                                          sizeof(struct tile *));
     dungeon->tiles[index] = tile_alloc(point, type);
+    tiles_add_tile(dungeon->xtiles, dungeon->tiles[index]);
     return dungeon->tiles[index];
 }
 
@@ -78,9 +79,11 @@ dungeon_free(struct dungeon *dungeon)
             free_or_die(dungeon->areas[i]);
         }
         free_or_die(dungeon->areas);
+        /* TODO: enable when xtiles is gone
         for (int i = 0; i < dungeon->tiles_count; ++i) {
             tile_free(dungeon->tiles[i]);
         }
+        */
         free_or_die(dungeon->tiles);
         tiles_free(dungeon->xtiles);
         free_or_die(dungeon);
@@ -103,6 +106,17 @@ dungeon_generate_small(struct dungeon *dungeon)
     struct dungeon_generator *generator = dungeon_generator_alloc(dungeon, NULL);
     dungeon_generator_generate_small(generator);
     dungeon_generator_free(generator);
+}
+
+
+struct tile *
+dungeon_tile_at(struct dungeon *dungeon, struct point point)
+{
+    struct tile *tile = tiles_find_tile_at(dungeon->xtiles, point);
+    if (!tile) {
+        tile = dungeon_add_tile(dungeon, point, tile_type_solid);
+    }
+    return tile;
 }
 
 

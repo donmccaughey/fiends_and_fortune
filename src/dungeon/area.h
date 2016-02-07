@@ -11,14 +11,14 @@
 
 struct dungeon;
 struct tile;
-struct tiles;
 
 
 struct area {
     struct dungeon *dungeon;
     char *description;
     enum orientation orientation;
-    struct tiles *tiles;
+    struct tile **tiles;
+    int tiles_count;
     enum area_type type;
 };
 
@@ -31,7 +31,7 @@ area_init(struct area *area,
           enum tile_type tile_type,
           struct range x_range,
           struct range y_range,
-          int z);
+          int level);
 
 void
 area_fin(struct area *area);

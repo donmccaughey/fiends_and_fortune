@@ -11,18 +11,21 @@
 
 
 static char *
-alloc_description(struct area const *area)
+alloc_description(enum area_type area_type,
+                  enum orientation orientation,
+                  struct range x_range,
+                  struct range y_range)
 {
     int length;
     int width;
-    if (orientation_east_to_west == area->orientation) {
-        length = range_length(area->tiles->x_range);
-        width = range_length(area->tiles->y_range);
+    if (orientation_east_to_west == orientation) {
+        length = range_length(x_range);
+        width = range_length(y_range);
     } else {
-        length = range_length(area->tiles->y_range);
-        width = range_length(area->tiles->x_range);
+        length = range_length(y_range);
+        width = range_length(x_range);
     }
-    switch (area->type) {
+    switch (area_type) {
         case area_type_chamber:
             return str_alloc_formatted("%u' x %u' chamber",
                                        length * 10, width * 10);
@@ -31,7 +34,7 @@ alloc_description(struct area const *area)
         case area_type_passage:
             return str_alloc_formatted("%u' passage %s",
                                        length * 10,
-                                       orientation_name(area->orientation));
+                                       orientation_name(orientation));
             break;
         default:
             return str_alloc_formatted("%u' x %u' area",
@@ -48,19 +51,28 @@ area_init(struct area *area,
           enum tile_type tile_type,
           struct range x_range,
           struct range y_range,
-          int z)
+          int level)
 {
     area->dungeon = dungeon;
-    area->tiles = tiles_alloc_with_parent(dungeon->xtiles);
-    area->type = area_type;
+    area->description = alloc_description(area_type,
+                                          orientation,
+                                          x_range,
+                                          y_range);
     area->orientation = orientation;
+    area->type = area_type;
+    
+    area->tiles_count = range_length(x_range) * range_length(y_range);
+    area->tiles = calloc_or_die(area->tiles_count, sizeof(struct tile *));
+    
+    int i = 0;
     for (int y = y_range.begin; y < y_range.end; ++y) {
         for (int x = x_range.begin; x < x_range.end; ++x) {
-            struct tile *tile = tile_alloc(point_make(x, y, z), tile_type);
-            tiles_add_tile(area->tiles, tile);
+            area->tiles[i] = dungeon_add_tile(dungeon,
+                                              point_make(x, y, level),
+                                              tile_type);
+            ++i;
         }
     }
-    area->description = alloc_description(area);
 }
 
 
@@ -68,5 +80,5 @@ void
 area_fin(struct area *area)
 {
     free_or_die(area->description);
-    tiles_free(area->tiles);
+    free_or_die(area->tiles);
 }

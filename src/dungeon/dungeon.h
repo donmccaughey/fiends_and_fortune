@@ -53,6 +53,9 @@ dungeon_add_tile(struct dungeon *dungeon,
                  struct point point,
                  enum tile_type type);
 
+struct tile *
+dungeon_tile_at(struct dungeon *dungeon, struct point point);
+
 void
 dungeon_print_level(struct dungeon *dungeon, int level, FILE *out);
 
