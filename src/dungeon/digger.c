@@ -9,6 +9,7 @@
 
 #include "dungeon.h"
 #include "dungeon_generator.h"
+#include "tile.h"
 
 
 static struct box
@@ -24,6 +25,7 @@ digger_dig_area(struct digger *digger,
                 int length,
                 int width,
                 int left_offset,
+                enum wall_type entrance_type,
                 enum area_type area_type)
 {
     struct box box_to_dig = box_for_area(digger, length, width, left_offset, 0);
@@ -46,6 +48,30 @@ digger_dig_area(struct digger *digger,
                                          orientation_from_direction(digger->direction),
                                          box_to_dig,
                                          tile_type_empty);
+    
+    struct tile *entrance_tile;
+    switch (digger->direction) {
+        case direction_north:
+            entrance_tile = dungeon_tile_at(digger->generator->dungeon, digger->point);
+            entrance_tile->walls.south = entrance_type;
+            break;
+        case direction_south:
+            entrance_tile = dungeon_tile_at(digger->generator->dungeon, point_north(digger->point));
+            entrance_tile->walls.south = entrance_type;
+            break;
+        case direction_east:
+            entrance_tile = dungeon_tile_at(digger->generator->dungeon, digger->point);
+            entrance_tile->walls.west = entrance_type;
+            break;
+        case direction_west:
+            entrance_tile = dungeon_tile_at(digger->generator->dungeon, point_east(digger->point));
+            entrance_tile->walls.west = entrance_type;
+            break;
+        default:
+            fail("Unrecognized direction %i", digger->direction);
+            break;
+    }
+    
     digger->point = point_move(digger->point, length, digger->direction);
     return area;
 }
@@ -62,7 +88,12 @@ digger_dig_chamber(struct digger *digger,
     if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
         return NULL;
     }
-    return digger_dig_area(digger, length, width, left_offset, area_type_chamber);
+    return digger_dig_area(digger,
+                           length,
+                           width,
+                           left_offset,
+                           wall_type_none,
+                           area_type_chamber);
 }
 
 
@@ -77,7 +108,12 @@ digger_dig_intersection(struct digger *digger)
     if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
         return NULL;
     }
-    return digger_dig_area(digger, length, width, left_offset, area_type_intersection);
+    return digger_dig_area(digger,
+                           length,
+                           width,
+                           left_offset,
+                           wall_type_none,
+                           area_type_intersection);
 }
 
 
@@ -92,7 +128,12 @@ digger_dig_passage(struct digger *digger, int distance)
     if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
         return NULL;
     }
-    return digger_dig_area(digger, length, width, left_offset, area_type_passage);
+    return digger_dig_area(digger,
+                           length,
+                           width,
+                           left_offset,
+                           wall_type_none,
+                           area_type_passage);
 }
 
 

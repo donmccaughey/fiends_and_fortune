@@ -6,9 +6,11 @@
 
 #include "area_type.h"
 #include "box.h"
+#include "direction.h"
 #include "orientation.h"
 #include "point.h"
 #include "tile_type.h"
+#include "wall_type.h"
 
 
 struct area;
@@ -48,6 +50,12 @@ struct tile *
 dungeon_add_tile(struct dungeon *dungeon,
                  struct point point,
                  enum tile_type type);
+
+void
+dungeon_set_wall(struct dungeon *dungeon,
+                 struct point point,
+                 enum direction direction,
+                 enum wall_type type);
 
 bool
 dungeon_is_box_excavated(struct dungeon *dungeon, struct box box);

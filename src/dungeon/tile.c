@@ -8,7 +8,7 @@
 struct tile *
 tile_alloc(struct point point, enum tile_type type)
 {
-    struct tile *tile = malloc_or_die(sizeof(struct tile));
+    struct tile *tile = calloc_or_die(1, sizeof(struct tile));
     tile->point = point;
     tile->type = type;
     return tile;
@@ -29,6 +29,15 @@ tile_equals(struct tile *tile, struct tile *other)
         && tile->point.y == other->point.y
         && tile->point.z == other->point.z
         && tile->type == other->type;
+}
+
+
+bool
+tile_is_blank(struct tile *tile)
+{
+    return tile_type_solid == tile->type
+        && wall_type_none == tile->walls.south
+        && wall_type_none == tile->walls.west;
 }
 
 

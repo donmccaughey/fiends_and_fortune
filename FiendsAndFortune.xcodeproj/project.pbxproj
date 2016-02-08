@@ -143,6 +143,7 @@
 		D406B6491C66C60F0037171B /* size.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = size.c; sourceTree = "<group>"; };
 		D406B64A1C66C60F0037171B /* size.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = size.h; sourceTree = "<group>"; };
 		D406B64D1C66FFE00037171B /* box_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = box_test.c; sourceTree = "<group>"; };
+		D406B64F1C6857A30037171B /* wall_type.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wall_type.h; sourceTree = "<group>"; };
 		D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibfnf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
 		D4092F7F1B65D6C200BFD0B3 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
@@ -323,6 +324,7 @@
 				B0F47ECAB001875322D69DA2 /* tile.h */,
 				B0F47D983F07A2F764DAF60C /* tile.c */,
 				B0F47A2D24BACF0D47681405 /* tile_type.h */,
+				D406B64F1C6857A30037171B /* wall_type.h */,
 			);
 			path = dungeon;
 			sourceTree = "<group>";

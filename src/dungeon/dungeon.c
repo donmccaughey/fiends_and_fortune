@@ -98,6 +98,21 @@ dungeon_alloc_tiles_for_box(struct dungeon *dungeon, struct box box)
 }
 
 
+struct box
+dungeon_box_for_level(struct dungeon *dungeon, int level)
+{
+    struct box box = box_make(point_make(0, 0, level), size_make(0, 0, 1));
+    for (size_t i = 0; i < dungeon->tiles_count; ++i) {
+        struct tile *tile = dungeon->tiles[i];
+        if (tile->point.z < level) continue;
+        if (tile->point.z > level) break;
+        if (tile_is_unescavated(tile)) continue;
+        box = box_extend_to_include_point(box, tile->point);
+    }
+    return box;
+}
+
+
 void
 dungeon_free(struct dungeon *dungeon)
 {
@@ -157,17 +172,34 @@ dungeon_print_level(struct dungeon *dungeon, int level, FILE *out)
 }
 
 
-struct box
-dungeon_box_for_level(struct dungeon *dungeon, int level)
+void
+dungeon_set_wall(struct dungeon *dungeon,
+                 struct point point,
+                 enum direction direction,
+                 enum wall_type type)
 {
-    struct box box = box_make(point_make(0, 0, level), size_make(0, 0, 1));
-    for (size_t i = 0; i < dungeon->tiles_count; ++i) {
-        struct tile *tile = dungeon->tiles[i];
-        if (tile->point.z < level) continue;
-        if (tile->point.z > level) break;
-        box = box_extend_to_include_point(box, tile->point);
+    struct tile *tile;
+    switch (direction) {
+        case direction_north:
+            tile = dungeon_tile_at(dungeon, point_north(point));
+            tile->walls.south = type;
+            break;
+        case direction_south:
+            tile = dungeon_tile_at(dungeon, point);
+            tile->walls.south = type;
+            break;
+        case direction_east:
+            tile = dungeon_tile_at(dungeon, point_east(point));
+            tile->walls.west = type;
+            break;
+        case direction_west:
+            tile = dungeon_tile_at(dungeon, point);
+            tile->walls.west = type;
+            break;
+        default:
+            fail("Unrecognized direction %i", direction);
+            break;
     }
-    return box;
 }
 
 

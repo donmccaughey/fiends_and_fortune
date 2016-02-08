@@ -8,6 +8,7 @@
 #include "text_rectangle.h"
 #include "tile.h"
 #include "tile_type.h"
+#include "wall_type.h"
 
 
 #define CORNER_EMPTY "+   "
@@ -16,13 +17,14 @@
 #define EMPTY "    "
 #define EMPTY_SPAN ".   "
 #define HWALL "----"
+#define SOLID "::::"
+#define VWALL_EMPTY "|   "
+#define VWALL_SOLID "|:::"
+
 #define LMARGIN "    "
 #define LMARGIN_NUM "%3i "
 #define RMARGIN "    "
 #define RMARGIN_NUM "| %-3i\n"
-#define SOLID "::::"
-#define VWALL_EMPTY "|   "
-#define VWALL_SOLID "|:::"
 
 
 static void
@@ -38,9 +40,6 @@ tile_bottom_half(struct level_map const *level_map, struct point point);
 
 static char const *
 tile_top_half(struct level_map const *level_map, struct point point);
-
-static enum tile_type
-tile_type_at(struct level_map const *level_map, struct point point);
 
 
 struct level_map *
@@ -133,7 +132,7 @@ level_map_free(struct level_map *level_map)
 struct tile *
 level_map_tile_at(struct level_map const *level_map, struct point point)
 {
-    assert(box_contains_point(level_map->box, point));
+    if(!box_contains_point(level_map->box, point)) return NULL;
     int index = box_index_for_point(level_map->box, point);
     return level_map->tiles[index];
 }
@@ -166,67 +165,80 @@ print_scale_row(struct level_map const *level_map,
 static char const *
 tile_bottom_half(struct level_map const *level_map, struct point point)
 {
-    if (point.y == level_map->box.origin.y) return CORNER_HWALL;
-    
-    enum tile_type type = tile_type_at(level_map, point);
-    enum tile_type south_type = tile_type_at(level_map, point_south(point));
-    
+    struct tile *tile = level_map_tile_at(level_map, point);
+    if (level_map->box.origin.y == point.y) return CORNER_HWALL;
     if (level_map->box.origin.x == point.x) {
-        if (type == south_type) {
-            return tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY;
+        if (tile_type_solid == tile->type) return CORNER_SOLID;
+        if (tile_type_empty == tile->type) return CORNER_EMPTY;
+    }
+    
+    if (   wall_type_none == tile->walls.west
+        && wall_type_none == tile->walls.south)
+    {
+        struct tile *tile_west = level_map_tile_at(level_map, point_west(point));
+        struct tile *tile_south = level_map_tile_at(level_map, point_south(point));
+        if (   tile_west
+            && tile_south
+            && wall_type_none != tile_west->walls.south
+            && wall_type_none != tile_south->walls.west)
+        {
+            if (tile_type_solid == tile->type) return CORNER_SOLID;
+            if (tile_type_empty == tile->type) return CORNER_EMPTY;
         } else {
-            return CORNER_HWALL;
+            if (tile_type_solid == tile->type) return SOLID;
+            if (tile_type_empty == tile->type) return EMPTY_SPAN;
         }
     }
     
-    enum tile_type west_type = tile_type_at(level_map, point_west(point));
-    enum tile_type south_west_type = tile_type_at(level_map, point_south_west(point));
+    if (   wall_type_solid == tile->walls.west
+        && wall_type_solid == tile->walls.south)
+    {
+        return CORNER_HWALL;
+    }
     
-    if (type == south_type) {
-        if (type == west_type) {
-            if (type == south_west_type) {
-                return tile_type_solid == type ? SOLID : EMPTY_SPAN;
-            } else {
-                return tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY;
-            }
+    if (   wall_type_solid == tile->walls.west
+        && wall_type_none == tile->walls.south)
+    {
+        struct tile *tile_west = level_map_tile_at(level_map, point_west(point));
+        if (tile_west && wall_type_none != tile_west->walls.south) {
+            if (tile_type_solid == tile->type) return CORNER_SOLID;
+            if (tile_type_empty == tile->type) return CORNER_EMPTY;
         } else {
-            if (type == south_west_type) {
-                return tile_type_solid == type ? CORNER_SOLID : CORNER_EMPTY;
-            } else {
-                return tile_type_solid == type ? VWALL_SOLID : VWALL_EMPTY;
-            }
+            if (tile_type_solid == tile->type) return VWALL_SOLID;
+            if (tile_type_empty == tile->type) return VWALL_EMPTY;
         }
     }
     
-    if (type == west_type) {
-        if (type == south_west_type) {
+    if (   wall_type_none == tile->walls.west
+        && wall_type_solid == tile->walls.south)
+    {
+        struct tile *tile_south = level_map_tile_at(level_map, point_south(point));
+        if (tile_south && wall_type_none != tile_south->walls.west) {
             return CORNER_HWALL;
         } else {
             return HWALL;
         }
     }
     
-    return CORNER_HWALL;
+    return SOLID;
 }
 
 
 static char const *
 tile_top_half(struct level_map const *level_map, struct point point)
 {
-    enum tile_type type = tile_type_at(level_map, point);
-    enum tile_type west_type = tile_type_at(level_map, point_west(point));
-    
-    if (level_map->box.origin.x == point.x || type != west_type) {
-        return tile_type_solid == type ? VWALL_SOLID : VWALL_EMPTY;
-    } else {
-        return tile_type_solid == type ? SOLID : EMPTY;
+    struct tile *tile = level_map_tile_at(level_map, point);
+    if (level_map->box.origin.x == point.x) {
+        if (tile_type_solid == tile->type) return VWALL_SOLID;
+        if (tile_type_empty == tile->type) return VWALL_EMPTY;
     }
-}
-
-
-static enum tile_type
-tile_type_at(struct level_map const *level_map, struct point point)
-{
-    if (!box_contains_point(level_map->box, point)) return tile_type_solid;
-    return level_map_tile_at(level_map, point)->type;
+    if (tile_type_empty == tile->type) {
+        if (wall_type_none == tile->walls.west) return EMPTY;
+        if (wall_type_solid == tile->walls.west) return VWALL_EMPTY;
+    }
+    if (tile_type_solid == tile->type) {
+        if (wall_type_none == tile->walls.west) return SOLID;
+        if (wall_type_solid == tile->walls.west) return VWALL_SOLID;
+    }
+    return SOLID;
 }

@@ -113,7 +113,7 @@ dungeon_generator_generate(struct dungeon_generator *generator)
     struct digger *digger = dungeon_generator_add_digger(generator,
                                                          point_make(0, 0, 1),
                                                          direction_north);
-    digger_dig_passage(digger, 2);
+    digger_dig_area(digger, 2, 1, 0, wall_type_solid, area_type_passage);
     
     while (generator->diggers_count && generator->iteration_count < max_interation_count) {
         struct digger **diggers = arraydup_or_die(generator->diggers,
@@ -136,10 +136,10 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
                                                          point_make(0, 0, 1),
                                                          direction_north);
     
-    digger_dig_passage(digger, 2);
+    digger_dig_area(digger, 2, 1, 0, wall_type_solid, area_type_passage);
     digger_dig_chamber(digger, 5, 3, 1);
     
-    /* from entry chamber, north west exit */
+    // from entry chamber, north west exit
     struct digger *nw_digger = dungeon_generator_copy_digger(generator, digger);
     digger_turn_90_degrees_left(nw_digger);
     digger_move(nw_digger, 1, direction_south);
@@ -149,7 +149,7 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_dig_passage(nw_digger, 6);
     digger_dig_chamber(nw_digger, 3, 2, 1);
     
-    /* from entry chamber, south west exit */
+    // from entry chamber, south west exit
     struct digger *sw_digger = dungeon_generator_copy_digger(generator, digger);
     digger_turn_90_degrees_left(sw_digger);
     digger_move(sw_digger, 3, direction_south);
@@ -166,7 +166,7 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_dig_passage(sw_digger, 3);
     digger_dig_chamber(sw_digger, 2, 3, 1);
     
-    /* from entry chamber, south east exit */
+    // from entry chamber, south east exit
     struct digger *se_digger = dungeon_generator_copy_digger(generator, digger);
     digger_turn_90_degrees_right(se_digger);
     digger_move(se_digger, 3, direction_south);
@@ -174,10 +174,17 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_dig_passage(se_digger, 1);
     digger_dig_chamber(se_digger, 6, 4, 0);
     // fill in one tile in chamber
-    struct tile *tile = dungeon_tile_at(generator->dungeon, point_make(5, 2, 1));
+    struct point point = point_make(5, 2, 1);
+    struct tile *tile = dungeon_tile_at(generator->dungeon, point);
     tile->type = tile_type_solid;
+    tile->walls.west = wall_type_solid;
+    tile->walls.south = wall_type_solid;
+    tile = dungeon_tile_at(generator->dungeon, point_east(point));
+    tile->walls.west = wall_type_solid;
+    tile = dungeon_tile_at(generator->dungeon, point_north(point));
+    tile->walls.south = wall_type_solid;
     
-    /* from entry chamber, north exit */
+    // from entry chamber, north exit
     digger_dig_passage(digger, 8);
     digger_turn_90_degrees_right(digger);
     digger_dig_passage(digger, 8);
@@ -188,5 +195,7 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_dig_passage(digger, 3);
     digger_turn_90_degrees_right(digger);
     // dig connecting passage without constraints to make looping passage
-    digger_dig_area(digger, 3, 1, 0, area_type_passage);
+    digger_dig_area(digger, 3, 1, 0, wall_type_none, area_type_passage);
+    tile = dungeon_tile_at(generator->dungeon, point_east(digger->point));
+    tile->walls.west = wall_type_none;
 }

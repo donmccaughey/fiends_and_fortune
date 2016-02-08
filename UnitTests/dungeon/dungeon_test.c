@@ -16,11 +16,8 @@ static void dungeon_generate_small_test(void)
     
     dungeon_generate_small(dungeon);
     
-    assert(114 == dungeon->tiles_count);
-    
     struct box box = dungeon_box_for_level(dungeon, 1);
     assert(box_equals(box, box_make(point_make(-7, 0, 1), size_make(16, 15, 1))));
-    assert(114 == dungeon->tiles_count);
     
     struct tile *tile = dungeon_tile_at(dungeon, point_make(0, 0, 1));
     assert(tile);
