@@ -50,6 +50,13 @@ extend_to_include(int *box_point, int *box_size, int point);
 
 
 bool
+box_contains_box(struct box box, struct box other)
+{
+    return false;
+}
+
+
+bool
 box_contains_point(struct box box, struct point point)
 {
     struct point end = box_end_point(box);
@@ -111,9 +118,49 @@ box_index_for_point(struct box box, struct point point)
 
 
 struct box
+box_intersection(struct box box, struct box other)
+{
+    box = box_normalize(box);
+    other = box_normalize(other);
+    
+    struct point origin = point_make(max(box.origin.x, other.origin.x),
+                                     max(box.origin.y, other.origin.y),
+                                     max(box.origin.z, other.origin.z));
+    
+    struct point box_end = box_end_point(box);
+    struct point other_end = box_end_point(other);
+    struct point end = point_make(min(box_end.x, other_end.x),
+                                  min(box_end.y, other_end.y),
+                                  min(box_end.z, other_end.z));
+    
+    struct box intersection = box_make_from_points(origin, end);
+    if (size_has_volume(intersection.size)) {
+        return box;
+    } else {
+        return box_make_empty(origin);
+    }
+}
+
+
+bool
+box_intersects(struct box box, struct box other)
+{
+    struct box intersection = box_intersection(box, other);
+    return size_has_volume(intersection.size);
+}
+
+
+struct box
 box_make(struct point origin, struct size size)
 {
     return (struct box){ .origin=origin, .size=size };
+}
+
+
+struct box
+box_make_empty(struct point origin)
+{
+    return box_make(origin, size_make_empty());
 }
 
 
@@ -131,6 +178,13 @@ struct box
 box_make_from_points(struct point origin, struct point end)
 {
     return box_make(origin, size_make_from_points(origin, end));
+}
+
+
+struct box
+box_make_unit(struct point origin)
+{
+    return box_make(origin, size_make_unit());
 }
 
 

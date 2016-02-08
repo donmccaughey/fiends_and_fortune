@@ -8,7 +8,6 @@
 #include "box.h"
 #include "orientation.h"
 #include "point.h"
-#include "range.h"
 #include "tile_type.h"
 
 
@@ -51,6 +50,9 @@ struct tile *
 dungeon_add_tile(struct dungeon *dungeon,
                  struct point point,
                  enum tile_type type);
+
+bool
+dungeon_is_box_excavated(struct dungeon *dungeon, struct box box);
 
 struct box
 dungeon_box_for_level(struct dungeon *dungeon, int level);

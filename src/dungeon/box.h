@@ -18,6 +18,12 @@ struct box
 box_make(struct point origin, struct size size);
 
 struct box
+box_make_empty(struct point origin);
+
+struct box
+box_make_unit(struct point origin);
+
+struct box
 box_make_from_boxes(struct box box, struct box other);
 
 struct box
@@ -27,7 +33,13 @@ bool
 box_equals(struct box box, struct box other);
 
 bool
+box_contains_box(struct box box, struct box other);
+
+bool
 box_contains_point(struct box box, struct point point);
+
+bool
+box_intersects(struct box box, struct box other);
 
 struct point
 box_end_point(struct box box);
@@ -43,6 +55,9 @@ box_expand(struct box box, struct size size);
 
 struct box
 box_extend_to_include_point(struct box box, struct point point);
+
+struct box
+box_intersection(struct box box, struct box other);
 
 int
 box_index_for_point(struct box box, struct point point);

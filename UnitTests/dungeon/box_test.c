@@ -200,6 +200,31 @@ box_index_for_point_test(void)
 }
 
 
+static void
+box_intersects_test(void)
+{
+    struct box box1 = box_make(point_make(0, 0, 0), size_make(10, 10, 1));
+    struct box box2 = box_make(point_make(-5, -5, 0), size_make(10, 10, 1));
+    struct box box3 = box_make(point_make(5, 5, 0), size_make(10, 10, 1));
+    struct box box4 = box_make(point_make(3, 3, 0), size_make(3, 3, 1));
+    struct box box5 = box_make(point_make(3, 3, 1), size_make(3, 3, 1));
+    struct box box6 = box_make(point_make(3, 3, -1), size_make(3, 3, 1));
+    struct box box7 = box_make(point_make(3, 3, -1), size_make(3, 3, 3));
+    
+    assert(box_intersects(box1, box1));
+    assert(box_intersects(box1, box2));
+    assert(box_intersects(box1, box3));
+    assert(!box_intersects(box2, box3));
+    assert(box_intersects(box1, box4));
+    assert(box_intersects(box2, box4));
+    assert(box_intersects(box3, box4));
+    assert(!box_intersects(box4, box5));
+    assert(!box_intersects(box4, box6));
+    assert(box_intersects(box4, box7));
+    assert(box_intersects(box5, box7));
+}
+
+
 void box_test(void)
 {
     box_make_test();
@@ -209,4 +234,5 @@ void box_test(void)
     box_expand_test();
     box_extend_to_include_point_test();
     box_index_for_point_test();
+    box_intersects_test();
 }

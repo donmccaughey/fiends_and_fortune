@@ -121,6 +121,19 @@ dungeon_generate_small(struct dungeon *dungeon)
 }
 
 
+bool
+dungeon_is_box_excavated(struct dungeon *dungeon, struct box box)
+{
+    for (size_t i = 0; i < dungeon->xtiles->count; ++i) {
+        struct tile *tile = dungeon->xtiles->members[i];
+        if (tile->point.z >= box.origin.z + box.size.height) break;
+        if (tile_is_unescavated(tile)) continue;
+        if (box_contains_point(box, tile->point)) return true;
+    }
+    return false;
+}
+
+
 void
 dungeon_print_level(struct dungeon *dungeon, int level, FILE *out)
 {

@@ -4,6 +4,7 @@
 
 #include "direction.h"
 #include "point.h"
+#include "size.h"
 
 
 struct digger;
@@ -16,9 +17,7 @@ struct dungeon_generator {
     int diggers_count;
     struct dungeon *dungeon;
     int iteration_count;
-    int max_depth;
-    int max_length;
-    int max_width;
+    struct size max_size;
     struct rnd *rnd;
 };
 

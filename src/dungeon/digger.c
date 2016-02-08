@@ -6,29 +6,17 @@
 #include "common/dice.h"
 #include "common/fail.h"
 #include "common/rnd.h"
-#include "common/str.h"
 
-#include "area.h"
 #include "dungeon.h"
 #include "dungeon_generator.h"
-#include "range.h"
-#include "reverse_range.h"
-#include "tiles.h"
 
 
-static struct range
-x_range_for_area(struct digger *digger,
-                 int length,
-                 int width,
-                 int left_offset,
-                 int buffer);
-
-static struct range
-y_range_for_area(struct digger *digger,
-                 int length,
-                 int width,
-                 int left_offset,
-                 int buffer);
+static struct box
+box_for_area(struct digger *digger,
+             int length,
+             int width,
+             int left_offset,
+             int buffer);
 
 
 struct area *
@@ -38,27 +26,25 @@ digger_dig_area(struct digger *digger,
                 int left_offset,
                 enum area_type area_type)
 {
-    struct range x_range = x_range_for_area(digger, length, width, left_offset, 0);
-    struct range y_range = y_range_for_area(digger, length, width, left_offset, 0);
-    struct range z_range = range_make(digger->point.z, digger->point.z + 1);
-    if (tiles_has_tile_in_range(digger->generator->dungeon->xtiles,
-                                x_range, y_range, z_range))
+    struct box box_to_dig = box_for_area(digger, length, width, left_offset, 0);
+    if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
+        return NULL;
+    }
+    
+    struct box box_for_level = dungeon_box_for_level(digger->generator->dungeon,
+                                                     digger->point.z);
+    struct box new_box_for_level = box_for_level = box_make_from_boxes(box_for_level,
+                                                                       box_to_dig);
+    if (   new_box_for_level.size.width > digger->generator->max_size.width
+        || new_box_for_level.size.length > digger->generator->max_size.length)
     {
         return NULL;
     }
     
-    struct range new_x_range = range_join(digger->generator->dungeon->xtiles->x_range, x_range);
-    if (range_length(new_x_range) > digger->generator->max_width) return NULL;
-    struct range new_y_range = range_join(digger->generator->dungeon->xtiles->y_range, y_range);
-    if (range_length(new_y_range) > digger->generator->max_length) return NULL;
-    
-    struct point origin = point_make(x_range.begin, y_range.begin, digger->point.z);
-    struct size size = size_make(range_length(x_range), range_length(y_range), 1);
-    struct box box = box_make(origin, size);
     struct area *area = dungeon_add_area(digger->generator->dungeon,
                                          area_type,
                                          orientation_from_direction(digger->direction),
-                                         box,
+                                         box_to_dig,
                                          tile_type_empty);
     digger->point = point_move(digger->point, length, digger->direction);
     return area;
@@ -72,12 +58,8 @@ digger_dig_chamber(struct digger *digger,
                    int left_offset)
 {
     int const buffer = 1;
-    struct range x_range = x_range_for_area(digger, length, width, left_offset, buffer);
-    struct range y_range = y_range_for_area(digger, length, width, left_offset, buffer);
-    struct range z_range = range_make(digger->point.z, digger->point.z + 1);
-    if (tiles_has_tile_in_range(digger->generator->dungeon->xtiles,
-                                x_range, y_range, z_range))
-    {
+    struct box box_to_dig = box_for_area(digger, length, width, left_offset, buffer);
+    if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
         return NULL;
     }
     return digger_dig_area(digger, length, width, left_offset, area_type_chamber);
@@ -91,12 +73,8 @@ digger_dig_intersection(struct digger *digger)
     int const width = 1;
     int const left_offset = 0;
     int const buffer = 1;
-    struct range x_range = x_range_for_area(digger, length, width, left_offset, buffer);
-    struct range y_range = y_range_for_area(digger, length, width, left_offset, buffer);
-    struct range z_range = range_make(digger->point.z, digger->point.z + 1);
-    if (tiles_has_tile_in_range(digger->generator->dungeon->xtiles,
-                                x_range, y_range, z_range))
-    {
+    struct box box_to_dig = box_for_area(digger, length, width, left_offset, buffer);
+    if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
         return NULL;
     }
     return digger_dig_area(digger, length, width, left_offset, area_type_intersection);
@@ -110,12 +88,8 @@ digger_dig_passage(struct digger *digger, int distance)
     int const width = 1;
     int const left_offset = 0;
     int const buffer = 1;
-    struct range x_range = x_range_for_area(digger, length, width, left_offset, buffer);
-    struct range y_range = y_range_for_area(digger, length, width, left_offset, buffer);
-    struct range z_range = range_make(digger->point.z, digger->point.z + 1);
-    if (tiles_has_tile_in_range(digger->generator->dungeon->xtiles,
-                                x_range, y_range, z_range))
-    {
+    struct box box_to_dig = box_for_area(digger, length, width, left_offset, buffer);
+    if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
         return NULL;
     }
     return digger_dig_area(digger, length, width, left_offset, area_type_passage);
@@ -327,66 +301,46 @@ digger_turn_90_degrees_right(struct digger *digger)
 }
 
 
-static struct range
-x_range_for_area(struct digger *digger,
-                 int length,
-                 int width,
-                 int left_offset,
-                 int buffer)
+static struct box
+box_for_area(struct digger *digger,
+             int length,
+             int width,
+             int left_offset,
+             int buffer)
 {
     assert(left_offset < width);
+    struct point origin;
+    struct size size;
     switch (digger->direction) {
         case direction_north:
-            return range_make(digger->point.x - left_offset - buffer,
-                              digger->point.x + width - left_offset + buffer);
-        case direction_south: {
-            struct reverse_range x_reverse_range = reverse_range_make(digger->point.x + left_offset + buffer,
-                                                                      digger->point.x - width + left_offset - buffer);
-            return range_from_reverse_range(x_reverse_range);
-        }
+            origin = point_make(digger->point.x - left_offset - buffer,
+                                digger->point.y,
+                                digger->point.z);
+            size = size_make(width + (2 * buffer), length + buffer, 1);
+            break;
+        case direction_south:
+            origin = point_make(digger->point.x + left_offset + buffer,
+                                digger->point.y,
+                                digger->point.z);
+            size = size_make(-width - (2 * buffer), -length - buffer, 1);
+            break;
         case direction_east:
-            return range_make(digger->point.x,
-                              digger->point.x + length + buffer);
-        case direction_west: {
-            struct reverse_range x_reverse_range = reverse_range_make(digger->point.x,
-                                                                      digger->point.x - length - buffer);
-            return range_from_reverse_range(x_reverse_range);
-        }
-        default:
-            fail("Unrecognized direction %i", digger->direction);
-            return range_make(0, 0);
-    }
-}
-
-
-static struct range
-y_range_for_area(struct digger *digger,
-                 int length,
-                 int width,
-                 int left_offset,
-                 int buffer)
-{
-    assert(left_offset < width);
-    switch (digger->direction) {
-        case direction_north:
-            return range_make(digger->point.y,
-                              digger->point.y + length + buffer);
-        case direction_south: {
-            struct reverse_range y_reverse_range = reverse_range_make(digger->point.y,
-                                                                      digger->point.y - length - buffer);
-            return range_from_reverse_range(y_reverse_range);
-        }
-        case direction_east: {
-            struct reverse_range y_reverse_range = reverse_range_make(digger->point.y + left_offset + buffer,
-                                                                      digger->point.y - width + left_offset - buffer);
-            return range_from_reverse_range(y_reverse_range);
-        }
+            origin = point_make(digger->point.x,
+                                digger->point.y + left_offset + buffer,
+                                digger->point.z);
+            size = size_make(length + buffer, -width - (2 * buffer), 1);
             break;
         case direction_west:
-            return range_make(digger->point.y - left_offset - buffer,
-                              digger->point.y + width - left_offset + buffer);
+            origin = point_make(digger->point.x,
+                                digger->point.y - left_offset - buffer,
+                                digger->point.z);
+            size = size_make(-length - buffer, +width + (2 * buffer), 1);
+            break;
         default:
             fail("Unrecognized direction %i", digger->direction);
-            return range_make(0, 0);
+            origin = point_make(0, 0, 0);
+            size = size_make(0, 0, 0);
+            break;
     }
+    return box_normalize(box_make(origin, size));
 }

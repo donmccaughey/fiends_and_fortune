@@ -30,3 +30,10 @@ tile_equals(struct tile *tile, struct tile *other)
         && tile->point.z == other->point.z
         && tile->type == other->type;
 }
+
+
+bool
+tile_is_unescavated(struct tile *tile)
+{
+    return tile_type_solid == tile->type;
+}

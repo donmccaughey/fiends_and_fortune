@@ -23,5 +23,8 @@ tile_free(struct tile *tile);
 bool
 tile_equals(struct tile *tile, struct tile *other);
 
+bool
+tile_is_unescavated(struct tile *tile);
+
 
 #endif

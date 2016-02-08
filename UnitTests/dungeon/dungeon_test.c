@@ -19,8 +19,8 @@ static void dungeon_generate_small_test(void)
     
     assert(114 == dungeon->xtiles->count);
     
-    assert(range_equals(range_make(-7, 9), dungeon->xtiles->x_range));
-    assert(range_equals(range_make(0, 15), dungeon->xtiles->y_range));
+    struct box box = dungeon_box_for_level(dungeon, 1);
+    assert(box_equals(box, box_make(point_make(-7, 0, 1), size_make(16, 15, 1))));
     assert(114 == dungeon->xtiles->count);
     
     struct tile *tile = tiles_find_tile_at(dungeon->xtiles, point_make(0, 0, 1));
