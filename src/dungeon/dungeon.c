@@ -13,7 +13,19 @@
 #include "level_map.h"
 #include "text_rectangle.h"
 #include "tile.h"
-#include "tiles.h"
+
+
+static int
+tile_compare_by_point(void const *object1, void const *object2);
+
+
+static int
+compare_point_to_tile(void const *key, void const *object)
+{
+    struct point const *point = key;
+    struct tile *const *tile = object;
+    return point_compare(*point, (*tile)->point);
+}
 
 
 struct area *
@@ -47,9 +59,13 @@ dungeon_add_tile(struct dungeon *dungeon,
     dungeon->tiles = reallocarray_or_die(dungeon->tiles,
                                          dungeon->tiles_count,
                                          sizeof(struct tile *));
-    dungeon->tiles[index] = tile_alloc(point, type);
-    tiles_add_tile(dungeon->xtiles, dungeon->tiles[index]);
-    return dungeon->tiles[index];
+    struct tile *tile = tile_alloc(point, type);
+    dungeon->tiles[index] = tile;
+    qsort(dungeon->tiles,
+          dungeon->tiles_count,
+          sizeof(struct tile *),
+          tile_compare_by_point);
+    return tile;
 }
 
 
@@ -59,7 +75,6 @@ dungeon_alloc(void)
     struct dungeon *dungeon = calloc_or_die(1, sizeof(struct dungeon));
     dungeon->areas = calloc_or_die(1, sizeof(struct area *));
     dungeon->tiles = calloc_or_die(1, sizeof(struct tile *));
-    dungeon->xtiles = tiles_alloc();
     return dungeon;
 }
 
@@ -91,13 +106,10 @@ dungeon_free(struct dungeon *dungeon)
             area_free(dungeon->areas[i]);
         }
         free_or_die(dungeon->areas);
-        /* TODO: enable when xtiles is gone
         for (int i = 0; i < dungeon->tiles_count; ++i) {
             tile_free(dungeon->tiles[i]);
         }
-        */
         free_or_die(dungeon->tiles);
-        tiles_free(dungeon->xtiles);
         free_or_die(dungeon);
     }
 }
@@ -124,8 +136,8 @@ dungeon_generate_small(struct dungeon *dungeon)
 bool
 dungeon_is_box_excavated(struct dungeon *dungeon, struct box box)
 {
-    for (size_t i = 0; i < dungeon->xtiles->count; ++i) {
-        struct tile *tile = dungeon->xtiles->members[i];
+    for (size_t i = 0; i < dungeon->tiles_count; ++i) {
+        struct tile *tile = dungeon->tiles[i];
         if (tile->point.z >= box.origin.z + box.size.height) break;
         if (tile_is_unescavated(tile)) continue;
         if (box_contains_point(box, tile->point)) return true;
@@ -149,8 +161,8 @@ struct box
 dungeon_box_for_level(struct dungeon *dungeon, int level)
 {
     struct box box = box_make(point_make(0, 0, level), size_make(0, 0, 1));
-    for (size_t i = 0; i < dungeon->xtiles->count; ++i) {
-        struct tile *tile = dungeon->xtiles->members[i];
+    for (size_t i = 0; i < dungeon->tiles_count; ++i) {
+        struct tile *tile = dungeon->tiles[i];
         if (tile->point.z < level) continue;
         if (tile->point.z > level) break;
         box = box_extend_to_include_point(box, tile->point);
@@ -162,9 +174,23 @@ dungeon_box_for_level(struct dungeon *dungeon, int level)
 struct tile *
 dungeon_tile_at(struct dungeon *dungeon, struct point point)
 {
-    struct tile *tile = tiles_find_tile_at(dungeon->xtiles, point);
-    if (!tile) {
-        tile = dungeon_add_tile(dungeon, point, tile_type_solid);
+    struct tile **tile = bsearch(&point,
+                                 dungeon->tiles,
+                                 dungeon->tiles_count,
+                                 sizeof(struct tile *),
+                                 compare_point_to_tile);
+    if (tile) {
+        return *tile;
+    } else {
+        return dungeon_add_tile(dungeon, point, tile_type_solid);
     }
-    return tile;
+}
+
+
+static int
+tile_compare_by_point(void const *object1, void const *object2)
+{
+    struct tile *const *tile1 = object1;
+    struct tile *const *tile2 = object2;
+    return point_compare((*tile1)->point, (*tile2)->point);
 }

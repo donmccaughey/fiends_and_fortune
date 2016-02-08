@@ -4,7 +4,6 @@
 
 #include "dungeon/dungeon.h"
 #include "dungeon/tile.h"
-#include "dungeon/tiles.h"
 
 
 void
@@ -17,20 +16,23 @@ static void dungeon_generate_small_test(void)
     
     dungeon_generate_small(dungeon);
     
-    assert(114 == dungeon->xtiles->count);
+    assert(114 == dungeon->tiles_count);
     
     struct box box = dungeon_box_for_level(dungeon, 1);
     assert(box_equals(box, box_make(point_make(-7, 0, 1), size_make(16, 15, 1))));
-    assert(114 == dungeon->xtiles->count);
+    assert(114 == dungeon->tiles_count);
     
-    struct tile *tile = tiles_find_tile_at(dungeon->xtiles, point_make(0, 0, 1));
+    struct tile *tile = dungeon_tile_at(dungeon, point_make(0, 0, 1));
     assert(tile);
+    assert(tile_type_empty == tile->type);
     
-    tile = tiles_find_tile_at(dungeon->xtiles, point_make(0, 1, 1));
+    tile = dungeon_tile_at(dungeon, point_make(0, 1, 1));
     assert(tile);
+    assert(tile_type_empty == tile->type);
     
-    tile = tiles_find_tile_at(dungeon->xtiles, point_make(-1, -8, 1));
-    assert(!tile);
+    tile = dungeon_tile_at(dungeon, point_make(-1, -8, 1));
+    assert(tile);
+    assert(tile_type_solid == tile->type);
     
     dungeon_free(dungeon);
 }

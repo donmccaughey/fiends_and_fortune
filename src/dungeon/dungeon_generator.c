@@ -8,7 +8,6 @@
 #include "digger.h"
 #include "dungeon.h"
 #include "tile.h"
-#include "tiles.h"
 
 
 static struct digger *
@@ -175,7 +174,7 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_dig_passage(se_digger, 1);
     digger_dig_chamber(se_digger, 6, 4, 0);
     // fill in one tile in chamber
-    struct tile *tile = tiles_find_tile_at(generator->dungeon->xtiles, point_make(5, 2, 1));
+    struct tile *tile = dungeon_tile_at(generator->dungeon, point_make(5, 2, 1));
     tile->type = tile_type_solid;
     
     /* from entry chamber, north exit */

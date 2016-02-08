@@ -15,7 +15,6 @@ struct area;
 struct areas;
 struct rnd;
 struct tile;
-struct tiles;
 
 
 struct dungeon {
@@ -23,7 +22,6 @@ struct dungeon {
     int areas_count;
     struct tile **tiles;
     int tiles_count;
-    struct tiles *xtiles;
 };
 
 

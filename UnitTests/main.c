@@ -21,9 +21,6 @@ point_test(void);
 void
 str_test(void);
 
-void
-tiles_test(void);
-
 
 int
 main (int argc, const char *argv[])
@@ -37,7 +34,6 @@ main (int argc, const char *argv[])
     dungeon_generator_test();
     point_test();
     str_test();
-    tiles_test();
     
     fprintf(out, "Okay\n");
     alloc_count_is_zero_or_die();
