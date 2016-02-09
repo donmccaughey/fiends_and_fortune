@@ -14,7 +14,6 @@ struct tile;
 
 struct area {
     struct box box;
-    char *description;
     enum orientation orientation;
     struct tile **tiles;
     int tiles_count;
@@ -31,6 +30,9 @@ area_alloc(struct dungeon *dungeon,
 
 void
 area_free(struct area *area);
+
+char *
+area_alloc_description(struct area const *area);
 
 
 #endif

@@ -254,7 +254,9 @@ generate_random_dungeon(struct rnd *rnd, FILE *out)
     dungeon_print_level(dungeon, 1, out);
     fprintf(out, "\nDungeon areas:\n");
     for (int i = 0; i < dungeon->areas_count; ++i) {
-        fprintf(out, "\t%s\n", dungeon->areas[i]->description);
+        char *description = area_alloc_description(dungeon->areas[i]);
+        fprintf(out, "\t%s\n", description);
+        free_or_die(description);
     }
     
     dungeon_free(dungeon);
@@ -270,7 +272,9 @@ generate_sample_dungeon(struct rnd *rnd, FILE *out)
     dungeon_print_level(dungeon, 1, out);
     fprintf(out, "\nDungeon areas:\n");
     for (int i = 0; i < dungeon->areas_count; ++i) {
-        fprintf(out, "\t%s\n", dungeon->areas[i]->description);
+        char *description = area_alloc_description(dungeon->areas[i]);
+        fprintf(out, "\t%s\n", description);
+        free_or_die(description);
     }
     
     dungeon_free(dungeon);

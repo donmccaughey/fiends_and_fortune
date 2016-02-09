@@ -7,6 +7,8 @@
 #include "common/fail.h"
 #include "common/rnd.h"
 
+#include "area.h"
+#include "area_type.h"
 #include "dungeon.h"
 #include "dungeon_generator.h"
 #include "tile.h"
@@ -229,36 +231,77 @@ digger_generate_side_passage(struct digger *digger)
         // right curve 45 degrees ahead
     } else if (score <= 13) {
         // passage T's
-        if (!digger_dig_intersection(digger)) return;
+        struct area *intersection = digger_dig_intersection(digger);
+        if (!intersection) return;
+        int exit_count = 0;
         
         struct digger *left_digger = dungeon_generator_copy_digger(digger->generator,
                                                                    digger);
         digger_turn_90_degrees_left(left_digger);
-        digger_dig_passage(left_digger, 3);
+        struct area *left_passage = digger_dig_passage(left_digger, 3);
+        if (left_passage) {
+            ++exit_count;
+        } else {
+            dungeon_generator_delete_digger(digger->generator, left_digger);
+        }
         
         struct digger *right_digger = dungeon_generator_copy_digger(digger->generator,
                                                                     digger);
         digger_turn_90_degrees_right(right_digger);
-        digger_dig_passage(right_digger, 3);
+        struct area *right_passage = digger_dig_passage(right_digger, 3);
+        if (right_passage) {
+            ++exit_count;
+        } else {
+            dungeon_generator_delete_digger(digger->generator, right_digger);
+        }
         
-        dungeon_generator_delete_digger(digger->generator, digger);
+        if (0 == exit_count || 1 == exit_count) {
+            // TODO: remove intersection if zero exits
+            intersection->type = area_type_passage;
+            // TODO: merge intersection area with adjacent passage
+        } else {
+            dungeon_generator_delete_digger(digger->generator, digger);
+        }
     } else if (score <= 15) {
         // passage Y's
     } else if (score < 19) {
         // four way intersection
-        if (!digger_dig_intersection(digger)) return;
+        struct area *intersection = digger_dig_intersection(digger);
+        if (!intersection) return;
+        int exit_count = 0;
         
         struct digger *left_digger = dungeon_generator_copy_digger(digger->generator,
                                                                    digger);
         digger_turn_90_degrees_left(left_digger);
-        digger_dig_passage(left_digger, 3);
+        struct area *left_passage = digger_dig_passage(left_digger, 3);
+        if (left_passage) {
+            ++exit_count;
+        } else {
+            dungeon_generator_delete_digger(digger->generator, left_digger);
+        }
         
         struct digger *right_digger = dungeon_generator_copy_digger(digger->generator,
                                                                     digger);
         digger_turn_90_degrees_right(right_digger);
-        digger_dig_passage(right_digger, 3);
+        struct area *right_passage = digger_dig_passage(right_digger, 3);
+        if (right_passage) {
+            ++exit_count;
+        } else {
+            dungeon_generator_delete_digger(digger->generator, right_digger);
+        }
         
-        digger_dig_passage(digger, 3);
+        struct area *forward_passage = digger_dig_passage(digger, 3);
+        if (forward_passage) {
+            ++exit_count;
+        } else {
+            dungeon_generator_delete_digger(digger->generator, digger);
+        }
+        
+        if (0 == exit_count || 1 == exit_count) {
+            // TODO: remove intersection if zero exits and add forward digger
+            intersection->type = area_type_passage;
+            // TODO: merge intersection area with adjacent passage
+        }
     } else {
         // passage X's
     }
