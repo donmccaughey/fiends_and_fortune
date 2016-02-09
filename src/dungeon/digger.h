@@ -47,7 +47,9 @@ struct area *
 digger_dig_intersection(struct digger *digger);
 
 struct area *
-digger_dig_passage(struct digger *digger, int distance);
+digger_dig_passage(struct digger *digger,
+                   int distance,
+                   enum wall_type entrance_type);
 
 void
 digger_periodic_check(struct digger *digger);

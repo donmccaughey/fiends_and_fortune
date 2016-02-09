@@ -120,7 +120,9 @@ digger_dig_intersection(struct digger *digger)
 
 
 struct area *
-digger_dig_passage(struct digger *digger, int distance)
+digger_dig_passage(struct digger *digger,
+                   int distance,
+                   enum wall_type entrance_type)
 {
     int const length = distance;
     int const width = 1;
@@ -134,7 +136,7 @@ digger_dig_passage(struct digger *digger, int distance)
                            length,
                            width,
                            left_offset,
-                           wall_type_none,
+                           entrance_type,
                            area_type_passage);
 }
 
@@ -204,9 +206,9 @@ digger_generate_side_passage(struct digger *digger)
         struct digger *side_digger = dungeon_generator_copy_digger(digger->generator,
                                                                    digger);
         digger_turn_90_degrees_left(side_digger);
-        digger_dig_passage(side_digger, 3);
+        digger_dig_passage(side_digger, 3, wall_type_none);
         
-        digger_dig_passage(digger, 3);
+        digger_dig_passage(digger, 3, wall_type_none);
     } else if (score <= 4) {
         // right 90 degrees
         if (!digger_dig_intersection(digger)) return;
@@ -214,9 +216,9 @@ digger_generate_side_passage(struct digger *digger)
         struct digger *side_digger = dungeon_generator_copy_digger(digger->generator,
                                                                    digger);
         digger_turn_90_degrees_right(side_digger);
-        digger_dig_passage(side_digger, 3);
+        digger_dig_passage(side_digger, 3, wall_type_none);
         
-        digger_dig_passage(digger, 3);
+        digger_dig_passage(digger, 3, wall_type_none);
     } else if (score == 5) {
         // left 45 degrees ahead
     } else if (score == 6) {
@@ -238,7 +240,7 @@ digger_generate_side_passage(struct digger *digger)
         struct digger *left_digger = dungeon_generator_copy_digger(digger->generator,
                                                                    digger);
         digger_turn_90_degrees_left(left_digger);
-        struct area *left_passage = digger_dig_passage(left_digger, 3);
+        struct area *left_passage = digger_dig_passage(left_digger, 3, wall_type_none);
         if (left_passage) {
             ++exit_count;
         } else {
@@ -248,7 +250,7 @@ digger_generate_side_passage(struct digger *digger)
         struct digger *right_digger = dungeon_generator_copy_digger(digger->generator,
                                                                     digger);
         digger_turn_90_degrees_right(right_digger);
-        struct area *right_passage = digger_dig_passage(right_digger, 3);
+        struct area *right_passage = digger_dig_passage(right_digger, 3, wall_type_none);
         if (right_passage) {
             ++exit_count;
         } else {
@@ -273,7 +275,7 @@ digger_generate_side_passage(struct digger *digger)
         struct digger *left_digger = dungeon_generator_copy_digger(digger->generator,
                                                                    digger);
         digger_turn_90_degrees_left(left_digger);
-        struct area *left_passage = digger_dig_passage(left_digger, 3);
+        struct area *left_passage = digger_dig_passage(left_digger, 3, wall_type_none);
         if (left_passage) {
             ++exit_count;
         } else {
@@ -283,14 +285,14 @@ digger_generate_side_passage(struct digger *digger)
         struct digger *right_digger = dungeon_generator_copy_digger(digger->generator,
                                                                     digger);
         digger_turn_90_degrees_right(right_digger);
-        struct area *right_passage = digger_dig_passage(right_digger, 3);
+        struct area *right_passage = digger_dig_passage(right_digger, 3, wall_type_none);
         if (right_passage) {
             ++exit_count;
         } else {
             dungeon_generator_delete_digger(digger->generator, right_digger);
         }
         
-        struct area *forward_passage = digger_dig_passage(digger, 3);
+        struct area *forward_passage = digger_dig_passage(digger, 3, wall_type_none);
         if (forward_passage) {
             ++exit_count;
         } else {
@@ -315,7 +317,7 @@ digger_generate_turn(struct digger *digger)
     if (score <= 8) {
         // left 90 degrees
         digger_turn_90_degrees_left(digger);
-        digger_dig_passage(digger, 3);
+        digger_dig_passage(digger, 3, wall_type_none);
     } else if (score == 9) {
         // left 45 degrees ahead
     } else if (score == 10) {
@@ -323,7 +325,7 @@ digger_generate_turn(struct digger *digger)
     } else if (score <= 18) {
         // right 90 degrees
         digger_turn_90_degrees_right(digger);
-        digger_dig_passage(digger, 3);
+        digger_dig_passage(digger, 3, wall_type_none);
     } else if (score == 19) {
         // right 45 degrees ahead
     } else {
@@ -344,7 +346,7 @@ digger_periodic_check(struct digger *digger)
 {
     int score = roll("1d20", digger->generator->rnd);
     if (score <= 2) {
-        digger_dig_passage(digger, 6);
+        digger_dig_passage(digger, 6, wall_type_none);
     } else if (score <= 5) {
         // door
     } else if (score <= 10) {

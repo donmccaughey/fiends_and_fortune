@@ -34,5 +34,11 @@ tile_is_blank(struct tile *tile);
 bool
 tile_is_unescavated(struct tile *tile);
 
+bool
+tile_has_south_wall(struct tile *tile);
+
+bool
+tile_has_west_wall(struct tile *tile);
+
 
 #endif

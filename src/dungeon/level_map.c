@@ -11,19 +11,27 @@
 #include "wall_type.h"
 
 
-#define CORNER_EMPTY "+   "
-#define CORNER_HWALL "+---"
-#define CORNER_SOLID "+:::"
-#define EMPTY "    "
-#define EMPTY_SPAN ".   "
-#define HWALL "----"
-#define SOLID "::::"
-#define VWALL_EMPTY "|   "
-#define VWALL_SOLID "|:::"
+#define CORNER_EMPTY       "+   "
+#define CORNER_EMPTY_EDOOR "+  ["
+#define CORNER_HWALL       "+---"
+#define CORNER_HDOOR       "+[-]"
+#define CORNER_SOLID       "+:::"
+#define EMPTY              "    "
+#define EMPTY_EDOOR        "   ["
+#define EMPTY_SPAN         ".   "
+#define EMPTY_SPAN_EDOOR   ".  ["
+#define HWALL              "----"
+#define HDOOR              "-[-]"
+#define SOLID              "::::"
+#define VWALL_EMPTY        "|   "
+#define VWALL_EMPTY_EDOOR  "|  ["
+#define VWALL_SOLID        "|:::"
+#define VWALL_DOOR         "|]  "
+#define VWALL_DOOR_EDOOR   "|] ["
 
-#define LMARGIN "    "
+#define LMARGIN     "    "
 #define LMARGIN_NUM "%3i "
-#define RMARGIN "    "
+#define RMARGIN     "    "
 #define RMARGIN_NUM "| %-3i\n"
 
 
@@ -172,8 +180,7 @@ tile_bottom_half(struct level_map const *level_map, struct point point)
         if (tile_type_empty == tile->type) return CORNER_EMPTY;
     }
     
-    if (   wall_type_none == tile->walls.west
-        && wall_type_none == tile->walls.south)
+    if (!tile_has_west_wall(tile) && !tile_has_south_wall(tile))
     {
         struct tile *tile_west = level_map_tile_at(level_map, point_west(point));
         struct tile *tile_south = level_map_tile_at(level_map, point_south(point));
@@ -190,14 +197,13 @@ tile_bottom_half(struct level_map const *level_map, struct point point)
         }
     }
     
-    if (   wall_type_solid == tile->walls.west
-        && wall_type_solid == tile->walls.south)
+    if (tile_has_west_wall(tile) && tile_has_south_wall(tile))
     {
-        return CORNER_HWALL;
+        if (wall_type_solid == tile->walls.south) return CORNER_HWALL;
+        if (wall_type_door == tile->walls.south) return CORNER_HDOOR;
     }
     
-    if (   wall_type_solid == tile->walls.west
-        && wall_type_none == tile->walls.south)
+    if (tile_has_west_wall(tile) && !tile_has_south_wall(tile))
     {
         struct tile *tile_west = level_map_tile_at(level_map, point_west(point));
         if (tile_west && wall_type_none != tile_west->walls.south) {
@@ -209,8 +215,7 @@ tile_bottom_half(struct level_map const *level_map, struct point point)
         }
     }
     
-    if (   wall_type_none == tile->walls.west
-        && wall_type_solid == tile->walls.south)
+    if (!tile_has_west_wall(tile) && tile_has_south_wall(tile))
     {
         struct tile *tile_south = level_map_tile_at(level_map, point_south(point));
         if (tile_south && wall_type_none != tile_south->walls.west) {
@@ -229,12 +234,31 @@ tile_top_half(struct level_map const *level_map, struct point point)
 {
     struct tile *tile = level_map_tile_at(level_map, point);
     if (level_map->box.origin.x == point.x) {
-        if (tile_type_solid == tile->type) return VWALL_SOLID;
-        if (tile_type_empty == tile->type) return VWALL_EMPTY;
+        if (tile_type_solid == tile->type) {
+            return VWALL_SOLID;
+        }
+        if (tile_type_empty == tile->type) {            
+            if (wall_type_door == tile->walls.west) {
+                return VWALL_DOOR;
+            } else {
+                return VWALL_EMPTY;
+            }
+        }
     }
     if (tile_type_empty == tile->type) {
-        if (wall_type_none == tile->walls.west) return EMPTY;
-        if (wall_type_solid == tile->walls.west) return VWALL_EMPTY;
+        struct tile *tile_east = level_map_tile_at(level_map, point_east(point));
+        if (wall_type_none == tile->walls.west) {
+            if (wall_type_door == tile_east->walls.west) return EMPTY_EDOOR;
+            return EMPTY;
+        }
+        if (wall_type_solid == tile->walls.west) {
+            if (wall_type_door == tile_east->walls.west) return VWALL_EMPTY_EDOOR;
+            return VWALL_EMPTY;
+        }
+        if (wall_type_door == tile->walls.west) {
+            if (wall_type_door == tile_east->walls.west) return VWALL_DOOR_EDOOR;
+            return VWALL_DOOR;
+        }
     }
     if (tile_type_solid == tile->type) {
         if (wall_type_none == tile->walls.west) return SOLID;

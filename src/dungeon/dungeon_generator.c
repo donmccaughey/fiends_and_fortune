@@ -144,9 +144,9 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_turn_90_degrees_left(nw_digger);
     digger_move(nw_digger, 1, direction_south);
     digger_move(nw_digger, 1, direction_west);
-    digger_dig_passage(nw_digger, 2);
+    digger_dig_passage(nw_digger, 2, wall_type_none);
     digger_turn_90_degrees_right(nw_digger);
-    digger_dig_passage(nw_digger, 6);
+    digger_dig_passage(nw_digger, 6, wall_type_none);
     digger_dig_chamber(nw_digger, 3, 2, 1);
     
     // from entry chamber, south west exit
@@ -154,16 +154,16 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_turn_90_degrees_left(sw_digger);
     digger_move(sw_digger, 3, direction_south);
     digger_move(sw_digger, 1, direction_west);
-    digger_dig_passage(sw_digger, 2);
+    digger_dig_passage(sw_digger, 2, wall_type_door);
     digger_turn_90_degrees_left(sw_digger);
-    digger_dig_passage(sw_digger, 2);
+    digger_dig_passage(sw_digger, 2, wall_type_none);
     digger_turn_90_degrees_right(sw_digger);
-    digger_dig_passage(sw_digger, 2);
+    digger_dig_passage(sw_digger, 2, wall_type_none);
     digger_turn_90_degrees_right(sw_digger);
-    digger_dig_passage(sw_digger, 2);
+    digger_dig_passage(sw_digger, 2, wall_type_door);
     digger_dig_chamber(sw_digger, 2, 2, 1);
     digger_move(sw_digger, 1, direction_west);
-    digger_dig_passage(sw_digger, 3);
+    digger_dig_passage(sw_digger, 3, wall_type_door);
     digger_dig_chamber(sw_digger, 2, 3, 1);
     
     // from entry chamber, south east exit
@@ -171,21 +171,21 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_turn_90_degrees_right(se_digger);
     digger_move(se_digger, 3, direction_south);
     digger_move(se_digger, 1, direction_east);
-    digger_dig_passage(se_digger, 1);
+    digger_dig_passage(se_digger, 1, wall_type_none);
     digger_dig_chamber(se_digger, 6, 4, 0);
     // fill in one tile in chamber
     struct box box = box_make(point_make(5, 2, 1), size_make_unit());
     dungeon_fill_box(generator->dungeon, box, tile_type_solid);
     
     // from entry chamber, north exit
-    digger_dig_passage(digger, 8);
+    digger_dig_passage(digger, 8, wall_type_none);
     digger_turn_90_degrees_right(digger);
-    digger_dig_passage(digger, 8);
+    digger_dig_passage(digger, 8, wall_type_none);
     digger_turn_90_degrees_right(digger);
-    digger_dig_passage(digger, 3);
+    digger_dig_passage(digger, 3, wall_type_none);
     digger_dig_chamber(digger, 3, 4, 0);
     digger_move(digger, 3, direction_west);
-    digger_dig_passage(digger, 3);
+    digger_dig_passage(digger, 3, wall_type_none);
     digger_turn_90_degrees_right(digger);
     // dig connecting passage without constraints to make looping passage
     digger_dig_area(digger, 3, 1, 0, wall_type_none, area_type_passage);

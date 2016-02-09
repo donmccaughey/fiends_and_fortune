@@ -33,6 +33,22 @@ tile_equals(struct tile *tile, struct tile *other)
 
 
 bool
+tile_has_south_wall(struct tile *tile)
+{
+    return wall_type_solid == tile->walls.south
+        || wall_type_door == tile->walls.south;
+}
+
+
+bool
+tile_has_west_wall(struct tile *tile)
+{
+    return wall_type_solid == tile->walls.west
+        || wall_type_door == tile->walls.west;
+}
+
+
+bool
 tile_is_blank(struct tile *tile)
 {
     return tile_type_solid == tile->type
