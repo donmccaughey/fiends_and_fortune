@@ -49,13 +49,23 @@ dungeon_add_area(struct dungeon *dungeon,
 struct tile *
 dungeon_add_tile(struct dungeon *dungeon,
                  struct point point,
-                 enum tile_type type);
+                 enum tile_type tile_type);
+
+void
+dungeon_fill_box(struct dungeon *dungeon,
+                 struct box box,
+                 enum tile_type tile_type);
 
 void
 dungeon_set_wall(struct dungeon *dungeon,
                  struct point point,
                  enum direction direction,
-                 enum wall_type type);
+                 enum wall_type wall_type);
+
+void
+dungeon_set_walls(struct dungeon *dungeon,
+                  struct box box,
+                  enum wall_type wall_type);
 
 bool
 dungeon_is_box_excavated(struct dungeon *dungeon, struct box box);

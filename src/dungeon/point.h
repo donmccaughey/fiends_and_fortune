@@ -27,6 +27,12 @@ struct point
 point_move(struct point start, int distance, enum direction direction);
 
 struct point
+point_above(struct point point);
+
+struct point
+point_below(struct point point);
+
+struct point
 point_north(struct point point);
 
 struct point

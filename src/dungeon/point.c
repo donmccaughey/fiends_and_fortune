@@ -6,6 +6,22 @@
 #include "common/fail.h"
 
 
+struct point
+point_above(struct point point)
+{
+    assert(point.z > INT_MIN);
+    return point_make(point.x, point.y, point.z - 1);
+}
+
+
+struct point
+point_below(struct point point)
+{
+    assert(point.z < INT_MAX);
+    return point_make(point.x, point.y, point.z + 1);
+}
+
+
 int
 point_compare(struct point point, struct point other)
 {

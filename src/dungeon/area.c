@@ -57,32 +57,7 @@ area_alloc(struct dungeon *dungeon,
     for (int i = 0; i < area->tiles_count; ++i) {
         area->tiles[i]->type = tile_type;
     }
-    
-    struct point end = box_end_point(area->box);
-    
-    for (int i = 0; i < area->box.size.width; ++i) {
-        int x = area->box.origin.x + i;
-        struct point point = point_make(x, area->box.origin.y, area->box.origin.z);
-        int index = box_index_for_point(area->box, point);
-        struct tile *tile = area->tiles[index];
-        tile->walls.south = wall_type_solid;
-        
-        point = point_make(x, end.y, area->box.origin.z);
-        tile = dungeon_tile_at(dungeon, point);
-        tile->walls.south = wall_type_solid;
-    }
-    
-    for (int j = 0; j < area->box.size.length; ++j) {
-        int y = area->box.origin.y + j;
-        struct point point = point_make(area->box.origin.x, y, area->box.origin.z);
-        int index = box_index_for_point(area->box, point);
-        struct tile *tile = area->tiles[index];
-        tile->walls.west = wall_type_solid;
-        
-        point = point_make(end.x, y, area->box.origin.z);
-        tile = dungeon_tile_at(dungeon, point);
-        tile->walls.west = wall_type_solid;
-    }
+    dungeon_set_walls(dungeon, box, wall_type_solid);
     
     return area;
 }

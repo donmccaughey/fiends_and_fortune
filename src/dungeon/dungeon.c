@@ -52,14 +52,14 @@ dungeon_add_area(struct dungeon *dungeon,
 struct tile *
 dungeon_add_tile(struct dungeon *dungeon,
                  struct point point,
-                 enum tile_type type)
+                 enum tile_type tile_type)
 {
     int index = dungeon->tiles_count;
     ++dungeon->tiles_count;
     dungeon->tiles = reallocarray_or_die(dungeon->tiles,
                                          dungeon->tiles_count,
                                          sizeof(struct tile *));
-    struct tile *tile = tile_alloc(point, type);
+    struct tile *tile = tile_alloc(point, tile_type);
     dungeon->tiles[index] = tile;
     qsort(dungeon->tiles,
           dungeon->tiles_count,
@@ -148,6 +148,43 @@ dungeon_generate_small(struct dungeon *dungeon)
 }
 
 
+void
+dungeon_fill_box(struct dungeon *dungeon,
+                 struct box box,
+                 enum tile_type tile_type)
+{
+    struct box padded_box = box_expand(box, size_make(1, 1, 0));
+    struct tile **tiles = dungeon_alloc_tiles_for_box(dungeon, padded_box);
+    struct point point;
+    for (int k = 0; k < padded_box.size.height; ++k) {
+        point.z = padded_box.origin.z + k;
+        for (int j = 1; j < padded_box.size.length; ++j) {
+            point.y = padded_box.origin.y + j;
+            for (int i = 1; i < padded_box.size.width; ++i) {
+                point.x = padded_box.origin.x + i;
+                int index = box_index_for_point(padded_box, point);
+                struct tile *tile = tiles[index];
+                if (box_contains_point(box, point)) tile->type = tile_type;
+                
+                int west_index = box_index_for_point(padded_box, point_west(point));
+                struct tile *west_tile = tiles[west_index];
+                if (west_tile->type != tile->type) {
+                    tile->walls.west = wall_type_solid;
+                }
+                
+                int south_index = box_index_for_point(padded_box, point_south(point));
+                struct tile *south_tile = tiles[south_index];
+                if (south_tile->type != tile->type) {
+                    tile->walls.south = wall_type_solid;
+                }
+            }
+        }
+    }
+    
+    free_or_die(tiles);
+}
+
+
 bool
 dungeon_is_box_excavated(struct dungeon *dungeon, struct box box)
 {
@@ -176,29 +213,58 @@ void
 dungeon_set_wall(struct dungeon *dungeon,
                  struct point point,
                  enum direction direction,
-                 enum wall_type type)
+                 enum wall_type wall_type)
 {
     struct tile *tile;
     switch (direction) {
         case direction_north:
             tile = dungeon_tile_at(dungeon, point_north(point));
-            tile->walls.south = type;
+            tile->walls.south = wall_type;
             break;
         case direction_south:
             tile = dungeon_tile_at(dungeon, point);
-            tile->walls.south = type;
+            tile->walls.south = wall_type;
             break;
         case direction_east:
             tile = dungeon_tile_at(dungeon, point_east(point));
-            tile->walls.west = type;
+            tile->walls.west = wall_type;
             break;
         case direction_west:
             tile = dungeon_tile_at(dungeon, point);
-            tile->walls.west = type;
+            tile->walls.west = wall_type;
             break;
         default:
             fail("Unrecognized direction %i", direction);
             break;
+    }
+}
+
+
+void
+dungeon_set_walls(struct dungeon *dungeon,
+                  struct box box,
+                  enum wall_type wall_type)
+{
+    struct point end = box_end_point(box);
+    
+    for (int i = 0; i < box.size.width; ++i) {
+        int x = box.origin.x + i;
+        
+        struct point point = point_make(x, box.origin.y, box.origin.z);
+        dungeon_set_wall(dungeon, point, direction_south, wall_type);
+        
+        point = point_make(x, end.y, box.origin.z);
+        dungeon_set_wall(dungeon, point, direction_south, wall_type);
+    }
+    
+    for (int j = 0; j < box.size.length; ++j) {
+        int y = box.origin.y + j;
+        
+        struct point point = point_make(box.origin.x, y, box.origin.z);
+        dungeon_set_wall(dungeon, point, direction_west, wall_type);
+        
+        point = point_make(end.x, y, box.origin.z);
+        dungeon_set_wall(dungeon, point, direction_west, wall_type);
     }
 }
 
