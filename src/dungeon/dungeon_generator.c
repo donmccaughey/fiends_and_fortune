@@ -51,8 +51,11 @@ dungeon_generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
     struct dungeon_generator *generator = calloc_or_die(1, sizeof(struct dungeon_generator));
     generator->dungeon = dungeon;
     generator->rnd = rnd;
-    generator->diggers = calloc_or_die(1, sizeof(struct digger *));
+    
+    generator->buffer = 1;
     generator->max_size = size_make(20, 20, 5);
+    
+    generator->diggers = calloc_or_die(1, sizeof(struct digger *));
     return generator;
 }
 

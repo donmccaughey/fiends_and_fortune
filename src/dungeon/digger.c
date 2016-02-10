@@ -130,7 +130,7 @@ digger_dig_chamber(struct digger *digger,
                    int left_offset,
                    enum wall_type entrance_type)
 {
-    int const buffer = 1;
+    int const buffer = digger->generator->buffer;
     struct box box_to_dig = box_for_area(digger, length, width, left_offset, buffer);
     if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
         return NULL;
@@ -150,7 +150,7 @@ digger_dig_intersection(struct digger *digger)
     int const length = 1;
     int const width = 1;
     int const left_offset = 0;
-    int const buffer = 1;
+    int const buffer = digger->generator->buffer;
     struct box box_to_dig = box_for_area(digger, length, width, left_offset, buffer);
     if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
         return NULL;
@@ -172,7 +172,7 @@ digger_dig_passage(struct digger *digger,
     int const length = distance;
     int const width = 1;
     int const left_offset = 0;
-    int const buffer = 1;
+    int const buffer = digger->generator->buffer;
     struct box box_to_dig = box_for_area(digger, length, width, left_offset, buffer);
     if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
         return NULL;
@@ -193,7 +193,7 @@ digger_dig_room(struct digger *digger,
                 int left_offset,
                 enum wall_type entrance_type)
 {
-    int const buffer = 1;
+    int const buffer = digger->generator->buffer;
     struct box box_to_dig = box_for_area(digger, length, width, left_offset, buffer);
     if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
         return NULL;
@@ -495,7 +495,6 @@ digger_generate_turn(struct digger *digger)
 {
     int score = roll("1d20", digger->generator->rnd);
     if (score <= 8) {
-        // left 90 degrees
         digger_turn_90_degrees_left(digger);
         digger_dig_passage(digger, 3, wall_type_none);
     } else if (score == 9) {
@@ -503,7 +502,6 @@ digger_generate_turn(struct digger *digger)
     } else if (score == 10) {
         // left 45 degrees behind
     } else if (score <= 18) {
-        // right 90 degrees
         digger_turn_90_degrees_right(digger);
         digger_dig_passage(digger, 3, wall_type_none);
     } else if (score == 19) {
@@ -528,16 +526,12 @@ digger_periodic_check(struct digger *digger)
     if (score <= 2) {
         digger_dig_passage(digger, 6, wall_type_none);
     } else if (score <= 5) {
-        // door
         digger_generate_door(digger);
     } else if (score <= 10) {
-        // side passage
         digger_generate_side_passage(digger);
     } else if (score <= 13) {
-        // passage turns
         digger_generate_turn(digger);
     } else if (score <= 16) {
-        // chamber
         digger_generate_chamber(digger, wall_type_none);
     } else if (score == 17) {
         // stairs

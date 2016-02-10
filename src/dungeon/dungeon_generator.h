@@ -13,6 +13,7 @@ struct rnd;
 
 
 struct dungeon_generator {
+    int buffer;
     struct digger **diggers;
     int diggers_count;
     struct dungeon *dungeon;
