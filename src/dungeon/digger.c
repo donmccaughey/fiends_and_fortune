@@ -26,35 +26,35 @@ box_for_area(struct digger *digger,
              int length,
              int width,
              int left_offset,
-             int buffer)
+             int padding)
 {
     assert(left_offset < width);
     struct point origin;
     struct size size;
     switch (digger->direction) {
         case direction_north:
-            origin = point_make(digger->point.x - left_offset - buffer,
+            origin = point_make(digger->point.x - left_offset - padding,
                                 digger->point.y,
                                 digger->point.z);
-            size = size_make(width + (2 * buffer), length + buffer, 1);
+            size = size_make(width + (2 * padding), length + padding, 1);
             break;
         case direction_south:
-            origin = point_make(digger->point.x + left_offset + buffer,
+            origin = point_make(digger->point.x + left_offset + padding,
                                 digger->point.y,
                                 digger->point.z);
-            size = size_make(-width - (2 * buffer), -length - buffer, 1);
+            size = size_make(-width - (2 * padding), -length - padding, 1);
             break;
         case direction_east:
             origin = point_make(digger->point.x,
-                                digger->point.y + left_offset + buffer,
+                                digger->point.y + left_offset + padding,
                                 digger->point.z);
-            size = size_make(length + buffer, -width - (2 * buffer), 1);
+            size = size_make(length + padding, -width - (2 * padding), 1);
             break;
         case direction_west:
             origin = point_make(digger->point.x,
-                                digger->point.y - left_offset - buffer,
+                                digger->point.y - left_offset - padding,
                                 digger->point.z);
-            size = size_make(-length - buffer, +width + (2 * buffer), 1);
+            size = size_make(-length - padding, +width + (2 * padding), 1);
             break;
         default:
             fail("Unrecognized direction %i", digger->direction);
@@ -74,7 +74,12 @@ digger_dig_area(struct digger *digger,
                 enum wall_type entrance_type,
                 enum area_type area_type)
 {
-    struct box box_to_dig = box_for_area(digger, length, width, left_offset, 0);
+    int const padding = 0;
+    struct box box_to_dig = box_for_area(digger,
+                                         length,
+                                         width,
+                                         left_offset,
+                                         padding);
     if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
         return NULL;
     }
@@ -98,19 +103,23 @@ digger_dig_area(struct digger *digger,
     struct tile *entrance_tile;
     switch (digger->direction) {
         case direction_north:
-            entrance_tile = dungeon_tile_at(digger->generator->dungeon, digger->point);
+            entrance_tile = dungeon_tile_at(digger->generator->dungeon,
+                                            digger->point);
             entrance_tile->walls.south = entrance_type;
             break;
         case direction_south:
-            entrance_tile = dungeon_tile_at(digger->generator->dungeon, point_north(digger->point));
+            entrance_tile = dungeon_tile_at(digger->generator->dungeon,
+                                            point_north(digger->point));
             entrance_tile->walls.south = entrance_type;
             break;
         case direction_east:
-            entrance_tile = dungeon_tile_at(digger->generator->dungeon, digger->point);
+            entrance_tile = dungeon_tile_at(digger->generator->dungeon,
+                                            digger->point);
             entrance_tile->walls.west = entrance_type;
             break;
         case direction_west:
-            entrance_tile = dungeon_tile_at(digger->generator->dungeon, point_east(digger->point));
+            entrance_tile = dungeon_tile_at(digger->generator->dungeon,
+                                            point_east(digger->point));
             entrance_tile->walls.west = entrance_type;
             break;
         default:
@@ -130,9 +139,12 @@ digger_dig_chamber(struct digger *digger,
                    int left_offset,
                    enum wall_type entrance_type)
 {
-    int const buffer = digger->generator->buffer;
-    struct box box_to_dig = box_for_area(digger, length, width, left_offset, buffer);
-    if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
+    struct box padded_box = box_for_area(digger,
+                                         length,
+                                         width,
+                                         left_offset,
+                                         digger->generator->padding);
+    if (dungeon_is_box_excavated(digger->generator->dungeon, padded_box)) {
         return NULL;
     }
     return digger_dig_area(digger,
@@ -150,9 +162,12 @@ digger_dig_intersection(struct digger *digger)
     int const length = 1;
     int const width = 1;
     int const left_offset = 0;
-    int const buffer = digger->generator->buffer;
-    struct box box_to_dig = box_for_area(digger, length, width, left_offset, buffer);
-    if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
+    struct box padded_box = box_for_area(digger,
+                                         length,
+                                         width,
+                                         left_offset,
+                                         digger->generator->padding);
+    if (dungeon_is_box_excavated(digger->generator->dungeon, padded_box)) {
         return NULL;
     }
     return digger_dig_area(digger,
@@ -172,9 +187,12 @@ digger_dig_passage(struct digger *digger,
     int const length = distance;
     int const width = 1;
     int const left_offset = 0;
-    int const buffer = digger->generator->buffer;
-    struct box box_to_dig = box_for_area(digger, length, width, left_offset, buffer);
-    if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
+    struct box padded_box = box_for_area(digger,
+                                         length,
+                                         width,
+                                         left_offset,
+                                         digger->generator->padding);
+    if (dungeon_is_box_excavated(digger->generator->dungeon, padded_box)) {
         return NULL;
     }
     return digger_dig_area(digger,
@@ -193,9 +211,12 @@ digger_dig_room(struct digger *digger,
                 int left_offset,
                 enum wall_type entrance_type)
 {
-    int const buffer = digger->generator->buffer;
-    struct box box_to_dig = box_for_area(digger, length, width, left_offset, buffer);
-    if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
+    struct box padded_box = box_for_area(digger,
+                                         length,
+                                         width,
+                                         left_offset,
+                                         digger->generator->padding);
+    if (dungeon_is_box_excavated(digger->generator->dungeon, padded_box)) {
         return NULL;
     }
     return digger_dig_area(digger,
@@ -585,8 +606,13 @@ space_beyond_door(struct digger *digger, bool is_straight_ahead)
         if (is_straight_ahead) {
             digger_dig_room(digger, 1, 1, 0, wall_type_door);
         } else {
-            digger_dig_passage(digger, 1, wall_type_door);
-            digger_dig_intersection(digger);
+            if (digger->generator->padding) {
+                int const distance = digger->generator->padding;
+                digger_dig_passage(digger, distance, wall_type_door);
+                digger_dig_intersection(digger);
+            } else {
+                digger_dig_passage(digger, 1, wall_type_door);
+            }
             
             struct digger *left_digger = dungeon_generator_copy_digger(digger->generator, digger);
             digger_turn_90_degrees_left(left_digger);
@@ -603,10 +629,20 @@ space_beyond_door(struct digger *digger, bool is_straight_ahead)
     } else if (score == 10) {
         // passage 45 degrees behind/ahead
     } else if (score <= 18) {
-        // room
-        digger_generate_room(digger, wall_type_door);
+        if (is_straight_ahead || !digger->generator->padding) {
+            digger_generate_room(digger, wall_type_door);
+        } else if (digger->generator->padding) {
+            int const distance = digger->generator->padding;
+            digger_dig_passage(digger, distance, wall_type_door);
+            digger_generate_room(digger, wall_type_none);
+        }
     } else {
-        // chamber
-        digger_generate_chamber(digger, wall_type_door);
+        if (is_straight_ahead || !digger->generator->padding) {
+            digger_generate_chamber(digger, wall_type_door);
+        } else {
+            int const distance = digger->generator->padding;
+            digger_dig_passage(digger, distance, wall_type_door);
+            digger_generate_chamber(digger, wall_type_none);
+        }
     }
 }

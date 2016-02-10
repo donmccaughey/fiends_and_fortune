@@ -6,6 +6,7 @@
 #include "common/alloc_or_die.h"
 #include "common/dice.h"
 #include "common/fail.h"
+#include "common/rnd.h"
 #include "common/str.h"
 
 #include "area.h"
@@ -142,7 +143,8 @@ dungeon_generate(struct dungeon *dungeon, struct rnd *rnd)
 void
 dungeon_generate_small(struct dungeon *dungeon)
 {
-    struct dungeon_generator *generator = dungeon_generator_alloc(dungeon, NULL);
+    struct dungeon_generator *generator = dungeon_generator_alloc(dungeon,
+                                                                  global_rnd);
     dungeon_generator_generate_small(generator);
     dungeon_generator_free(generator);
 }

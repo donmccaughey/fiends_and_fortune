@@ -3,6 +3,7 @@
 #include <assert.h>
 
 #include "common/alloc_or_die.h"
+#include "common/rnd.h"
 
 #include "area.h"
 #include "digger.h"
@@ -52,7 +53,7 @@ dungeon_generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
     generator->dungeon = dungeon;
     generator->rnd = rnd;
     
-    generator->buffer = 1;
+    generator->padding = rnd_next_uniform_value(rnd, 2);
     generator->max_size = size_make(20, 20, 5);
     
     generator->diggers = calloc_or_die(1, sizeof(struct digger *));
