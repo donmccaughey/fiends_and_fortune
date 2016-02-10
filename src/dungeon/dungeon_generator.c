@@ -137,7 +137,7 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
                                                          direction_north);
     
     digger_dig_area(digger, 2, 1, 0, wall_type_solid, area_type_passage);
-    digger_dig_chamber(digger, 5, 3, 1);
+    digger_dig_chamber(digger, 5, 3, 1, wall_type_none);
     
     // from entry chamber, north west exit
     struct digger *nw_digger = dungeon_generator_copy_digger(generator, digger);
@@ -147,7 +147,7 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_dig_passage(nw_digger, 2, wall_type_none);
     digger_turn_90_degrees_right(nw_digger);
     digger_dig_passage(nw_digger, 6, wall_type_none);
-    digger_dig_chamber(nw_digger, 3, 2, 1);
+    digger_dig_chamber(nw_digger, 3, 2, 1, wall_type_none);
     
     // from entry chamber, south west exit
     struct digger *sw_digger = dungeon_generator_copy_digger(generator, digger);
@@ -161,10 +161,10 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_dig_passage(sw_digger, 2, wall_type_none);
     digger_turn_90_degrees_right(sw_digger);
     digger_dig_passage(sw_digger, 2, wall_type_door);
-    digger_dig_chamber(sw_digger, 2, 2, 1);
+    digger_dig_chamber(sw_digger, 2, 2, 1, wall_type_none);
     digger_move(sw_digger, 1, direction_west);
     digger_dig_passage(sw_digger, 3, wall_type_door);
-    digger_dig_chamber(sw_digger, 2, 3, 1);
+    digger_dig_chamber(sw_digger, 2, 3, 1, wall_type_none);
     
     // from entry chamber, south east exit
     struct digger *se_digger = dungeon_generator_copy_digger(generator, digger);
@@ -172,7 +172,7 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_move(se_digger, 3, direction_south);
     digger_move(se_digger, 1, direction_east);
     digger_dig_passage(se_digger, 1, wall_type_none);
-    digger_dig_chamber(se_digger, 6, 4, 0);
+    digger_dig_chamber(se_digger, 6, 4, 0, wall_type_none);
     // fill in one tile in chamber
     struct box box = box_make(point_make(5, 2, 1), size_make_unit());
     dungeon_fill_box(generator->dungeon, box, tile_type_solid);
@@ -183,7 +183,7 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_dig_passage(digger, 8, wall_type_none);
     digger_turn_90_degrees_right(digger);
     digger_dig_passage(digger, 3, wall_type_none);
-    digger_dig_chamber(digger, 3, 4, 0);
+    digger_dig_chamber(digger, 3, 4, 0, wall_type_none);
     digger_move(digger, 3, direction_west);
     digger_dig_passage(digger, 3, wall_type_none);
     digger_turn_90_degrees_right(digger);

@@ -218,10 +218,12 @@ tile_bottom_half(struct level_map const *level_map, struct point point)
     if (!tile_has_west_wall(tile) && tile_has_south_wall(tile))
     {
         struct tile *tile_south = level_map_tile_at(level_map, point_south(point));
-        if (tile_south && wall_type_none != tile_south->walls.west) {
-            return CORNER_HWALL;
+        if (tile_south && tile_has_west_wall(tile_south)) {
+            if (wall_type_solid == tile->walls.south) return CORNER_HWALL;
+            if (wall_type_door == tile->walls.south) return CORNER_HDOOR;
         } else {
-            return HWALL;
+            if (wall_type_solid == tile->walls.south) return HWALL;
+            if (wall_type_door == tile->walls.south) return HDOOR;
         }
     }
     

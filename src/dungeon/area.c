@@ -53,6 +53,9 @@ area_alloc_description(struct area const *area)
                                        length * 10,
                                        orientation_name(area->orientation));
             break;
+        case area_type_room:
+            return str_alloc_formatted("%u' x %u' room",
+                                       length * 10, width * 10);
         default:
             return str_alloc_formatted("%u' x %u' area",
                                        length * 10, width * 10);

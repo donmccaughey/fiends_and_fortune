@@ -41,7 +41,8 @@ struct area *
 digger_dig_chamber(struct digger *digger,
                    int length,
                    int width,
-                   int left_offset);
+                   int left_offset,
+                   enum wall_type entrance_type);
 
 struct area *
 digger_dig_intersection(struct digger *digger);
@@ -51,14 +52,29 @@ digger_dig_passage(struct digger *digger,
                    int distance,
                    enum wall_type entrance_type);
 
+struct area *
+digger_dig_room(struct digger *digger,
+                int length,
+                int width,
+                int left_offset,
+                enum wall_type entrance_type);
+
 void
 digger_periodic_check(struct digger *digger);
 
 void
-digger_generate_chamber(struct digger *digger);
+digger_generate_chamber(struct digger *digger,
+                        enum wall_type entrance_type);
+
+void
+digger_generate_door(struct digger *digger);
 
 void
 digger_generate_side_passage(struct digger *digger);
+
+void
+digger_generate_room(struct digger *digger,
+                     enum wall_type entrance_type);
 
 void
 digger_generate_turn(struct digger *digger);
