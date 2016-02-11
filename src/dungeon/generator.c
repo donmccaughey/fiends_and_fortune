@@ -31,6 +31,24 @@ digger_free(struct digger *digger)
 }
 
 
+struct area *
+generator_add_area(struct generator *generator,
+                   enum area_type area_type,
+                   enum orientation orientation,
+                   struct box box,
+                   enum tile_type tile_type)
+{
+    struct area *area = area_alloc(area_type,
+                                   orientation,
+                                   box,
+                                   tile_type);    
+    dungeon_fill_box(generator->dungeon, box, tile_type);
+    dungeon_set_walls(generator->dungeon, box, wall_type_solid);
+    dungeon_add_area(generator->dungeon, area);
+    return area;
+}
+
+
 struct digger *
 generator_add_digger(struct generator *generator,
                      struct point point,

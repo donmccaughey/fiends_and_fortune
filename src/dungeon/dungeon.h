@@ -38,12 +38,8 @@ dungeon_generate(struct dungeon *dungeon, struct rnd *rnd);
 void
 dungeon_generate_small(struct dungeon *dungeon);
 
-struct area *
-dungeon_add_area(struct dungeon *dungeon,
-                 enum area_type area_type,
-                 enum orientation orientation,
-                 struct box box,
-                 enum tile_type tile_type);
+void
+dungeon_add_area(struct dungeon *dungeon, struct area *area);
 
 struct tile *
 dungeon_add_tile(struct dungeon *dungeon,

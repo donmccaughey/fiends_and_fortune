@@ -8,7 +8,6 @@
 #include "tile_type.h"
 
 
-struct dungeon;
 struct tile;
 
 
@@ -20,8 +19,7 @@ struct area {
 
 
 struct area *
-area_alloc(struct dungeon *dungeon,
-           enum area_type area_type,
+area_alloc(enum area_type area_type,
            enum orientation orientation,
            struct box box,
            enum tile_type tile_type);

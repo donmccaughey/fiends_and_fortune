@@ -3,13 +3,11 @@
 #include "common/alloc_or_die.h"
 #include "common/str.h"
 
-#include "dungeon.h"
 #include "tile.h"
 
 
 struct area *
-area_alloc(struct dungeon *dungeon,
-           enum area_type area_type,
+area_alloc(enum area_type area_type,
            enum orientation orientation,
            struct box box,
            enum tile_type tile_type)
@@ -18,10 +16,6 @@ area_alloc(struct dungeon *dungeon,
     area->box = box;
     area->orientation = orientation;
     area->type = area_type;
-    
-    dungeon_fill_box(dungeon, box, tile_type);
-    dungeon_set_walls(dungeon, box, wall_type_solid);
-    
     return area;
 }
 

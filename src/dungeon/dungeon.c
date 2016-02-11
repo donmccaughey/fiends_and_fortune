@@ -16,24 +16,15 @@
 #include "tile.h"
 
 
-struct area *
-dungeon_add_area(struct dungeon *dungeon,
-                 enum area_type area_type,
-                 enum orientation orientation,
-                 struct box box,
-                 enum tile_type tile_type)
+void
+dungeon_add_area(struct dungeon *dungeon, struct area *area)
 {
     int index = dungeon->areas_count;
     ++dungeon->areas_count;
     dungeon->areas = reallocarray_or_die(dungeon->areas,
                                          dungeon->areas_count,
                                          sizeof(struct area *));
-    dungeon->areas[index] = area_alloc(dungeon,
-                                       area_type,
-                                       orientation,
-                                       box,
-                                       tile_type);
-    return dungeon->areas[index];
+    dungeon->areas[index] = area;
 }
 
 

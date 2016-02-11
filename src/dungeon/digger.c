@@ -94,11 +94,11 @@ digger_dig_area(struct digger *digger,
         return NULL;
     }
     
-    struct area *area = dungeon_add_area(digger->generator->dungeon,
-                                         area_type,
-                                         orientation_from_direction(digger->direction),
-                                         box_to_dig,
-                                         tile_type_empty);
+    struct area *area = generator_add_area(digger->generator,
+                                           area_type,
+                                           orientation_from_direction(digger->direction),
+                                           box_to_dig,
+                                           tile_type_empty);
     
     struct tile *entrance_tile;
     switch (digger->direction) {
