@@ -10,6 +10,19 @@
 #include "tile.h"
 
 
+static void
+add_tile(struct dungeon *dungeon, struct tile *tile)
+{
+    int index = dungeon->tiles_count;
+    ++dungeon->tiles_count;
+    dungeon->tiles = reallocarray_or_die(dungeon->tiles,
+                                         dungeon->tiles_count,
+                                         sizeof(struct tile *));
+    dungeon->tiles[index] = tile;
+    tile_sort_array_by_point(dungeon->tiles, dungeon->tiles_count);
+}
+
+
 void
 dungeon_add_area(struct dungeon *dungeon, struct area *area)
 {
@@ -19,23 +32,6 @@ dungeon_add_area(struct dungeon *dungeon, struct area *area)
                                          dungeon->areas_count,
                                          sizeof(struct area *));
     dungeon->areas[index] = area;
-}
-
-
-struct tile *
-dungeon_add_tile(struct dungeon *dungeon,
-                 struct point point,
-                 enum tile_type tile_type)
-{
-    int index = dungeon->tiles_count;
-    ++dungeon->tiles_count;
-    dungeon->tiles = reallocarray_or_die(dungeon->tiles,
-                                         dungeon->tiles_count,
-                                         sizeof(struct tile *));
-    struct tile *tile = tile_alloc(point, tile_type);
-    dungeon->tiles[index] = tile;
-    tile_sort_array_by_point(dungeon->tiles, dungeon->tiles_count);
-    return tile;
 }
 
 
@@ -151,6 +147,8 @@ dungeon_tile_at(struct dungeon *dungeon, struct point point)
     if (tile) {
         return *tile;
     } else {
-        return dungeon_add_tile(dungeon, point, tile_type_solid);
+        struct tile *default_tile = tile_alloc(point, tile_type_solid);
+        add_tile(dungeon, default_tile);
+        return default_tile;
     }
 }
