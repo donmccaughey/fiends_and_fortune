@@ -80,6 +80,13 @@ generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
 }
 
 
+struct box
+generator_box_for_level(struct generator *generator, int level)
+{
+    return dungeon_box_for_level(generator->dungeon, level);
+}
+
+
 struct digger *
 generator_copy_digger(struct generator *generator, struct digger *digger)
 {
@@ -253,6 +260,13 @@ generator_generate_small(struct generator *generator)
 }
 
 
+bool
+generator_is_box_excavated(struct generator *generator, struct box box)
+{
+    return dungeon_is_box_excavated(generator->dungeon, box);
+}
+
+
 void
 generator_set_wall(struct generator *generator,
                  struct point point,
@@ -310,4 +324,11 @@ generator_set_walls(struct generator *dungeon,
         point = point_make(end.x, y, box.origin.z);
         generator_set_wall(dungeon, point, direction_west, wall_type);
     }
+}
+
+
+struct tile *
+generator_tile_at(struct generator *generator, struct point point)
+{
+    return dungeon_tile_at(generator->dungeon, point);
 }

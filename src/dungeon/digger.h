@@ -3,7 +3,6 @@
 
 
 #include "area_type.h"
-#include "direction.h"
 #include "point.h"
 #include "wall_type.h"
 

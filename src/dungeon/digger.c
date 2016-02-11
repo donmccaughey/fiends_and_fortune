@@ -8,8 +8,6 @@
 #include "common/rnd.h"
 
 #include "area.h"
-#include "area_type.h"
-#include "dungeon.h"
 #include "generator.h"
 #include "tile.h"
 
@@ -80,12 +78,12 @@ digger_dig_area(struct digger *digger,
                                          width,
                                          left_offset,
                                          padding);
-    if (dungeon_is_box_excavated(digger->generator->dungeon, box_to_dig)) {
+    if (generator_is_box_excavated(digger->generator, box_to_dig)) {
         return NULL;
     }
     
-    struct box box_for_level = dungeon_box_for_level(digger->generator->dungeon,
-                                                     digger->point.z);
+    struct box box_for_level = generator_box_for_level(digger->generator,
+                                                       digger->point.z);
     struct box new_box_for_level = box_for_level = box_make_from_boxes(box_for_level,
                                                                        box_to_dig);
     if (   new_box_for_level.size.width > digger->generator->max_size.width
@@ -103,23 +101,21 @@ digger_dig_area(struct digger *digger,
     struct tile *entrance_tile;
     switch (digger->direction) {
         case direction_north:
-            entrance_tile = dungeon_tile_at(digger->generator->dungeon,
-                                            digger->point);
+            entrance_tile = generator_tile_at(digger->generator, digger->point);
             entrance_tile->walls.south = entrance_type;
             break;
         case direction_south:
-            entrance_tile = dungeon_tile_at(digger->generator->dungeon,
-                                            point_north(digger->point));
+            entrance_tile = generator_tile_at(digger->generator,
+                                              point_north(digger->point));
             entrance_tile->walls.south = entrance_type;
             break;
         case direction_east:
-            entrance_tile = dungeon_tile_at(digger->generator->dungeon,
-                                            digger->point);
+            entrance_tile = generator_tile_at(digger->generator, digger->point);
             entrance_tile->walls.west = entrance_type;
             break;
         case direction_west:
-            entrance_tile = dungeon_tile_at(digger->generator->dungeon,
-                                            point_east(digger->point));
+            entrance_tile = generator_tile_at(digger->generator,
+                                              point_east(digger->point));
             entrance_tile->walls.west = entrance_type;
             break;
         default:
@@ -144,7 +140,7 @@ digger_dig_chamber(struct digger *digger,
                                          width,
                                          left_offset,
                                          digger->generator->padding);
-    if (dungeon_is_box_excavated(digger->generator->dungeon, padded_box)) {
+    if (generator_is_box_excavated(digger->generator, padded_box)) {
         return NULL;
     }
     return digger_dig_area(digger,
@@ -167,7 +163,7 @@ digger_dig_intersection(struct digger *digger)
                                          width,
                                          left_offset,
                                          digger->generator->padding);
-    if (dungeon_is_box_excavated(digger->generator->dungeon, padded_box)) {
+    if (generator_is_box_excavated(digger->generator, padded_box)) {
         return NULL;
     }
     return digger_dig_area(digger,
@@ -192,7 +188,7 @@ digger_dig_passage(struct digger *digger,
                                          width,
                                          left_offset,
                                          digger->generator->padding);
-    if (dungeon_is_box_excavated(digger->generator->dungeon, padded_box)) {
+    if (generator_is_box_excavated(digger->generator, padded_box)) {
         return NULL;
     }
     return digger_dig_area(digger,
@@ -216,7 +212,7 @@ digger_dig_room(struct digger *digger,
                                          width,
                                          left_offset,
                                          digger->generator->padding);
-    if (dungeon_is_box_excavated(digger->generator->dungeon, padded_box)) {
+    if (generator_is_box_excavated(digger->generator, padded_box)) {
         return NULL;
     }
     return digger_dig_area(digger,

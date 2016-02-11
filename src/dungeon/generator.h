@@ -2,6 +2,8 @@
 #define FNF_DUNGEON_GENERATOR_H_INCLUDED
 
 
+#include <stdbool.h>
+
 #include "area_type.h"
 #include "box.h"
 #include "orientation.h"
@@ -47,6 +49,15 @@ generator_copy_digger(struct generator *generator, struct digger *digger);
 
 void
 generator_delete_digger(struct generator *generator, struct digger *digger);
+
+bool
+generator_is_box_excavated(struct generator *generator, struct box box);
+
+struct box
+generator_box_for_level(struct generator *generator, int level);
+
+struct tile *
+generator_tile_at(struct generator *generator, struct point point);
 
 struct area *
 generator_add_area(struct generator *generator,
