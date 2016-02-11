@@ -15,8 +15,6 @@ struct tile;
 struct area {
     struct box box;
     enum orientation orientation;
-    struct tile **tiles;
-    int tiles_count;
     enum area_type type;
 };
 

@@ -19,11 +19,7 @@ area_alloc(struct dungeon *dungeon,
     area->orientation = orientation;
     area->type = area_type;
     
-    area->tiles_count = box_volume(box);
-    area->tiles = dungeon_alloc_tiles_for_box(dungeon, box);
-    for (int i = 0; i < area->tiles_count; ++i) {
-        area->tiles[i]->type = tile_type;
-    }
+    dungeon_fill_box(dungeon, box, tile_type);
     dungeon_set_walls(dungeon, box, wall_type_solid);
     
     return area;
@@ -66,8 +62,5 @@ area_alloc_description(struct area const *area)
 void
 area_free(struct area *area)
 {
-    if (area) {
-        free_or_die(area->tiles);
-        free_or_die(area);
-    }
+    free_or_die(area);
 }
