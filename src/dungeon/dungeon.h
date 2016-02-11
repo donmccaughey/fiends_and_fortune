@@ -14,7 +14,6 @@
 
 
 struct area;
-struct areas;
 struct rnd;
 struct tile;
 
