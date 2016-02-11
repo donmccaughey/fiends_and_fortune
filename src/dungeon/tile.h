@@ -22,6 +22,9 @@ struct tile {
 struct tile *
 tile_alloc(struct point point, enum tile_type type);
 
+struct tile *
+tile_alloc_copy(struct tile *tile);
+
 void
 tile_free(struct tile *tile);
 
@@ -39,6 +42,11 @@ tile_has_south_wall(struct tile const *tile);
 
 bool
 tile_has_west_wall(struct tile const *tile);
+
+struct tile **
+tile_add_to_array_sorted_by_point(struct tile **tiles,
+                                  int *count,
+                                  struct tile *tile);
 
 struct tile **
 tile_find_in_array_sorted_by_point(struct tile **tiles,

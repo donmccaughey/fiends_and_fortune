@@ -43,9 +43,14 @@ generator_add_area(struct generator *generator,
                                    orientation,
                                    box,
                                    tile_type);    
+    int index = generator->areas_count;
+    ++generator->areas_count;
+    generator->areas = reallocarray_or_die(generator->areas,
+                                         generator->areas_count,
+                                         sizeof(struct area *));
+    generator->areas[index] = area;
     generator_fill_box(generator, box, tile_type);
     generator_set_walls(generator, box, wall_type_solid);
-    dungeon_add_area(generator->dungeon, area);
     return area;
 }
 
@@ -75,7 +80,9 @@ generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
     generator->padding = rnd_next_uniform_value(rnd, 2);
     generator->max_size = size_make(20, 20, 5);
     
+    generator->areas = calloc_or_die(1, sizeof(struct area *));
     generator->diggers = calloc_or_die(1, sizeof(struct digger *));
+    generator->tiles = calloc_or_die(1, sizeof(struct tile *));
     return generator;
 }
 
@@ -83,7 +90,31 @@ generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
 struct box
 generator_box_for_level(struct generator *generator, int level)
 {
-    return dungeon_box_for_level(generator->dungeon, level);
+    struct box box = box_make(point_make(0, 0, level), size_make(0, 0, 1));
+    for (size_t i = 0; i < generator->dungeon->tiles_count; ++i) {
+        struct tile *dungeon_tile = generator->dungeon->tiles[i];
+        if (dungeon_tile->point.z < level) continue;
+        if (dungeon_tile->point.z > level) break;
+        struct tile *tile = generator_tile_at(generator, dungeon_tile->point);
+        if (tile_is_unescavated(tile)) continue;
+        box = box_extend_to_include_point(box, tile->point);
+    }
+    return box;
+}
+
+
+void
+generator_commit(struct generator *generator)
+{
+    for (int i = 0; i < generator->areas_count; ++i) {
+        dungeon_add_area(generator->dungeon, generator->areas[i]);
+    }
+    generator->areas_count = 0;
+    for (int i = 0; i < generator->tiles_count; ++i) {
+        struct tile *tile = dungeon_tile_at(generator->dungeon,
+                                            generator->tiles[i]->point);
+        *tile = *generator->tiles[i];
+    }
 }
 
 
@@ -128,8 +159,6 @@ generator_fill_box(struct generator *generator,
                    enum tile_type tile_type)
 {
     struct box padded_box = box_expand(box, size_make(1, 1, 0));
-    struct tile **tiles = dungeon_alloc_tiles_for_box(generator->dungeon,
-                                                      padded_box);
     struct point point;
     for (int k = 0; k < padded_box.size.height; ++k) {
         point.z = padded_box.origin.z + k;
@@ -137,36 +166,34 @@ generator_fill_box(struct generator *generator,
             point.y = padded_box.origin.y + j;
             for (int i = 1; i < padded_box.size.width; ++i) {
                 point.x = padded_box.origin.x + i;
-                int index = box_index_for_point(padded_box, point);
-                struct tile *tile = tiles[index];
+                struct tile *tile = generator_tile_at(generator, point);
                 if (box_contains_point(box, point)) tile->type = tile_type;
                 
-                int west_index = box_index_for_point(padded_box, point_west(point));
-                struct tile *west_tile = tiles[west_index];
+                struct tile *west_tile = generator_tile_at(generator, point_west(point));
                 if (west_tile->type != tile->type) {
                     tile->walls.west = wall_type_solid;
                 }
                 
-                int south_index = box_index_for_point(padded_box, point_south(point));
-                struct tile *south_tile = tiles[south_index];
+                struct tile *south_tile = generator_tile_at(generator, point_south(point));
                 if (south_tile->type != tile->type) {
                     tile->walls.south = wall_type_solid;
                 }
             }
         }
     }
-    
-    free_or_die(tiles);
 }
 
 
 void
 generator_free(struct generator *generator)
 {
+    generator_rollback(generator);
+    free_or_die(generator->areas);
     for (int i = 0; i < generator->diggers_count; ++i) {
         digger_free(generator->diggers[i]);
     }
     free_or_die(generator->diggers);
+    free_or_die(generator->tiles);
     free_or_die(generator);
 }
 
@@ -181,13 +208,16 @@ generator_generate(struct generator *generator)
                                                  direction_north);
     digger_dig_area(digger, 2, 1, 0, wall_type_solid, area_type_passage);
     
-    while (generator->diggers_count && generator->iteration_count < max_interation_count) {
+    while (   generator->diggers_count
+           && generator->iteration_count < max_interation_count)
+    {
         struct digger **diggers = arraydup_or_die(generator->diggers,
                                                   generator->diggers_count,
                                                   sizeof(struct digger *));
         int count = generator->diggers_count;
         for (int i = 0; i < count; ++i) {
             digger_periodic_check(diggers[i]);
+            generator_commit(generator);
         }
         free_or_die(diggers);
         ++generator->iteration_count;
@@ -255,15 +285,39 @@ generator_generate_small(struct generator *generator)
     digger_turn_90_degrees_right(digger);
     // dig connecting passage without constraints to make looping passage
     digger_dig_area(digger, 3, 1, 0, wall_type_none, area_type_passage);
-    struct tile *tile = dungeon_tile_at(generator->dungeon, point_east(digger->point));
+    struct tile *tile = generator_tile_at(generator, point_east(digger->point));
     tile->walls.west = wall_type_none;
+    generator_commit(generator);
 }
 
 
 bool
 generator_is_box_excavated(struct generator *generator, struct box box)
 {
-    return dungeon_is_box_excavated(generator->dungeon, box);
+    for (size_t i = 0; i < generator->dungeon->tiles_count; ++i) {
+        struct tile *dungeon_tile = generator->dungeon->tiles[i];
+        if (dungeon_tile->point.z < box.origin.z) continue;
+        if (dungeon_tile->point.z >= box.origin.z + box.size.height) break;
+        struct tile *tile = generator_tile_at(generator, dungeon_tile->point);
+        if (tile_is_unescavated(tile)) continue;
+        if (box_contains_point(box, tile->point)) return true;
+    }
+    return false;
+}
+
+
+void
+generator_rollback(struct generator *generator)
+{
+    for (int i = 0; i < generator->areas_count; ++i) {
+        area_free(generator->areas[i]);
+    }
+    generator->areas_count = 0;
+    
+    for (int i = 0; i < generator->tiles_count; ++i) {
+        tile_free(generator->tiles[i]);
+    }
+    generator->tiles_count = 0;
 }
 
 
@@ -276,19 +330,19 @@ generator_set_wall(struct generator *generator,
     struct tile *tile;
     switch (direction) {
         case direction_north:
-            tile = dungeon_tile_at(generator->dungeon, point_north(point));
+            tile = generator_tile_at(generator, point_north(point));
             tile->walls.south = wall_type;
             break;
         case direction_south:
-            tile = dungeon_tile_at(generator->dungeon, point);
+            tile = generator_tile_at(generator, point);
             tile->walls.south = wall_type;
             break;
         case direction_east:
-            tile = dungeon_tile_at(generator->dungeon, point_east(point));
+            tile = generator_tile_at(generator, point_east(point));
             tile->walls.west = wall_type;
             break;
         case direction_west:
-            tile = dungeon_tile_at(generator->dungeon, point);
+            tile = generator_tile_at(generator, point);
             tile->walls.west = wall_type;
             break;
         default:
@@ -299,7 +353,7 @@ generator_set_wall(struct generator *generator,
 
 
 void
-generator_set_walls(struct generator *dungeon,
+generator_set_walls(struct generator *generator,
                     struct box box,
                     enum wall_type wall_type)
 {
@@ -309,20 +363,20 @@ generator_set_walls(struct generator *dungeon,
         int x = box.origin.x + i;
         
         struct point point = point_make(x, box.origin.y, box.origin.z);
-        generator_set_wall(dungeon, point, direction_south, wall_type);
+        generator_set_wall(generator, point, direction_south, wall_type);
         
         point = point_make(x, end.y, box.origin.z);
-        generator_set_wall(dungeon, point, direction_south, wall_type);
+        generator_set_wall(generator, point, direction_south, wall_type);
     }
     
     for (int j = 0; j < box.size.length; ++j) {
         int y = box.origin.y + j;
         
         struct point point = point_make(box.origin.x, y, box.origin.z);
-        generator_set_wall(dungeon, point, direction_west, wall_type);
+        generator_set_wall(generator, point, direction_west, wall_type);
         
         point = point_make(end.x, y, box.origin.z);
-        generator_set_wall(dungeon, point, direction_west, wall_type);
+        generator_set_wall(generator, point, direction_west, wall_type);
     }
 }
 
@@ -330,5 +384,15 @@ generator_set_walls(struct generator *dungeon,
 struct tile *
 generator_tile_at(struct generator *generator, struct point point)
 {
-    return dungeon_tile_at(generator->dungeon, point);
+    struct tile **tile = tile_find_in_array_sorted_by_point(generator->tiles,
+                                                            generator->tiles_count,
+                                                            point);
+    if (tile) return *tile;
+    
+    struct tile *dungeon_tile = dungeon_tile_at(generator->dungeon, point);
+    struct tile *copy = tile_alloc_copy(dungeon_tile);
+    generator->tiles = tile_add_to_array_sorted_by_point(generator->tiles,
+                                                         &generator->tiles_count,
+                                                         copy);
+    return copy;
 }

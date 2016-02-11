@@ -11,12 +11,16 @@
 #include "wall_type.h"
 
 
+struct area;
 struct digger;
 struct dungeon;
 struct rnd;
+struct tile;
 
 
 struct generator {
+    struct area **areas;
+    int areas_count;
     struct digger **diggers;
     int diggers_count;
     struct dungeon *dungeon;
@@ -24,6 +28,8 @@ struct generator {
     struct size max_size;
     int padding;
     struct rnd *rnd;
+    struct tile **tiles;
+    int tiles_count;
 };
 
 
@@ -49,6 +55,12 @@ generator_copy_digger(struct generator *generator, struct digger *digger);
 
 void
 generator_delete_digger(struct generator *generator, struct digger *digger);
+
+void
+generator_commit(struct generator *generator);
+
+void
+generator_rollback(struct generator *generator);
 
 bool
 generator_is_box_excavated(struct generator *generator, struct box box);

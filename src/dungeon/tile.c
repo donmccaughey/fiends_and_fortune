@@ -23,6 +23,20 @@ compare_by_point(void const *object, void const *other_object)
 }
 
 
+struct tile **
+tile_add_to_array_sorted_by_point(struct tile **tiles,
+                                  int *count,
+                                  struct tile *tile)
+{
+    int index = *count;
+    ++*count;
+    tiles = reallocarray_or_die(tiles, *count, sizeof(struct tile *));
+    tiles[index] = tile;
+    tile_sort_array_by_point(tiles, *count);
+    return tiles;
+}
+
+
 struct tile *
 tile_alloc(struct point point, enum tile_type type)
 {
@@ -30,6 +44,15 @@ tile_alloc(struct point point, enum tile_type type)
     tile->point = point;
     tile->type = type;
     return tile;
+}
+
+
+struct tile *
+tile_alloc_copy(struct tile *tile)
+{
+    struct tile *copy = calloc_or_die(1, sizeof(struct tile));
+    *copy = *tile;
+    return copy;
 }
 
 

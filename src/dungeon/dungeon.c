@@ -10,19 +10,6 @@
 #include "tile.h"
 
 
-static void
-add_tile(struct dungeon *dungeon, struct tile *tile)
-{
-    int index = dungeon->tiles_count;
-    ++dungeon->tiles_count;
-    dungeon->tiles = reallocarray_or_die(dungeon->tiles,
-                                         dungeon->tiles_count,
-                                         sizeof(struct tile *));
-    dungeon->tiles[index] = tile;
-    tile_sort_array_by_point(dungeon->tiles, dungeon->tiles_count);
-}
-
-
 void
 dungeon_add_area(struct dungeon *dungeon, struct area *area)
 {
@@ -119,6 +106,7 @@ dungeon_is_box_excavated(struct dungeon *dungeon, struct box box)
 {
     for (size_t i = 0; i < dungeon->tiles_count; ++i) {
         struct tile *tile = dungeon->tiles[i];
+        if (tile->point.z < box.origin.z) continue;
         if (tile->point.z >= box.origin.z + box.size.height) break;
         if (tile_is_unescavated(tile)) continue;
         if (box_contains_point(box, tile->point)) return true;
@@ -148,7 +136,9 @@ dungeon_tile_at(struct dungeon *dungeon, struct point point)
         return *tile;
     } else {
         struct tile *default_tile = tile_alloc(point, tile_type_solid);
-        add_tile(dungeon, default_tile);
+        dungeon->tiles = tile_add_to_array_sorted_by_point(dungeon->tiles,
+                                                           &dungeon->tiles_count,
+                                                           default_tile);
         return default_tile;
     }
 }
