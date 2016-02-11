@@ -5,6 +5,24 @@
 #include "common/alloc_or_die.h"
 
 
+static int
+compare_point_to_tile(void const *key, void const *object)
+{
+    struct point const *point = key;
+    struct tile *const *tile = object;
+    return point_compare(*point, (*tile)->point);
+}
+
+
+static int
+compare_by_point(void const *object, void const *other_object)
+{
+    struct tile *const *tile = object;
+    struct tile *const *other = other_object;
+    return point_compare((*tile)->point, (*other)->point);
+}
+
+
 struct tile *
 tile_alloc(struct point point, enum tile_type type)
 {
@@ -12,6 +30,24 @@ tile_alloc(struct point point, enum tile_type type)
     tile->point = point;
     tile->type = type;
     return tile;
+}
+
+
+bool
+tile_equals(struct tile const *tile, struct tile const *other)
+{
+    return point_equals(tile->point, other->point)
+        && tile->type == other->type;
+}
+
+
+struct tile **
+tile_find_in_array_sorted_by_point(struct tile **tiles,
+                                   int count,
+                                   struct point point)
+{
+    return bsearch(&point, tiles, count, sizeof(struct tile *),
+                   compare_point_to_tile);
 }
 
 
@@ -23,17 +59,7 @@ tile_free(struct tile *tile)
 
 
 bool
-tile_equals(struct tile *tile, struct tile *other)
-{
-    return tile->point.x == other->point.x
-        && tile->point.y == other->point.y
-        && tile->point.z == other->point.z
-        && tile->type == other->type;
-}
-
-
-bool
-tile_has_south_wall(struct tile *tile)
+tile_has_south_wall(struct tile const *tile)
 {
     return wall_type_solid == tile->walls.south
         || wall_type_door == tile->walls.south;
@@ -41,7 +67,7 @@ tile_has_south_wall(struct tile *tile)
 
 
 bool
-tile_has_west_wall(struct tile *tile)
+tile_has_west_wall(struct tile const *tile)
 {
     return wall_type_solid == tile->walls.west
         || wall_type_door == tile->walls.west;
@@ -49,7 +75,7 @@ tile_has_west_wall(struct tile *tile)
 
 
 bool
-tile_is_blank(struct tile *tile)
+tile_is_blank(struct tile const *tile)
 {
     return tile_type_solid == tile->type
         && wall_type_none == tile->walls.south
@@ -58,7 +84,14 @@ tile_is_blank(struct tile *tile)
 
 
 bool
-tile_is_unescavated(struct tile *tile)
+tile_is_unescavated(struct tile const *tile)
 {
     return tile_type_solid == tile->type;
+}
+
+
+void
+tile_sort_array_by_point(struct tile **tiles, int count)
+{
+    qsort(tiles, count, sizeof(struct tile *), compare_by_point);
 }

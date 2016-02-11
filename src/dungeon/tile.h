@@ -26,19 +26,27 @@ void
 tile_free(struct tile *tile);
 
 bool
-tile_equals(struct tile *tile, struct tile *other);
+tile_equals(struct tile const *tile, struct tile const *other);
 
 bool
-tile_is_blank(struct tile *tile);
+tile_is_blank(struct tile const *tile);
 
 bool
-tile_is_unescavated(struct tile *tile);
+tile_is_unescavated(struct tile const *tile);
 
 bool
-tile_has_south_wall(struct tile *tile);
+tile_has_south_wall(struct tile const *tile);
 
 bool
-tile_has_west_wall(struct tile *tile);
+tile_has_west_wall(struct tile const *tile);
+
+struct tile **
+tile_find_in_array_sorted_by_point(struct tile **tiles,
+                                   int count,
+                                   struct point point);
+
+void
+tile_sort_array_by_point(struct tile **tiles, int count);
 
 
 #endif

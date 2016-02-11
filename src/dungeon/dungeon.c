@@ -16,19 +16,6 @@
 #include "tile.h"
 
 
-static int
-tile_compare_by_point(void const *object1, void const *object2);
-
-
-static int
-compare_point_to_tile(void const *key, void const *object)
-{
-    struct point const *point = key;
-    struct tile *const *tile = object;
-    return point_compare(*point, (*tile)->point);
-}
-
-
 struct area *
 dungeon_add_area(struct dungeon *dungeon,
                  enum area_type area_type,
@@ -62,10 +49,7 @@ dungeon_add_tile(struct dungeon *dungeon,
                                          sizeof(struct tile *));
     struct tile *tile = tile_alloc(point, tile_type);
     dungeon->tiles[index] = tile;
-    qsort(dungeon->tiles,
-          dungeon->tiles_count,
-          sizeof(struct tile *),
-          tile_compare_by_point);
+    tile_sort_array_by_point(dungeon->tiles, dungeon->tiles_count);
     return tile;
 }
 
@@ -274,23 +258,12 @@ dungeon_set_walls(struct dungeon *dungeon,
 struct tile *
 dungeon_tile_at(struct dungeon *dungeon, struct point point)
 {
-    struct tile **tile = bsearch(&point,
-                                 dungeon->tiles,
-                                 dungeon->tiles_count,
-                                 sizeof(struct tile *),
-                                 compare_point_to_tile);
+    struct tile **tile = tile_find_in_array_sorted_by_point(dungeon->tiles,
+                                                            dungeon->tiles_count,
+                                                            point);
     if (tile) {
         return *tile;
     } else {
         return dungeon_add_tile(dungeon, point, tile_type_solid);
     }
-}
-
-
-static int
-tile_compare_by_point(void const *object1, void const *object2)
-{
-    struct tile *const *tile1 = object1;
-    struct tile *const *tile2 = object2;
-    return point_compare((*tile1)->point, (*tile2)->point);
 }
