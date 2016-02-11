@@ -10,7 +10,7 @@
 #include "area.h"
 #include "area_type.h"
 #include "dungeon.h"
-#include "dungeon_generator.h"
+#include "generator.h"
 #include "tile.h"
 
 
@@ -279,15 +279,15 @@ digger_generate_chamber(struct digger *digger,
         // unusual shape and size
     }
     // TODO: exits
-    dungeon_generator_delete_digger(digger->generator, digger);
+    generator_delete_digger(digger->generator, digger);
 }
 
 
 void
 digger_generate_door(struct digger *digger)
 {
-    struct digger *door_digger = dungeon_generator_copy_digger(digger->generator,
-                                                               digger);
+    struct digger *door_digger = generator_copy_digger(digger->generator,
+                                                       digger);
     bool door_left = false;
     bool door_right = false;
     bool door_ahead = false;
@@ -306,26 +306,26 @@ digger_generate_door(struct digger *digger)
     }
     
     if (door_left) {
-        struct digger *left_digger = dungeon_generator_copy_digger(digger->generator,
-                                                                   door_digger);
+        struct digger *left_digger = generator_copy_digger(digger->generator,
+                                                           door_digger);
         digger_turn_90_degrees_left(left_digger);
         space_beyond_door(left_digger, false);
     }
     
     if (door_right) {
-        struct digger *right_digger = dungeon_generator_copy_digger(digger->generator,
-                                                                    door_digger);
+        struct digger *right_digger = generator_copy_digger(digger->generator,
+                                                            door_digger);
         digger_turn_90_degrees_right(right_digger);
         space_beyond_door(right_digger, false);
     }
     
     if (door_ahead) {
-        struct digger *ahead_digger = dungeon_generator_copy_digger(digger->generator,
-                                                                    door_digger);
+        struct digger *ahead_digger = generator_copy_digger(digger->generator,
+                                                            door_digger);
         space_beyond_door(ahead_digger, true);
     }
     
-    dungeon_generator_delete_digger(digger->generator, door_digger);
+    generator_delete_digger(digger->generator, door_digger);
 }
 
 
@@ -392,7 +392,7 @@ digger_generate_room(struct digger *digger,
         // unusual shape and size
     }
     // TODO: exits
-    dungeon_generator_delete_digger(digger->generator, digger);
+    generator_delete_digger(digger->generator, digger);
 }
 
 
@@ -404,8 +404,8 @@ digger_generate_side_passage(struct digger *digger)
         // left 90 degrees
         if (!digger_dig_intersection(digger)) return;
         
-        struct digger *side_digger = dungeon_generator_copy_digger(digger->generator,
-                                                                   digger);
+        struct digger *side_digger = generator_copy_digger(digger->generator,
+                                                           digger);
         digger_turn_90_degrees_left(side_digger);
         digger_dig_passage(side_digger, 3, wall_type_none);
         
@@ -414,8 +414,8 @@ digger_generate_side_passage(struct digger *digger)
         // right 90 degrees
         if (!digger_dig_intersection(digger)) return;
         
-        struct digger *side_digger = dungeon_generator_copy_digger(digger->generator,
-                                                                   digger);
+        struct digger *side_digger = generator_copy_digger(digger->generator,
+                                                           digger);
         digger_turn_90_degrees_right(side_digger);
         digger_dig_passage(side_digger, 3, wall_type_none);
         
@@ -438,24 +438,24 @@ digger_generate_side_passage(struct digger *digger)
         if (!intersection) return;
         int exit_count = 0;
         
-        struct digger *left_digger = dungeon_generator_copy_digger(digger->generator,
-                                                                   digger);
+        struct digger *left_digger = generator_copy_digger(digger->generator,
+                                                           digger);
         digger_turn_90_degrees_left(left_digger);
         struct area *left_passage = digger_dig_passage(left_digger, 3, wall_type_none);
         if (left_passage) {
             ++exit_count;
         } else {
-            dungeon_generator_delete_digger(digger->generator, left_digger);
+            generator_delete_digger(digger->generator, left_digger);
         }
         
-        struct digger *right_digger = dungeon_generator_copy_digger(digger->generator,
-                                                                    digger);
+        struct digger *right_digger = generator_copy_digger(digger->generator,
+                                                            digger);
         digger_turn_90_degrees_right(right_digger);
         struct area *right_passage = digger_dig_passage(right_digger, 3, wall_type_none);
         if (right_passage) {
             ++exit_count;
         } else {
-            dungeon_generator_delete_digger(digger->generator, right_digger);
+            generator_delete_digger(digger->generator, right_digger);
         }
         
         if (0 == exit_count || 1 == exit_count) {
@@ -463,7 +463,7 @@ digger_generate_side_passage(struct digger *digger)
             intersection->type = area_type_passage;
             // TODO: merge intersection area with adjacent passage
         } else {
-            dungeon_generator_delete_digger(digger->generator, digger);
+            generator_delete_digger(digger->generator, digger);
         }
     } else if (score <= 15) {
         // passage Y's
@@ -473,31 +473,31 @@ digger_generate_side_passage(struct digger *digger)
         if (!intersection) return;
         int exit_count = 0;
         
-        struct digger *left_digger = dungeon_generator_copy_digger(digger->generator,
-                                                                   digger);
+        struct digger *left_digger = generator_copy_digger(digger->generator,
+                                                           digger);
         digger_turn_90_degrees_left(left_digger);
         struct area *left_passage = digger_dig_passage(left_digger, 3, wall_type_none);
         if (left_passage) {
             ++exit_count;
         } else {
-            dungeon_generator_delete_digger(digger->generator, left_digger);
+            generator_delete_digger(digger->generator, left_digger);
         }
         
-        struct digger *right_digger = dungeon_generator_copy_digger(digger->generator,
-                                                                    digger);
+        struct digger *right_digger = generator_copy_digger(digger->generator,
+                                                            digger);
         digger_turn_90_degrees_right(right_digger);
         struct area *right_passage = digger_dig_passage(right_digger, 3, wall_type_none);
         if (right_passage) {
             ++exit_count;
         } else {
-            dungeon_generator_delete_digger(digger->generator, right_digger);
+            generator_delete_digger(digger->generator, right_digger);
         }
         
         struct area *forward_passage = digger_dig_passage(digger, 3, wall_type_none);
         if (forward_passage) {
             ++exit_count;
         } else {
-            dungeon_generator_delete_digger(digger->generator, digger);
+            generator_delete_digger(digger->generator, digger);
         }
         
         if (0 == exit_count || 1 == exit_count) {
@@ -558,7 +558,7 @@ digger_periodic_check(struct digger *digger)
         // stairs
     } else if (score == 18) {
         // dead end
-        dungeon_generator_delete_digger(digger->generator, digger);
+        generator_delete_digger(digger->generator, digger);
     } else if (score == 19) {
         // trick/trap
     } else {
@@ -614,7 +614,8 @@ space_beyond_door(struct digger *digger, bool is_straight_ahead)
                 digger_dig_passage(digger, 1, wall_type_door);
             }
             
-            struct digger *left_digger = dungeon_generator_copy_digger(digger->generator, digger);
+            struct digger *left_digger = generator_copy_digger(digger->generator,
+                                                               digger);
             digger_turn_90_degrees_left(left_digger);
             digger_dig_passage(left_digger, 3, wall_type_none);
             

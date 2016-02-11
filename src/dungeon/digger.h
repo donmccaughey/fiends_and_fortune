@@ -10,11 +10,11 @@
 
 struct area;
 struct digger;
-struct dungeon_generator;
+struct generator;
 
 
 struct digger {
-    struct dungeon_generator *generator;
+    struct generator *generator;
     struct point point;
     enum direction direction;
 };

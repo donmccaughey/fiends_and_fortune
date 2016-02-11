@@ -1,4 +1,4 @@
-#include "dungeon_generator.h"
+#include "generator.h"
 
 #include <assert.h>
 
@@ -12,7 +12,7 @@
 
 
 static struct digger *
-digger_alloc(struct dungeon_generator *generator,
+digger_alloc(struct generator *generator,
              struct point point,
              enum direction direction)
 {
@@ -32,9 +32,9 @@ digger_free(struct digger *digger)
 
 
 struct digger *
-dungeon_generator_add_digger(struct dungeon_generator *generator,
-                             struct point point,
-                             enum direction direction)
+generator_add_digger(struct generator *generator,
+                     struct point point,
+                     enum direction direction)
 {
     int index = generator->diggers_count;
     ++generator->diggers_count;
@@ -46,10 +46,10 @@ dungeon_generator_add_digger(struct dungeon_generator *generator,
 }
 
 
-struct dungeon_generator *
-dungeon_generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
+struct generator *
+generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
 {
-    struct dungeon_generator *generator = calloc_or_die(1, sizeof(struct dungeon_generator));
+    struct generator *generator = calloc_or_die(1, sizeof(struct generator));
     generator->dungeon = dungeon;
     generator->rnd = rnd;
     
@@ -62,16 +62,14 @@ dungeon_generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
 
 
 struct digger *
-dungeon_generator_copy_digger(struct dungeon_generator *generator,
-                              struct digger *digger)
+generator_copy_digger(struct generator *generator, struct digger *digger)
 {
-    return dungeon_generator_add_digger(generator, digger->point, digger->direction);
+    return generator_add_digger(generator, digger->point, digger->direction);
 }
 
 
 void
-dungeon_generator_delete_digger(struct dungeon_generator *generator,
-                                struct digger *digger)
+generator_delete_digger(struct generator *generator, struct digger *digger)
 {
     int index = -1;
     for (int i = 0; i < generator->diggers_count; ++i) {
@@ -99,7 +97,7 @@ dungeon_generator_delete_digger(struct dungeon_generator *generator,
 
 
 void
-dungeon_generator_free(struct dungeon_generator *generator)
+generator_free(struct generator *generator)
 {
     for (int i = 0; i < generator->diggers_count; ++i) {
         digger_free(generator->diggers[i]);
@@ -110,13 +108,13 @@ dungeon_generator_free(struct dungeon_generator *generator)
 
 
 void
-dungeon_generator_generate(struct dungeon_generator *generator)
+generator_generate(struct generator *generator)
 {
     int const max_interation_count = 100;
     
-    struct digger *digger = dungeon_generator_add_digger(generator,
-                                                         point_make(0, 0, 1),
-                                                         direction_north);
+    struct digger *digger = generator_add_digger(generator,
+                                                 point_make(0, 0, 1),
+                                                 direction_north);
     digger_dig_area(digger, 2, 1, 0, wall_type_solid, area_type_passage);
     
     while (generator->diggers_count && generator->iteration_count < max_interation_count) {
@@ -134,17 +132,17 @@ dungeon_generator_generate(struct dungeon_generator *generator)
 
 
 void
-dungeon_generator_generate_small(struct dungeon_generator *generator)
+generator_generate_small(struct generator *generator)
 {
-    struct digger *digger = dungeon_generator_add_digger(generator,
-                                                         point_make(0, 0, 1),
-                                                         direction_north);
+    struct digger *digger = generator_add_digger(generator,
+                                                 point_make(0, 0, 1),
+                                                 direction_north);
     
     digger_dig_area(digger, 2, 1, 0, wall_type_solid, area_type_passage);
     digger_dig_chamber(digger, 5, 3, 1, wall_type_none);
     
     // from entry chamber, north west exit
-    struct digger *nw_digger = dungeon_generator_copy_digger(generator, digger);
+    struct digger *nw_digger = generator_copy_digger(generator, digger);
     digger_turn_90_degrees_left(nw_digger);
     digger_move(nw_digger, 1, direction_south);
     digger_move(nw_digger, 1, direction_west);
@@ -154,7 +152,7 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_dig_chamber(nw_digger, 3, 2, 1, wall_type_none);
     
     // from entry chamber, south west exit
-    struct digger *sw_digger = dungeon_generator_copy_digger(generator, digger);
+    struct digger *sw_digger = generator_copy_digger(generator, digger);
     digger_turn_90_degrees_left(sw_digger);
     digger_move(sw_digger, 3, direction_south);
     digger_move(sw_digger, 1, direction_west);
@@ -171,7 +169,7 @@ dungeon_generator_generate_small(struct dungeon_generator *generator)
     digger_dig_chamber(sw_digger, 2, 3, 1, wall_type_none);
     
     // from entry chamber, south east exit
-    struct digger *se_digger = dungeon_generator_copy_digger(generator, digger);
+    struct digger *se_digger = generator_copy_digger(generator, digger);
     digger_turn_90_degrees_right(se_digger);
     digger_move(se_digger, 3, direction_south);
     digger_move(se_digger, 1, direction_east);

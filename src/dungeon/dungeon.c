@@ -10,7 +10,7 @@
 #include "common/str.h"
 
 #include "area.h"
-#include "dungeon_generator.h"
+#include "generator.h"
 #include "level_map.h"
 #include "text_rectangle.h"
 #include "tile.h"
@@ -118,19 +118,18 @@ dungeon_free(struct dungeon *dungeon)
 void
 dungeon_generate(struct dungeon *dungeon, struct rnd *rnd)
 {
-    struct dungeon_generator *generator = dungeon_generator_alloc(dungeon, rnd);
-    dungeon_generator_generate(generator);
-    dungeon_generator_free(generator);
+    struct generator *generator = generator_alloc(dungeon, rnd);
+    generator_generate(generator);
+    generator_free(generator);
 }
 
 
 void
 dungeon_generate_small(struct dungeon *dungeon)
 {
-    struct dungeon_generator *generator = dungeon_generator_alloc(dungeon,
-                                                                  global_rnd);
-    dungeon_generator_generate_small(generator);
-    dungeon_generator_free(generator);
+    struct generator *generator = generator_alloc(dungeon, global_rnd);
+    generator_generate_small(generator);
+    generator_free(generator);
 }
 
 
