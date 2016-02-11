@@ -3,6 +3,7 @@
 #include <assert.h>
 
 #include "common/alloc_or_die.h"
+#include "common/fail.h"
 #include "common/rnd.h"
 
 #include "area.h"
@@ -42,8 +43,8 @@ generator_add_area(struct generator *generator,
                                    orientation,
                                    box,
                                    tile_type);    
-    dungeon_fill_box(generator->dungeon, box, tile_type);
-    dungeon_set_walls(generator->dungeon, box, wall_type_solid);
+    generator_fill_box(generator, box, tile_type);
+    generator_set_walls(generator, box, wall_type_solid);
     dungeon_add_area(generator->dungeon, area);
     return area;
 }
@@ -111,6 +112,44 @@ generator_delete_digger(struct generator *generator, struct digger *digger)
     generator->diggers = reallocarray_or_die(generator->diggers,
                                              generator->diggers_count,
                                              sizeof(struct digger *));
+}
+
+
+void
+generator_fill_box(struct generator *generator,
+                   struct box box,
+                   enum tile_type tile_type)
+{
+    struct box padded_box = box_expand(box, size_make(1, 1, 0));
+    struct tile **tiles = dungeon_alloc_tiles_for_box(generator->dungeon,
+                                                      padded_box);
+    struct point point;
+    for (int k = 0; k < padded_box.size.height; ++k) {
+        point.z = padded_box.origin.z + k;
+        for (int j = 1; j < padded_box.size.length; ++j) {
+            point.y = padded_box.origin.y + j;
+            for (int i = 1; i < padded_box.size.width; ++i) {
+                point.x = padded_box.origin.x + i;
+                int index = box_index_for_point(padded_box, point);
+                struct tile *tile = tiles[index];
+                if (box_contains_point(box, point)) tile->type = tile_type;
+                
+                int west_index = box_index_for_point(padded_box, point_west(point));
+                struct tile *west_tile = tiles[west_index];
+                if (west_tile->type != tile->type) {
+                    tile->walls.west = wall_type_solid;
+                }
+                
+                int south_index = box_index_for_point(padded_box, point_south(point));
+                struct tile *south_tile = tiles[south_index];
+                if (south_tile->type != tile->type) {
+                    tile->walls.south = wall_type_solid;
+                }
+            }
+        }
+    }
+    
+    free_or_die(tiles);
 }
 
 
@@ -195,7 +234,7 @@ generator_generate_small(struct generator *generator)
     digger_dig_chamber(se_digger, 6, 4, 0, wall_type_none);
     // fill in one tile in chamber
     struct box box = box_make(point_make(5, 2, 1), size_make_unit());
-    dungeon_fill_box(generator->dungeon, box, tile_type_solid);
+    generator_fill_box(generator, box, tile_type_solid);
     
     // from entry chamber, north exit
     digger_dig_passage(digger, 8, wall_type_none);
@@ -211,4 +250,64 @@ generator_generate_small(struct generator *generator)
     digger_dig_area(digger, 3, 1, 0, wall_type_none, area_type_passage);
     struct tile *tile = dungeon_tile_at(generator->dungeon, point_east(digger->point));
     tile->walls.west = wall_type_none;
+}
+
+
+void
+generator_set_wall(struct generator *generator,
+                 struct point point,
+                 enum direction direction,
+                 enum wall_type wall_type)
+{
+    struct tile *tile;
+    switch (direction) {
+        case direction_north:
+            tile = dungeon_tile_at(generator->dungeon, point_north(point));
+            tile->walls.south = wall_type;
+            break;
+        case direction_south:
+            tile = dungeon_tile_at(generator->dungeon, point);
+            tile->walls.south = wall_type;
+            break;
+        case direction_east:
+            tile = dungeon_tile_at(generator->dungeon, point_east(point));
+            tile->walls.west = wall_type;
+            break;
+        case direction_west:
+            tile = dungeon_tile_at(generator->dungeon, point);
+            tile->walls.west = wall_type;
+            break;
+        default:
+            fail("Unrecognized direction %i", direction);
+            break;
+    }
+}
+
+
+void
+generator_set_walls(struct generator *dungeon,
+                    struct box box,
+                    enum wall_type wall_type)
+{
+    struct point end = box_end_point(box);
+    
+    for (int i = 0; i < box.size.width; ++i) {
+        int x = box.origin.x + i;
+        
+        struct point point = point_make(x, box.origin.y, box.origin.z);
+        generator_set_wall(dungeon, point, direction_south, wall_type);
+        
+        point = point_make(x, end.y, box.origin.z);
+        generator_set_wall(dungeon, point, direction_south, wall_type);
+    }
+    
+    for (int j = 0; j < box.size.length; ++j) {
+        int y = box.origin.y + j;
+        
+        struct point point = point_make(box.origin.x, y, box.origin.z);
+        generator_set_wall(dungeon, point, direction_west, wall_type);
+        
+        point = point_make(end.x, y, box.origin.z);
+        generator_set_wall(dungeon, point, direction_west, wall_type);
+    }
 }

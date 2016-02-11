@@ -4,11 +4,9 @@
 
 #include "area_type.h"
 #include "box.h"
-#include "direction.h"
 #include "orientation.h"
-#include "point.h"
-#include "size.h"
 #include "tile_type.h"
+#include "wall_type.h"
 
 
 struct digger;
@@ -56,6 +54,22 @@ generator_add_area(struct generator *generator,
                    enum orientation orientation,
                    struct box box,
                    enum tile_type tile_type);
+
+void
+generator_fill_box(struct generator *generator,
+                   struct box box,
+                   enum tile_type tile_type);
+
+void
+generator_set_wall(struct generator *generator,
+                   struct point point,
+                   enum direction direction,
+                   enum wall_type wall_type);
+
+void
+generator_set_walls(struct generator *generator,
+                    struct box box,
+                    enum wall_type wall_type);
 
 
 #endif
