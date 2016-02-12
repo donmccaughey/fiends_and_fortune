@@ -15,6 +15,11 @@
 static void
 location_of_door(struct rnd *rnd, bool *left, bool *right, bool *ahead);
 
+static int
+number_of_exits(struct digger *digger,
+                struct area *chamber_or_room,
+                bool *check_for_secret_doors);
+
 static bool
 space_beyond_door(struct digger *digger, bool is_straight_ahead);
 
@@ -287,34 +292,8 @@ digger_chambers(struct digger *digger, enum wall_type entrance_type)
                                  entrance_type);
     if (!chamber) return false;
     
-    int exit_count = 0;
     bool check_for_secret_doors = false;
-    score = roll("1d20", digger->generator->rnd);
-    if (score <= 3) {
-        exit_count = (box_area(chamber->box) <= 6) ? 1 : 2;
-    } else if (score <= 6) {
-        exit_count = (box_area(chamber->box) <= 6) ? 2 : 3;
-    } else if (score <= 9) {
-        exit_count = (box_area(chamber->box) <= 6) ? 3 : 4;
-    } else if (score <= 12) {
-        if (box_area(chamber->box) <= 12) {
-            exit_count = 0;
-            check_for_secret_doors = true;
-        } else {
-            exit_count = 1;
-        }
-    } else if (score <= 15) {
-        if (box_area(chamber->box) <= 16) {
-            exit_count = 0;
-            check_for_secret_doors = true;
-        } else {
-            exit_count = 1;
-        }
-    } else if (score <= 18) {
-        exit_count = roll("1d4", digger->generator->rnd);
-    } else {
-        exit_count = 1;
-    }
+    int exit_count = number_of_exits(digger, chamber, &check_for_secret_doors);
     
     for (int i = 0; i < exit_count; ++i) {
         score = roll("1d20", digger->generator->rnd);
@@ -787,6 +766,44 @@ location_of_door(struct rnd *rnd, bool *left, bool *right, bool *ahead)
     } else {
         *ahead = true;
     }
+}
+
+
+static int
+number_of_exits(struct digger *digger,
+                struct area *chamber_or_room,
+                bool *check_for_secret_doors)
+{
+    int exit_count = 0;
+    *check_for_secret_doors = false;
+    int area = box_area(chamber_or_room->box);
+    int score = roll("1d20", digger->generator->rnd);
+    if (score <= 3) {
+        exit_count = (area <= 6) ? 1 : 2;
+    } else if (score <= 6) {
+        exit_count = (area <= 6) ? 2 : 3;
+    } else if (score <= 9) {
+        exit_count = (area <= 6) ? 3 : 4;
+    } else if (score <= 12) {
+        if (area <= 12) {
+            exit_count = 0;
+            *check_for_secret_doors = true;
+        } else {
+            exit_count = 1;
+        }
+    } else if (score <= 15) {
+        if (area <= 16) {
+            exit_count = 0;
+            *check_for_secret_doors = true;
+        } else {
+            exit_count = 1;
+        }
+    } else if (score <= 18) {
+        exit_count = roll("1d4", digger->generator->rnd);
+    } else {
+        exit_count = 1;
+    }
+    return exit_count;
 }
 
 
