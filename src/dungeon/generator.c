@@ -78,7 +78,7 @@ generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
     generator->rnd = rnd;
     
     generator->padding = rnd_next_uniform_value(rnd, 2);
-    generator->max_size = size_make(20, 20, 5);
+    generator->max_size = size_make(30, 20, 5);
     
     generator->areas = calloc_or_die(1, sizeof(struct area *));
     generator->diggers = calloc_or_die(1, sizeof(struct digger *));

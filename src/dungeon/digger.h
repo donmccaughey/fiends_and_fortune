@@ -25,6 +25,18 @@ void
 digger_move(struct digger *digger, int steps, enum direction direction);
 
 void
+digger_move_left(struct digger *digger, int steps);
+
+void
+digger_move_right(struct digger *digger, int steps);
+
+void
+digger_move_forward(struct digger *digger, int steps);
+
+void
+digger_move_backward(struct digger *digger, int steps);
+
+void
 digger_turn_90_degrees_left(struct digger *digger);
 
 void

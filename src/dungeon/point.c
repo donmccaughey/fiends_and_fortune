@@ -112,6 +112,7 @@ point_rotate_90_degrees_left(struct point point, enum direction direction)
         case direction_west:
             return point_make(point.x + 1, point.y - 1, point.z);
         default:
+            fail("Unrecognized direction %i", direction);
             return point;
     }
 }
@@ -130,6 +131,7 @@ point_rotate_90_degrees_right(struct point point, enum direction direction)
         case direction_west:
             return point_make(point.x + 1, point.y + 1, point.z);
         default:
+            fail("Unrecognized direction %i", direction);
             return point;
     }
 }
