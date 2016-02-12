@@ -131,7 +131,6 @@ digger_dig_area(struct digger *digger,
             break;
     }
     
-    digger->point = point_move(digger->point, length, digger->direction);
     return area;
 }
 
@@ -151,12 +150,14 @@ digger_dig_chamber(struct digger *digger,
     if (generator_is_box_excavated(digger->generator, padded_box)) {
         return NULL;
     }
-    return digger_dig_area(digger,
-                           length,
-                           width,
-                           left_offset,
-                           entrance_type,
-                           area_type_chamber);
+    struct area *chamber = digger_dig_area(digger,
+                                           length,
+                                           width,
+                                           left_offset,
+                                           entrance_type,
+                                           area_type_chamber);
+    digger_move_forward(digger, length);
+    return chamber;
 }
 
 
@@ -174,12 +175,14 @@ digger_dig_intersection(struct digger *digger)
     if (generator_is_box_excavated(digger->generator, padded_box)) {
         return NULL;
     }
-    return digger_dig_area(digger,
-                           length,
-                           width,
-                           left_offset,
-                           wall_type_none,
-                           area_type_intersection);
+    struct area *intersection = digger_dig_area(digger,
+                                                length,
+                                                width,
+                                                left_offset,
+                                                wall_type_none,
+                                                area_type_intersection);
+    digger_move_forward(digger, length);
+    return intersection;
 }
 
 
@@ -199,12 +202,14 @@ digger_dig_passage(struct digger *digger,
     if (generator_is_box_excavated(digger->generator, padded_box)) {
         return NULL;
     }
-    return digger_dig_area(digger,
-                           length,
-                           width,
-                           left_offset,
-                           entrance_type,
-                           area_type_passage);
+    struct area *passage = digger_dig_area(digger,
+                                           length,
+                                           width,
+                                           left_offset,
+                                           entrance_type,
+                                           area_type_passage);
+    digger_move_forward(digger, length);
+    return passage;
 }
 
 
@@ -223,12 +228,14 @@ digger_dig_room(struct digger *digger,
     if (generator_is_box_excavated(digger->generator, padded_box)) {
         return NULL;
     }
-    return digger_dig_area(digger,
-                           length,
-                           width,
-                           left_offset,
-                           entrance_type,
-                           area_type_room);
+    struct area *room = digger_dig_area(digger,
+                                        length,
+                                        width,
+                                        left_offset,
+                                        entrance_type,
+                                        area_type_room);
+    digger_move_forward(digger, length);
+    return room;
 }
 
 
@@ -562,24 +569,16 @@ digger_move_backward(struct digger *digger, int steps)
 {
     switch (digger->direction) {
         case direction_north:
-            digger->point = point_make(digger->point.x,
-                                       digger->point.y - steps,
-                                       digger->point.z);
+            digger_move(digger, steps, direction_south);
             break;
         case direction_south:
-            digger->point = point_make(digger->point.x,
-                                       digger->point.y + steps,
-                                       digger->point.z);
+            digger_move(digger, steps, direction_north);
             break;
         case direction_east:
-            digger->point = point_make(digger->point.x - steps,
-                                       digger->point.y,
-                                       digger->point.z);
+            digger_move(digger, steps, direction_west);
             break;
         case direction_west:
-            digger->point = point_make(digger->point.x + steps,
-                                       digger->point.y,
-                                       digger->point.z);
+            digger_move(digger, steps, direction_east);
             break;
         default:
             fail("Unrecognized direction %i", digger->direction);
@@ -593,24 +592,16 @@ digger_move_forward(struct digger *digger, int steps)
 {
     switch (digger->direction) {
         case direction_north:
-            digger->point = point_make(digger->point.x,
-                                       digger->point.y + steps,
-                                       digger->point.z);
+            digger_move(digger, steps, direction_north);
             break;
         case direction_south:
-            digger->point = point_make(digger->point.x,
-                                       digger->point.y - steps,
-                                       digger->point.z);
+            digger_move(digger, steps, direction_south);
             break;
         case direction_east:
-            digger->point = point_make(digger->point.x + steps,
-                                       digger->point.y,
-                                       digger->point.z);
+            digger_move(digger, steps, direction_east);
             break;
         case direction_west:
-            digger->point = point_make(digger->point.x - steps,
-                                       digger->point.y,
-                                       digger->point.z);
+            digger_move(digger, steps, direction_west);
             break;
         default:
             fail("Unrecognized direction %i", digger->direction);
@@ -624,24 +615,16 @@ digger_move_left(struct digger *digger, int steps)
 {
     switch (digger->direction) {
         case direction_north:
-            digger->point = point_make(digger->point.x - steps,
-                                       digger->point.y,
-                                       digger->point.z);
+            digger_move(digger, steps, direction_west);
             break;
         case direction_south:
-            digger->point = point_make(digger->point.x + steps,
-                                       digger->point.y,
-                                       digger->point.z);
+            digger_move(digger, steps, direction_east);
             break;
         case direction_east:
-            digger->point = point_make(digger->point.x,
-                                       digger->point.y + steps,
-                                       digger->point.z);
+            digger_move(digger, steps, direction_north);
             break;
         case direction_west:
-            digger->point = point_make(digger->point.x,
-                                       digger->point.y - steps,
-                                       digger->point.z);
+            digger_move(digger, steps, direction_south);
             break;
         default:
             fail("Unrecognized direction %i", digger->direction);
@@ -655,24 +638,16 @@ digger_move_right(struct digger *digger, int steps)
 {
     switch (digger->direction) {
         case direction_north:
-            digger->point = point_make(digger->point.x + steps,
-                                       digger->point.y,
-                                       digger->point.z);
+            digger_move(digger, steps, direction_east);
             break;
         case direction_south:
-            digger->point = point_make(digger->point.x - steps,
-                                       digger->point.y,
-                                       digger->point.z);
+            digger_move(digger, steps, direction_west);
             break;
         case direction_east:
-            digger->point = point_make(digger->point.x,
-                                       digger->point.y - steps,
-                                       digger->point.z);
+            digger_move(digger, steps, direction_south);
             break;
         case direction_west:
-            digger->point = point_make(digger->point.x,
-                                       digger->point.y + steps,
-                                       digger->point.z);
+            digger_move(digger, steps, direction_north);
             break;
         default:
             fail("Unrecognized direction %i", digger->direction);

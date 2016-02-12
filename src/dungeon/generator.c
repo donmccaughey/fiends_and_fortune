@@ -247,7 +247,7 @@ generator_generate_small(struct generator *generator)
                                                  point_make(0, 0, 1),
                                                  direction_north);
     
-    digger_dig_area(digger, 2, 1, 0, wall_type_solid, area_type_passage);
+    digger_dig_passage(digger, 2, wall_type_solid);
     digger_dig_chamber(digger, 5, 3, 1, wall_type_none);
     
     // from entry chamber, north west exit
@@ -300,6 +300,7 @@ generator_generate_small(struct generator *generator)
     digger_turn_90_degrees_right(digger);
     // dig connecting passage without constraints to make looping passage
     digger_dig_area(digger, 3, 1, 0, wall_type_none, area_type_passage);
+    digger_move_forward(digger, 3);
     struct tile *tile = generator_tile_at(generator, point_east(digger->point));
     tile->walls.west = wall_type_none;
     generator_commit(generator);
