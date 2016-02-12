@@ -45,6 +45,9 @@ struct point
 box_end_point(struct box box);
 
 int
+box_area(struct box box);
+
+int
 box_volume(struct box box);
 
 struct box

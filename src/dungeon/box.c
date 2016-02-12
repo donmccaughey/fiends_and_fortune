@@ -49,6 +49,16 @@ static void
 extend_to_include(int *box_point, int *box_size, int point);
 
 
+int
+box_area(struct box box)
+{
+    assert(  (float)abs(box.size.width)
+           * (float)abs(box.size.length)
+           <= (float)INT_MAX);
+    return abs(box.size.width) * abs(box.size.length);
+}
+
+
 bool
 box_contains_box(struct box box, struct box other)
 {
