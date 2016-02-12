@@ -28,6 +28,8 @@ struct generator {
     struct size max_size;
     int padding;
     struct rnd *rnd;
+    struct digger *saved_diggers;
+    int saved_diggers_count;
     struct tile **tiles;
     int tiles_count;
 };

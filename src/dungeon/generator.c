@@ -82,6 +82,7 @@ generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
     
     generator->areas = calloc_or_die(1, sizeof(struct area *));
     generator->diggers = calloc_or_die(1, sizeof(struct digger *));
+    generator->saved_diggers = calloc_or_die(1, sizeof(struct digger));
     generator->tiles = calloc_or_die(1, sizeof(struct tile *));
     return generator;
 }
@@ -110,6 +111,15 @@ generator_commit(struct generator *generator)
         dungeon_add_area(generator->dungeon, generator->areas[i]);
     }
     generator->areas_count = 0;
+    
+    generator->saved_diggers_count = generator->diggers_count;
+    generator->saved_diggers = reallocarray_or_die(generator->saved_diggers,
+                                                   generator->saved_diggers_count,
+                                                   sizeof(struct digger));
+    for (int i = 0; i < generator->diggers_count; ++i) {
+        generator->saved_diggers[i] = *(generator->diggers[i]);
+    }
+    
     for (int i = 0; i < generator->tiles_count; ++i) {
         struct tile *tile = dungeon_tile_at(generator->dungeon,
                                             generator->tiles[i]->point);
@@ -193,6 +203,7 @@ generator_free(struct generator *generator)
         digger_free(generator->diggers[i]);
     }
     free_or_die(generator->diggers);
+    free_or_die(generator->saved_diggers);
     free_or_die(generator->tiles);
     free_or_die(generator);
 }
@@ -207,6 +218,7 @@ generator_generate(struct generator *generator)
                                                  point_make(0, 0, 1),
                                                  direction_north);
     digger_dig_area(digger, 2, 1, 0, wall_type_solid, area_type_passage);
+    generator_commit(generator);
     
     while (   generator->diggers_count
            && generator->iteration_count < max_interation_count)
@@ -216,8 +228,11 @@ generator_generate(struct generator *generator)
                                                   sizeof(struct digger *));
         int count = generator->diggers_count;
         for (int i = 0; i < count; ++i) {
-            digger_periodic_check(diggers[i]);
-            generator_commit(generator);
+            if (digger_periodic_check(diggers[i])) {
+                generator_commit(generator);
+            } else {
+                generator_rollback(generator);
+            }
         }
         free_or_die(diggers);
         ++generator->iteration_count;
@@ -313,6 +328,18 @@ generator_rollback(struct generator *generator)
         area_free(generator->areas[i]);
     }
     generator->areas_count = 0;
+    
+    while (generator->diggers_count < generator->saved_diggers_count) {
+        generator_add_digger(generator, point_make(0, 0, 0), direction_north);
+    }
+    while (generator->diggers_count > generator->saved_diggers_count) {
+        int last = generator->diggers_count - 1;
+        digger_free(generator->diggers[last]);
+        --generator->diggers_count;
+    }
+    for (int i = 0; i < generator->saved_diggers_count; ++i) {
+        *(generator->diggers[i]) = generator->saved_diggers[i];
+    }
     
     for (int i = 0; i < generator->tiles_count; ++i) {
         tile_free(generator->tiles[i]);
