@@ -225,8 +225,7 @@ digger_dig_room(struct digger *digger,
 
 
 bool
-digger_generate_chamber(struct digger *digger,
-                        enum wall_type entrance_type)
+digger_chambers(struct digger *digger, enum wall_type entrance_type)
 {
     int score = roll("1d20", digger->generator->rnd);
     if (score <= 2) {
@@ -297,7 +296,7 @@ digger_generate_chamber(struct digger *digger,
 
 
 bool
-digger_generate_door(struct digger *digger)
+digger_doors(struct digger *digger)
 {
     struct digger *door_digger = generator_copy_digger(digger->generator,
                                                        digger);
@@ -344,8 +343,7 @@ digger_generate_door(struct digger *digger)
 
 
 bool
-digger_generate_room(struct digger *digger,
-                     enum wall_type entrance_type)
+digger_rooms(struct digger *digger, enum wall_type entrance_type)
 {
     int score = roll("1d20", digger->generator->rnd);
     if (score <= 2) {
@@ -432,7 +430,7 @@ digger_generate_room(struct digger *digger,
 
 
 bool
-digger_generate_side_passage(struct digger *digger)
+digger_side_passages(struct digger *digger)
 {
     int score = roll("1d20", digger->generator->rnd);
     if (score <= 2) {
@@ -520,7 +518,7 @@ digger_generate_side_passage(struct digger *digger)
 
 
 bool
-digger_generate_turn(struct digger *digger)
+digger_turns(struct digger *digger)
 {
     int score = roll("1d20", digger->generator->rnd);
     if (score <= 8) {
@@ -559,13 +557,13 @@ digger_periodic_check(struct digger *digger)
     if (score <= 2) {
         return digger_dig_passage(digger, 6, wall_type_none);
     } else if (score <= 5) {
-        return digger_generate_door(digger);
+        return digger_doors(digger);
     } else if (score <= 10) {
-        return digger_generate_side_passage(digger);
+        return digger_side_passages(digger);
     } else if (score <= 13) {
-        return digger_generate_turn(digger);
+        return digger_turns(digger);
     } else if (score <= 16) {
-        return digger_generate_chamber(digger, wall_type_none);
+        return digger_chambers(digger, wall_type_none);
     } else if (score == 17) {
         // stairs
         return true;
@@ -657,24 +655,24 @@ space_beyond_door(struct digger *digger, bool is_straight_ahead)
         return true;
     } else if (score <= 18) {
         if (is_straight_ahead || !digger->generator->padding) {
-            if (!digger_generate_room(digger, wall_type_door)) return false;
+            if (!digger_rooms(digger, wall_type_door)) return false;
         } else if (digger->generator->padding) {
             int const distance = digger->generator->padding;
             if (!digger_dig_passage(digger, distance, wall_type_door)) {
                 return true;
             }
-            if (!digger_generate_room(digger, wall_type_none)) return false;
+            if (!digger_rooms(digger, wall_type_none)) return false;
         }
         return true;
     } else {
         if (is_straight_ahead || !digger->generator->padding) {
-            if (!digger_generate_chamber(digger, wall_type_door)) return false;
+            if (!digger_chambers(digger, wall_type_door)) return false;
         } else {
             int const distance = digger->generator->padding;
             if (!digger_dig_passage(digger, distance, wall_type_door)) {
                 return false;
             }
-            if (!digger_generate_chamber(digger, wall_type_none)) return false;
+            if (!digger_chambers(digger, wall_type_none)) return false;
         }
         return true;
     }

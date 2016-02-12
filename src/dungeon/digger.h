@@ -64,21 +64,19 @@ bool
 digger_periodic_check(struct digger *digger);
 
 bool
-digger_generate_chamber(struct digger *digger,
-                        enum wall_type entrance_type);
+digger_doors(struct digger *digger);
 
 bool
-digger_generate_door(struct digger *digger);
+digger_chambers(struct digger *digger, enum wall_type entrance_type);
 
 bool
-digger_generate_side_passage(struct digger *digger);
+digger_side_passages(struct digger *digger);
 
 bool
-digger_generate_room(struct digger *digger,
-                     enum wall_type entrance_type);
+digger_rooms(struct digger *digger, enum wall_type entrance_type);
 
 bool
-digger_generate_turn(struct digger *digger);
+digger_turns(struct digger *digger);
 
 
 #endif
