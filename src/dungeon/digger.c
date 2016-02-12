@@ -567,92 +567,28 @@ digger_move(struct digger *digger, int steps, enum direction direction)
 void
 digger_move_backward(struct digger *digger, int steps)
 {
-    switch (digger->direction) {
-        case direction_north:
-            digger_move(digger, steps, direction_south);
-            break;
-        case direction_south:
-            digger_move(digger, steps, direction_north);
-            break;
-        case direction_east:
-            digger_move(digger, steps, direction_west);
-            break;
-        case direction_west:
-            digger_move(digger, steps, direction_east);
-            break;
-        default:
-            fail("Unrecognized direction %i", digger->direction);
-            break;
-    }
+    digger_move(digger, steps, direction_opposite(digger->direction));
 }
 
 
 void
 digger_move_forward(struct digger *digger, int steps)
 {
-    switch (digger->direction) {
-        case direction_north:
-            digger_move(digger, steps, direction_north);
-            break;
-        case direction_south:
-            digger_move(digger, steps, direction_south);
-            break;
-        case direction_east:
-            digger_move(digger, steps, direction_east);
-            break;
-        case direction_west:
-            digger_move(digger, steps, direction_west);
-            break;
-        default:
-            fail("Unrecognized direction %i", digger->direction);
-            break;
-    }
+    digger_move(digger, steps, digger->direction);
 }
 
 
 void
 digger_move_left(struct digger *digger, int steps)
 {
-    switch (digger->direction) {
-        case direction_north:
-            digger_move(digger, steps, direction_west);
-            break;
-        case direction_south:
-            digger_move(digger, steps, direction_east);
-            break;
-        case direction_east:
-            digger_move(digger, steps, direction_north);
-            break;
-        case direction_west:
-            digger_move(digger, steps, direction_south);
-            break;
-        default:
-            fail("Unrecognized direction %i", digger->direction);
-            break;
-    }
+    digger_move(digger, steps, direction_90_degrees_left(digger->direction));
 }
 
 
 void
 digger_move_right(struct digger *digger, int steps)
 {
-    switch (digger->direction) {
-        case direction_north:
-            digger_move(digger, steps, direction_east);
-            break;
-        case direction_south:
-            digger_move(digger, steps, direction_west);
-            break;
-        case direction_east:
-            digger_move(digger, steps, direction_south);
-            break;
-        case direction_west:
-            digger_move(digger, steps, direction_north);
-            break;
-        default:
-            fail("Unrecognized direction %i", digger->direction);
-            break;
-    }
+    digger_move(digger, steps, direction_90_degrees_right(digger->direction));
 }
 
 

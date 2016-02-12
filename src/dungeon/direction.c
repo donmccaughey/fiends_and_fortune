@@ -38,3 +38,16 @@ direction_name(enum direction direction)
         default: return "unknown";
     }
 }
+
+
+enum direction
+direction_opposite(enum direction direction)
+{
+    switch (direction) {
+        case direction_north: return direction_south;
+        case direction_south: return direction_north;
+        case direction_east: return direction_west;
+        case direction_west: return direction_east;
+        default: return direction_unknown;
+    }
+}

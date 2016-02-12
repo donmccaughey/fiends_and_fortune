@@ -17,6 +17,9 @@ direction_90_degrees_left(enum direction direction);
 enum direction
 direction_90_degrees_right(enum direction direction);
 
+enum direction
+direction_opposite(enum direction direction);
+
 char const *
 direction_name(enum direction direction);
 

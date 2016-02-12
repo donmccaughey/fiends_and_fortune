@@ -217,7 +217,7 @@ generator_generate(struct generator *generator)
     struct digger *digger = generator_add_digger(generator,
                                                  point_make(0, 0, 1),
                                                  direction_north);
-    digger_dig_area(digger, 2, 1, 0, wall_type_solid, area_type_passage);
+    digger_dig_passage(digger, 2, wall_type_solid);
     generator_commit(generator);
     
     while (   generator->diggers_count
