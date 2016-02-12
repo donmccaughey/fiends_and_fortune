@@ -252,9 +252,9 @@ generator_generate_small(struct generator *generator)
     
     // from entry chamber, north west exit
     struct digger *nw_digger = generator_copy_digger(generator, digger);
+    digger_move_forward(nw_digger, 4);
     digger_turn_90_degrees_left(nw_digger);
-    digger_move(nw_digger, 1, direction_south);
-    digger_move(nw_digger, 1, direction_west);
+    digger_move_forward(nw_digger, 1);
     digger_dig_passage(nw_digger, 2, wall_type_none);
     digger_turn_90_degrees_right(nw_digger);
     digger_dig_passage(nw_digger, 6, wall_type_none);
@@ -262,9 +262,9 @@ generator_generate_small(struct generator *generator)
     
     // from entry chamber, south west exit
     struct digger *sw_digger = generator_copy_digger(generator, digger);
+    digger_move_forward(sw_digger, 2);
     digger_turn_90_degrees_left(sw_digger);
-    digger_move(sw_digger, 3, direction_south);
-    digger_move(sw_digger, 1, direction_west);
+    digger_move_forward(sw_digger, 1);
     digger_dig_passage(sw_digger, 2, wall_type_door);
     digger_turn_90_degrees_left(sw_digger);
     digger_dig_passage(sw_digger, 2, wall_type_none);
@@ -273,15 +273,16 @@ generator_generate_small(struct generator *generator)
     digger_turn_90_degrees_right(sw_digger);
     digger_dig_passage(sw_digger, 2, wall_type_door);
     digger_dig_chamber(sw_digger, 2, 2, 1, wall_type_none);
+    digger_move_forward(sw_digger, 2);
     digger_move(sw_digger, 1, direction_west);
     digger_dig_passage(sw_digger, 3, wall_type_door);
     digger_dig_chamber(sw_digger, 2, 3, 1, wall_type_none);
     
     // from entry chamber, south east exit
     struct digger *se_digger = generator_copy_digger(generator, digger);
+    digger_move_forward(se_digger, 2);
     digger_turn_90_degrees_right(se_digger);
-    digger_move(se_digger, 3, direction_south);
-    digger_move(se_digger, 1, direction_east);
+    digger_move_forward(se_digger, 1);
     digger_dig_passage(se_digger, 1, wall_type_none);
     digger_dig_chamber(se_digger, 6, 4, 0, wall_type_none);
     // fill in one tile in chamber
@@ -289,12 +290,14 @@ generator_generate_small(struct generator *generator)
     generator_fill_box(generator, box, tile_type_solid);
     
     // from entry chamber, north exit
+    digger_move_forward(digger, 5);
     digger_dig_passage(digger, 8, wall_type_none);
     digger_turn_90_degrees_right(digger);
     digger_dig_passage(digger, 8, wall_type_none);
     digger_turn_90_degrees_right(digger);
     digger_dig_passage(digger, 3, wall_type_none);
     digger_dig_chamber(digger, 3, 4, 0, wall_type_none);
+    digger_move_forward(digger, 3);
     digger_move(digger, 3, direction_west);
     digger_dig_passage(digger, 3, wall_type_none);
     digger_turn_90_degrees_right(digger);

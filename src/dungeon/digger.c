@@ -156,7 +156,6 @@ digger_dig_chamber(struct digger *digger,
                                            left_offset,
                                            entrance_type,
                                            area_type_chamber);
-    digger_move_forward(digger, length);
     return chamber;
 }
 
@@ -234,7 +233,6 @@ digger_dig_room(struct digger *digger,
                                         left_offset,
                                         entrance_type,
                                         area_type_room);
-    digger_move_forward(digger, length);
     return room;
 }
 
@@ -301,6 +299,7 @@ digger_chambers(struct digger *digger, enum wall_type entrance_type)
                                  left_offset,
                                  entrance_type);
     if (!chamber) return false;
+    digger_move_forward(digger, length);
     
     bool check_for_secret_doors = false;
     int exit_count = number_of_exits(digger->generator->rnd,
@@ -428,6 +427,7 @@ digger_rooms(struct digger *digger, enum wall_type entrance_type)
     int left_offset = rnd_next_uniform_value(digger->generator->rnd, width);
     room = digger_dig_room(digger, length, width, left_offset, entrance_type);
     if (!room) return false;
+    digger_move_forward(digger, length);
     
     bool check_for_secret_doors = false;
     int exit_count = number_of_exits(digger->generator->rnd,
