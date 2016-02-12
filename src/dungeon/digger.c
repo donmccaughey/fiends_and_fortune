@@ -358,8 +358,6 @@ digger_chambers(struct digger *digger, enum wall_type entrance_type)
 bool
 digger_doors(struct digger *digger)
 {
-    struct digger *door_digger = generator_copy_digger(digger->generator,
-                                                       digger);
     bool door_left = false;
     bool door_right = false;
     bool door_ahead = false;
@@ -372,32 +370,29 @@ digger_doors(struct digger *digger)
         if (score >= 3 && score <= 5) {
             location_of_door(digger->generator->rnd,
                              &door_left, &door_right, &door_ahead);
-        } else {
-            if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
         }
     }
     
     if (door_left) {
         struct digger *left_digger = generator_copy_digger(digger->generator,
-                                                           door_digger);
+                                                           digger);
         digger_turn_90_degrees_left(left_digger);
         if (!space_beyond_door(left_digger, false)) return false;
     }
     
     if (door_right) {
         struct digger *right_digger = generator_copy_digger(digger->generator,
-                                                            door_digger);
+                                                            digger);
         digger_turn_90_degrees_right(right_digger);
         if (!space_beyond_door(right_digger, false)) return false;
     }
     
     if (door_ahead) {
-        struct digger *ahead_digger = generator_copy_digger(digger->generator,
-                                                            door_digger);
-        if (!space_beyond_door(ahead_digger, true)) return true;
+        if (!space_beyond_door(digger, true)) return false;
+    } else {
+        if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
     }
     
-    generator_delete_digger(digger->generator, door_digger);
     return true;
 }
 
