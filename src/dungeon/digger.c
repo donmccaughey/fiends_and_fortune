@@ -12,11 +12,14 @@
 #include "tile.h"
 
 
+static bool
+exit_location(struct digger *digger, int length, int width, int left_offset);
+
 static void
 location_of_door(struct rnd *rnd, bool *left, bool *right, bool *ahead);
 
 static int
-number_of_exits(struct digger *digger,
+number_of_exits(struct rnd *rnd,
                 struct area *chamber_or_room,
                 bool *check_for_secret_doors);
 
@@ -293,40 +296,12 @@ digger_chambers(struct digger *digger, enum wall_type entrance_type)
     if (!chamber) return false;
     
     bool check_for_secret_doors = false;
-    int exit_count = number_of_exits(digger, chamber, &check_for_secret_doors);
+    int exit_count = number_of_exits(digger->generator->rnd,
+                                     chamber,
+                                     &check_for_secret_doors);
     
     for (int i = 0; i < exit_count; ++i) {
-        score = roll("1d20", digger->generator->rnd);
-        if (score <= 7) {
-            // opposite wall
-            struct digger *exit_digger = generator_copy_digger(digger->generator, digger);
-            digger_move_left(exit_digger, left_offset);
-            int exit_offset = rnd_next_uniform_value(digger->generator->rnd,
-                                                          width);
-            digger_move_right(exit_digger, exit_offset);
-            if (!space_beyond_door(exit_digger, false)) return false;
-        } else if (score <= 12) {
-            // left wall
-            struct digger *exit_digger = generator_copy_digger(digger->generator, digger);
-            digger_move_left(exit_digger, left_offset);
-            digger_turn_90_degrees_left(exit_digger);
-            int exit_offset = rnd_next_uniform_value(digger->generator->rnd,
-                                                     length);
-            digger_move_left(exit_digger, exit_offset);
-            if (!space_beyond_door(exit_digger, false)) return false;
-        } else if (score <= 17) {
-            // right wall
-            struct digger *exit_digger = generator_copy_digger(digger->generator, digger);
-            digger_move_right(exit_digger, width - left_offset - 1);
-            digger_turn_90_degrees_right(exit_digger);
-            int exit_offset = rnd_next_uniform_value(digger->generator->rnd,
-                                                     length);
-            digger_move_right(exit_digger, exit_offset);
-            if (!space_beyond_door(exit_digger, false)) return false;
-        } else {
-            // same wall
-            return false;
-        }
+        if (!exit_location(digger, length, width, left_offset)) return false;
     }
     
     generator_delete_digger(digger->generator, digger);
@@ -379,85 +354,83 @@ digger_doors(struct digger *digger)
 bool
 digger_rooms(struct digger *digger, enum wall_type entrance_type)
 {
+    int length = 0;
+    int width = 0;
+    struct area *room = NULL;
     int score = roll("1d20", digger->generator->rnd);
     if (score <= 2) {
         // square 10x10
-        if (!digger_dig_room(digger, 1, 1, 0, entrance_type)) return false;
+        length = 1;
+        width = 1;
     } else if (score <= 4) {
         // square 20x20
-        int left_offset = rnd_next_uniform_value(digger->generator->rnd, 2);
-        if (!digger_dig_room(digger, 2, 2, left_offset, entrance_type)) {
-            return false;
-        }
+        length = 2;
+        width = 2;
     } else if (score <= 6) {
         // square 30x30
-        int left_offset = rnd_next_uniform_value(digger->generator->rnd, 3);
-        if (!digger_dig_room(digger, 3, 3, left_offset, entrance_type)) {
-            return false;
-        }
+        length = 3;
+        width = 3;
     } else if (score <= 8) {
         // square 40x40
-        int left_offset = rnd_next_uniform_value(digger->generator->rnd, 4);
-        if (!digger_dig_room(digger, 4, 4, left_offset, entrance_type)) {
-            return false;
-        }
+        length = 4;
+        width = 4;
     } else if (score <= 10) {
         // rectangular 10x20
         int orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
         if (orientation) {
-            int left_offset = rnd_next_uniform_value(digger->generator->rnd, 2);
-            if (!digger_dig_room(digger, 1, 2, left_offset, entrance_type)) {
-                return false;
-            }
+            length = 1;
+            width = 2;
         } else {
-            if (!digger_dig_room(digger, 2, 1, 0, entrance_type)) return false;
+            length = 2;
+            width = 1;
         }
     } else if (score <= 13) {
         // rectangular 20x30
         int orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
         if (orientation) {
-            int left_offset = rnd_next_uniform_value(digger->generator->rnd, 2);
-            if (!digger_dig_room(digger, 3, 2, left_offset, entrance_type)) {
-                return false;
-            }
+            length = 3;
+            width = 2;
         } else {
-            int left_offset = rnd_next_uniform_value(digger->generator->rnd, 3);
-            if (!digger_dig_room(digger, 2, 3, left_offset, entrance_type)) {
-                return false;
-            }
+            length = 2;
+            width = 3;
         }
     } else if (score <= 15) {
         // rectangular 20x40
         int orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
         if (orientation) {
-            int left_offset = rnd_next_uniform_value(digger->generator->rnd, 2);
-            if (!digger_dig_room(digger, 4, 2, left_offset, entrance_type)) {
-                return false;
-            }
+            length = 4;
+            width = 2;
         } else {
-            int left_offset = rnd_next_uniform_value(digger->generator->rnd, 4);
-            if (!digger_dig_room(digger, 2, 4, left_offset, entrance_type)) {
-                return false;
-            }
+            length = 2;
+            width = 4;
         }
     } else if (score <= 17) {
         // rectangular 30x40
         int orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
         if (orientation) {
-            int left_offset = rnd_next_uniform_value(digger->generator->rnd, 3);
-            if (!digger_dig_room(digger, 4, 3, left_offset, entrance_type)) {
-                return false;
-            }
+            length = 4;
+            width = 3;
         } else {
-            int left_offset = rnd_next_uniform_value(digger->generator->rnd, 4);
-            if (!digger_dig_room(digger, 3, 4, left_offset, entrance_type)) {
-                return false;
-            }
+            length = 3;
+            width = 4;
         }
     } else {
         // unusual shape and size
+        return false;
     }
-    // TODO: exits
+    int left_offset = rnd_next_uniform_value(digger->generator->rnd, width);
+    room = digger_dig_room(digger, length, width, left_offset, entrance_type);
+    if (!room) return false;
+    
+    bool check_for_secret_doors = false;
+    int exit_count = number_of_exits(digger->generator->rnd,
+                                     room,
+                                     &check_for_secret_doors);
+    
+    for (int i = 0; i < exit_count; ++i) {
+        if (!exit_location(digger, length, width, left_offset)) return false;
+    }
+    
     generator_delete_digger(digger->generator, digger);
     return true;
 }
@@ -755,6 +728,44 @@ digger_turn_90_degrees_right(struct digger *digger)
 }
 
 
+static bool
+exit_location(struct digger *digger, int length, int width, int left_offset)
+{
+    int score = roll("1d20", digger->generator->rnd);
+    if (score <= 7) {
+        // opposite wall
+        struct digger *exit_digger = generator_copy_digger(digger->generator, digger);
+        digger_move_left(exit_digger, left_offset);
+        int exit_offset = rnd_next_uniform_value(digger->generator->rnd,
+                                                 width);
+        digger_move_right(exit_digger, exit_offset);
+        if (!space_beyond_door(exit_digger, false)) return false;
+    } else if (score <= 12) {
+        // left wall
+        struct digger *exit_digger = generator_copy_digger(digger->generator, digger);
+        digger_move_left(exit_digger, left_offset);
+        digger_turn_90_degrees_left(exit_digger);
+        int exit_offset = rnd_next_uniform_value(digger->generator->rnd,
+                                                 length);
+        digger_move_left(exit_digger, exit_offset);
+        if (!space_beyond_door(exit_digger, false)) return false;
+    } else if (score <= 17) {
+        // right wall
+        struct digger *exit_digger = generator_copy_digger(digger->generator, digger);
+        digger_move_right(exit_digger, width - left_offset - 1);
+        digger_turn_90_degrees_right(exit_digger);
+        int exit_offset = rnd_next_uniform_value(digger->generator->rnd,
+                                                 length);
+        digger_move_right(exit_digger, exit_offset);
+        if (!space_beyond_door(exit_digger, false)) return false;
+    } else {
+        // same wall
+        return false;
+    }
+    return true;
+}
+
+
 static void
 location_of_door(struct rnd *rnd, bool *left, bool *right, bool *ahead)
 {
@@ -770,14 +781,14 @@ location_of_door(struct rnd *rnd, bool *left, bool *right, bool *ahead)
 
 
 static int
-number_of_exits(struct digger *digger,
+number_of_exits(struct rnd *rnd,
                 struct area *chamber_or_room,
                 bool *check_for_secret_doors)
 {
     int exit_count = 0;
     *check_for_secret_doors = false;
     int area = box_area(chamber_or_room->box);
-    int score = roll("1d20", digger->generator->rnd);
+    int score = roll("1d20", rnd);
     if (score <= 3) {
         exit_count = (area <= 6) ? 1 : 2;
     } else if (score <= 6) {
@@ -799,7 +810,7 @@ number_of_exits(struct digger *digger,
             exit_count = 1;
         }
     } else if (score <= 18) {
-        exit_count = roll("1d4", digger->generator->rnd);
+        exit_count = roll("1d4", rnd);
     } else {
         exit_count = 1;
     }
