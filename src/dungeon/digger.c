@@ -21,11 +21,25 @@ exit_location_in_direction(struct digger *digger,
                            struct area *chamber_or_room,
                            enum direction direction);
 
+static inline void
+fill(int *values, int count)
+{
+    for (int i = 0; i < count; ++i) values[i] = i;
+}
+
+static inline void
+fill_shuffled(struct rnd *rnd, int *values, int count)
+{
+    fill(values, count);
+    rnd_shuffle(rnd, values, count, sizeof(int));
+}
+
 static void
 location_of_door(struct rnd *rnd, bool *left, bool *right, bool *ahead);
 
 static inline int
-max(int i, int j) {
+max(int i, int j)
+{
     return i > j ? i : j;
 }
 
@@ -36,6 +50,14 @@ number_of_exits(struct rnd *rnd,
 
 static bool
 space_beyond_door(struct digger *digger, bool is_straight_ahead);
+
+static inline void
+swap(int *i, int *j)
+{
+    int temp = *i;
+    *i = *j;
+    *j = temp;
+}
 
 
 static struct box
@@ -277,46 +299,50 @@ digger_chambers(struct digger *digger, enum wall_type entrance_type)
         width = 3;
     } else if (score <= 13) {
         // rectangular 20x30
-        length = 3;
-        width = 2;
+        length = 2;
+        width = 3;
     } else if (score <= 15) {
         // rectangular 30x50
-        int orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
-        if (orientation) {
-            length = 5;
-            width = 3;
-        } else {
-            length = 3;
-            width = 5;
-        }
+        length = 3;
+        width = 5;
     } else if (score <= 17) {
         // rectangular 40x60
-        int orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
-        if (orientation) {
-            length = 6;
-            width = 4;
-        } else {
-            length = 4;
-            width = 6;
-        }
+        length = 4;
+        width = 6;
     } else {
         // unusual shape and size
         return false;
     }
-    int left_offset = rnd_next_uniform_value(digger->generator->rnd, width);
-    chamber = digger_dig_chamber(digger,
-                                 length,
-                                 width,
-                                 left_offset,
-                                 entrance_type);
+    if (length != width) {
+        int orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
+        if (orientation) swap(&length, &width);
+    }
+
+    int left_offsets[max(length, width)];
+    fill_shuffled(digger->generator->rnd, left_offsets, width);
+    for (int i = 0; i < width; ++i) {
+        chamber = digger_dig_chamber(digger, length, width, left_offsets[i], entrance_type);
+        if (chamber) break;
+    }
+    if (!chamber && length != width) {
+        swap(&length, &width);
+        fill_shuffled(digger->generator->rnd, left_offsets, width);
+        for (int i = 0; i < width; ++i) {
+            chamber = digger_dig_chamber(digger, length, width, left_offsets[i], entrance_type);
+            if (chamber) break;
+        }
+    }
     if (!chamber) return false;
+    // TODO: try smaller chambers?
     
+    // TODO: determine exit types (doors/passages)
     bool check_for_secret_doors = false;
     int exit_count = number_of_exits(digger->generator->rnd,
                                      chamber,
                                      &check_for_secret_doors);
     
     for (int i = 0; i < exit_count; ++i) {
+        // TODO: don't fail if no possible exit
         struct digger *exit_digger = exit_location(digger, chamber);
         if (!exit_digger) return false;
         if (!space_beyond_door(exit_digger, false)) return false;
@@ -394,58 +420,54 @@ digger_rooms(struct digger *digger, enum wall_type entrance_type)
         width = 4;
     } else if (score <= 10) {
         // rectangular 10x20
-        int orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
-        if (orientation) {
-            length = 1;
-            width = 2;
-        } else {
-            length = 2;
-            width = 1;
-        }
+        length = 1;
+        width = 2;
     } else if (score <= 13) {
         // rectangular 20x30
-        int orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
-        if (orientation) {
-            length = 3;
-            width = 2;
-        } else {
-            length = 2;
-            width = 3;
-        }
+        length = 2;
+        width = 3;
     } else if (score <= 15) {
         // rectangular 20x40
-        int orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
-        if (orientation) {
-            length = 4;
-            width = 2;
-        } else {
-            length = 2;
-            width = 4;
-        }
+        length = 2;
+        width = 4;
     } else if (score <= 17) {
         // rectangular 30x40
-        int orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
-        if (orientation) {
-            length = 4;
-            width = 3;
-        } else {
-            length = 3;
-            width = 4;
-        }
+        length = 3;
+        width = 4;
     } else {
         // unusual shape and size
         return false;
     }
-    int left_offset = rnd_next_uniform_value(digger->generator->rnd, width);
-    room = digger_dig_room(digger, length, width, left_offset, entrance_type);
-    if (!room) return false;
+    if (length != width) {
+        int orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
+        if (orientation) swap(&length, &width);
+    }
     
+    int left_offsets[max(length, width)];
+    fill_shuffled(digger->generator->rnd, left_offsets, width);
+    for (int i = 0; i < width; ++i) {
+        room = digger_dig_room(digger, length, width, left_offsets[i], entrance_type);
+        if (room) break;
+    }
+    if (!room && length != width) {
+        swap(&length, &width);
+        fill_shuffled(digger->generator->rnd, left_offsets, width);
+        for (int i = 0; i < width; ++i) {
+            room = digger_dig_room(digger, length, width, left_offsets[i], entrance_type);
+            if (room) break;
+        }
+    }
+    if (!room) return false;
+    // TODO: try smaller rooms?
+    
+    // TODO: determine exit types (doors/passages)
     bool check_for_secret_doors = false;
     int exit_count = number_of_exits(digger->generator->rnd,
                                      room,
                                      &check_for_secret_doors);
     
     for (int i = 0; i < exit_count; ++i) {
+        // TODO: don't fail if no possible exit
         struct digger *exit_digger = exit_location(digger, room);
         if (!exit_digger) return false;
         if (!space_beyond_door(exit_digger, false)) return false;
