@@ -9,6 +9,7 @@
 #include "area.h"
 #include "digger.h"
 #include "dungeon.h"
+#include "periodic_check.h"
 #include "tile.h"
 
 
@@ -228,7 +229,7 @@ generator_generate(struct generator *generator)
                                                   sizeof(struct digger *));
         int count = generator->diggers_count;
         for (int i = 0; i < count; ++i) {
-            if (digger_periodic_check(diggers[i])) {
+            if (periodic_check(diggers[i])) {
                 generator_commit(generator);
             } else {
                 generator_rollback(generator);

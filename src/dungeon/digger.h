@@ -2,15 +2,12 @@
 #define FNF_DUNGEON_DIGGER_H_INCLUDED
 
 
-#include <stdbool.h>
-
 #include "area_type.h"
 #include "point.h"
 #include "wall_type.h"
 
 
 struct area;
-struct digger;
 struct generator;
 
 
@@ -80,9 +77,6 @@ digger_dig_room(struct digger *digger,
                 int width,
                 int left_offset,
                 enum wall_type entrance_type);
-
-bool
-digger_periodic_check(struct digger *digger);
 
 
 #endif

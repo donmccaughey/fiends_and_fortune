@@ -24,6 +24,8 @@
 		D406B6531C6F16720037171B /* exit.c in Sources */ = {isa = PBXBuildFile; fileRef = D406B6501C6EF8C30037171B /* exit.c */; };
 		D406B6561C6FB8D60037171B /* int.c in Sources */ = {isa = PBXBuildFile; fileRef = D406B6541C6FB8D60037171B /* int.c */; };
 		D406B6571C6FB8D60037171B /* int.h in Headers */ = {isa = PBXBuildFile; fileRef = D406B6551C6FB8D60037171B /* int.h */; };
+		D406B65A1C6FBFB80037171B /* periodic_check.c in Sources */ = {isa = PBXBuildFile; fileRef = D406B6581C6FBFB80037171B /* periodic_check.c */; };
+		D406B65B1C6FBFB80037171B /* periodic_check.h in Headers */ = {isa = PBXBuildFile; fileRef = D406B6591C6FBFB80037171B /* periodic_check.h */; };
 		D4092F611B65D42B00BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
 		D4092F621B65D43000BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
 		D4092F881B65D6C200BFD0B3 /* alloc_or_die.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */; };
@@ -151,6 +153,8 @@
 		D406B6511C6EF8C30037171B /* exit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = exit.h; sourceTree = "<group>"; };
 		D406B6541C6FB8D60037171B /* int.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = int.c; sourceTree = "<group>"; };
 		D406B6551C6FB8D60037171B /* int.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = int.h; sourceTree = "<group>"; };
+		D406B6581C6FBFB80037171B /* periodic_check.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = periodic_check.c; sourceTree = "<group>"; };
+		D406B6591C6FBFB80037171B /* periodic_check.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = periodic_check.h; sourceTree = "<group>"; };
 		D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibfnf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
 		D4092F7F1B65D6C200BFD0B3 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
@@ -326,6 +330,8 @@
 				D4D495BE1C643D2600BC80C9 /* level_map.c */,
 				D4D495B71C6321A000BC80C9 /* orientation.h */,
 				D4D495B61C6321A000BC80C9 /* orientation.c */,
+				D406B6591C6FBFB80037171B /* periodic_check.h */,
+				D406B6581C6FBFB80037171B /* periodic_check.c */,
 				B0F47C5F87990226BA682C7E /* point.h */,
 				B0F47633C943A4FC91EBA528 /* point.c */,
 				D406B64A1C66C60F0037171B /* size.h */,
@@ -414,6 +420,7 @@
 				D4BD32AC1B6A06560007527A /* jewelry.h in Headers */,
 				D4BD32AE1B6A06560007527A /* magic_item.h in Headers */,
 				D4BD32B41B6A06560007527A /* treasure_type.h in Headers */,
+				D406B65B1C6FBFB80037171B /* periodic_check.h in Headers */,
 				D4D495C11C643D2600BC80C9 /* level_map.h in Headers */,
 				D4092F891B65D6C200BFD0B3 /* alloc_or_die.h in Headers */,
 				D4BD32C71B6AECE90007527A /* language.h in Headers */,
@@ -574,6 +581,7 @@
 				B0F4753B39E946C40792F5FF /* tile.c in Sources */,
 				B0F477202981BC0C9DD1C2A6 /* area.c in Sources */,
 				B0F474635F2AC067537A8662 /* dungeon.c in Sources */,
+				D406B65A1C6FBFB80037171B /* periodic_check.c in Sources */,
 				D406B6091C65672D0037171B /* text_rectangle.c in Sources */,
 				D4EA14DE1C602CDB00EF508F /* digger.c in Sources */,
 			);
