@@ -22,6 +22,8 @@
 		D406B64C1C66C60F0037171B /* size.h in Headers */ = {isa = PBXBuildFile; fileRef = D406B64A1C66C60F0037171B /* size.h */; };
 		D406B64E1C66FFE00037171B /* box_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D406B64D1C66FFE00037171B /* box_test.c */; };
 		D406B6531C6F16720037171B /* exit.c in Sources */ = {isa = PBXBuildFile; fileRef = D406B6501C6EF8C30037171B /* exit.c */; };
+		D406B6561C6FB8D60037171B /* int.c in Sources */ = {isa = PBXBuildFile; fileRef = D406B6541C6FB8D60037171B /* int.c */; };
+		D406B6571C6FB8D60037171B /* int.h in Headers */ = {isa = PBXBuildFile; fileRef = D406B6551C6FB8D60037171B /* int.h */; };
 		D4092F611B65D42B00BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
 		D4092F621B65D43000BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
 		D4092F881B65D6C200BFD0B3 /* alloc_or_die.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */; };
@@ -147,6 +149,8 @@
 		D406B64F1C6857A30037171B /* wall_type.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = wall_type.h; sourceTree = "<group>"; };
 		D406B6501C6EF8C30037171B /* exit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = exit.c; sourceTree = "<group>"; };
 		D406B6511C6EF8C30037171B /* exit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = exit.h; sourceTree = "<group>"; };
+		D406B6541C6FB8D60037171B /* int.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = int.c; sourceTree = "<group>"; };
+		D406B6551C6FB8D60037171B /* int.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = int.h; sourceTree = "<group>"; };
 		D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibfnf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
 		D4092F7F1B65D6C200BFD0B3 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
@@ -237,6 +241,8 @@
 				D4092F801B65D6C200BFD0B3 /* dice.c */,
 				D4092F831B65D6C200BFD0B3 /* fail.h */,
 				D4092F821B65D6C200BFD0B3 /* fail.c */,
+				D406B6551C6FB8D60037171B /* int.h */,
+				D406B6541C6FB8D60037171B /* int.c */,
 				D4BD32C31B6AECE90007527A /* language.h */,
 				D4BD32C21B6AECE90007527A /* language.c */,
 				D4092F851B65D6C200BFD0B3 /* rnd.h */,
@@ -415,6 +421,7 @@
 				D4BD32AA1B6A06560007527A /* gem.h in Headers */,
 				D4092F8D1B65D6C200BFD0B3 /* fail.h in Headers */,
 				D4EA14DB1C5EE1A400EF508F /* generator.h in Headers */,
+				D406B6571C6FB8D60037171B /* int.h in Headers */,
 				D4D495B91C6321A000BC80C9 /* orientation.h in Headers */,
 				D4BD32A81B6A06560007527A /* coins.h in Headers */,
 				D4092F8B1B65D6C200BFD0B3 /* dice.h in Headers */,
@@ -562,6 +569,7 @@
 				D4092F8A1B65D6C200BFD0B3 /* dice.c in Sources */,
 				B0F470B6DFA53A807F7AE464 /* point.c in Sources */,
 				D406B6531C6F16720037171B /* exit.c in Sources */,
+				D406B6561C6FB8D60037171B /* int.c in Sources */,
 				B0F47B3923E323B22BE56B90 /* direction.c in Sources */,
 				B0F4753B39E946C40792F5FF /* tile.c in Sources */,
 				B0F477202981BC0C9DD1C2A6 /* area.c in Sources */,

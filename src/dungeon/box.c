@@ -4,17 +4,7 @@
 #include <limits.h>
 #include <stdlib.h>
 
-
-static inline int
-max(int i, int j) {
-    return i > j ? i : j;
-}
-
-
-static inline int
-min(int i, int j) {
-    return i < j ? i : j;
-}
+#include "common/int.h"
 
 
 static inline void
