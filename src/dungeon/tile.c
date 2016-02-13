@@ -82,10 +82,26 @@ tile_free(struct tile *tile)
 
 
 bool
+tile_has_south_exit(struct tile const *tile)
+{
+    return wall_type_none == tile->walls.south
+        || wall_type_door == tile->walls.south;
+}
+
+
+bool
 tile_has_south_wall(struct tile const *tile)
 {
     return wall_type_solid == tile->walls.south
         || wall_type_door == tile->walls.south;
+}
+
+
+bool
+tile_has_west_exit(struct tile const *tile)
+{
+    return wall_type_none == tile->walls.west
+        || wall_type_door == tile->walls.west;
 }
 
 
@@ -103,6 +119,13 @@ tile_is_blank(struct tile const *tile)
     return tile_type_solid == tile->type
         && wall_type_none == tile->walls.south
         && wall_type_none == tile->walls.west;
+}
+
+
+bool
+tile_is_escavated(struct tile const *tile)
+{
+    return tile_type_empty == tile->type;
 }
 
 

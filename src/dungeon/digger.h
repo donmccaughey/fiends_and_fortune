@@ -37,6 +37,15 @@ void
 digger_move_backward(struct digger *digger, int steps);
 
 void
+digger_spin_180_degrees(struct digger *digger);
+
+void
+digger_spin_90_degrees_left(struct digger *digger);
+
+void
+digger_spin_90_degrees_right(struct digger *digger);
+
+void
 digger_turn_90_degrees_left(struct digger *digger);
 
 void

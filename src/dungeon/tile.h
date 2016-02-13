@@ -35,10 +35,19 @@ bool
 tile_is_blank(struct tile const *tile);
 
 bool
+tile_is_escavated(struct tile const *tile);
+
+bool
 tile_is_unescavated(struct tile const *tile);
 
 bool
+tile_has_south_exit(struct tile const *tile);
+
+bool
 tile_has_south_wall(struct tile const *tile);
+
+bool
+tile_has_west_exit(struct tile const *tile);
 
 bool
 tile_has_west_wall(struct tile const *tile);
