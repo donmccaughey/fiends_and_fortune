@@ -14,6 +14,12 @@
 #include "tile.h"
 
 
+static bool
+chambers(struct digger *digger, enum wall_type entrance_type);
+
+static bool
+doors(struct digger *digger);
+
 static struct digger *
 exit_location(struct digger *digger, struct area *chamber_or_room);
 
@@ -31,7 +37,16 @@ number_of_exits(struct rnd *rnd,
                 bool *check_for_secret_doors);
 
 static bool
+rooms(struct digger *digger, enum wall_type entrance_type);
+
+static bool
+side_passages(struct digger *digger);
+
+static bool
 space_beyond_door(struct digger *digger, bool is_straight_ahead);
+
+static bool
+turns(struct digger *digger);
 
 
 static struct box
@@ -80,7 +95,7 @@ box_for_area(struct digger *digger,
 
 
 bool
-digger_chambers(struct digger *digger, enum wall_type entrance_type)
+chambers(struct digger *digger, enum wall_type entrance_type)
 {
     int length = 0;
     int width = 0;
@@ -327,49 +342,6 @@ digger_dig_room(struct digger *digger,
 }
 
 
-bool
-digger_doors(struct digger *digger)
-{
-    bool door_left = false;
-    bool door_right = false;
-    bool door_ahead = false;
-    
-    location_of_door(digger->generator->rnd,
-                     &door_left, &door_right, &door_ahead);
-    if (!door_ahead) {
-        // repeat periodic check
-        int score = roll("1d20", digger->generator->rnd);
-        if (score >= 3 && score <= 5) {
-            // TODO: ensure a second location is chosen?
-            location_of_door(digger->generator->rnd,
-                             &door_left, &door_right, &door_ahead);
-        }
-    }
-    
-    if (door_left) {
-        struct digger *left_digger = generator_copy_digger(digger->generator,
-                                                           digger);
-        digger_turn_90_degrees_left(left_digger);
-        if (!space_beyond_door(left_digger, false)) return false;
-    }
-    
-    if (door_right) {
-        struct digger *right_digger = generator_copy_digger(digger->generator,
-                                                            digger);
-        digger_turn_90_degrees_right(right_digger);
-        if (!space_beyond_door(right_digger, false)) return false;
-    }
-    
-    if (door_ahead) {
-        if (!space_beyond_door(digger, true)) return false;
-    } else {
-        if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
-    }
-    
-    return true;
-}
-
-
 void
 digger_move(struct digger *digger, int steps, enum direction direction)
 {
@@ -412,13 +384,13 @@ digger_periodic_check(struct digger *digger)
     if (score <= 2) {
         return digger_dig_passage(digger, 6, wall_type_none);
     } else if (score <= 5) {
-        return digger_doors(digger);
+        return doors(digger);
     } else if (score <= 10) {
-        return digger_side_passages(digger);
+        return side_passages(digger);
     } else if (score <= 13) {
-        return digger_turns(digger);
+        return turns(digger);
     } else if (score <= 16) {
-        return digger_chambers(digger, wall_type_none);
+        return chambers(digger, wall_type_none);
     } else if (score == 17) {
         // stairs
         return true;
@@ -431,177 +403,6 @@ digger_periodic_check(struct digger *digger)
         return true;
     } else {
         // wandering monster
-        return true;
-    }
-}
-
-
-bool
-digger_rooms(struct digger *digger, enum wall_type entrance_type)
-{
-    int length = 0;
-    int width = 0;
-    struct area *room = NULL;
-    int score = roll("1d20", digger->generator->rnd);
-    if (score <= 2) {
-        // square 10x10
-        length = 1;
-        width = 1;
-    } else if (score <= 4) {
-        // square 20x20
-        length = 2;
-        width = 2;
-    } else if (score <= 6) {
-        // square 30x30
-        length = 3;
-        width = 3;
-    } else if (score <= 8) {
-        // square 40x40
-        length = 4;
-        width = 4;
-    } else if (score <= 10) {
-        // rectangular 10x20
-        length = 1;
-        width = 2;
-    } else if (score <= 13) {
-        // rectangular 20x30
-        length = 2;
-        width = 3;
-    } else if (score <= 15) {
-        // rectangular 20x40
-        length = 2;
-        width = 4;
-    } else if (score <= 17) {
-        // rectangular 30x40
-        length = 3;
-        width = 4;
-    } else {
-        // unusual shape and size
-        return false;
-    }
-    if (length != width) {
-        int orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
-        if (orientation) swap(&length, &width);
-    }
-    
-    int left_offsets[max(length, width)];
-    fill_shuffled(digger->generator->rnd, left_offsets, width);
-    for (int i = 0; i < width; ++i) {
-        room = digger_dig_room(digger, length, width, left_offsets[i], entrance_type);
-        if (room) break;
-    }
-    if (!room && length != width) {
-        swap(&length, &width);
-        fill_shuffled(digger->generator->rnd, left_offsets, width);
-        for (int i = 0; i < width; ++i) {
-            room = digger_dig_room(digger, length, width, left_offsets[i], entrance_type);
-            if (room) break;
-        }
-    }
-    if (!room) return false;
-    // TODO: try smaller rooms?
-    
-    // TODO: determine exit types (doors/passages)
-    bool check_for_secret_doors = false;
-    int exit_count = number_of_exits(digger->generator->rnd,
-                                     room,
-                                     &check_for_secret_doors);
-    
-    for (int i = 0; i < exit_count; ++i) {
-        // TODO: don't fail if no possible exit
-        struct digger *exit_digger = exit_location(digger, room);
-        if (!exit_digger) return false;
-        if (!space_beyond_door(exit_digger, false)) return false;
-    }
-    
-    generator_delete_digger(digger->generator, digger);
-    return true;
-}
-
-
-bool
-digger_side_passages(struct digger *digger)
-{
-    int score = roll("1d20", digger->generator->rnd);
-    if (score <= 2) {
-        // left 90 degrees
-        if (!digger_dig_intersection(digger)) return false;
-        
-        struct digger *side_digger = generator_copy_digger(digger->generator,
-                                                           digger);
-        digger_turn_90_degrees_left(side_digger);
-        if (!digger_dig_passage(side_digger, 3, wall_type_none)) return false;
-        
-        if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
-        return true;
-    } else if (score <= 4) {
-        // right 90 degrees
-        if (!digger_dig_intersection(digger)) return false;
-        
-        struct digger *side_digger = generator_copy_digger(digger->generator,
-                                                           digger);
-        digger_turn_90_degrees_right(side_digger);
-        if (!digger_dig_passage(side_digger, 3, wall_type_none)) return false;
-        
-        if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
-        return true;
-    } else if (score == 5) {
-        // left 45 degrees ahead
-        return true;
-    } else if (score == 6) {
-        // right 45 degrees ahead
-        return true;
-    } else if (score == 7) {
-        // left 45 degrees behind
-        return true;
-    } else if (score == 8) {
-        // right 45 degrees behind
-        return true;
-    } else if (score == 9) {
-        // left curve 45 degrees ahead
-        return true;
-    } else if (score == 10) {
-        // right curve 45 degrees ahead
-        return true;
-    } else if (score <= 13) {
-        // passage T's
-        struct area *intersection = digger_dig_intersection(digger);
-        if (!intersection) return false;
-        
-        struct digger *left_digger = generator_copy_digger(digger->generator,
-                                                           digger);
-        digger_turn_90_degrees_left(left_digger);
-        if (!digger_dig_passage(left_digger, 3, wall_type_none)) return false;
-        
-        struct digger *right_digger = generator_copy_digger(digger->generator,
-                                                            digger);
-        digger_turn_90_degrees_right(right_digger);
-        if (!digger_dig_passage(right_digger, 3, wall_type_none)) return false;
-        
-        generator_delete_digger(digger->generator, digger);
-        return true;
-    } else if (score <= 15) {
-        // passage Y's
-        return true;
-    } else if (score < 19) {
-        // four way intersection
-        struct area *intersection = digger_dig_intersection(digger);
-        if (!intersection) return false;
-        
-        struct digger *left_digger = generator_copy_digger(digger->generator,
-                                                           digger);
-        digger_turn_90_degrees_left(left_digger);
-        if (!digger_dig_passage(left_digger, 3, wall_type_none)) return false;
-        
-        struct digger *right_digger = generator_copy_digger(digger->generator,
-                                                            digger);
-        digger_turn_90_degrees_right(right_digger);
-        if (!digger_dig_passage(right_digger, 3, wall_type_none)) return false;
-        
-        if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
-        return true;
-    } else {
-        // passage X's
         return true;
     }
 }
@@ -644,29 +445,46 @@ digger_turn_90_degrees_right(struct digger *digger)
 }
 
 
-bool
-digger_turns(struct digger *digger)
+static bool
+doors(struct digger *digger)
 {
-    int score = roll("1d20", digger->generator->rnd);
-    if (score <= 8) {
-        digger_turn_90_degrees_left(digger);
-        return digger_dig_passage(digger, 3, wall_type_none);
-    } else if (score == 9) {
-        // left 45 degrees ahead
-        return true;
-    } else if (score == 10) {
-        // left 45 degrees behind
-        return true;
-    } else if (score <= 18) {
-        digger_turn_90_degrees_right(digger);
-        return digger_dig_passage(digger, 3, wall_type_none);
-    } else if (score == 19) {
-        // right 45 degrees ahead
-        return true;
-    } else {
-        // right 45 degrees behind
-        return true;
+    bool door_left = false;
+    bool door_right = false;
+    bool door_ahead = false;
+    
+    location_of_door(digger->generator->rnd,
+                     &door_left, &door_right, &door_ahead);
+    if (!door_ahead) {
+        // repeat periodic check
+        int score = roll("1d20", digger->generator->rnd);
+        if (score >= 3 && score <= 5) {
+            // TODO: ensure a second location is chosen?
+            location_of_door(digger->generator->rnd,
+                             &door_left, &door_right, &door_ahead);
+        }
     }
+    
+    if (door_left) {
+        struct digger *left_digger = generator_copy_digger(digger->generator,
+                                                           digger);
+        digger_turn_90_degrees_left(left_digger);
+        if (!space_beyond_door(left_digger, false)) return false;
+    }
+    
+    if (door_right) {
+        struct digger *right_digger = generator_copy_digger(digger->generator,
+                                                            digger);
+        digger_turn_90_degrees_right(right_digger);
+        if (!space_beyond_door(right_digger, false)) return false;
+    }
+    
+    if (door_ahead) {
+        if (!space_beyond_door(digger, true)) return false;
+    } else {
+        if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
+    }
+    
+    return true;
 }
 
 
@@ -794,6 +612,177 @@ number_of_exits(struct rnd *rnd,
 
 
 static bool
+rooms(struct digger *digger, enum wall_type entrance_type)
+{
+    int length = 0;
+    int width = 0;
+    struct area *room = NULL;
+    int score = roll("1d20", digger->generator->rnd);
+    if (score <= 2) {
+        // square 10x10
+        length = 1;
+        width = 1;
+    } else if (score <= 4) {
+        // square 20x20
+        length = 2;
+        width = 2;
+    } else if (score <= 6) {
+        // square 30x30
+        length = 3;
+        width = 3;
+    } else if (score <= 8) {
+        // square 40x40
+        length = 4;
+        width = 4;
+    } else if (score <= 10) {
+        // rectangular 10x20
+        length = 1;
+        width = 2;
+    } else if (score <= 13) {
+        // rectangular 20x30
+        length = 2;
+        width = 3;
+    } else if (score <= 15) {
+        // rectangular 20x40
+        length = 2;
+        width = 4;
+    } else if (score <= 17) {
+        // rectangular 30x40
+        length = 3;
+        width = 4;
+    } else {
+        // unusual shape and size
+        return false;
+    }
+    if (length != width) {
+        int orientation = rnd_next_uniform_value(digger->generator->rnd, 2);
+        if (orientation) swap(&length, &width);
+    }
+    
+    int left_offsets[max(length, width)];
+    fill_shuffled(digger->generator->rnd, left_offsets, width);
+    for (int i = 0; i < width; ++i) {
+        room = digger_dig_room(digger, length, width, left_offsets[i], entrance_type);
+        if (room) break;
+    }
+    if (!room && length != width) {
+        swap(&length, &width);
+        fill_shuffled(digger->generator->rnd, left_offsets, width);
+        for (int i = 0; i < width; ++i) {
+            room = digger_dig_room(digger, length, width, left_offsets[i], entrance_type);
+            if (room) break;
+        }
+    }
+    if (!room) return false;
+    // TODO: try smaller rooms?
+    
+    // TODO: determine exit types (doors/passages)
+    bool check_for_secret_doors = false;
+    int exit_count = number_of_exits(digger->generator->rnd,
+                                     room,
+                                     &check_for_secret_doors);
+    
+    for (int i = 0; i < exit_count; ++i) {
+        // TODO: don't fail if no possible exit
+        struct digger *exit_digger = exit_location(digger, room);
+        if (!exit_digger) return false;
+        if (!space_beyond_door(exit_digger, false)) return false;
+    }
+    
+    generator_delete_digger(digger->generator, digger);
+    return true;
+}
+
+
+static bool
+side_passages(struct digger *digger)
+{
+    int score = roll("1d20", digger->generator->rnd);
+    if (score <= 2) {
+        // left 90 degrees
+        if (!digger_dig_intersection(digger)) return false;
+        
+        struct digger *side_digger = generator_copy_digger(digger->generator,
+                                                           digger);
+        digger_turn_90_degrees_left(side_digger);
+        if (!digger_dig_passage(side_digger, 3, wall_type_none)) return false;
+        
+        if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
+        return true;
+    } else if (score <= 4) {
+        // right 90 degrees
+        if (!digger_dig_intersection(digger)) return false;
+        
+        struct digger *side_digger = generator_copy_digger(digger->generator,
+                                                           digger);
+        digger_turn_90_degrees_right(side_digger);
+        if (!digger_dig_passage(side_digger, 3, wall_type_none)) return false;
+        
+        if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
+        return true;
+    } else if (score == 5) {
+        // left 45 degrees ahead
+        return true;
+    } else if (score == 6) {
+        // right 45 degrees ahead
+        return true;
+    } else if (score == 7) {
+        // left 45 degrees behind
+        return true;
+    } else if (score == 8) {
+        // right 45 degrees behind
+        return true;
+    } else if (score == 9) {
+        // left curve 45 degrees ahead
+        return true;
+    } else if (score == 10) {
+        // right curve 45 degrees ahead
+        return true;
+    } else if (score <= 13) {
+        // passage T's
+        struct area *intersection = digger_dig_intersection(digger);
+        if (!intersection) return false;
+        
+        struct digger *left_digger = generator_copy_digger(digger->generator,
+                                                           digger);
+        digger_turn_90_degrees_left(left_digger);
+        if (!digger_dig_passage(left_digger, 3, wall_type_none)) return false;
+        
+        struct digger *right_digger = generator_copy_digger(digger->generator,
+                                                            digger);
+        digger_turn_90_degrees_right(right_digger);
+        if (!digger_dig_passage(right_digger, 3, wall_type_none)) return false;
+        
+        generator_delete_digger(digger->generator, digger);
+        return true;
+    } else if (score <= 15) {
+        // passage Y's
+        return true;
+    } else if (score < 19) {
+        // four way intersection
+        struct area *intersection = digger_dig_intersection(digger);
+        if (!intersection) return false;
+        
+        struct digger *left_digger = generator_copy_digger(digger->generator,
+                                                           digger);
+        digger_turn_90_degrees_left(left_digger);
+        if (!digger_dig_passage(left_digger, 3, wall_type_none)) return false;
+        
+        struct digger *right_digger = generator_copy_digger(digger->generator,
+                                                            digger);
+        digger_turn_90_degrees_right(right_digger);
+        if (!digger_dig_passage(right_digger, 3, wall_type_none)) return false;
+        
+        if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
+        return true;
+    } else {
+        // passage X's
+        return true;
+    }
+}
+
+
+static bool
 space_beyond_door(struct digger *digger, bool is_straight_ahead)
 {
     int score = roll("1d20", digger->generator->rnd);
@@ -837,25 +826,51 @@ space_beyond_door(struct digger *digger, bool is_straight_ahead)
         return true;
     } else if (score <= 18) {
         if (is_straight_ahead || !digger->generator->padding) {
-            if (!digger_rooms(digger, wall_type_door)) return false;
+            if (!rooms(digger, wall_type_door)) return false;
         } else if (digger->generator->padding) {
             int const distance = digger->generator->padding;
             if (!digger_dig_passage(digger, distance, wall_type_door)) {
                 return true;
             }
-            if (!digger_rooms(digger, wall_type_none)) return false;
+            if (!rooms(digger, wall_type_none)) return false;
         }
         return true;
     } else {
         if (is_straight_ahead || !digger->generator->padding) {
-            if (!digger_chambers(digger, wall_type_door)) return false;
+            if (!chambers(digger, wall_type_door)) return false;
         } else {
             int const distance = digger->generator->padding;
             if (!digger_dig_passage(digger, distance, wall_type_door)) {
                 return false;
             }
-            if (!digger_chambers(digger, wall_type_none)) return false;
+            if (!chambers(digger, wall_type_none)) return false;
         }
+        return true;
+    }
+}
+
+
+static bool
+turns(struct digger *digger)
+{
+    int score = roll("1d20", digger->generator->rnd);
+    if (score <= 8) {
+        digger_turn_90_degrees_left(digger);
+        return digger_dig_passage(digger, 3, wall_type_none);
+    } else if (score == 9) {
+        // left 45 degrees ahead
+        return true;
+    } else if (score == 10) {
+        // left 45 degrees behind
+        return true;
+    } else if (score <= 18) {
+        digger_turn_90_degrees_right(digger);
+        return digger_dig_passage(digger, 3, wall_type_none);
+    } else if (score == 19) {
+        // right 45 degrees ahead
+        return true;
+    } else {
+        // right 45 degrees behind
         return true;
     }
 }

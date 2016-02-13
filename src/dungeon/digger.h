@@ -84,20 +84,5 @@ digger_dig_room(struct digger *digger,
 bool
 digger_periodic_check(struct digger *digger);
 
-bool
-digger_doors(struct digger *digger);
-
-bool
-digger_chambers(struct digger *digger, enum wall_type entrance_type);
-
-bool
-digger_side_passages(struct digger *digger);
-
-bool
-digger_rooms(struct digger *digger, enum wall_type entrance_type);
-
-bool
-digger_turns(struct digger *digger);
-
 
 #endif
