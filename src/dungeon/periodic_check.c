@@ -24,9 +24,11 @@ exit_location_in_direction(struct digger *digger,
 static void
 location_of_door(struct rnd *rnd, bool *left, bool *right, bool *ahead);
 
-static int
+static void
 number_of_exits(struct rnd *rnd,
                 struct area *chamber_or_room,
+                int *doors,
+                int *passages,
                 bool *check_for_secret_doors);
 
 static bool
@@ -104,17 +106,28 @@ chambers(struct digger *digger, enum wall_type entrance_type)
     if (!chamber) return false;
     // TODO: try smaller chambers?
     
-    // TODO: determine exit types (doors/passages)
     bool check_for_secret_doors = false;
-    int exit_count = number_of_exits(digger->generator->rnd,
-                                     chamber,
-                                     &check_for_secret_doors);
+    int door_count = 0;
+    int passage_count = 0;
+    number_of_exits(digger->generator->rnd,
+                    chamber,
+                    &door_count,
+                    &passage_count,
+                    &check_for_secret_doors);
     
-    for (int i = 0; i < exit_count; ++i) {
+    for (int i = 0; i < door_count; ++i) {
         // TODO: don't fail if no possible exit
         struct digger *exit_digger = exit_location(digger, chamber);
         if (!exit_digger) return false;
         if (!space_beyond_door(exit_digger, false)) return false;
+    }
+    
+    for (int i = 0; i < passage_count; ++i) {
+        // TODO: don't fail if no possible exit
+        struct digger *exit_digger = exit_location(digger, chamber);
+        if (!exit_digger) return false;
+        // TODO: check exit direction
+        if (!digger_dig_passage(exit_digger, 3, wall_type_none)) return false;
     }
     
     generator_delete_digger(digger->generator, digger);
@@ -250,41 +263,52 @@ location_of_door(struct rnd *rnd, bool *left, bool *right, bool *ahead)
 }
 
 
-static int
+static void
 number_of_exits(struct rnd *rnd,
                 struct area *chamber_or_room,
+                int *door_count,
+                int *passage_count,
                 bool *check_for_secret_doors)
 {
-    int exit_count = 0;
+    *door_count = 0;
+    *passage_count = 0;
+    int *default_exit_count;
+    int *other_exit_count;
+    if (area_type_room == chamber_or_room->type) {
+        default_exit_count = door_count;
+        other_exit_count = passage_count;
+    } else {
+        default_exit_count = passage_count;
+        other_exit_count = door_count;
+    }
     *check_for_secret_doors = false;
     int area = box_area(chamber_or_room->box);
     int score = roll("1d20", rnd);
     if (score <= 3) {
-        exit_count = (area <= 6) ? 1 : 2;
+        *default_exit_count = (area <= 6) ? 1 : 2;
     } else if (score <= 6) {
-        exit_count = (area <= 6) ? 2 : 3;
+        *default_exit_count = (area <= 6) ? 2 : 3;
     } else if (score <= 9) {
-        exit_count = (area <= 6) ? 3 : 4;
+        *default_exit_count = (area <= 6) ? 3 : 4;
     } else if (score <= 12) {
         if (area <= 12) {
-            exit_count = 0;
+            *default_exit_count = 0;
             *check_for_secret_doors = true;
         } else {
-            exit_count = 1;
+            *default_exit_count = 1;
         }
     } else if (score <= 15) {
         if (area <= 16) {
-            exit_count = 0;
+            *default_exit_count = 0;
             *check_for_secret_doors = true;
         } else {
-            exit_count = 1;
+            *default_exit_count = 1;
         }
     } else if (score <= 18) {
-        exit_count = roll("1d4", rnd);
+        *default_exit_count = roll("1d4", rnd);
     } else {
-        exit_count = 1;
+        *other_exit_count = 1;
     }
-    return exit_count;
 }
 
 
@@ -384,17 +408,28 @@ rooms(struct digger *digger, enum wall_type entrance_type)
     if (!room) return false;
     // TODO: try smaller rooms?
     
-    // TODO: determine exit types (doors/passages)
     bool check_for_secret_doors = false;
-    int exit_count = number_of_exits(digger->generator->rnd,
-                                     room,
-                                     &check_for_secret_doors);
+    int door_count = 0;
+    int passage_count = 0;
+    number_of_exits(digger->generator->rnd,
+                    room,
+                    &door_count,
+                    &passage_count,
+                    &check_for_secret_doors);
     
-    for (int i = 0; i < exit_count; ++i) {
+    for (int i = 0; i < door_count; ++i) {
         // TODO: don't fail if no possible exit
         struct digger *exit_digger = exit_location(digger, room);
         if (!exit_digger) return false;
         if (!space_beyond_door(exit_digger, false)) return false;
+    }
+    
+    for (int i = 0; i < passage_count; ++i) {
+        // TODO: don't fail if no possible exit
+        struct digger *exit_digger = exit_location(digger, room);
+        if (!exit_digger) return false;
+        // TODO: check exit direction
+        if (!digger_dig_passage(exit_digger, 3, wall_type_none)) return false;
     }
     
     generator_delete_digger(digger->generator, digger);
