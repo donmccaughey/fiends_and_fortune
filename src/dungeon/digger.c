@@ -13,24 +13,13 @@
 #include "tile.h"
 
 
-typedef struct digger *
-(exit_location_fn)(struct digger *digger, struct area *chamber_or_room);
-
-
 static struct digger *
 exit_location(struct digger *digger, struct area *chamber_or_room);
 
 static struct digger *
-exit_location_on_left_wall(struct digger *digger, struct area *chamber_or_room);
-
-static struct digger *
-exit_location_on_opposite_wall(struct digger *digger, struct area *chamber_or_room);
-
-static struct digger *
-exit_location_on_right_wall(struct digger *digger, struct area *chamber_or_room);
-
-static struct digger *
-exit_location_on_same_wall(struct digger *digger, struct area *chamber_or_room);
+exit_location_in_direction(struct digger *digger,
+                           struct area *chamber_or_room,
+                           enum direction direction);
 
 static void
 location_of_door(struct rnd *rnd, bool *left, bool *right, bool *ahead);
@@ -687,31 +676,45 @@ digger_turn_90_degrees_right(struct digger *digger)
 static struct digger *
 exit_location(struct digger *digger, struct area *chamber_or_room)
 {
-    exit_location_fn *exit_locations[4];
+    enum direction *directions;
     int score = roll("1d20", digger->generator->rnd);
     if (score <= 7) {
-        exit_locations[0] = exit_location_on_opposite_wall;
-        exit_locations[1] = exit_location_on_same_wall;
-        exit_locations[2] = exit_location_on_right_wall;
-        exit_locations[3] = exit_location_on_left_wall;
+        // opposite wall
+        directions = (enum direction[]){
+            digger->direction,
+            direction_opposite(digger->direction),
+            direction_90_degrees_right(digger->direction),
+            direction_90_degrees_left(digger->direction),
+        };
     } else if (score <= 12) {
-        exit_locations[0] = exit_location_on_left_wall;
-        exit_locations[1] = exit_location_on_opposite_wall;
-        exit_locations[2] = exit_location_on_same_wall;
-        exit_locations[3] = exit_location_on_right_wall;
+        // left wall
+        directions = (enum direction[]){
+            direction_90_degrees_left(digger->direction),
+            direction_90_degrees_right(digger->direction),
+            digger->direction,
+            direction_opposite(digger->direction),
+        };
     } else if (score <= 17) {
-        exit_locations[0] = exit_location_on_right_wall;
-        exit_locations[1] = exit_location_on_left_wall;
-        exit_locations[2] = exit_location_on_opposite_wall;
-        exit_locations[3] = exit_location_on_same_wall;
+        // right wall
+        directions = (enum direction[]){
+            direction_90_degrees_right(digger->direction),
+            direction_90_degrees_left(digger->direction),
+            digger->direction,
+            direction_opposite(digger->direction),
+        };
     } else {
-        exit_locations[0] = exit_location_on_same_wall;
-        exit_locations[1] = exit_location_on_right_wall;
-        exit_locations[2] = exit_location_on_left_wall;
-        exit_locations[3] = exit_location_on_opposite_wall;
+        // same wall
+        directions = (enum direction[]){
+            direction_opposite(digger->direction),
+            digger->direction,
+            direction_90_degrees_left(digger->direction),
+            direction_90_degrees_right(digger->direction),
+        };
     }
     for (int i = 0; i < 4; ++i) {
-        struct digger *exit_digger = exit_locations[i](digger, chamber_or_room);
+        struct digger *exit_digger = exit_location_in_direction(digger,
+                                                                chamber_or_room,
+                                                                directions[i]);
         if (exit_digger) return exit_digger;
     }
     return NULL;
@@ -719,75 +722,10 @@ exit_location(struct digger *digger, struct area *chamber_or_room)
 
 
 static struct digger *
-exit_location_on_left_wall(struct digger *digger, struct area *chamber_or_room)
+exit_location_in_direction(struct digger *digger,
+                           struct area *chamber_or_room,
+                           enum direction direction)
 {
-    enum direction direction = direction_90_degrees_left(digger->direction);
-    int count = max(chamber_or_room->box.size.width, chamber_or_room->box.size.length);
-    struct exit exits[count];
-    count = possible_exits_in_direction(digger->generator,
-                                        chamber_or_room->box,
-                                        direction,
-                                        exits,
-                                        count);
-    if (!count) return NULL;
-    
-    int index = rnd_next_uniform_value(digger->generator->rnd, count);
-    struct digger *exit_digger = generator_add_digger(digger->generator,
-                                                      exits[index].point,
-                                                      direction);
-    digger_move_forward(exit_digger, 1);
-    return exit_digger;
-}
-
-
-static struct digger *
-exit_location_on_opposite_wall(struct digger *digger, struct area *chamber_or_room)
-{
-    enum direction direction = digger->direction;
-    int count = max(chamber_or_room->box.size.width, chamber_or_room->box.size.length);
-    struct exit exits[count];
-    count = possible_exits_in_direction(digger->generator,
-                                        chamber_or_room->box,
-                                        direction,
-                                        exits,
-                                        count);
-    if (!count) return NULL;
-    
-    int index = rnd_next_uniform_value(digger->generator->rnd, count);
-    struct digger *exit_digger = generator_add_digger(digger->generator,
-                                                      exits[index].point,
-                                                      direction);
-    digger_move_forward(exit_digger, 1);
-    return exit_digger;
-}
-
-
-static struct digger *
-exit_location_on_same_wall(struct digger *digger, struct area *chamber_or_room)
-{
-    enum direction direction = direction_opposite(digger->direction);
-    int count = max(chamber_or_room->box.size.width, chamber_or_room->box.size.length);
-    struct exit exits[count];
-    count = possible_exits_in_direction(digger->generator,
-                                        chamber_or_room->box,
-                                        direction,
-                                        exits,
-                                        count);
-    if (!count) return NULL;
-
-    int index = rnd_next_uniform_value(digger->generator->rnd, count);
-    struct digger *exit_digger = generator_add_digger(digger->generator,
-                                                      exits[index].point,
-                                                      direction);
-    digger_move_forward(exit_digger, 1);
-    return exit_digger;
-}
-
-
-static struct digger *
-exit_location_on_right_wall(struct digger *digger, struct area *chamber_or_room)
-{
-    enum direction direction = direction_90_degrees_right(digger->direction);
     int count = max(chamber_or_room->box.size.width, chamber_or_room->box.size.length);
     struct exit exits[count];
     count = possible_exits_in_direction(digger->generator,
