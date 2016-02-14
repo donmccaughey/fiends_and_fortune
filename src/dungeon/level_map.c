@@ -176,7 +176,7 @@ tile_bottom_half(struct level_map const *level_map, struct point point)
     struct tile *tile = level_map_tile_at(level_map, point);
     if (level_map->box.origin.y == point.y) return CORNER_HWALL;
     if (level_map->box.origin.x == point.x) {
-        if (tile_type_solid == tile->type) return CORNER_SOLID;
+        if (tile_type_filled == tile->type) return CORNER_SOLID;
         if (tile_type_empty == tile->type) return CORNER_EMPTY;
     }
     
@@ -189,10 +189,10 @@ tile_bottom_half(struct level_map const *level_map, struct point point)
             && wall_type_none != tile_west->walls.south
             && wall_type_none != tile_south->walls.west)
         {
-            if (tile_type_solid == tile->type) return CORNER_SOLID;
+            if (tile_type_filled == tile->type) return CORNER_SOLID;
             if (tile_type_empty == tile->type) return CORNER_EMPTY;
         } else {
-            if (tile_type_solid == tile->type) return SOLID;
+            if (tile_type_filled == tile->type) return SOLID;
             if (tile_type_empty == tile->type) return EMPTY_SPAN;
         }
     }
@@ -207,10 +207,10 @@ tile_bottom_half(struct level_map const *level_map, struct point point)
     {
         struct tile *tile_west = level_map_tile_at(level_map, point_west(point));
         if (tile_west && wall_type_none != tile_west->walls.south) {
-            if (tile_type_solid == tile->type) return CORNER_SOLID;
+            if (tile_type_filled == tile->type) return CORNER_SOLID;
             if (tile_type_empty == tile->type) return CORNER_EMPTY;
         } else {
-            if (tile_type_solid == tile->type) return VWALL_SOLID;
+            if (tile_type_filled == tile->type) return VWALL_SOLID;
             if (tile_type_empty == tile->type) return VWALL_EMPTY;
         }
     }
@@ -236,7 +236,7 @@ tile_top_half(struct level_map const *level_map, struct point point)
 {
     struct tile *tile = level_map_tile_at(level_map, point);
     if (level_map->box.origin.x == point.x) {
-        if (tile_type_solid == tile->type) {
+        if (tile_type_filled == tile->type) {
             return VWALL_SOLID;
         }
         if (tile_type_empty == tile->type) {            
@@ -262,7 +262,7 @@ tile_top_half(struct level_map const *level_map, struct point point)
             return VWALL_DOOR;
         }
     }
-    if (tile_type_solid == tile->type) {
+    if (tile_type_filled == tile->type) {
         if (wall_type_none == tile->walls.west) return SOLID;
         if (wall_type_solid == tile->walls.west) return VWALL_SOLID;
     }

@@ -7,7 +7,9 @@ enum area_type {
     area_type_passage,
     area_type_intersection,
     area_type_chamber,
-    area_type_room
+    area_type_room,
+    area_type_stairs_down,
+    area_type_stairs_up
 };
 
 

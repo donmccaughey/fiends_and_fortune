@@ -135,7 +135,7 @@ dungeon_tile_at(struct dungeon *dungeon, struct point point)
     if (tile) {
         return *tile;
     } else {
-        struct tile *default_tile = tile_alloc(point, tile_type_solid);
+        struct tile *default_tile = tile_alloc(point, tile_type_filled);
         dungeon->tiles = tile_add_to_array_sorted_by_point(dungeon->tiles,
                                                            &dungeon->tiles_count,
                                                            default_tile);

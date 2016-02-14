@@ -289,7 +289,7 @@ generator_generate_small(struct generator *generator)
     digger_dig_chamber(se_digger, 6, 4, 0, wall_type_none);
     // fill in one tile in chamber
     struct box box = box_make(point_make(5, 2, 1), size_make_unit());
-    generator_fill_box(generator, box, direction_north, tile_type_solid);
+    generator_fill_box(generator, box, direction_north, tile_type_filled);
     
     // from entry chamber, north exit
     digger_move_forward(digger, 5);

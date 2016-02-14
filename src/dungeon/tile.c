@@ -116,7 +116,7 @@ tile_has_west_wall(struct tile const *tile)
 bool
 tile_is_blank(struct tile const *tile)
 {
-    return tile_type_solid == tile->type
+    return tile_type_filled == tile->type
         && wall_type_none == tile->walls.south
         && wall_type_none == tile->walls.west;
 }
@@ -125,14 +125,14 @@ tile_is_blank(struct tile const *tile)
 bool
 tile_is_escavated(struct tile const *tile)
 {
-    return tile_type_solid != tile->type;
+    return tile_type_filled != tile->type;
 }
 
 
 bool
 tile_is_unescavated(struct tile const *tile)
 {
-    return tile_type_solid == tile->type;
+    return tile_type_filled == tile->type;
 }
 
 

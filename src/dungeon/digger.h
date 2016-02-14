@@ -78,5 +78,15 @@ digger_dig_room(struct digger *digger,
                 int left_offset,
                 enum wall_type entrance_type);
 
+struct area *
+digger_dig_stairs_down(struct digger *digger,
+                       int distance,
+                       enum wall_type entrance_type);
+
+struct area *
+digger_dig_stairs_up(struct digger *digger,
+                     int distance,
+                     enum wall_type entrance_type);
+
 
 #endif

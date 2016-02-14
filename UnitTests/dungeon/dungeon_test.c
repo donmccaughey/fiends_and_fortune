@@ -29,7 +29,7 @@ static void dungeon_generate_small_test(void)
     
     tile = dungeon_tile_at(dungeon, point_make(-1, -8, 1));
     assert(tile);
-    assert(tile_type_solid == tile->type);
+    assert(tile_type_filled == tile->type);
     
     dungeon_free(dungeon);
 }

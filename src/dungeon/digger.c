@@ -219,6 +219,60 @@ digger_dig_room(struct digger *digger,
 }
 
 
+struct area *
+digger_dig_stairs_down(struct digger *digger,
+                       int distance,
+                       enum wall_type entrance_type)
+{
+    int const length = distance;
+    int const width = 1;
+    int const left_offset = 0;
+    struct box padded_box = box_for_area(digger,
+                                         length,
+                                         width,
+                                         left_offset,
+                                         digger->generator->padding);
+    if (generator_is_box_excavated(digger->generator, padded_box)) {
+        return NULL;
+    }
+    struct area *stairs_down = digger_dig_area(digger,
+                                               length,
+                                               width,
+                                               left_offset,
+                                               entrance_type,
+                                               area_type_stairs_down);
+    digger_move_forward(digger, length);
+    return stairs_down;
+}
+
+
+struct area *
+digger_dig_stairs_up(struct digger *digger,
+                     int distance,
+                     enum wall_type entrance_type)
+{
+    int const length = distance;
+    int const width = 1;
+    int const left_offset = 0;
+    struct box padded_box = box_for_area(digger,
+                                         length,
+                                         width,
+                                         left_offset,
+                                         digger->generator->padding);
+    if (generator_is_box_excavated(digger->generator, padded_box)) {
+        return NULL;
+    }
+    struct area *stairs_up = digger_dig_area(digger,
+                                             length,
+                                             width,
+                                             left_offset,
+                                             entrance_type,
+                                             area_type_stairs_up);
+    digger_move_forward(digger, length);
+    return stairs_up;
+}
+
+
 void
 digger_move(struct digger *digger, int steps, enum direction direction)
 {
