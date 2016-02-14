@@ -83,6 +83,7 @@ generator_add_area(struct generator *generator,
 void
 generator_fill_box(struct generator *generator,
                    struct box box,
+                   enum orientation orientation,
                    enum tile_type tile_type);
 
 void

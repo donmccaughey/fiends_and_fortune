@@ -3,8 +3,10 @@
 
 
 enum tile_type {
-    tile_type_solid = 0,
-    tile_type_empty
+    tile_type_solid=0,
+    tile_type_empty,
+    tile_type_stairs_down,
+    tile_type_stairs_up
 };
 
 

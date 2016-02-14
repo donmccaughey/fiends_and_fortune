@@ -6,7 +6,7 @@
 
 
 enum orientation {
-    orientation_unknown=0,
+    orientation_none=0,
     orientation_north_to_south,
     orientation_east_to_west,
     orientation_north_east_to_south_west,

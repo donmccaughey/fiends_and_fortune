@@ -50,7 +50,7 @@ generator_add_area(struct generator *generator,
                                          generator->areas_count,
                                          sizeof(struct area *));
     generator->areas[index] = area;
-    generator_fill_box(generator, box, tile_type);
+    generator_fill_box(generator, box, orientation, tile_type);
     generator_set_walls(generator, box, wall_type_solid);
     return area;
 }
@@ -167,6 +167,7 @@ generator_delete_digger(struct generator *generator, struct digger *digger)
 void
 generator_fill_box(struct generator *generator,
                    struct box box,
+                   enum orientation orientation,
                    enum tile_type tile_type)
 {
     struct box padded_box = box_expand(box, size_make(1, 1, 0));
@@ -178,7 +179,10 @@ generator_fill_box(struct generator *generator,
             for (int i = 1; i < padded_box.size.width; ++i) {
                 point.x = padded_box.origin.x + i;
                 struct tile *tile = generator_tile_at(generator, point);
-                if (box_contains_point(box, point)) tile->type = tile_type;
+                if (box_contains_point(box, point)) {
+                    tile->orientation = orientation;
+                    tile->type = tile_type;
+                }
                 
                 struct tile *west_tile = generator_tile_at(generator, point_west(point));
                 if (west_tile->type != tile->type) {
@@ -288,7 +292,7 @@ generator_generate_small(struct generator *generator)
     digger_dig_chamber(se_digger, 6, 4, 0, wall_type_none);
     // fill in one tile in chamber
     struct box box = box_make(point_make(5, 2, 1), size_make_unit());
-    generator_fill_box(generator, box, tile_type_solid);
+    generator_fill_box(generator, box, orientation_none, tile_type_solid);
     
     // from entry chamber, north exit
     digger_move_forward(digger, 5);
@@ -303,7 +307,8 @@ generator_generate_small(struct generator *generator)
     digger_dig_passage(digger, 3, wall_type_none);
     digger_turn_90_degrees_right(digger);
     // dig connecting passage without constraints to make looping passage
-    digger_dig_area(digger, 3, 1, 0, wall_type_none, area_type_passage);
+    digger_dig_area(digger, 3, 1, 0, wall_type_none,
+                    area_type_passage, orientation_east_to_west);
     digger_move_forward(digger, 3);
     struct tile *tile = generator_tile_at(generator, point_east(digger->point));
     tile->walls.west = wall_type_none;

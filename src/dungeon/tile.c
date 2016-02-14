@@ -125,7 +125,7 @@ tile_is_blank(struct tile const *tile)
 bool
 tile_is_escavated(struct tile const *tile)
 {
-    return tile_type_empty == tile->type;
+    return tile_type_solid != tile->type;
 }
 
 

@@ -60,7 +60,8 @@ digger_dig_area(struct digger *digger,
                 int width,
                 int left_offset,
                 enum wall_type entrance_type,
-                enum area_type area_type)
+                enum area_type area_type,
+                enum orientation orientation)
 {
     int const padding = 0;
     struct box box_to_dig = box_for_area(digger,
@@ -84,7 +85,7 @@ digger_dig_area(struct digger *digger,
     
     struct area *area = generator_add_area(digger->generator,
                                            area_type,
-                                           orientation_from_direction(digger->direction),
+                                           orientation,
                                            box_to_dig,
                                            tile_type_empty);
     
@@ -137,7 +138,8 @@ digger_dig_chamber(struct digger *digger,
                                            width,
                                            left_offset,
                                            entrance_type,
-                                           area_type_chamber);
+                                           area_type_chamber,
+                                           orientation_none);
     return chamber;
 }
 
@@ -161,7 +163,8 @@ digger_dig_intersection(struct digger *digger)
                                                 width,
                                                 left_offset,
                                                 wall_type_none,
-                                                area_type_intersection);
+                                                area_type_intersection,
+                                                orientation_none);
     digger_move_forward(digger, length);
     return intersection;
 }
@@ -188,7 +191,8 @@ digger_dig_passage(struct digger *digger,
                                            width,
                                            left_offset,
                                            entrance_type,
-                                           area_type_passage);
+                                           area_type_passage,
+                                           orientation_from_direction(digger->direction));
     digger_move_forward(digger, length);
     return passage;
 }
@@ -214,7 +218,8 @@ digger_dig_room(struct digger *digger,
                                         width,
                                         left_offset,
                                         entrance_type,
-                                        area_type_room);
+                                        area_type_room,
+                                        orientation_none);
     return room;
 }
 

@@ -3,7 +3,7 @@
 
 
 enum wall_type {
-    wall_type_none = 0,
+    wall_type_none=0,
     wall_type_solid,
     wall_type_door
 };

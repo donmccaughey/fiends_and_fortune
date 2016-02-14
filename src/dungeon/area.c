@@ -1,6 +1,7 @@
 #include "area.h"
 
 #include "common/alloc_or_die.h"
+#include "common/int.h"
 #include "common/str.h"
 
 #include "tile.h"
@@ -23,32 +24,24 @@ area_alloc(enum area_type area_type,
 char *
 area_alloc_description(struct area const *area)
 {
-    int width;
-    int length;
-    if (orientation_east_to_west == area->orientation) {
-        width = area->box.size.length;
-        length = area->box.size.width;
-    } else {
-        width = area->box.size.width;
-        length = area->box.size.length;
-    }
+    int width = area->box.size.width * 10;
+    int length = area->box.size.length * 10;
     switch (area->type) {
         case area_type_chamber:
-            return str_alloc_formatted("%u' x %u' chamber",
-                                       length * 10, width * 10);
+            return str_alloc_formatted("%u' x %u' chamber", width, length);
         case area_type_intersection:
             return strdup_or_die("intersection");
         case area_type_passage:
-            return str_alloc_formatted("%u' passage %s",
-                                       length * 10,
+            if (orientation_east_to_west == area->orientation) {
+                swap(&width, &length);
+            }
+            return str_alloc_formatted("%u' passage %s", length,
                                        orientation_name(area->orientation));
             break;
         case area_type_room:
-            return str_alloc_formatted("%u' x %u' room",
-                                       length * 10, width * 10);
+            return str_alloc_formatted("%u' x %u' room", width, length);
         default:
-            return str_alloc_formatted("%u' x %u' area",
-                                       length * 10, width * 10);
+            return str_alloc_formatted("%u' x %u' area", width, length);
     }
 }
 
