@@ -216,12 +216,13 @@ tile_bottom_half(struct level_map const *level_map,
     } else if (level_map->box.origin.y == point.y) {
         has_corner = true;
     } else if (!tile_has_south_wall(tile) && !tile_has_west_wall(tile)) {
-        struct tile *west_tile = level_map_tile_at(level_map, point_west(point));
         struct tile *south_tile = level_map_tile_at(level_map, point_south(point));
-        if (   west_tile
-            && south_tile
+        struct tile *west_tile = level_map_tile_at(level_map, point_west(point));
+        if (   south_tile
+            && west_tile
+            && tile_has_west_wall(south_tile)
             && tile_has_south_wall(west_tile)
-            && tile_has_west_wall(south_tile))
+            )
         {
             has_corner = true;
         }
@@ -231,8 +232,11 @@ tile_bottom_half(struct level_map const *level_map,
             has_corner = true;
         }
     } else if (!tile_has_south_wall(tile) && tile_has_west_wall(tile)) {
+        struct tile *south_tile = level_map_tile_at(level_map, point_south(point));
         struct tile *west_tile = level_map_tile_at(level_map, point_west(point));
         if (west_tile && tile_has_south_wall(west_tile)) {
+            has_corner = true;
+        } else if (south_tile && !tile_has_west_wall(south_tile)) {
             has_corner = true;
         }
     } else if (tile_has_south_wall(tile) && tile_has_west_wall(tile)) {
