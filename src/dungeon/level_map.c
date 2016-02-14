@@ -228,14 +228,21 @@ tile_bottom_half(struct level_map const *level_map,
         struct tile *south_tile = level_map_tile_at(level_map, point_south(point));
         if (south_tile && tile_has_west_wall(south_tile)) {
             has_corner = true;
+        } else {
+            struct tile *west_tile = level_map_tile_at(level_map, point_west(point));
+            if (west_tile && !tile_has_south_wall(west_tile)) {
+                has_corner = true;
+            }
         }
     } else if (!tile_has_south_wall(tile) && tile_has_west_wall(tile)) {
         struct tile *south_tile = level_map_tile_at(level_map, point_south(point));
-        struct tile *west_tile = level_map_tile_at(level_map, point_west(point));
-        if (west_tile && tile_has_south_wall(west_tile)) {
+        if (south_tile && !tile_has_west_wall(south_tile)) {
             has_corner = true;
-        } else if (south_tile && !tile_has_west_wall(south_tile)) {
-            has_corner = true;
+        } else {            
+            struct tile *west_tile = level_map_tile_at(level_map, point_west(point));
+            if (west_tile && tile_has_south_wall(west_tile)) {
+                has_corner = true;
+            }
         }
     } else if (tile_has_south_wall(tile) && tile_has_west_wall(tile)) {
         has_corner = true;
