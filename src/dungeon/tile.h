@@ -4,14 +4,14 @@
 
 #include <stdbool.h>
 
-#include "orientation.h"
+#include "direction.h"
 #include "point.h"
 #include "tile_type.h"
 #include "wall_type.h"
 
 
 struct tile {
-    enum orientation orientation;
+    enum direction direction;
     struct point point;
     enum tile_type type;
     struct {

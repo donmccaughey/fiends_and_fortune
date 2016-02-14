@@ -6,7 +6,7 @@
 
 #include "area_type.h"
 #include "box.h"
-#include "orientation.h"
+#include "direction.h"
 #include "tile_type.h"
 #include "wall_type.h"
 
@@ -76,14 +76,14 @@ generator_tile_at(struct generator *generator, struct point point);
 struct area *
 generator_add_area(struct generator *generator,
                    enum area_type area_type,
-                   enum orientation orientation,
+                   enum direction direction,
                    struct box box,
                    enum tile_type tile_type);
 
 void
 generator_fill_box(struct generator *generator,
                    struct box box,
-                   enum orientation orientation,
+                   enum direction direction,
                    enum tile_type tile_type);
 
 void

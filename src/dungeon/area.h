@@ -4,7 +4,6 @@
 
 #include "area_type.h"
 #include "box.h"
-#include "orientation.h"
 #include "tile_type.h"
 
 
@@ -13,14 +12,14 @@ struct tile;
 
 struct area {
     struct box box;
-    enum orientation orientation;
+    enum direction direction;
     enum area_type type;
 };
 
 
 struct area *
 area_alloc(enum area_type area_type,
-           enum orientation orientation,
+           enum direction direction,
            struct box box,
            enum tile_type tile_type);
 

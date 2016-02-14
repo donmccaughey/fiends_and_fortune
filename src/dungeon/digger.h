@@ -3,7 +3,6 @@
 
 
 #include "area_type.h"
-#include "orientation.h"
 #include "point.h"
 #include "wall_type.h"
 
@@ -55,8 +54,7 @@ digger_dig_area(struct digger *digger,
                 int width,
                 int left_offset,
                 enum wall_type entrance_type,
-                enum area_type area_type,
-                enum orientation orientation);
+                enum area_type area_type);
 
 struct area *
 digger_dig_chamber(struct digger *digger,
