@@ -220,9 +220,7 @@ tile_bottom_half(struct level_map const *level_map,
         struct tile *west_tile = level_map_tile_at(level_map, point_west(point));
         if (   south_tile
             && west_tile
-            && tile_has_west_wall(south_tile)
-            && tile_has_south_wall(west_tile)
-            )
+            && (tile_has_west_wall(south_tile) || tile_has_south_wall(west_tile)))
         {
             has_corner = true;
         }
