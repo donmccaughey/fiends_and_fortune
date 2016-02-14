@@ -1,6 +1,7 @@
 #include "level_map.h"
 
 #include <assert.h>
+#include <stdio.h>
 
 #include "common/alloc_or_die.h"
 
@@ -46,8 +47,10 @@ print_scale_row(struct level_map const *level_map,
 static char const *
 tile_bottom_half(struct level_map const *level_map, struct point point);
 
-static char const *
-tile_top_half(struct level_map const *level_map, struct point point);
+static void
+tile_top_half(struct level_map const *level_map,
+              struct point point,
+              char half_tile[5]);
 
 
 struct level_map *
@@ -95,6 +98,7 @@ level_map_alloc_text_graph(struct level_map *level_map)
     // map tiles
     struct point point = level_map->box.origin;
     point.y += level_map->box.size.length;
+    char half_tile[5];
     for (int j = 0; j < level_map->box.size.length; ++j) {
         --point.y;
         // top line of row
@@ -102,8 +106,8 @@ level_map_alloc_text_graph(struct level_map *level_map)
         text_rectangle_print_format(text_rectangle, LMARGIN_NUM, point.y);
         point.x = level_map->box.origin.x;
         for (int i = 0; i < level_map->box.size.width; ++i) {
-            text_rectangle_print_format(text_rectangle,
-                                        tile_top_half(level_map, point));
+            tile_top_half(level_map, point, half_tile);
+            text_rectangle_print_format(text_rectangle, half_tile);
             ++point.x;
         }
         text_rectangle_print_format(text_rectangle, RMARGIN_NUM, point.y);
@@ -231,40 +235,50 @@ tile_bottom_half(struct level_map const *level_map, struct point point)
 }
 
 
-static char const *
-tile_top_half(struct level_map const *level_map, struct point point)
+static void
+tile_top_half(struct level_map const *level_map,
+              struct point point,
+              char half_tile[5])
 {
     struct tile *tile = level_map_tile_at(level_map, point);
-    if (level_map->box.origin.x == point.x) {
-        if (tile_type_filled == tile->type) {
-            return VWALL_SOLID;
-        }
-        if (tile_type_empty == tile->type) {            
-            if (wall_type_door == tile->walls.west) {
-                return VWALL_DOOR;
-            } else {
-                return VWALL_EMPTY;
+    switch (tile->type) {
+        case tile_type_filled: strcpy(half_tile, "::::"); break;
+        case tile_type_empty: strcpy(half_tile, "    "); break;
+        case tile_type_stairs_down:
+            switch (tile->direction) {
+                case direction_north: strcpy(half_tile, "  ^ "); break;
+                case direction_south: strcpy(half_tile, "  v "); break;
+                case direction_east: strcpy(half_tile, " > >"); break;
+                case direction_west: strcpy(half_tile, " < <"); break;
+                default: break;
             }
-        }
+            break;
+        case tile_type_stairs_up:
+            switch (tile->direction) {
+                case direction_north: strcpy(half_tile, "  v "); break;
+                case direction_south: strcpy(half_tile, "  ^ "); break;
+                case direction_east: strcpy(half_tile, " < <"); break;
+                case direction_west: strcpy(half_tile, " > >"); break;
+                default: break;
+            }
+            break;
+        default: strcpy(half_tile, "::::"); break;
     }
-    if (tile_type_empty == tile->type) {
-        struct tile *tile_east = level_map_tile_at(level_map, point_east(point));
-        if (wall_type_none == tile->walls.west) {
-            if (wall_type_door == tile_east->walls.west) return EMPTY_EDOOR;
-            return EMPTY;
-        }
-        if (wall_type_solid == tile->walls.west) {
-            if (wall_type_door == tile_east->walls.west) return VWALL_EMPTY_EDOOR;
-            return VWALL_EMPTY;
-        }
-        if (wall_type_door == tile->walls.west) {
-            if (wall_type_door == tile_east->walls.west) return VWALL_DOOR_EDOOR;
-            return VWALL_DOOR;
-        }
+    
+    if (wall_type_solid == tile->walls.west) {
+        half_tile[0] = '|';
     }
-    if (tile_type_filled == tile->type) {
-        if (wall_type_none == tile->walls.west) return SOLID;
-        if (wall_type_solid == tile->walls.west) return VWALL_SOLID;
+    if (wall_type_door == tile->walls.west) {
+        half_tile[0] = '|';
+        half_tile[1] = ']';
     }
-    return SOLID;
+    
+    if (level_map->box.origin.x == point.x) {
+        half_tile[0] = '|';
+    }
+    
+    struct tile *east_tile = level_map_tile_at(level_map, point_east(point));
+    if (east_tile && wall_type_door == east_tile->walls.west) {
+        half_tile[3] = '[';
+    }
 }
