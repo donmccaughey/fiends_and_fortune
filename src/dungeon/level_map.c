@@ -1,7 +1,6 @@
 #include "level_map.h"
 
 #include <assert.h>
-#include <stdio.h>
 
 #include "common/alloc_or_die.h"
 
@@ -11,24 +10,6 @@
 #include "tile_type.h"
 #include "wall_type.h"
 
-
-#define CORNER_EMPTY       "+   "
-#define CORNER_EMPTY_EDOOR "+  ["
-#define CORNER_HWALL       "+---"
-#define CORNER_HDOOR       "+[-]"
-#define CORNER_SOLID       "+:::"
-#define EMPTY              "    "
-#define EMPTY_EDOOR        "   ["
-#define EMPTY_SPAN         ".   "
-#define EMPTY_SPAN_EDOOR   ".  ["
-#define HWALL              "----"
-#define HDOOR              "-[-]"
-#define SOLID              "::::"
-#define VWALL_EMPTY        "|   "
-#define VWALL_EMPTY_EDOOR  "|  ["
-#define VWALL_SOLID        "|:::"
-#define VWALL_DOOR         "|]  "
-#define VWALL_DOOR_EDOOR   "|] ["
 
 #define LMARGIN     "    "
 #define LMARGIN_NUM "%3i "
@@ -44,13 +25,44 @@ static void
 print_scale_row(struct level_map const *level_map,
                 struct text_rectangle *text_rectangle);
 
-static char const *
-tile_bottom_half(struct level_map const *level_map, struct point point);
+static void
+tile_bottom_half(struct level_map const *level_map,
+                 struct point point,
+                 char half_tile[5]);
 
 static void
 tile_top_half(struct level_map const *level_map,
               struct point point,
               char half_tile[5]);
+
+
+static void
+fill_half_tile(struct tile *tile, char half_tile[5])
+{
+    switch (tile->type) {
+        case tile_type_filled: strcpy(half_tile, "::::"); break;
+        case tile_type_empty: strcpy(half_tile, "    "); break;
+        case tile_type_stairs_down:
+            switch (tile->direction) {
+                case direction_north: strcpy(half_tile, "  ^ "); break;
+                case direction_south: strcpy(half_tile, "  v "); break;
+                case direction_east: strcpy(half_tile, " > >"); break;
+                case direction_west: strcpy(half_tile, " < <"); break;
+                default: break;
+            }
+            break;
+        case tile_type_stairs_up:
+            switch (tile->direction) {
+                case direction_north: strcpy(half_tile, "  v "); break;
+                case direction_south: strcpy(half_tile, "  ^ "); break;
+                case direction_east: strcpy(half_tile, " < <"); break;
+                case direction_west: strcpy(half_tile, " > >"); break;
+                default: break;
+            }
+            break;
+        default: strcpy(half_tile, "::::"); break;
+    }
+}
 
 
 struct level_map *
@@ -117,8 +129,8 @@ level_map_alloc_text_graph(struct level_map *level_map)
         text_rectangle_print_format(text_rectangle, LMARGIN);
         point.x = level_map->box.origin.x;
         for (int i = 0; i < level_map->box.size.width; ++i) {
-            text_rectangle_print_format(text_rectangle,
-                                        tile_bottom_half(level_map, point));
+            tile_bottom_half(level_map, point, half_tile);
+            text_rectangle_print_format(text_rectangle, half_tile);
             ++point.x;
         }
         text_rectangle_print_format(text_rectangle, "+");
@@ -174,64 +186,60 @@ print_scale_row(struct level_map const *level_map,
 }
 
 
-static char const *
-tile_bottom_half(struct level_map const *level_map, struct point point)
+static void
+tile_bottom_half(struct level_map const *level_map,
+                 struct point point,
+                 char half_tile[5])
 {
     struct tile *tile = level_map_tile_at(level_map, point);
-    if (level_map->box.origin.y == point.y) return CORNER_HWALL;
+    if (wall_type_none == tile->walls.south) {
+        fill_half_tile(tile, half_tile);
+        if (tile_type_empty == tile->type) half_tile[0] = '.';
+    }
+    
+    // south wall
+    if (level_map->box.origin.y == point.y) {
+        strcpy(half_tile, "----");
+    } else if (wall_type_solid == tile->walls.south) {
+        strcpy(half_tile, "----");
+    } else if (wall_type_door == tile->walls.south) {
+        strcpy(half_tile, "-[-]");
+    }
+    
+    // west wall
+    if (tile_has_west_wall(tile)) half_tile[0] = '|';
+    
+    // corner
+    bool has_corner = false;
     if (level_map->box.origin.x == point.x) {
-        if (tile_type_filled == tile->type) return CORNER_SOLID;
-        if (tile_type_empty == tile->type) return CORNER_EMPTY;
-    }
-    
-    if (!tile_has_west_wall(tile) && !tile_has_south_wall(tile))
-    {
-        struct tile *tile_west = level_map_tile_at(level_map, point_west(point));
-        struct tile *tile_south = level_map_tile_at(level_map, point_south(point));
-        if (   tile_west
-            && tile_south
-            && wall_type_none != tile_west->walls.south
-            && wall_type_none != tile_south->walls.west)
+        has_corner = true;
+    } else if (level_map->box.origin.y == point.y) {
+        has_corner = true;
+    } else if (!tile_has_south_wall(tile) && !tile_has_west_wall(tile)) {
+        struct tile *west_tile = level_map_tile_at(level_map, point_west(point));
+        struct tile *south_tile = level_map_tile_at(level_map, point_south(point));
+        if (   west_tile
+            && south_tile
+            && tile_has_south_wall(west_tile)
+            && tile_has_west_wall(south_tile))
         {
-            if (tile_type_filled == tile->type) return CORNER_SOLID;
-            if (tile_type_empty == tile->type) return CORNER_EMPTY;
-        } else {
-            if (tile_type_filled == tile->type) return SOLID;
-            if (tile_type_empty == tile->type) return EMPTY_SPAN;
+            has_corner = true;
         }
-    }
-    
-    if (tile_has_west_wall(tile) && tile_has_south_wall(tile))
-    {
-        if (wall_type_solid == tile->walls.south) return CORNER_HWALL;
-        if (wall_type_door == tile->walls.south) return CORNER_HDOOR;
-    }
-    
-    if (tile_has_west_wall(tile) && !tile_has_south_wall(tile))
-    {
-        struct tile *tile_west = level_map_tile_at(level_map, point_west(point));
-        if (tile_west && wall_type_none != tile_west->walls.south) {
-            if (tile_type_filled == tile->type) return CORNER_SOLID;
-            if (tile_type_empty == tile->type) return CORNER_EMPTY;
-        } else {
-            if (tile_type_filled == tile->type) return VWALL_SOLID;
-            if (tile_type_empty == tile->type) return VWALL_EMPTY;
+    } else if (tile_has_south_wall(tile) && !tile_has_west_wall(tile)) {
+        struct tile *south_tile = level_map_tile_at(level_map, point_south(point));
+        if (south_tile && tile_has_west_wall(south_tile)) {
+            has_corner = true;
         }
-    }
-    
-    if (!tile_has_west_wall(tile) && tile_has_south_wall(tile))
-    {
-        struct tile *tile_south = level_map_tile_at(level_map, point_south(point));
-        if (tile_south && tile_has_west_wall(tile_south)) {
-            if (wall_type_solid == tile->walls.south) return CORNER_HWALL;
-            if (wall_type_door == tile->walls.south) return CORNER_HDOOR;
-        } else {
-            if (wall_type_solid == tile->walls.south) return HWALL;
-            if (wall_type_door == tile->walls.south) return HDOOR;
+    } else if (!tile_has_south_wall(tile) && tile_has_west_wall(tile)) {
+        struct tile *west_tile = level_map_tile_at(level_map, point_west(point));
+        if (west_tile && tile_has_south_wall(west_tile)) {
+            has_corner = true;
         }
+    } else if (tile_has_south_wall(tile) && tile_has_west_wall(tile)) {
+        has_corner = true;
     }
-    
-    return SOLID;
+
+    if (has_corner) half_tile[0] = '+';
 }
 
 
@@ -241,42 +249,21 @@ tile_top_half(struct level_map const *level_map,
               char half_tile[5])
 {
     struct tile *tile = level_map_tile_at(level_map, point);
-    switch (tile->type) {
-        case tile_type_filled: strcpy(half_tile, "::::"); break;
-        case tile_type_empty: strcpy(half_tile, "    "); break;
-        case tile_type_stairs_down:
-            switch (tile->direction) {
-                case direction_north: strcpy(half_tile, "  ^ "); break;
-                case direction_south: strcpy(half_tile, "  v "); break;
-                case direction_east: strcpy(half_tile, " > >"); break;
-                case direction_west: strcpy(half_tile, " < <"); break;
-                default: break;
-            }
-            break;
-        case tile_type_stairs_up:
-            switch (tile->direction) {
-                case direction_north: strcpy(half_tile, "  v "); break;
-                case direction_south: strcpy(half_tile, "  ^ "); break;
-                case direction_east: strcpy(half_tile, " < <"); break;
-                case direction_west: strcpy(half_tile, " > >"); break;
-                default: break;
-            }
-            break;
-        default: strcpy(half_tile, "::::"); break;
-    }
+    fill_half_tile(tile, half_tile);
     
-    if (wall_type_solid == tile->walls.west) {
+    // south wall only on bottom half
+    
+    // west wall
+    if (level_map->box.origin.x == point.x) {
         half_tile[0] = '|';
-    }
-    if (wall_type_door == tile->walls.west) {
+    } else if (wall_type_solid == tile->walls.west) {
+        half_tile[0] = '|';
+    } else if (wall_type_door == tile->walls.west) {
         half_tile[0] = '|';
         half_tile[1] = ']';
     }
     
-    if (level_map->box.origin.x == point.x) {
-        half_tile[0] = '|';
-    }
-    
+    // east door
     struct tile *east_tile = level_map_tile_at(level_map, point_east(point));
     if (east_tile && wall_type_door == east_tile->walls.west) {
         half_tile[3] = '[';
