@@ -13,6 +13,17 @@
 #include "tile.h"
 
 
+static void
+dig_starting_stairs(struct digger *digger)
+{
+    digger_move_forward(digger, 1);
+    digger_spin_180_degrees(digger);
+    digger_dig_area(digger, 2, 1, 0, wall_type_none, area_type_stairs_up);
+    digger_spin_180_degrees(digger);
+    digger_move_forward(digger, 1);
+}
+
+
 static struct digger *
 digger_alloc(struct generator *generator,
              struct point point,
@@ -182,12 +193,12 @@ generator_fill_box(struct generator *generator,
                 }
                 
                 struct tile *west_tile = generator_tile_at(generator, point_west(point));
-                if (west_tile->type != tile->type) {
+                if (tile_is_escavated(west_tile) != tile_is_escavated(tile)) {
                     tile->walls.west = wall_type_solid;
                 }
                 
                 struct tile *south_tile = generator_tile_at(generator, point_south(point));
-                if (south_tile->type != tile->type) {
+                if (tile_is_escavated(south_tile) != tile_is_escavated(tile)) {
                     tile->walls.south = wall_type_solid;
                 }
             }
@@ -219,7 +230,8 @@ generator_generate(struct generator *generator)
     struct digger *digger = generator_add_digger(generator,
                                                  point_make(0, 0, 1),
                                                  direction_north);
-    digger_dig_passage(digger, 2, wall_type_solid);
+    dig_starting_stairs(digger);
+    digger_dig_passage(digger, 1, wall_type_none);
     generator_commit(generator);
     
     while (   generator->diggers_count
@@ -249,7 +261,7 @@ generator_generate_small(struct generator *generator)
                                                  point_make(0, 0, 1),
                                                  direction_north);
     
-    digger_dig_passage(digger, 2, wall_type_solid);
+    dig_starting_stairs(digger);
     digger_dig_chamber(digger, 5, 3, 1, wall_type_none);
     
     // from entry chamber, north west exit

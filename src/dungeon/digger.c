@@ -82,11 +82,17 @@ digger_dig_area(struct digger *digger,
         return NULL;
     }
     
+    enum tile_type tile_type;
+    switch (area_type) {
+        case area_type_stairs_up: tile_type = tile_type_stairs_up; break;
+        case area_type_stairs_down: tile_type = tile_type_stairs_down; break;
+        default: tile_type = tile_type_empty; break;
+    }
     struct area *area = generator_add_area(digger->generator,
                                            area_type,
                                            digger->direction,
                                            box_to_dig,
-                                           tile_type_empty);
+                                           tile_type);
     
     struct tile *entrance_tile;
     switch (digger->direction) {

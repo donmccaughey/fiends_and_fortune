@@ -21,9 +21,13 @@ static void dungeon_generate_small_test(void)
     
     struct tile *tile = dungeon_tile_at(dungeon, point_make(0, 0, 1));
     assert(tile);
-    assert(tile_type_empty == tile->type);
+    assert(tile_type_stairs_up == tile->type);
     
     tile = dungeon_tile_at(dungeon, point_make(0, 1, 1));
+    assert(tile);
+    assert(tile_type_stairs_up == tile->type);
+    
+    tile = dungeon_tile_at(dungeon, point_make(0, 2, 1));
     assert(tile);
     assert(tile_type_empty == tile->type);
     
