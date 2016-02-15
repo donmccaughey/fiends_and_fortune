@@ -155,6 +155,7 @@
 		D406B6551C6FB8D60037171B /* int.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = int.h; sourceTree = "<group>"; };
 		D406B6581C6FBFB80037171B /* periodic_check.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = periodic_check.c; sourceTree = "<group>"; };
 		D406B6591C6FBFB80037171B /* periodic_check.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = periodic_check.h; sourceTree = "<group>"; };
+		D406B65E1C71CAF30037171B /* check.out */ = {isa = PBXFileReference; lastKnownFileType = text; path = check.out; sourceTree = "<group>"; };
 		D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibfnf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
 		D4092F7F1B65D6C200BFD0B3 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
@@ -205,7 +206,6 @@
 		D4EA14D91C5EE1A400EF508F /* generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = generator.h; sourceTree = "<group>"; };
 		D4EA14DC1C602CDB00EF508F /* digger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = digger.c; sourceTree = "<group>"; };
 		D4EA14DD1C602CDB00EF508F /* digger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = digger.h; sourceTree = "<group>"; };
-		D4F244A31418207C003BDED5 /* check.out */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = check.out; sourceTree = "<group>"; };
 		D4F7344F140EF3E00096618F /* fnf */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = fnf; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -236,6 +236,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D406B65D1C71CAF30037171B /* tests */ = {
+			isa = PBXGroup;
+			children = (
+				D406B65E1C71CAF30037171B /* check.out */,
+			);
+			path = tests;
+			sourceTree = "<group>";
+		};
 		D4092F7D1B65D6C200BFD0B3 /* common */ = {
 			isa = PBXGroup;
 			children = (
@@ -357,14 +365,6 @@
 			path = dungeon;
 			sourceTree = "<group>";
 		};
-		D4F244A21418207C003BDED5 /* test */ = {
-			isa = PBXGroup;
-			children = (
-				D4F244A31418207C003BDED5 /* check.out */,
-			);
-			path = test;
-			sourceTree = "<group>";
-		};
 		D4F73444140EF3DF0096618F = {
 			isa = PBXGroup;
 			children = (
@@ -375,7 +375,7 @@
 				B0F476949E9068D9FFB2A6D8 /* TODO.txt */,
 				D4BCC61517D30DD000C76D11 /* docs */,
 				D4F73460140EF4380096618F /* src */,
-				D4F244A21418207C003BDED5 /* test */,
+				D406B65D1C71CAF30037171B /* tests */,
 				D43ED592142146F800D25EEC /* UnitTests */,
 				D4F73450140EF3E00096618F /* Products */,
 			);
