@@ -5,6 +5,7 @@
 #include "common/alloc_or_die.h"
 
 #include "dungeon.h"
+#include "orientation.h"
 #include "text_rectangle.h"
 #include "tile.h"
 #include "tile_type.h"
@@ -52,11 +53,9 @@ fill_half_tile(struct tile *tile, char half_tile[5])
             }
             break;
         case tile_type_stairs_up:
-            switch (tile->direction) {
-                case direction_north: strcpy(half_tile, "===="); break;
-                case direction_south: strcpy(half_tile, "===="); break;
-                case direction_east: strcpy(half_tile, "||||"); break;
-                case direction_west: strcpy(half_tile, "||||"); break;
+            switch (orientation_from_direction(tile->direction)) {
+                case orientation_north_to_south: strcpy(half_tile, "===="); break;
+                case orientation_east_to_west: strcpy(half_tile, "IIII"); break;
                 default: break;
             }
             break;
