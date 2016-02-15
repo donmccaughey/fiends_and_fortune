@@ -44,6 +44,9 @@ static bool
 stairs_down_one_level(struct digger *digger);
 
 static bool
+stairs_up_one_level(struct digger *digger);
+
+static bool
 turns(struct digger *digger);
 
 
@@ -610,42 +613,55 @@ stairs(struct digger *digger)
         // down 2 levels
         // 2 in 20 has a door which closes egress for the day
         if (!stairs_down_one_level(digger)) return false;
+        // TODO: randomly determine space between staircases
         return stairs_down_one_level(digger);
     } else if (score == 7) {
         // down 3 levels
         // 3 in 20 has a door which closes egress for the day
         if (!stairs_down_one_level(digger)) return false;
+        // TODO: randomly determine space between staircases
         if (!stairs_down_one_level(digger)) return false;
+        // TODO: randomly determine space between staircases
         return stairs_down_one_level(digger);
     } else if (score == 8) {
         // up 1 level
-        return false;
+        return stairs_up_one_level(digger);
     } else if (score == 9) {
         // up dead end (1 in 6 chance to chute down 2 levels)
-        return false;
+        if (!stairs_up_one_level(digger)) return false;
+        generator_delete_digger(digger->generator, digger);
+        return true;
     } else if (score == 10) {
         // down dead end (1 in 6 chance to chute down 1 level)
         if (!stairs_down_one_level(digger)) return false;
         generator_delete_digger(digger->generator, digger);
         return true;
     } else if (score == 11) {
-        // Chimney up 1 level, passage continues, check again in 30’
+        // chimney up 1 level, passage continues, check again in 30’
         return false;
     } else if (score == 12) {
-        // Chimney up 2 levels, passage continues, check again in 30’
+        // chimney up 2 levels, passage continues, check again in 30’
         return false;
     } else if (score == 13) {
-        // Chimney down 2 levels, passage continues, check again in 30’
+        // chimney down 2 levels, passage continues, check again in 30’
         return false;
     } else if (score <= 16) {
-        // Trap door down 1 level, passage continues, check again in 30’
+        // trap door down 1 level, passage continues, check again in 30’
         return false;
     } else if (score == 17) {
-        // Trap door down 2 levels, passage continues, check again in 30’
+        // trap door down 2 levels, passage continues, check again in 30’
         return false;
     } else {
-        // Up 1 then down 2 (total down 1), chamber at end
-        return false;
+        // up 1 then down 2 (total down 1), chamber at end
+        if (digger->point.z == generator_min_level(digger->generator)) {
+            return false;
+        }
+        if (!stairs_up_one_level(digger)) return false;
+        // TODO: randomly determine space between staircases
+        if (!stairs_down_one_level(digger)) return false;
+        // TODO: randomly determine space between staircases
+        if (!stairs_down_one_level(digger)) return false;
+        return chambers(digger, wall_type_none);
     }
 }
 
@@ -662,6 +678,24 @@ stairs_down_one_level(struct digger *digger)
     digger_move_backward(digger, 1);
     digger_spin_180_degrees(digger);
     if (!digger_dig_stairs_up(digger, 2, wall_type_none)) return false;
+    digger_spin_180_degrees(digger);
+    digger_move_forward(digger, 3);
+    
+    if (!digger_dig_passage(digger, 1, wall_type_none)) return false;
+    return true;
+}
+
+
+static bool
+stairs_up_one_level(struct digger *digger)
+{
+    if (!digger_dig_stairs_up(digger, 2, wall_type_none)) return false;
+    if (digger->point.z == generator_min_level(digger->generator)) return true;
+    
+    digger_ascend(digger, 1);
+    digger_move_backward(digger, 1);
+    digger_spin_180_degrees(digger);
+    if (!digger_dig_stairs_down(digger, 2, wall_type_none)) return false;
     digger_spin_180_degrees(digger);
     digger_move_forward(digger, 3);
     

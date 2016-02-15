@@ -201,7 +201,6 @@
 		D4BD32C31B6AECE90007527A /* language.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = language.h; sourceTree = "<group>"; };
 		D4BD32C41B6AECE90007527A /* spell.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = spell.c; sourceTree = "<group>"; };
 		D4BD32C51B6AECE90007527A /* spell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spell.h; sourceTree = "<group>"; };
-		D4D495B51C62B16E00BC80C9 /* api_conventions.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = api_conventions.md; sourceTree = "<group>"; };
 		D4D495B61C6321A000BC80C9 /* orientation.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = orientation.c; sourceTree = "<group>"; };
 		D4D495B71C6321A000BC80C9 /* orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = orientation.h; sourceTree = "<group>"; };
 		D4D495BE1C643D2600BC80C9 /* level_map.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = level_map.c; sourceTree = "<group>"; };
@@ -374,7 +373,6 @@
 		D4F73444140EF3DF0096618F = {
 			isa = PBXGroup;
 			children = (
-				D4D495B51C62B16E00BC80C9 /* api_conventions.md */,
 				D41D32CA1A4339BC00484607 /* LICENSE */,
 				D41D32CB1A4339BC00484607 /* README.md */,
 				B0F476949E9068D9FFB2A6D8 /* TODO.txt */,

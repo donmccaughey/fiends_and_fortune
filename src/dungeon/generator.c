@@ -349,6 +349,13 @@ generator_max_level(struct generator const *generator)
 }
 
 
+int
+generator_min_level(struct generator const *generator)
+{
+    return 1;
+}
+
+
 void
 generator_rollback(struct generator *generator)
 {
