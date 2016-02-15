@@ -1,3 +1,4 @@
+#include <getopt.h>
 #include <libgen.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,6 +20,36 @@
 #include "treasure/treasure.h"
 #include "treasure/treasure_map.h"
 #include "treasure/treasure_type.h"
+
+
+static struct option long_options[] = {
+    {
+        .name="debug",
+        .has_arg=no_argument,
+        .flag=NULL,
+        .val='d'
+    },
+    {
+        .name="help",
+        .has_arg=no_argument,
+        .flag=NULL,
+        .val='h'
+    },
+    {
+        .name="verbose",
+        .has_arg=no_argument,
+        .flag=NULL,
+        .val='v'
+    },
+    {
+        .name=NULL,
+        .has_arg=no_argument,
+        .flag=NULL,
+        .val=0
+    }
+};
+
+static char const short_options[] = "dhv";
 
 
 static void
@@ -318,34 +349,72 @@ main(int argc, char *argv[])
     
     fprintf(out, "Fiends and Fortune\n");
     
-    if (argc < 2) {
+    bool debug = false;
+    bool error = false;
+    bool help = false;
+    bool verbose = false;
+    int ch;
+    int long_option_index;
+    while (-1 != (ch = getopt_long(argc, argv, short_options, long_options, &long_option_index))) {
+        switch (ch) {
+            case 'd':
+                debug = true;
+                break;
+            case 'h':
+                help = true;
+                break;
+            case 'v':
+                verbose = true;
+                break;
+            default:
+                error = true;
+                break;
+        }
+    }
+    
+    int remaining_arg_count = argc - optind;
+    char const *command = NULL;
+    if (remaining_arg_count) {
+        command = argv[optind];
+        ++optind;
+        --remaining_arg_count;
+    }
+    char const *subcommand = NULL;
+    if (remaining_arg_count) {
+        subcommand = argv[optind];
+        ++optind;
+        --remaining_arg_count;
+    }
+    
+    if (!command) {
         usage(argc, argv);
-    } else if (0 == strcasecmp(argv[1], "character")) {
-        generate_character(rnd, out, (argc >= 3) ? argv[2] : "simple");
-    } else if (0 == strcasecmp(argv[1], "check")) {
-        check(out, (argc >= 3) ? argv[2] : "0");
-    } else if (0 == strcasecmp(argv[1], "dungeon")) {
-        if (argc >= 3 && 0 == strcasecmp(argv[2], "small")) {
+    } else if (help) {
+        usage(argc, argv);
+    } else if (error) {
+        usage(argc, argv);
+    } else if (0 == strcasecmp(command, "character")) {
+        generate_character(rnd, out, subcommand ? subcommand : "simple");
+    } else if (0 == strcasecmp(command, "check")) {
+        check(out, subcommand ? subcommand : "0");
+    } else if (0 == strcasecmp(command, "dungeon")) {
+        if (subcommand && 0 == strcasecmp(subcommand, "small")) {
             generate_sample_dungeon(rnd, out);
         } else {
             generate_random_dungeon(rnd, out);
         }
-    } else if (0 == strcasecmp(argv[1], "each")) {
+    } else if (0 == strcasecmp(command, "each")) {
         generate_each_treasure(rnd, out);
-    } else if (0 == strcasecmp(argv[1], "magic")) {
-        int count = 10;
-        if (argc >= 3) {
-            count = (int) strtol(argv[2], NULL, 10);
-        }
+    } else if (0 == strcasecmp(command, "magic")) {
+        int count = subcommand ? (int)strtol(subcommand, NULL, 10) : 10;
         generate_magic_items(rnd, out, count);
-    } else if (0 == strcasecmp(argv[1], "map")) {
+    } else if (0 == strcasecmp(command, "map")) {
         generate_map(rnd, out);
-    } else if (0 == strcasecmp(argv[1], "table")) {
+    } else if (0 == strcasecmp(command, "table")) {
         generate_treasure_type_table(out);
-    } else if (argv[1][0] >= 'A' && argv[1][0] <= 'Z' && argv[1][1] == '\0') {
+    } else if (command[0] >= 'A' && command[0] <= 'Z' && command[1] == '\0') {
         generate_treasure_type(rnd, out, argv[1][0]);
-    } else if (argv[1][0] >= 'a' && argv[1][0] <= 'z' && argv[1][1] == '\0') {
-        char letter = argv[1][0] - 'a' + 'A';
+    } else if (command[0] >= 'a' && command[0] <= 'z' && command[1] == '\0') {
+        char letter = command[0] - 'a' + 'A';
         generate_treasure_type(rnd, out, letter);
     } else {
         usage(argc, argv);
