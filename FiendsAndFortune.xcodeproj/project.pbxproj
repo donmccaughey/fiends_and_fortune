@@ -30,8 +30,8 @@
 		D406B66C1C71CBBC0037171B /* point_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D406B6651C71CBBC0037171B /* point_test.c */; };
 		D406B66D1C71CBBC0037171B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D406B6661C71CBBC0037171B /* main.c */; };
 		D406B66E1C71CBBC0037171B /* str_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D406B6671C71CBBC0037171B /* str_test.c */; };
-		D4092F611B65D42B00BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
-		D4092F621B65D43000BFD0B3 /* liblibfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */; };
+		D4092F611B65D42B00BFD0B3 /* libfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* libfnf.a */; };
+		D4092F621B65D43000BFD0B3 /* libfnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D4092F5B1B65D3CA00BFD0B3 /* libfnf.a */; };
 		D4092F881B65D6C200BFD0B3 /* alloc_or_die.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */; };
 		D4092F891B65D6C200BFD0B3 /* alloc_or_die.h in Headers */ = {isa = PBXBuildFile; fileRef = D4092F7F1B65D6C200BFD0B3 /* alloc_or_die.h */; };
 		D4092F8A1B65D6C200BFD0B3 /* dice.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F801B65D6C200BFD0B3 /* dice.c */; };
@@ -43,6 +43,8 @@
 		D4092F901B65D6C200BFD0B3 /* str.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F861B65D6C200BFD0B3 /* str.c */; };
 		D4092F911B65D6C200BFD0B3 /* str.h in Headers */ = {isa = PBXBuildFile; fileRef = D4092F871B65D6C200BFD0B3 /* str.h */; };
 		D4092F941B65D80800BFD0B3 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F931B65D80800BFD0B3 /* main.c */; };
+		D47B33E61C71D1C300390717 /* check.out in CopyFiles */ = {isa = PBXBuildFile; fileRef = D406B65E1C71CAF30037171B /* check.out */; };
+		D47B33E71C71D1C300390717 /* check.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D47B33DF1C71CDAC00390717 /* check.sh */; };
 		D4BD32A71B6A06560007527A /* coins.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BD32991B6A06560007527A /* coins.c */; };
 		D4BD32A81B6A06560007527A /* coins.h in Headers */ = {isa = PBXBuildFile; fileRef = D4BD329A1B6A06560007527A /* coins.h */; };
 		D4BD32A91B6A06560007527A /* gem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BD329B1B6A06560007527A /* gem.c */; };
@@ -88,19 +90,19 @@
 			remoteGlobalIDString = D4092F5A1B65D3CA00BFD0B3;
 			remoteInfo = fiends_and_fortune;
 		};
+		D47B33E41C71D13900390717 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D4F73446140EF3DF0096618F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D4F7344E140EF3DF0096618F;
+			remoteInfo = fnf;
+		};
 		D4D495AF1C61CBF000BC80C9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D4F73446140EF3DF0096618F /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = D43ED58F142146F800D25EEC;
 			remoteInfo = UnitTests;
-		};
-		D4F150951B673E3000711F34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D4F73446140EF3DF0096618F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D4F7344E140EF3DF0096618F;
-			remoteInfo = fnf;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -116,12 +118,14 @@
 		};
 		D4F7344D140EF3DF0096618F /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 16;
 			files = (
+				D47B33E61C71D1C300390717 /* check.out in CopyFiles */,
+				D47B33E71C71D1C300390717 /* check.sh in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -160,7 +164,7 @@
 		D406B6651C71CBBC0037171B /* point_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = point_test.c; sourceTree = "<group>"; };
 		D406B6661C71CBBC0037171B /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		D406B6671C71CBBC0037171B /* str_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = str_test.c; sourceTree = "<group>"; };
-		D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblibfnf.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D4092F5B1B65D3CA00BFD0B3 /* libfnf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libfnf.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4092F7E1B65D6C200BFD0B3 /* alloc_or_die.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = alloc_or_die.c; sourceTree = "<group>"; };
 		D4092F7F1B65D6C200BFD0B3 /* alloc_or_die.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = alloc_or_die.h; sourceTree = "<group>"; };
 		D4092F801B65D6C200BFD0B3 /* dice.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dice.c; sourceTree = "<group>"; };
@@ -175,7 +179,7 @@
 		D41D32CA1A4339BC00484607 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D41D32CB1A4339BC00484607 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D43ED590142146F800D25EEC /* unit_tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit_tests; sourceTree = BUILT_PRODUCTS_DIR; };
-		D48C3B0C1B66E5B000A98ED7 /* Makefile */ = {isa = PBXFileReference; explicitFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; usesTabs = 1; };
+		D47B33DF1C71CDAC00390717 /* check.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = check.sh; sourceTree = "<group>"; };
 		D4BCC61517D30DD000C76D11 /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
 		D4BD32991B6A06560007527A /* coins.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coins.c; sourceTree = "<group>"; };
 		D4BD329A1B6A06560007527A /* coins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coins.h; sourceTree = "<group>"; };
@@ -221,7 +225,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4092F621B65D43000BFD0B3 /* liblibfnf.a in Frameworks */,
+				D4092F621B65D43000BFD0B3 /* libfnf.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,7 +233,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4092F611B65D42B00BFD0B3 /* liblibfnf.a in Frameworks */,
+				D4092F611B65D42B00BFD0B3 /* libfnf.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,8 +243,9 @@
 		D406B65D1C71CAF30037171B /* tests */ = {
 			isa = PBXGroup;
 			children = (
-				D406B65F1C71CBBC0037171B /* unit_tests */,
 				D406B65E1C71CAF30037171B /* check.out */,
+				D47B33DF1C71CDAC00390717 /* check.sh */,
+				D406B65F1C71CBBC0037171B /* unit_tests */,
 			);
 			path = tests;
 			sourceTree = "<group>";
@@ -371,7 +376,6 @@
 			children = (
 				D4D495B51C62B16E00BC80C9 /* api_conventions.md */,
 				D41D32CA1A4339BC00484607 /* LICENSE */,
-				D48C3B0C1B66E5B000A98ED7 /* Makefile */,
 				D41D32CB1A4339BC00484607 /* README.md */,
 				B0F476949E9068D9FFB2A6D8 /* TODO.txt */,
 				D4BCC61517D30DD000C76D11 /* docs */,
@@ -386,7 +390,7 @@
 			children = (
 				D4F7344F140EF3E00096618F /* fnf */,
 				D43ED590142146F800D25EEC /* unit_tests */,
-				D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */,
+				D4092F5B1B65D3CA00BFD0B3 /* libfnf.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -440,20 +444,20 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXLegacyTarget section */
-		D48C3B0D1B66E70000A98ED7 /* check */ = {
+		D47B33E01C71CFCC00390717 /* check */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "PRODUCTS=\"$(BUILT_PRODUCTS_DIR)\" TMP=\"$(DERIVED_SOURCES_DIR)\" $(ACTION)";
-			buildConfigurationList = D48C3B0E1B66E70000A98ED7 /* Build configuration list for PBXLegacyTarget "check" */;
+			buildArgumentsString = check.sh;
+			buildConfigurationList = D47B33E11C71CFCC00390717 /* Build configuration list for PBXLegacyTarget "check" */;
 			buildPhases = (
 			);
-			buildToolPath = make;
-			buildWorkingDirectory = "$(SRCROOT)";
+			buildToolPath = /bin/sh;
+			buildWorkingDirectory = "$(BUILT_PRODUCTS_DIR)";
 			dependencies = (
-				D4F150961B673E3000711F34 /* PBXTargetDependency */,
+				D47B33E51C71D13900390717 /* PBXTargetDependency */,
 			);
 			name = check;
 			passBuildSettingsInEnvironment = 1;
-			productName = check;
+			productName = check2;
 		};
 /* End PBXLegacyTarget section */
 
@@ -472,7 +476,7 @@
 			);
 			name = libfnf;
 			productName = fiends_and_fortune;
-			productReference = D4092F5B1B65D3CA00BFD0B3 /* liblibfnf.a */;
+			productReference = D4092F5B1B65D3CA00BFD0B3 /* libfnf.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		D43ED58F142146F800D25EEC /* unit_tests */ = {
@@ -524,8 +528,8 @@
 					D4092F5A1B65D3CA00BFD0B3 = {
 						CreatedOnToolsVersion = 6.4;
 					};
-					D48C3B0D1B66E70000A98ED7 = {
-						CreatedOnToolsVersion = 6.4;
+					D47B33E01C71CFCC00390717 = {
+						CreatedOnToolsVersion = 7.1.1;
 					};
 				};
 			};
@@ -544,7 +548,7 @@
 				D4F7344E140EF3DF0096618F /* fnf */,
 				D43ED58F142146F800D25EEC /* unit_tests */,
 				D4092F5A1B65D3CA00BFD0B3 /* libfnf */,
-				D48C3B0D1B66E70000A98ED7 /* check */,
+				D47B33E01C71CFCC00390717 /* check */,
 			);
 		};
 /* End PBXProject section */
@@ -622,15 +626,15 @@
 			target = D4092F5A1B65D3CA00BFD0B3 /* libfnf */;
 			targetProxy = D4092F631B65D43300BFD0B3 /* PBXContainerItemProxy */;
 		};
+		D47B33E51C71D13900390717 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D4F7344E140EF3DF0096618F /* fnf */;
+			targetProxy = D47B33E41C71D13900390717 /* PBXContainerItemProxy */;
+		};
 		D4D495B01C61CBF000BC80C9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D43ED58F142146F800D25EEC /* unit_tests */;
 			targetProxy = D4D495AF1C61CBF000BC80C9 /* PBXContainerItemProxy */;
-		};
-		D4F150961B673E3000711F34 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = D4F7344E140EF3DF0096618F /* fnf */;
-			targetProxy = D4F150951B673E3000711F34 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -646,7 +650,7 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -682,7 +686,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				ENABLE_NS_ASSERTIONS = NO;
-				EXECUTABLE_PREFIX = lib;
+				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_PEDANTIC = NO;
@@ -724,7 +728,7 @@
 			};
 			name = Release;
 		};
-		D48C3B0F1B66E70000A98ED7 /* Debug */ = {
+		D47B33E21C71CFCC00390717 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -738,13 +742,8 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
@@ -752,7 +751,7 @@
 			};
 			name = Debug;
 		};
-		D48C3B101B66E70000A98ED7 /* Release */ = {
+		D47B33E31C71CFCC00390717 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -762,11 +761,11 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
@@ -901,14 +900,13 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D48C3B0E1B66E70000A98ED7 /* Build configuration list for PBXLegacyTarget "check" */ = {
+		D47B33E11C71CFCC00390717 /* Build configuration list for PBXLegacyTarget "check" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D48C3B0F1B66E70000A98ED7 /* Debug */,
-				D48C3B101B66E70000A98ED7 /* Release */,
+				D47B33E21C71CFCC00390717 /* Debug */,
+				D47B33E31C71CFCC00390717 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
 		D4F73449140EF3DF0096618F /* Build configuration list for PBXProject "FiendsAndFortune" */ = {
 			isa = XCConfigurationList;
