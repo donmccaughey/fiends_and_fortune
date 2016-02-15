@@ -130,7 +130,10 @@ generator_commit(struct generator *generator)
                                             generator->tiles[i]->point);
         *tile = *generator->tiles[i];
     }
-    // TODO: clean up generator tiles
+    for (int i = 0; i < generator->tiles_count; ++i) {
+        tile_free(generator->tiles[i]);
+    }
+    generator->tiles_count = 0;
 }
 
 
