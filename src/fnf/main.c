@@ -315,7 +315,7 @@ main(int argc, char *argv[])
     FILE *out = stdout;
     struct rnd *rnd = global_rnd;
     
-    fprintf(out, "Fiends and Fortunes\n");
+    fprintf(out, "Fiends and Fortune\n");
     
     if (argc < 2) {
         usage(argc, argv);
