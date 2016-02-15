@@ -13,17 +13,6 @@
 #include "tile.h"
 
 
-static void
-dig_starting_stairs(struct digger *digger)
-{
-    digger_move_forward(digger, 1);
-    digger_spin_180_degrees(digger);
-    digger_dig_area(digger, 2, 1, 0, wall_type_none, area_type_stairs_up);
-    digger_spin_180_degrees(digger);
-    digger_move_forward(digger, 1);
-}
-
-
 static struct digger *
 digger_alloc(struct generator *generator,
              struct point point,
@@ -134,6 +123,7 @@ generator_commit(struct generator *generator)
                                             generator->tiles[i]->point);
         *tile = *generator->tiles[i];
     }
+    // TODO: clean up generator tiles
 }
 
 
@@ -230,7 +220,7 @@ generator_generate(struct generator *generator)
     struct digger *digger = generator_add_digger(generator,
                                                  point_make(0, 0, 1),
                                                  direction_north);
-    dig_starting_stairs(digger);
+    digger_dig_starting_stairs(digger);
     digger_dig_passage(digger, 1, wall_type_none);
     generator_commit(generator);
     
@@ -261,7 +251,7 @@ generator_generate_small(struct generator *generator)
                                                  point_make(0, 0, 1),
                                                  direction_north);
     
-    dig_starting_stairs(digger);
+    digger_dig_starting_stairs(digger);
     digger_dig_chamber(digger, 5, 3, 1, wall_type_none);
     
     // from entry chamber, north west exit
@@ -327,15 +317,25 @@ generator_generate_small(struct generator *generator)
 bool
 generator_is_box_excavated(struct generator *generator, struct box box)
 {
-    for (size_t i = 0; i < generator->dungeon->tiles_count; ++i) {
-        struct tile *dungeon_tile = generator->dungeon->tiles[i];
-        if (dungeon_tile->point.z < box.origin.z) continue;
-        if (dungeon_tile->point.z >= box.origin.z + box.size.height) break;
-        struct tile *tile = generator_tile_at(generator, dungeon_tile->point);
-        if (tile_is_unescavated(tile)) continue;
-        if (box_contains_point(box, tile->point)) return true;
+    for (int i = 0; i < box.size.width; ++i) {
+        for (int j = 0; j < box.size.length; ++j) {
+            for (int k = 0; k < box.size.height; ++k) {
+                struct point point = point_make(box.origin.x + i,
+                                                box.origin.y + j,
+                                                box.origin.z + k);
+                struct tile *tile = generator_tile_at(generator, point);
+                if (tile_is_escavated(tile)) return true;
+            }
+        }
     }
     return false;
+}
+
+
+int
+generator_max_level(struct generator const *generator)
+{
+    return generator->max_size.height;
 }
 
 

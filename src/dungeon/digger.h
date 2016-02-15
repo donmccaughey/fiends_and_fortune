@@ -34,6 +34,12 @@ void
 digger_move_backward(struct digger *digger, int steps);
 
 void
+digger_descend(struct digger *digger, int levels);
+
+void
+digger_ascend(struct digger *digger, int levels);
+
+void
 digger_spin_180_degrees(struct digger *digger);
 
 void
@@ -47,6 +53,9 @@ digger_turn_90_degrees_left(struct digger *digger);
 
 void
 digger_turn_90_degrees_right(struct digger *digger);
+
+void
+digger_dig_starting_stairs(struct digger *digger);
 
 struct area *
 digger_dig_area(struct digger *digger,

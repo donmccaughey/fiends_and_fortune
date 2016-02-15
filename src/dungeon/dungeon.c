@@ -1,6 +1,7 @@
 #include "dungeon.h"
 
 #include "common/alloc_or_die.h"
+#include "common/int.h"
 #include "common/rnd.h"
 
 #include "area.h"
@@ -66,6 +67,19 @@ dungeon_box_for_level(struct dungeon *dungeon, int level)
 }
 
 
+int
+dungeon_ending_level(struct dungeon const *dungeon)
+{
+    if (!dungeon->tiles_count) return 0;
+    
+    int level = dungeon->tiles[0]->point.z;
+    for (int i = 0; i < dungeon->tiles_count; ++i) {
+        level = max(level, dungeon->tiles[i]->point.z);
+    }
+    return level;
+}
+
+
 void
 dungeon_free(struct dungeon *dungeon)
 {
@@ -104,25 +118,67 @@ dungeon_generate_small(struct dungeon *dungeon)
 bool
 dungeon_is_box_excavated(struct dungeon *dungeon, struct box box)
 {
-    for (size_t i = 0; i < dungeon->tiles_count; ++i) {
-        struct tile *tile = dungeon->tiles[i];
-        if (tile->point.z < box.origin.z) continue;
-        if (tile->point.z >= box.origin.z + box.size.height) break;
-        if (tile_is_unescavated(tile)) continue;
-        if (box_contains_point(box, tile->point)) return true;
+    for (int i = 0; i < box.size.width; ++i) {
+        for (int j = 0; j < box.size.length; ++j) {
+            for (int k = 0; k < box.size.height; ++k) {
+                struct point point = point_make(box.origin.x + i,
+                                                box.origin.y + j,
+                                                box.origin.z + k);
+                struct tile *tile = dungeon_tile_at(dungeon, point);
+                if (tile_is_escavated(tile)) return true;
+            }
+        }
     }
     return false;
 }
 
 
+int
+dungeon_level_count(struct dungeon const *dungeon)
+{
+    if (!dungeon->tiles_count) return 0;
+    return dungeon_ending_level(dungeon) - dungeon_starting_level(dungeon) + 1;
+}
+
+
 void
-dungeon_print_level(struct dungeon *dungeon, int level, FILE *out)
+dungeon_print_areas_for_level(struct dungeon *dungeon, int level, FILE *out)
+{
+    for (int i = 0; i < dungeon->areas_count; ++i) {
+        struct area *area = dungeon->areas[i];
+        if (level != area->box.origin.z) continue;
+        if (area_is_interesting(area)) {
+            char *location = point_alloc_xy(area_center_point(area));
+            char *description = area_alloc_description(area);
+            fprintf(out, "    %-12s %s\n", location, description);
+            free_or_die(location);
+            free_or_die(description);
+        }
+    }
+}
+
+
+void
+dungeon_print_map_for_level(struct dungeon *dungeon, int level, FILE *out)
 {
     struct level_map *level_map = level_map_alloc(dungeon, level);
     struct text_rectangle *text_rectangle = level_map_alloc_text_graph(level_map);
     fprintf(out, "%s", text_rectangle->chars);
     text_rectangle_free(text_rectangle);
     level_map_free(level_map);
+}
+
+
+int
+dungeon_starting_level(struct dungeon const *dungeon)
+{
+    if (!dungeon->tiles_count) return 0;
+    
+    int level = dungeon->tiles[0]->point.z;
+    for (int i = 0; i < dungeon->tiles_count; ++i) {
+        level = min(level, dungeon->tiles[i]->point.z);
+    }
+    return level;
 }
 
 

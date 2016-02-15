@@ -38,6 +38,12 @@ static bool
 space_beyond_door(struct digger *digger, bool is_straight_ahead);
 
 static bool
+stairs(struct digger *digger);
+
+static bool
+stairs_down_one_level(struct digger *digger);
+
+static bool
 turns(struct digger *digger);
 
 
@@ -327,8 +333,7 @@ periodic_check(struct digger *digger)
     } else if (score <= 16) {
         return chambers(digger, wall_type_none);
     } else if (score == 17) {
-        // stairs
-        return true;
+        return stairs(digger);
     } else if (score == 18) {
         // dead end
         generator_delete_digger(digger->generator, digger);
@@ -590,6 +595,78 @@ space_beyond_door(struct digger *digger, bool is_straight_ahead)
         }
         return true;
     }
+}
+
+
+static bool
+stairs(struct digger *digger)
+{
+    int score = roll("1d20", digger->generator->rnd);
+    if (score <= 5) {
+        // down 1 level
+        // 1 in 20 has a door which closes egress for the day
+        return stairs_down_one_level(digger);
+    } else if (score == 6) {
+        // down 2 levels
+        // 2 in 20 has a door which closes egress for the day
+        if (!stairs_down_one_level(digger)) return false;
+        return stairs_down_one_level(digger);
+    } else if (score == 7) {
+        // down 3 levels
+        // 3 in 20 has a door which closes egress for the day
+        if (!stairs_down_one_level(digger)) return false;
+        if (!stairs_down_one_level(digger)) return false;
+        return stairs_down_one_level(digger);
+    } else if (score == 8) {
+        // up 1 level
+        return false;
+    } else if (score == 9) {
+        // up dead end (1 in 6 chance to chute down 2 levels)
+        return false;
+    } else if (score == 10) {
+        // down dead end (1 in 6 chance to chute down 1 level)
+        if (!stairs_down_one_level(digger)) return false;
+        generator_delete_digger(digger->generator, digger);
+        return true;
+    } else if (score == 11) {
+        // Chimney up 1 level, passage continues, check again in 30’
+        return false;
+    } else if (score == 12) {
+        // Chimney up 2 levels, passage continues, check again in 30’
+        return false;
+    } else if (score == 13) {
+        // Chimney down 2 levels, passage continues, check again in 30’
+        return false;
+    } else if (score <= 16) {
+        // Trap door down 1 level, passage continues, check again in 30’
+        return false;
+    } else if (score == 17) {
+        // Trap door down 2 levels, passage continues, check again in 30’
+        return false;
+    } else {
+        // Up 1 then down 2 (total down 1), chamber at end
+        return false;
+    }
+}
+
+
+static bool
+stairs_down_one_level(struct digger *digger)
+{
+    int next_level = digger->point.z + 1;
+    if (next_level > generator_max_level(digger->generator)) return false;
+    
+    if (!digger_dig_stairs_down(digger, 2, wall_type_none)) return false;
+    
+    digger_descend(digger, 1);
+    digger_move_backward(digger, 1);
+    digger_spin_180_degrees(digger);
+    if (!digger_dig_stairs_up(digger, 2, wall_type_none)) return false;
+    digger_spin_180_degrees(digger);
+    digger_move_forward(digger, 3);
+    
+    if (!digger_dig_passage(digger, 1, wall_type_none)) return false;
+    return true;
 }
 
 

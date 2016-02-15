@@ -53,10 +53,10 @@ fill_half_tile(struct tile *tile, char half_tile[5])
             break;
         case tile_type_stairs_up:
             switch (tile->direction) {
-                case direction_north: strcpy(half_tile, "  v "); break;
-                case direction_south: strcpy(half_tile, "  ^ "); break;
-                case direction_east: strcpy(half_tile, " < <"); break;
-                case direction_west: strcpy(half_tile, " > >"); break;
+                case direction_north: strcpy(half_tile, "===="); break;
+                case direction_south: strcpy(half_tile, "===="); break;
+                case direction_east: strcpy(half_tile, "||||"); break;
+                case direction_west: strcpy(half_tile, "||||"); break;
                 default: break;
             }
             break;

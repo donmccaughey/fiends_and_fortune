@@ -70,6 +70,9 @@ generator_is_box_excavated(struct generator *generator, struct box box);
 struct box
 generator_box_for_level(struct generator *generator, int level);
 
+int
+generator_max_level(struct generator const *generator);
+
 struct tile *
 generator_tile_at(struct generator *generator, struct point point);
 

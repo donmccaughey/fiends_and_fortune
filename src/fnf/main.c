@@ -359,20 +359,17 @@ main(int argc, char *argv[])
 static void
 print_dungeon(struct dungeon *dungeon, FILE *out)
 {
-    fprintf(out, "Level 1\n");
-    fprintf(out, "\n");
-    dungeon_print_level(dungeon, 1, out);
-    fprintf(out, "\n");
-    fprintf(out, "Level 1 Areas of Interest:\n");
-    for (int i = 0; i < dungeon->areas_count; ++i) {
-        struct area *area = dungeon->areas[i];
-        if (area_is_interesting(area)) {
-            char *location = point_alloc_xy(area_center_point(area));
-            char *description = area_alloc_description(area);
-            fprintf(out, "    %-12s %s\n", location, description);
-            free_or_die(location);
-            free_or_die(description);
-        }
+    int starting_level = dungeon_starting_level(dungeon);
+    int level_count = dungeon_level_count(dungeon);
+    for (int i = 0; i < level_count; ++i) {
+        if (i > 0) fprintf(out, "\n");
+        int level = starting_level + i;
+        fprintf(out, "Level %i\n", level);
+        fprintf(out, "\n");
+        dungeon_print_map_for_level(dungeon, level, out);
+        fprintf(out, "\n");
+        fprintf(out, "Level %i Areas of Interest:\n", level);
+        dungeon_print_areas_for_level(dungeon, level, out);
     }
 }
 

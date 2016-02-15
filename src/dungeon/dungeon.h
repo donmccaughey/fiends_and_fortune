@@ -33,6 +33,21 @@ dungeon_generate(struct dungeon *dungeon, struct rnd *rnd);
 void
 dungeon_generate_small(struct dungeon *dungeon);
 
+int
+dungeon_level_count(struct dungeon const *dungeon);
+
+int
+dungeon_starting_level(struct dungeon const *dungeon);
+
+int
+dungeon_ending_level(struct dungeon const *dungeon);
+
+void
+dungeon_print_map_for_level(struct dungeon *dungeon, int level, FILE *out);
+
+void
+dungeon_print_areas_for_level(struct dungeon *dungeon, int level, FILE *out);
+
 void
 dungeon_add_area(struct dungeon *dungeon, struct area *area);
 
@@ -47,9 +62,6 @@ dungeon_alloc_tiles_for_box(struct dungeon *dungeon, struct box box);
 
 struct tile *
 dungeon_tile_at(struct dungeon *dungeon, struct point point);
-
-void
-dungeon_print_level(struct dungeon *dungeon, int level, FILE *out);
 
 
 #endif

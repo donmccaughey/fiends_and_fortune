@@ -54,6 +54,20 @@ box_for_area(struct digger *digger,
 }
 
 
+void
+digger_ascend(struct digger *digger, int levels)
+{
+    digger->point.z -= levels;
+}
+
+
+void
+digger_descend(struct digger *digger, int levels)
+{
+    digger->point.z += levels;
+}
+
+
 struct area *
 digger_dig_area(struct digger *digger,
                 int length,
@@ -74,12 +88,14 @@ digger_dig_area(struct digger *digger,
     
     struct box box_for_level = generator_box_for_level(digger->generator,
                                                        digger->point.z);
-    struct box new_box_for_level = box_for_level = box_make_from_boxes(box_for_level,
-                                                                       box_to_dig);
-    if (   new_box_for_level.size.width > digger->generator->max_size.width
-        || new_box_for_level.size.length > digger->generator->max_size.length)
-    {
-        return NULL;
+    if (box_for_level.size.width && box_for_level.size.height) {
+        struct box new_box_for_level = box_for_level = box_make_from_boxes(box_for_level,
+                                                                           box_to_dig);
+        if (   new_box_for_level.size.width > digger->generator->max_size.width
+            || new_box_for_level.size.length > digger->generator->max_size.length)
+        {
+            return NULL;
+        }
     }
     
     enum tile_type tile_type;
@@ -222,6 +238,17 @@ digger_dig_room(struct digger *digger,
                                         entrance_type,
                                         area_type_room);
     return room;
+}
+
+
+void
+digger_dig_starting_stairs(struct digger *digger)
+{
+    digger_move_forward(digger, 1);
+    digger_spin_180_degrees(digger);
+    digger_dig_area(digger, 2, 1, 0, wall_type_none, area_type_stairs_up);
+    digger_spin_180_degrees(digger);
+    digger_move_forward(digger, 1);
 }
 
 
