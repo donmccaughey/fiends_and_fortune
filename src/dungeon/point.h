@@ -62,5 +62,8 @@ point_rotate_90_degrees_left(struct point point, enum direction direction);
 struct point
 point_rotate_90_degrees_right(struct point point, enum direction direction);
 
+char *
+point_alloc_xy(struct point point);
+
 
 #endif

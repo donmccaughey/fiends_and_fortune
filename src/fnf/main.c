@@ -52,6 +52,9 @@ static void
 generate_treasure_type_table(FILE *out);
 
 static void
+print_dungeon(struct dungeon *dungeon, FILE *out);
+
+static void
 usage(int argc, char *argv[]);
 
 
@@ -250,15 +253,7 @@ generate_random_dungeon(struct rnd *rnd, FILE *out)
 {
     struct dungeon *dungeon = dungeon_alloc();
     dungeon_generate(dungeon, rnd);
-    
-    dungeon_print_level(dungeon, 1, out);
-    fprintf(out, "\nDungeon areas:\n");
-    for (int i = 0; i < dungeon->areas_count; ++i) {
-        char *description = area_alloc_description(dungeon->areas[i]);
-        fprintf(out, "\t%s\n", description);
-        free_or_die(description);
-    }
-    
+    print_dungeon(dungeon, out);
     dungeon_free(dungeon);
 }
 
@@ -268,15 +263,7 @@ generate_sample_dungeon(struct rnd *rnd, FILE *out)
 {
     struct dungeon *dungeon = dungeon_alloc();
     dungeon_generate_small(dungeon);
-    
-    dungeon_print_level(dungeon, 1, out);
-    fprintf(out, "\nDungeon areas:\n");
-    for (int i = 0; i < dungeon->areas_count; ++i) {
-        char *description = area_alloc_description(dungeon->areas[i]);
-        fprintf(out, "\t%s\n", description);
-        free_or_die(description);
-    }
-    
+    print_dungeon(dungeon, out);
     dungeon_free(dungeon);
 }
 
@@ -366,6 +353,27 @@ main(int argc, char *argv[])
     fprintf(out, "\n");
     alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
+}
+
+
+static void
+print_dungeon(struct dungeon *dungeon, FILE *out)
+{
+    fprintf(out, "Level 1\n");
+    fprintf(out, "\n");
+    dungeon_print_level(dungeon, 1, out);
+    fprintf(out, "\n");
+    fprintf(out, "Level 1 Areas of Interest:\n");
+    for (int i = 0; i < dungeon->areas_count; ++i) {
+        struct area *area = dungeon->areas[i];
+        if (area_is_interesting(area)) {
+            char *location = point_alloc_xy(area_center_point(area));
+            char *description = area_alloc_description(area);
+            fprintf(out, "    %-12s %s\n", location, description);
+            free_or_die(location);
+            free_or_die(description);
+        }
+    }
 }
 
 

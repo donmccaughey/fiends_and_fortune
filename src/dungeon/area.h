@@ -2,6 +2,8 @@
 #define FNF_DUNGEON_AREA_H_INCLUDED
 
 
+#include <stdbool.h>
+
 #include "area_type.h"
 #include "box.h"
 #include "tile_type.h"
@@ -28,6 +30,12 @@ area_free(struct area *area);
 
 char *
 area_alloc_description(struct area const *area);
+
+bool
+area_is_interesting(struct area const *area);
+
+struct point
+area_center_point(struct area const *area);
 
 
 #endif

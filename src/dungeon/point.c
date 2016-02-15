@@ -4,6 +4,7 @@
 #include <limits.h>
 
 #include "common/fail.h"
+#include "common/str.h"
 
 
 struct point
@@ -11,6 +12,13 @@ point_above(struct point point)
 {
     assert(point.z > INT_MIN);
     return point_make(point.x, point.y, point.z - 1);
+}
+
+
+char *
+point_alloc_xy(struct point point)
+{
+    return str_alloc_formatted("(%i, %i)", point.x, point.y);
 }
 
 

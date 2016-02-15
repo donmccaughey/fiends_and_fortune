@@ -256,6 +256,8 @@ Treasure type Z: 1000 copper, 1000 silver, 1000 electrum, 1000 gold, 100 platinu
      1  animal control potion
      2  animal control potion
      3  animal control potion
+Level 1
+
      -8  -7  -6  -5  -4  -3  -2  -1   0   1   2   3   4   5   6   7   8   9      
     +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+    
  15 |:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::| 15 
@@ -294,27 +296,14 @@ Treasure type Z: 1000 copper, 1000 silver, 1000 electrum, 1000 gold, 100 platinu
     +---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+---+    
      -8  -7  -6  -5  -4  -3  -2  -1   0   1   2   3   4   5   6   7   8   9      
 
-Dungeon areas:
-	stairs up to surface
-	30' x 50' chamber
-	20' passage East to West
-	60' passage North to South
-	20' x 30' chamber
-	20' passage East to West
-	20' passage North to South
-	20' passage East to West
-	20' passage North to South
-	20' x 20' chamber
-	30' passage North to South
-	30' x 20' chamber
-	10' passage East to West
-	60' x 40' chamber
-	80' passage North to South
-	80' passage East to West
-	30' passage North to South
-	40' x 30' chamber
-	30' passage North to South
-	30' passage East to West
+Level 1 Areas of Interest:
+    (0, 0)       stairs up to surface
+    (0, 4)       30' x 50' chamber
+    (-4, 13)     20' x 30' chamber
+    (-6, 4)      20' x 20' chamber
+    (-6, 9)      30' x 20' chamber
+    (5, 1)       60' x 40' chamber
+    (6, 9)       40' x 30' chamber
 Character (simple): -------------------------
 (roll 3d6 once per characteristic)
   Strength:      3

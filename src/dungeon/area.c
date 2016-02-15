@@ -75,8 +75,29 @@ area_alloc_description(struct area const *area)
 }
 
 
+struct point
+area_center_point(struct area const *area)
+{
+    int x = area->box.origin.x + ((area->box.size.width - 1) / 2);
+    int y = area->box.origin.y + ((area->box.size.length - 1) / 2);
+    int z = area->box.origin.z + ((area->box.size.height - 1) / 2);
+    return point_make(x, y, z);
+}
+
+
 void
 area_free(struct area *area)
 {
     free_or_die(area);
+}
+
+
+bool
+area_is_interesting(struct area const *area)
+{
+    if (area_type_chamber ==  area->type) return true;
+    if (area_type_room ==  area->type) return true;
+    if (area_type_stairs_down ==  area->type) return true;
+    if (area_type_stairs_up ==  area->type) return true;
+    return false;
 }
