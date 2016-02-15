@@ -68,6 +68,7 @@ check(FILE *out, char const *constant_number)
     generate_map(fake_rnd, out);
     generate_each_treasure(fake_rnd, out);
     generate_sample_dungeon(fake_rnd, out);
+    generate_random_dungeon(fake_rnd, out);
     generate_character(fake_rnd, out, "simple");
     generate_character(fake_rnd, out, "method1");
     generate_character(fake_rnd, out, "method2");
