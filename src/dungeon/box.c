@@ -99,9 +99,14 @@ box_expand(struct box box, struct size size)
 struct box
 box_extend_to_include_point(struct box box, struct point point)
 {
-    extend_to_include(&box.origin.x, &box.size.width, point.x);
-    extend_to_include(&box.origin.y, &box.size.length, point.y);
-    extend_to_include(&box.origin.z, &box.size.height, point.z);
+    if (!box.size.width || !box.size.length || !box.size.height) {
+        box.origin = point;
+        box.size = size_make_unit();
+    } else {        
+        extend_to_include(&box.origin.x, &box.size.width, point.x);
+        extend_to_include(&box.origin.y, &box.size.length, point.y);
+        extend_to_include(&box.origin.z, &box.size.height, point.z);
+    }
     return box;
 }
 

@@ -90,13 +90,20 @@ struct box
 generator_box_for_level(struct generator *generator, int level)
 {
     struct box box = box_make(point_make(0, 0, level), size_make(0, 0, 1));
+    for (size_t i = 0; i < generator->tiles_count; ++i) {
+        struct tile *tile = generator->tiles[i];
+        if (level != tile->point.z) continue;
+        if (tile_is_escavated(tile)) {
+            box = box_extend_to_include_point(box, tile->point);
+        }
+    }
     for (size_t i = 0; i < generator->dungeon->tiles_count; ++i) {
         struct tile *dungeon_tile = generator->dungeon->tiles[i];
-        if (dungeon_tile->point.z < level) continue;
-        if (dungeon_tile->point.z > level) break;
+        if (level != dungeon_tile->point.z) continue;
         struct tile *tile = generator_tile_at(generator, dungeon_tile->point);
-        if (tile_is_unescavated(tile)) continue;
-        box = box_extend_to_include_point(box, tile->point);
+        if (tile_is_escavated(tile)) {
+            box = box_extend_to_include_point(box, tile->point);
+        }
     }
     return box;
 }
