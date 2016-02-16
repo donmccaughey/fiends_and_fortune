@@ -4,6 +4,7 @@
 
 #include <stdbool.h>
 
+#include "area_features.h"
 #include "area_type.h"
 #include "box.h"
 #include "tile_type.h"
@@ -15,6 +16,7 @@ struct tile;
 struct area {
     struct box box;
     enum direction direction;
+    enum area_features features;
     enum area_type type;
 };
 

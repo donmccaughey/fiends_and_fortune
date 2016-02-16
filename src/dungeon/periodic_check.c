@@ -10,8 +10,18 @@
 #include "digger.h"
 #include "exit.h"
 #include "generator.h"
+#include "tile.h"
 #include "wall_type.h"
 
+
+static bool
+chimney_down_two_levels(struct digger *digger);
+
+static bool
+chimney_up_one_level(struct digger *digger);
+
+static bool
+chimney_up_two_levels(struct digger *digger);
 
 static struct digger *
 exit_location(struct digger *digger, struct area *chamber_or_room);
@@ -140,6 +150,131 @@ chambers(struct digger *digger, enum wall_type entrance_type)
     }
     
     generator_delete_digger(digger->generator, digger);
+    return true;
+}
+
+
+static bool
+chimney_down_two_levels(struct digger *digger)
+{
+    struct area *passage = digger_dig_passage(digger, 1, wall_type_none);
+    if (!passage) return false;
+    passage->features |= area_features_chimney_down;
+    digger_move_backward(digger, 1);
+    struct tile *tile = generator_tile_at(digger->generator, digger->point);
+    tile->features |= tile_features_chimney_down;
+    struct digger *digger_down_1 = generator_copy_digger(digger->generator, digger);
+    digger_move_forward(digger, 1);
+    
+    digger_descend(digger_down_1, 1);
+    // TODO: random direction?
+    // TODO: random passage/room/chamber?
+    // TODO: add chimney to existing area?
+    passage = digger_dig_passage(digger_down_1, 1, wall_type_solid);
+    if (!passage) return false;
+    passage->features |= area_features_chimney_down | area_features_chimney_up;
+    digger_move_backward(digger_down_1, 1);
+    tile = generator_tile_at(digger_down_1->generator, digger_down_1->point);
+    tile->features |= tile_features_chimney_up | tile_features_chimney_down;
+    struct digger *digger_down_2 = generator_copy_digger(digger_down_1->generator, digger_down_1);
+    digger_move_forward(digger_down_1, 1);
+    
+    digger_descend(digger_down_2, 1);
+    // TODO: random direction?
+    // TODO: random passage/room/chamber?
+    // TODO: add chimney to existing area?
+    passage = digger_dig_passage(digger_down_2, 1, wall_type_solid);
+    if (!passage) return false;
+    passage->features |= area_features_chimney_up;
+    digger_move_backward(digger_down_2, 1);
+    tile = generator_tile_at(digger_down_2->generator, digger_down_2->point);
+    tile->features |= tile_features_chimney_up;
+    digger_move_forward(digger_down_2, 1);
+    
+    return true;
+}
+
+
+static bool
+chimney_up_one_level(struct digger *digger)
+{
+    struct area *passage = digger_dig_passage(digger, 1, wall_type_none);
+    if (!passage) return false;
+    passage->features |= area_features_chimney_up;
+    digger_move_backward(digger, 1);
+    struct tile *tile = generator_tile_at(digger->generator, digger->point);
+    tile->features |= tile_features_chimney_up;
+    struct digger *upper_digger = generator_copy_digger(digger->generator, digger);
+    digger_move_forward(digger, 1);
+        
+    digger_ascend(upper_digger, 1);
+    if (upper_digger->point.z < generator_min_level(digger->generator)) {
+        generator_delete_digger(upper_digger->generator, upper_digger);
+        return true;
+    }
+    
+    // TODO: random direction?
+    // TODO: random passage/room/chamber?
+    // TODO: add chimney to existing area?
+    passage = digger_dig_passage(upper_digger, 1, wall_type_solid);
+    if (!passage) return false;
+    passage->features |= area_features_chimney_down;
+    digger_move_backward(upper_digger, 1);
+    tile = generator_tile_at(upper_digger->generator, upper_digger->point);
+    tile->features |= tile_features_chimney_down;
+    digger_move_forward(upper_digger, 1);
+    
+    return true;
+}
+
+
+static bool
+chimney_up_two_levels(struct digger *digger)
+{
+    struct area *passage = digger_dig_passage(digger, 1, wall_type_none);
+    if (!passage) return false;
+    passage->features |= area_features_chimney_up;
+    digger_move_backward(digger, 1);
+    struct tile *tile = generator_tile_at(digger->generator, digger->point);
+    tile->features |= tile_features_chimney_up;
+    struct digger *digger_up_1 = generator_copy_digger(digger->generator, digger);
+    digger_move_forward(digger, 1);
+    
+    digger_ascend(digger_up_1, 1);
+    if (digger_up_1->point.z < generator_min_level(digger->generator)) {
+        generator_delete_digger(digger_up_1->generator, digger_up_1);
+        return true;
+    }
+    
+    // TODO: random direction?
+    // TODO: random passage/room/chamber?
+    // TODO: add chimney to existing area?
+    passage = digger_dig_passage(digger_up_1, 1, wall_type_solid);
+    if (!passage) return false;
+    passage->features |= area_features_chimney_down | area_features_chimney_up;
+    digger_move_backward(digger_up_1, 1);
+    tile = generator_tile_at(digger_up_1->generator, digger_up_1->point);
+    tile->features |= tile_features_chimney_down | tile_features_chimney_up;
+    struct digger *digger_up_2 = generator_copy_digger(digger_up_1->generator, digger_up_1);
+    digger_move_forward(digger_up_1, 1);
+    
+    digger_ascend(digger_up_2, 1);
+    if (digger_up_2->point.z < generator_min_level(digger->generator)) {
+        generator_delete_digger(digger_up_2->generator, digger_up_2);
+        return true;
+    }
+    
+    // TODO: random direction?
+    // TODO: random passage/room/chamber?
+    // TODO: add chimney to existing area?
+    passage = digger_dig_passage(digger_up_2, 1, wall_type_solid);
+    if (!passage) return false;
+    passage->features |= area_features_chimney_up;
+    digger_move_backward(digger_up_2, 1);
+    tile = generator_tile_at(digger_up_2->generator, digger_up_2->point);
+    tile->features |= tile_features_chimney_down;
+    digger_move_forward(digger_up_2, 1);
+    
     return true;
 }
 
@@ -642,12 +777,16 @@ stairs(struct digger *digger)
         return true;
     } else if (score == 11) {
         // chimney up 1 level, passage continues, check again in 30’
-        return false;
+        if (!chimney_up_one_level(digger)) return false;
+        return digger_dig_passage(digger, 3, wall_type_none);
     } else if (score == 12) {
         // chimney up 2 levels, passage continues, check again in 30’
-        return false;
+        if (!chimney_up_two_levels(digger)) return false;
+        return digger_dig_passage(digger, 3, wall_type_none);
     } else if (score == 13) {
         // chimney down 2 levels, passage continues, check again in 30’
+        if (!chimney_down_two_levels(digger)) return false;
+        return digger_dig_passage(digger, 3, wall_type_none);
         return false;
     } else if (score <= 16) {
         // trap door down 1 level, passage continues, check again in 30’

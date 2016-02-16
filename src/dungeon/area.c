@@ -8,26 +8,16 @@
 #include "tile.h"
 
 
-static char *
-alloc_level_description(int level)
-{
-    if (level <= 0) {
-        return strdup_or_die("surface");
-    } else {
-        return str_alloc_formatted("level %i", level);
-    }
-}
+static void
+realloc_append_level_description(char **s, int level);
+
 
 static char *
 alloc_stairs_description(int level, enum area_type area_type)
 {
-    char *level_description = alloc_level_description(level);
     char const *direction = area_type_stairs_down == area_type ? "down" : "up";
-    
-    char *description = str_alloc_formatted("stairs %s to %s",
-                                            direction, level_description);
-    
-    free_or_die(level_description);
+    char *description = str_alloc_formatted("stairs %s to ", direction);
+    realloc_append_level_description(&description, level);
     return description;
 }
 
@@ -52,26 +42,47 @@ area_alloc_description(struct area const *area)
     int width = area->box.size.width * 10;
     int length = area->box.size.length * 10;
     int level = area->box.origin.z;
+    char *description;
     switch (area->type) {
         case area_type_chamber:
-            return str_alloc_formatted("%u' x %u' chamber", width, length);
+            description = str_alloc_formatted("%u' x %u' chamber", width, length);
+            break;
         case area_type_intersection:
-            return strdup_or_die("intersection");
+            description = strdup_or_die("intersection");
+            break;
         case area_type_passage: {
             enum orientation orientation = orientation_from_direction(area->direction);
             if (orientation_east_to_west == orientation) swap(&width, &length);
-            return str_alloc_formatted("%u' passage %s", length,
-                                       orientation_name(orientation));
+            description = str_alloc_formatted("%u' passage %s", length,
+                                              orientation_name(orientation));
+            break;
         }
         case area_type_room:
-            return str_alloc_formatted("%u' x %u' room", width, length);
+            description = str_alloc_formatted("%u' x %u' room", width, length);
+            break;
         case area_type_stairs_down:
-            return alloc_stairs_description(level + 1, area_type_stairs_down);
+            description = alloc_stairs_description(level + 1, area_type_stairs_down);
+            break;
         case area_type_stairs_up:
-            return alloc_stairs_description(level - 1, area_type_stairs_up);
+            description = alloc_stairs_description(level - 1, area_type_stairs_up);
+            break;
         default:
-            return str_alloc_formatted("%u' x %u' area", width, length);
+            description = str_alloc_formatted("%u' x %u' area", width, length);
+            break;
     }
+    if (!area->features) return description;
+    
+    if (area->features & area_features_chimney_up) {
+        str_realloc_append_formatted(&description, ", chimney up to ");
+        realloc_append_level_description(&description, level - 1);
+    }
+    
+    if (area->features & area_features_chimney_down) {
+        str_realloc_append_formatted(&description, ", chimney down to ");
+        realloc_append_level_description(&description, level + 1);
+    }
+    
+    return description;
 }
 
 
@@ -99,5 +110,17 @@ area_is_interesting(struct area const *area)
     if (area_type_room ==  area->type) return true;
     if (area_type_stairs_down ==  area->type) return true;
     if (area_type_stairs_up ==  area->type) return true;
+    if (area->features) return true;
     return false;
+}
+
+
+static void
+realloc_append_level_description(char **s, int level)
+{
+    if (level <= 0) {
+        str_realloc_append_formatted(s, "surface");
+    } else {
+        str_realloc_append_formatted(s, "level %i", level);
+    }
 }

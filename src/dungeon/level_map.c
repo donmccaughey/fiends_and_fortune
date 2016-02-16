@@ -271,6 +271,15 @@ tile_top_half(struct level_map const *level_map,
         half_tile[1] = ']';
     }
     
+    // features
+    if (tile->features & tile_features_chimney_down) {
+        half_tile[2] = 'o';
+    }
+    if (tile->features & tile_features_chimney_up) {
+        half_tile[1] = '(';
+        half_tile[3] = ')';
+    }
+    
     // east door
     struct tile *east_tile = level_map_tile_at(level_map, point_east(point));
     if (east_tile && wall_type_door == east_tile->walls.west) {

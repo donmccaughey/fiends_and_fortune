@@ -6,12 +6,14 @@
 
 #include "direction.h"
 #include "point.h"
+#include "tile_features.h"
 #include "tile_type.h"
 #include "wall_type.h"
 
 
 struct tile {
     enum direction direction;
+    enum tile_features features;
     struct point point;
     enum tile_type type;
     struct {

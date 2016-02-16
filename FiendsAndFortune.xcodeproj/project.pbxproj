@@ -180,6 +180,8 @@
 		D41D32CB1A4339BC00484607 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D43ED590142146F800D25EEC /* unit_tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit_tests; sourceTree = BUILT_PRODUCTS_DIR; };
 		D47B33DF1C71CDAC00390717 /* check.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = check.sh; sourceTree = "<group>"; };
+		D47B33E81C72AE2700390717 /* tile_features.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tile_features.h; sourceTree = "<group>"; };
+		D47B33E91C72BD8B00390717 /* area_features.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = area_features.h; sourceTree = "<group>"; };
 		D4BCC61517D30DD000C76D11 /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
 		D4BD32991B6A06560007527A /* coins.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coins.c; sourceTree = "<group>"; };
 		D4BD329A1B6A06560007527A /* coins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coins.h; sourceTree = "<group>"; };
@@ -337,6 +339,7 @@
 			children = (
 				B0F47DF45A0BCE575009B9D0 /* area.h */,
 				B0F47EC5436BEF4BA333A66A /* area.c */,
+				D47B33E91C72BD8B00390717 /* area_features.h */,
 				B0F4781E370CABD41015CC68 /* area_type.h */,
 				D406B6461C66C5760037171B /* box.h */,
 				D406B6451C66C5760037171B /* box.c */,
@@ -364,6 +367,7 @@
 				D406B6071C65672D0037171B /* text_rectangle.c */,
 				B0F47ECAB001875322D69DA2 /* tile.h */,
 				B0F47D983F07A2F764DAF60C /* tile.c */,
+				D47B33E81C72AE2700390717 /* tile_features.h */,
 				B0F47A2D24BACF0D47681405 /* tile_type.h */,
 				D406B64F1C6857A30037171B /* wall_type.h */,
 			);
