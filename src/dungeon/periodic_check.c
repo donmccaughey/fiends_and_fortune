@@ -625,7 +625,11 @@ stairs(struct digger *digger)
         return stairs_down_one_level(digger);
     } else if (score == 8) {
         // up 1 level
-        return stairs_up_one_level(digger);
+        if (!stairs_up_one_level(digger)) return false;
+        if (digger->point.z < generator_min_level(digger->generator)) {
+            generator_delete_digger(digger->generator, digger);
+        }
+        return true;
     } else if (score == 9) {
         // up dead end (1 in 6 chance to chute down 2 levels)
         if (!stairs_up_one_level(digger)) return false;
@@ -690,9 +694,10 @@ static bool
 stairs_up_one_level(struct digger *digger)
 {
     if (!digger_dig_stairs_up(digger, 2, wall_type_none)) return false;
-    if (digger->point.z == generator_min_level(digger->generator)) return true;
     
     digger_ascend(digger, 1);
+    if (digger->point.z < generator_min_level(digger->generator)) return true;
+    
     digger_move_backward(digger, 1);
     digger_spin_180_degrees(digger);
     if (!digger_dig_stairs_down(digger, 2, wall_type_none)) return false;
