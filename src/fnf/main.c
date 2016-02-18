@@ -1,9 +1,3 @@
-#include <getopt.h>
-#include <libgen.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "options.h"
 
 #include "common/alloc_or_die.h"
@@ -12,14 +6,10 @@
 
 #include "character/character.h"
 
-#include "dungeon/area.h"
 #include "dungeon/dungeon.h"
 
-#include "treasure/coins.h"
 #include "treasure/gem.h"
 #include "treasure/jewelry.h"
-#include "treasure/magic_item.h"
-#include "treasure/treasure.h"
 #include "treasure/treasure_map.h"
 #include "treasure/treasure_type.h"
 
@@ -301,7 +291,6 @@ int
 main(int argc, char *argv[])
 {
     FILE *out = stdout;
-    struct rnd *rnd = global_rnd;
     struct options *options = options_alloc(argc, argv);
     
     if (options->error || options->help) {
@@ -312,32 +301,32 @@ main(int argc, char *argv[])
     fprintf(out, "Fiends and Fortune\n");
     switch (options->action) {
         case action_character:
-            generate_character(rnd, out, options->character_method);
+            generate_character(options->rnd, out, options->character_method);
             break;
         case action_check:
             check(out, options->check_constant);
             break;
         case action_dungeon:
             if (options->dungeon_type_small) {
-                generate_sample_dungeon(rnd, out);
+                generate_sample_dungeon(options->rnd, out);
             } else {
-                generate_random_dungeon(rnd, out);
+                generate_random_dungeon(options->rnd, out);
             }
             break;
         case action_each:
-            generate_each_treasure(rnd, out);
+            generate_each_treasure(options->rnd, out);
             break;
         case action_magic:
-            generate_magic_items(rnd, out, options->magic_count);
+            generate_magic_items(options->rnd, out, options->magic_count);
             break;
         case action_map:
-            generate_map(rnd, out);
+            generate_map(options->rnd, out);
             break;
         case action_table:
             generate_treasure_type_table(out);
             break;
         case action_treasure:
-            generate_treasure_type(rnd, out, options->treasure_type);
+            generate_treasure_type(options->rnd, out, options->treasure_type);
             break;
         default:
             fprintf(stderr, "%s: unrecognized option\n", options->command_name);

@@ -10,6 +10,9 @@
 #include "character/method.h"
 
 
+struct rnd;
+
+
 struct options {
     enum action action;
     union {
@@ -23,6 +26,7 @@ struct options {
     bool debug;
     bool error;
     bool help;
+    struct rnd *rnd;
     bool verbose;
 };
 

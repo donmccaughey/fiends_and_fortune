@@ -1,13 +1,11 @@
 #include "options.h"
 
 #include <ctype.h>
-#include <errno.h>
 #include <getopt.h>
 #include <libgen.h>
-#include <stdio.h>
-#include <string.h>
 
 #include "common/alloc_or_die.h"
+#include "common/rnd.h"
 
 
 static struct option long_options[] = {
@@ -24,6 +22,12 @@ static struct option long_options[] = {
         .val='h'
     },
     {
+        .name="jrand48",
+        .has_arg=required_argument,
+        .flag=NULL,
+        .val='j'
+    },
+    {
         .name="verbose",
         .has_arg=no_argument,
         .flag=NULL,
@@ -37,11 +41,14 @@ static struct option long_options[] = {
     }
 };
 
-static char const short_options[] = "dhv";
+static char const short_options[] = "dhj:v";
 
 
 static void
-set_defaults(struct options *options, char const *action_string);
+get_action_modifier(struct options *options, char const *modifier_string);
+
+static void
+set_action_modifier_defaults(struct options *options, char const *action_string);
 
 
 static void
@@ -66,13 +73,26 @@ get_action(struct options *options, int argc, char *argv[], int start_index)
         return;
     }
     
-    set_defaults(options, action_string);
+    set_action_modifier_defaults(options, action_string);
     if (!remaining_arg_count) return;
     
     char const *modifier_string = argv[i];
     ++i;
     --remaining_arg_count;
+    get_action_modifier(options, modifier_string);
     
+    while (remaining_arg_count > 0) {
+        fprintf(stderr, "%s: invalid option (ignored) - %s\n",
+                options->command_name, argv[i]);
+        ++i;
+        --remaining_arg_count;
+    }
+}
+
+
+static void
+get_action_modifier(struct options *options, char const *modifier_string)
+{
     switch (options->action) {
         case action_character:
             options->character_method = characteristic_generation_method_from_string(modifier_string);
@@ -114,13 +134,27 @@ get_action(struct options *options, int argc, char *argv[], int start_index)
         default:
             break;
     }
-    
-    while (remaining_arg_count > 0) {
-        fprintf(stderr, "%s: invalid option (ignored) - %s\n",
-                options->command_name, argv[i]);
-        ++i;
-        --remaining_arg_count;
+}
+
+
+static void
+get_jrand48(struct options *options, char const *arg)
+{
+    unsigned long const max_seed = 0x0000ffffffffffff;
+    errno = 0;
+    unsigned long long_seed = strtoul(arg, NULL, 0);
+    if (errno || long_seed > max_seed) {
+        options->error = true;
+        fprintf(stderr, "%s: invalid jrand48 seed - %s\n",
+                options->command_name, optarg);
+        return;
     }
+    unsigned short seed[3];
+    seed[0] = long_seed & 0x000000000000ffff;
+    seed[1] = (long_seed & 0x00000000ffff0000) >> 16;
+    seed[2] = (long_seed & 0x0000ffff00000000) >> 32;
+    rnd_free(options->rnd);
+    options->rnd = rnd_alloc_jrand48(seed);
 }
 
 
@@ -137,6 +171,9 @@ get_options(struct options *options, int argc, char *argv[])
             case 'h':
                 options->help = true;
                 return optind;
+            case 'j':
+                get_jrand48(options, optarg);
+                break;
             case 'v':
                 options->verbose = true;
                 break;
@@ -154,10 +191,12 @@ options_alloc(int argc, char *argv[])
 {
     struct options *options = calloc_or_die(1, sizeof(struct options));
     options->command_name = strdup_or_die(basename(argv[0]));
+    options->rnd = rnd_alloc();
+    
     int action_index = get_options(options, argc, argv);
-    if (!options->error) {
-        get_action(options, argc, argv, action_index);
-    }
+    if (options->error) return options;
+    
+    get_action(options, argc, argv, action_index);
     return options;
 }
 
@@ -166,6 +205,7 @@ void
 options_free(struct options *options)
 {
     if (options) {
+        rnd_free(options->rnd);
         free_or_die(options->command_name);
         free_or_die(options);
     }
@@ -182,6 +222,8 @@ options_print_usage(struct options const *options)
     fprintf(out, "\n");
     fprintf(out, "  -d, --debug         print debugging information\n");
     fprintf(out, "  -h, --help          display this help message and exit\n");
+    fprintf(out, "  -j, --jrand48=SEED  use the jrand48 random number generator\n");
+    fprintf(out, "                        with the given 48-bit seed\n");
     fprintf(out, "  -v, --verbose       print more details\n");
     fprintf(out, "\n");
     fprintf(out, "Available actions:\n");
@@ -202,7 +244,7 @@ options_print_usage(struct options const *options)
 
 
 static void
-set_defaults(struct options *options, char const *action_string)
+set_action_modifier_defaults(struct options *options, char const *action_string)
 {
     switch (options->action) {
         case action_character:
