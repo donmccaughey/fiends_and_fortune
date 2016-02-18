@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "options.h"
+
 #include "common/alloc_or_die.h"
 #include "common/dice.h"
 #include "common/rnd.h"
@@ -22,44 +24,16 @@
 #include "treasure/treasure_type.h"
 
 
-static struct option long_options[] = {
-    {
-        .name="debug",
-        .has_arg=no_argument,
-        .flag=NULL,
-        .val='d'
-    },
-    {
-        .name="help",
-        .has_arg=no_argument,
-        .flag=NULL,
-        .val='h'
-    },
-    {
-        .name="verbose",
-        .has_arg=no_argument,
-        .flag=NULL,
-        .val='v'
-    },
-    {
-        .name=NULL,
-        .has_arg=no_argument,
-        .flag=NULL,
-        .val=0
-    }
-};
-
-static char const short_options[] = "dhv";
-
-
 static void
-check(FILE *out, char const *constant_number);
+check(FILE *out, uint32_t constant);
 
 static void
 enumerate_treasure_items(struct treasure *treasure, FILE *out);
 
 static void
-generate_character(struct rnd *rnd, FILE *out, char const *method_name);
+generate_character(struct rnd *rnd,
+                   FILE *out,
+                   enum characteristic_generation_method method);
 
 static void
 generate_each_treasure(struct rnd *rnd, FILE *out);
@@ -85,28 +59,24 @@ generate_treasure_type_table(FILE *out);
 static void
 print_dungeon(struct dungeon *dungeon, FILE *out);
 
-static void
-usage(int argc, char *argv[]);
-
 
 static void
-check(FILE *out, char const *constant_number)
+check(FILE *out, uint32_t constant)
 {
-    uint32_t fixed_value = (uint32_t)strtoul(constant_number, NULL, 10);
-    struct rnd *fake_rnd = rnd_alloc_fake_fixed(fixed_value);
+    struct rnd *fake_rnd = rnd_alloc_fake_fixed(constant);
     
     generate_treasure_type_table(out);
     generate_map(fake_rnd, out);
     generate_each_treasure(fake_rnd, out);
     generate_sample_dungeon(fake_rnd, out);
     generate_random_dungeon(fake_rnd, out);
-    generate_character(fake_rnd, out, "simple");
-    generate_character(fake_rnd, out, "method1");
-    generate_character(fake_rnd, out, "method2");
-    generate_character(fake_rnd, out, "method3");
-    generate_character(fake_rnd, out, "method4");
-    generate_character(fake_rnd, out, "generalnpc");
-    generate_character(fake_rnd, out, "specialnpc");
+    generate_character(fake_rnd, out, characteristic_generation_method_simple);
+    generate_character(fake_rnd, out, characteristic_generation_method_1);
+    generate_character(fake_rnd, out, characteristic_generation_method_2);
+    generate_character(fake_rnd, out, characteristic_generation_method_3);
+    generate_character(fake_rnd, out, characteristic_generation_method_4);
+    generate_character(fake_rnd, out, characteristic_generation_method_general_NPC);
+    generate_character(fake_rnd, out, characteristic_generation_method_special_NPC);
     
     rnd_free(fake_rnd);
 }
@@ -156,26 +126,12 @@ enumerate_treasure_items(struct treasure *treasure, FILE *out)
 
 
 static void
-generate_character(struct rnd *rnd, FILE *out, char const *method_name)
+generate_character(struct rnd *rnd,
+                   FILE *out,
+                   enum characteristic_generation_method method)
 {
-    enum characteristic_generation_method method = characteristic_generation_method_simple;
+    char const *method_name = characteristic_generation_method_name(method);
     uint32_t special_characteristics = STRENGTH;
-    if (0 == strcasecmp("method1", method_name)) {
-        method = characteristic_generation_method_1;
-    } else if (0 == strcasecmp("method2", method_name)) {
-        method = characteristic_generation_method_2;
-    } else if (0 == strcasecmp("method3", method_name)) {
-        method = characteristic_generation_method_3;
-    } else if (0 == strcasecmp("method4", method_name)) {
-        method = characteristic_generation_method_4;
-    } else if (0 == strcasecmp("generalnpc", method_name)) {
-        method = characteristic_generation_method_general_NPC;
-    } else if (0 == strcasecmp("specialnpc", method_name)) {
-        method = characteristic_generation_method_special_NPC;
-    } else {
-        method_name = "simple";
-    }
-    
     int *characteristics = alloc_characteristics(rnd, method, special_characteristics);
     if (   method == characteristic_generation_method_1
         || method == characteristic_generation_method_2)
@@ -346,81 +302,51 @@ main(int argc, char *argv[])
 {
     FILE *out = stdout;
     struct rnd *rnd = global_rnd;
+    struct options *options = options_alloc(argc, argv);
+    
+    if (options->error || options->help) {
+        options_print_usage(options);
+        return options->error? EXIT_FAILURE : EXIT_SUCCESS;
+    }
     
     fprintf(out, "Fiends and Fortune\n");
-    
-    bool debug = false;
-    bool error = false;
-    bool help = false;
-    bool verbose = false;
-    int ch;
-    int long_option_index;
-    while (-1 != (ch = getopt_long(argc, argv, short_options, long_options, &long_option_index))) {
-        switch (ch) {
-            case 'd':
-                debug = true;
-                break;
-            case 'h':
-                help = true;
-                break;
-            case 'v':
-                verbose = true;
-                break;
-            default:
-                error = true;
-                break;
-        }
-    }
-    
-    int remaining_arg_count = argc - optind;
-    char const *command = NULL;
-    if (remaining_arg_count) {
-        command = argv[optind];
-        ++optind;
-        --remaining_arg_count;
-    }
-    char const *subcommand = NULL;
-    if (remaining_arg_count) {
-        subcommand = argv[optind];
-        ++optind;
-        --remaining_arg_count;
-    }
-    
-    if (!command) {
-        usage(argc, argv);
-    } else if (help) {
-        usage(argc, argv);
-    } else if (error) {
-        usage(argc, argv);
-    } else if (0 == strcasecmp(command, "character")) {
-        generate_character(rnd, out, subcommand ? subcommand : "simple");
-    } else if (0 == strcasecmp(command, "check")) {
-        check(out, subcommand ? subcommand : "0");
-    } else if (0 == strcasecmp(command, "dungeon")) {
-        if (subcommand && 0 == strcasecmp(subcommand, "small")) {
-            generate_sample_dungeon(rnd, out);
-        } else {
-            generate_random_dungeon(rnd, out);
-        }
-    } else if (0 == strcasecmp(command, "each")) {
-        generate_each_treasure(rnd, out);
-    } else if (0 == strcasecmp(command, "magic")) {
-        int count = subcommand ? (int)strtol(subcommand, NULL, 10) : 10;
-        generate_magic_items(rnd, out, count);
-    } else if (0 == strcasecmp(command, "map")) {
-        generate_map(rnd, out);
-    } else if (0 == strcasecmp(command, "table")) {
-        generate_treasure_type_table(out);
-    } else if (command[0] >= 'A' && command[0] <= 'Z' && command[1] == '\0') {
-        generate_treasure_type(rnd, out, argv[1][0]);
-    } else if (command[0] >= 'a' && command[0] <= 'z' && command[1] == '\0') {
-        char letter = command[0] - 'a' + 'A';
-        generate_treasure_type(rnd, out, letter);
-    } else {
-        usage(argc, argv);
+    switch (options->action) {
+        case action_character:
+            generate_character(rnd, out, options->character_method);
+            break;
+        case action_check:
+            check(out, options->check_constant);
+            break;
+        case action_dungeon:
+            if (options->dungeon_type_small) {
+                generate_sample_dungeon(rnd, out);
+            } else {
+                generate_random_dungeon(rnd, out);
+            }
+            break;
+        case action_each:
+            generate_each_treasure(rnd, out);
+            break;
+        case action_magic:
+            generate_magic_items(rnd, out, options->magic_count);
+            break;
+        case action_map:
+            generate_map(rnd, out);
+            break;
+        case action_table:
+            generate_treasure_type_table(out);
+            break;
+        case action_treasure:
+            generate_treasure_type(rnd, out, options->treasure_type);
+            break;
+        default:
+            fprintf(stderr, "%s: unrecognized option\n", options->command_name);
+            break;
     }
     
     fprintf(out, "\n");
+    
+    options_free(options);
     alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }
@@ -441,26 +367,4 @@ print_dungeon(struct dungeon *dungeon, FILE *out)
         fprintf(out, "Level %i Areas of Interest:\n", level);
         dungeon_print_areas_for_level(dungeon, level, out);
     }
-}
-
-
-static void
-usage(int argc, char *argv[])
-{
-    fprintf(stderr, "Usage: %s ACTION\n", basename(argv[0]));
-    fprintf(stderr, "\n");
-    fprintf(stderr, "Available actions:\n");
-    fprintf(stderr, "   character [METHOD]  Generate a character where METHOD is\n");
-    fprintf(stderr, "                         `method1', `method2', `method3', `method4',\n");
-    fprintf(stderr, "                         `generalnpc', `specialnpc' or `simple'\n");
-    fprintf(stderr, "                         (default `simple')\n");
-    fprintf(stderr, "   check [N]           Run tests where N is the \"constant\"\n");
-    fprintf(stderr, "                         random number (default 0)\n");
-    fprintf(stderr, "   dungeon [TYPE]      Generate a dungeon where TYPE is\n");
-    fprintf(stderr, "                         `random' or `small' (default `random')\n");
-    fprintf(stderr, "   each                Generate one of each treasure\n");
-    fprintf(stderr, "   magic [COUNT]       Generate COUNT magic items (default 10)\n");
-    fprintf(stderr, "   map                 Generate one treasure map\n");
-    fprintf(stderr, "   table               Generate the treasure type table\n");
-    fprintf(stderr, "   LETTER              Generate the treasure type for LETTER (A-Z)\n");
 }

@@ -45,6 +45,10 @@
 		D4092F941B65D80800BFD0B3 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F931B65D80800BFD0B3 /* main.c */; };
 		D47B33E61C71D1C300390717 /* check.out in CopyFiles */ = {isa = PBXBuildFile; fileRef = D406B65E1C71CAF30037171B /* check.out */; };
 		D47B33E71C71D1C300390717 /* check.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D47B33DF1C71CDAC00390717 /* check.sh */; };
+		D47B33EC1C7444C400390717 /* options.c in Sources */ = {isa = PBXBuildFile; fileRef = D47B33EA1C7444C400390717 /* options.c */; };
+		D47B33EF1C74539B00390717 /* action.c in Sources */ = {isa = PBXBuildFile; fileRef = D47B33EE1C74539B00390717 /* action.c */; };
+		D47B33F21C7561DF00390717 /* method.c in Sources */ = {isa = PBXBuildFile; fileRef = D47B33F01C7561DF00390717 /* method.c */; };
+		D47B33F31C7561DF00390717 /* method.h in Headers */ = {isa = PBXBuildFile; fileRef = D47B33F11C7561DF00390717 /* method.h */; };
 		D4BD32A71B6A06560007527A /* coins.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BD32991B6A06560007527A /* coins.c */; };
 		D4BD32A81B6A06560007527A /* coins.h in Headers */ = {isa = PBXBuildFile; fileRef = D4BD329A1B6A06560007527A /* coins.h */; };
 		D4BD32A91B6A06560007527A /* gem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BD329B1B6A06560007527A /* gem.c */; };
@@ -182,6 +186,12 @@
 		D47B33DF1C71CDAC00390717 /* check.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = check.sh; sourceTree = "<group>"; };
 		D47B33E81C72AE2700390717 /* tile_features.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tile_features.h; sourceTree = "<group>"; };
 		D47B33E91C72BD8B00390717 /* area_features.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = area_features.h; sourceTree = "<group>"; };
+		D47B33EA1C7444C400390717 /* options.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = options.c; sourceTree = "<group>"; };
+		D47B33EB1C7444C400390717 /* options.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = options.h; sourceTree = "<group>"; };
+		D47B33ED1C744B9A00390717 /* action.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = action.h; sourceTree = "<group>"; };
+		D47B33EE1C74539B00390717 /* action.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = action.c; sourceTree = "<group>"; };
+		D47B33F01C7561DF00390717 /* method.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = method.c; sourceTree = "<group>"; };
+		D47B33F11C7561DF00390717 /* method.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = method.h; sourceTree = "<group>"; };
 		D4BCC61517D30DD000C76D11 /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
 		D4BD32991B6A06560007527A /* coins.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coins.c; sourceTree = "<group>"; };
 		D4BD329A1B6A06560007527A /* coins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coins.h; sourceTree = "<group>"; };
@@ -299,7 +309,11 @@
 		D4092F921B65D80800BFD0B3 /* fnf */ = {
 			isa = PBXGroup;
 			children = (
+				D47B33ED1C744B9A00390717 /* action.h */,
+				D47B33EE1C74539B00390717 /* action.c */,
 				D4092F931B65D80800BFD0B3 /* main.c */,
+				D47B33EB1C7444C400390717 /* options.h */,
+				D47B33EA1C7444C400390717 /* options.c */,
 			);
 			path = fnf;
 			sourceTree = "<group>";
@@ -330,6 +344,8 @@
 			children = (
 				D4BD32B71B6AE3AA0007527A /* character.h */,
 				D4BD32B61B6AE3AA0007527A /* character.c */,
+				D47B33F11C7561DF00390717 /* method.h */,
+				D47B33F01C7561DF00390717 /* method.c */,
 			);
 			path = character;
 			sourceTree = "<group>";
@@ -422,6 +438,7 @@
 				D406B60A1C65672D0037171B /* text_rectangle.h in Headers */,
 				D4BD32C91B6AECE90007527A /* spell.h in Headers */,
 				D4BD32B01B6A06560007527A /* treasure.h in Headers */,
+				D47B33F31C7561DF00390717 /* method.h in Headers */,
 				D406B6481C66C5760037171B /* box.h in Headers */,
 				D4BD32AC1B6A06560007527A /* jewelry.h in Headers */,
 				D4BD32AE1B6A06560007527A /* magic_item.h in Headers */,
@@ -578,6 +595,7 @@
 				D4092F901B65D6C200BFD0B3 /* str.c in Sources */,
 				D406B6471C66C5760037171B /* box.c in Sources */,
 				D4D495B81C6321A000BC80C9 /* orientation.c in Sources */,
+				D47B33F21C7561DF00390717 /* method.c in Sources */,
 				D406B64B1C66C60F0037171B /* size.c in Sources */,
 				D4092F8A1B65D6C200BFD0B3 /* dice.c in Sources */,
 				B0F470B6DFA53A807F7AE464 /* point.c in Sources */,
@@ -611,6 +629,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D47B33EF1C74539B00390717 /* action.c in Sources */,
+				D47B33EC1C7444C400390717 /* options.c in Sources */,
 				D4092F941B65D80800BFD0B3 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

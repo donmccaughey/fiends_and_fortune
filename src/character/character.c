@@ -27,29 +27,6 @@ compare_characteristic_sets(void const *characteristic_set1,
                             void const *characteristic_set2);
 
 
-char const *
-characteristic_generation_method_description(enum characteristic_generation_method method)
-{
-    switch (method) {
-        case characteristic_generation_method_simple:
-            return "roll 3d6 once per characteristic";
-        case characteristic_generation_method_1:
-            return "roll 4d6 six times and drop the lowest die from each roll; player assigns rolls to characteristics";
-        case characteristic_generation_method_2:
-            return "roll 3d6 twelve times and drop the lowest six rolls; player assigns rolls to characteristics";
-        case characteristic_generation_method_3:
-            return "roll 3d6 six times per characteristic and keep the highest roll";
-        case characteristic_generation_method_4:
-            return "generate 12 characters using the simple method; player chooses one of the twelve";
-        case characteristic_generation_method_general_NPC:
-            return "roll 3d6 once per characteristic; change any die of 1 to 3 or 6 to 4";
-        case characteristic_generation_method_special_NPC:
-            return "roll 3d6 once per normal characteristic; for profession characteristic(s), add 1 to each die less than 6";
-        default: return "Unknown character generation method";
-    }
-}
-
-
 static int
 compare_characteristics(void const *characteristic1,
                         void const *characteristic2)

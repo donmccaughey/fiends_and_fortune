@@ -5,6 +5,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "method.h"
+
 
 #define STRENGTH      ((uint32_t) 0x0001u)
 #define INTELLIGENCE  ((uint32_t) 0x0002u)
@@ -18,17 +20,6 @@
 struct rnd;
 
 
-enum characteristic_generation_method {
-    characteristic_generation_method_simple,
-    characteristic_generation_method_1,
-    characteristic_generation_method_2,
-    characteristic_generation_method_3,
-    characteristic_generation_method_4,
-    characteristic_generation_method_general_NPC,
-    characteristic_generation_method_special_NPC
-};
-
-
 struct character {
     int strength;
     int intelligence;
@@ -37,10 +28,6 @@ struct character {
     int constitution;
     int charisma;
 };
-
-
-char const *
-characteristic_generation_method_description(enum characteristic_generation_method method);
 
 void
 character_finalize(struct character *character);
