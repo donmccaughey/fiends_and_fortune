@@ -608,21 +608,75 @@ side_passages(struct digger *digger)
         return true;
     } else if (score == 5) {
         // left 45 degrees ahead
+        // TODO: left 45 degrees
+        if (!digger_dig_intersection(digger)) return false;
+        
+        struct digger *side_digger = generator_copy_digger(digger->generator,
+                                                           digger);
+        digger_turn_90_degrees_left(side_digger);
+        if (!digger_dig_passage(side_digger, 3, wall_type_none)) return false;
+        
+        if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
         return true;
     } else if (score == 6) {
         // right 45 degrees ahead
+        // TODO: right 45 degrees
+        if (!digger_dig_intersection(digger)) return false;
+        
+        struct digger *side_digger = generator_copy_digger(digger->generator,
+                                                           digger);
+        digger_turn_90_degrees_right(side_digger);
+        if (!digger_dig_passage(side_digger, 3, wall_type_none)) return false;
+        
+        if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
         return true;
     } else if (score == 7) {
         // left 45 degrees behind
+        // TODO: left 45 degrees
+        if (!digger_dig_intersection(digger)) return false;
+        
+        struct digger *side_digger = generator_copy_digger(digger->generator,
+                                                           digger);
+        digger_turn_90_degrees_left(side_digger);
+        if (!digger_dig_passage(side_digger, 3, wall_type_none)) return false;
+        
+        if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
         return true;
     } else if (score == 8) {
         // right 45 degrees behind
+        // TODO: right 45 degrees
+        if (!digger_dig_intersection(digger)) return false;
+        
+        struct digger *side_digger = generator_copy_digger(digger->generator,
+                                                           digger);
+        digger_turn_90_degrees_right(side_digger);
+        if (!digger_dig_passage(side_digger, 3, wall_type_none)) return false;
+        
+        if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
         return true;
     } else if (score == 9) {
         // left curve 45 degrees ahead
+        // TODO: left 45 degree curve
+        if (!digger_dig_intersection(digger)) return false;
+        
+        struct digger *side_digger = generator_copy_digger(digger->generator,
+                                                           digger);
+        digger_turn_90_degrees_left(side_digger);
+        if (!digger_dig_passage(side_digger, 3, wall_type_none)) return false;
+        
+        if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
         return true;
     } else if (score == 10) {
         // right curve 45 degrees ahead
+        // TODO: right 45 degree curve
+        if (!digger_dig_intersection(digger)) return false;
+        
+        struct digger *side_digger = generator_copy_digger(digger->generator,
+                                                           digger);
+        digger_turn_90_degrees_right(side_digger);
+        if (!digger_dig_passage(side_digger, 3, wall_type_none)) return false;
+        
+        if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
         return true;
     } else if (score <= 13) {
         // passage T's
@@ -643,6 +697,21 @@ side_passages(struct digger *digger)
         return true;
     } else if (score <= 15) {
         // passage Y's
+        // TODO: 45 degree turns
+        struct area *intersection = digger_dig_intersection(digger);
+        if (!intersection) return false;
+        
+        struct digger *left_digger = generator_copy_digger(digger->generator,
+                                                           digger);
+        digger_turn_90_degrees_left(left_digger);
+        if (!digger_dig_passage(left_digger, 3, wall_type_none)) return false;
+        
+        struct digger *right_digger = generator_copy_digger(digger->generator,
+                                                            digger);
+        digger_turn_90_degrees_right(right_digger);
+        if (!digger_dig_passage(right_digger, 3, wall_type_none)) return false;
+        
+        generator_delete_digger(digger->generator, digger);
         return true;
     } else if (score < 19) {
         // four way intersection
@@ -663,6 +732,21 @@ side_passages(struct digger *digger)
         return true;
     } else {
         // passage X's
+        // TODO: 45 degree turns
+        struct area *intersection = digger_dig_intersection(digger);
+        if (!intersection) return false;
+        
+        struct digger *left_digger = generator_copy_digger(digger->generator,
+                                                           digger);
+        digger_turn_90_degrees_left(left_digger);
+        if (!digger_dig_passage(left_digger, 3, wall_type_none)) return false;
+        
+        struct digger *right_digger = generator_copy_digger(digger->generator,
+                                                            digger);
+        digger_turn_90_degrees_right(right_digger);
+        if (!digger_dig_passage(right_digger, 3, wall_type_none)) return false;
+        
+        if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
         return true;
     }
 }
@@ -706,9 +790,13 @@ space_beyond_door(struct digger *digger, bool is_straight_ahead)
         return true;
     } else if (score == 9) {
         // passage 45 degrees ahead/behind
+        // TODO: 45 degree turn
+        if (!digger_dig_passage(digger, 3, wall_type_door)) return false;
         return true;
     } else if (score == 10) {
         // passage 45 degrees behind/ahead
+        // TODO: 45 degree turn
+        if (!digger_dig_passage(digger, 3, wall_type_door)) return false;
         return true;
     } else if (score <= 18) {
         if (is_straight_ahead || !digger->generator->padding) {
@@ -857,18 +945,26 @@ turns(struct digger *digger)
         return digger_dig_passage(digger, 3, wall_type_none);
     } else if (score == 9) {
         // left 45 degrees ahead
-        return true;
+        // TODO: 45 degree left
+        digger_turn_90_degrees_left(digger);
+        return digger_dig_passage(digger, 3, wall_type_none);
     } else if (score == 10) {
         // left 45 degrees behind
-        return true;
+        // TODO: 45 degree left
+        digger_turn_90_degrees_left(digger);
+        return digger_dig_passage(digger, 3, wall_type_none);
     } else if (score <= 18) {
         digger_turn_90_degrees_right(digger);
         return digger_dig_passage(digger, 3, wall_type_none);
     } else if (score == 19) {
         // right 45 degrees ahead
-        return true;
+        // TODO: 45 degree right
+        digger_turn_90_degrees_right(digger);
+        return digger_dig_passage(digger, 3, wall_type_none);
     } else {
         // right 45 degrees behind
-        return true;
+        // TODO: 45 degree right
+        digger_turn_90_degrees_right(digger);
+        return digger_dig_passage(digger, 3, wall_type_none);
     }
 }
