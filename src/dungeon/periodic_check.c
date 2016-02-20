@@ -64,10 +64,10 @@ space_beyond_door(struct digger *digger,
 static bool
 stairs(struct digger *digger);
 
-static bool
+static struct area *
 stairs_down_one_level(struct digger *digger);
 
-static bool
+static struct area *
 stairs_up_one_level(struct digger *digger);
 
 static bool
@@ -203,6 +203,36 @@ check_area_for_secret_doors(struct generator *generator, struct area *area)
 
 
 static void
+check_for_chute_down_one_level(struct digger *digger, struct area *area)
+{
+    if (digger->point.z == generator_max_level(digger->generator)) return;
+    
+    int score = roll("1d6", digger->generator->rnd);
+    if (score == 1) {
+        area->features |= area_features_chute_entrance;
+        struct digger *chute_digger = generator_copy_digger(digger->generator, digger);
+        digger_move_backward(chute_digger, 1);
+        struct tile *tile = generator_tile_at(chute_digger->generator, chute_digger->point);
+        tile->features |= tile_features_chute_entrance;
+        digger_descend(chute_digger, 1);
+        // TODO: random direction?
+        // TODO: random passage/room/chamber?
+        // TODO: add chute to existing area
+        struct area *passage = digger_dig_passage(chute_digger, 1, wall_type_solid);
+        if (passage) {
+            passage->features |= area_features_chute_exit;
+            digger_move_backward(chute_digger, 1);
+            tile = generator_tile_at(chute_digger->generator, chute_digger->point);
+            tile->features |= tile_features_chute_exit;
+            digger_move_forward(chute_digger, 1);
+        } else {
+            generator_delete_digger(chute_digger->generator, chute_digger);
+        }
+    }
+}
+
+
+static void
 check_wall_for_secret_door(struct generator *generator,
                            struct point point,
                            enum direction direction)
@@ -250,6 +280,8 @@ check_wall_for_secret_door(struct generator *generator,
 static bool
 chimney_down_two_levels(struct digger *digger)
 {
+    if (digger->point.z == generator_max_level(digger->generator)) return false;
+    
     struct area *passage = digger_dig_passage(digger, 1, wall_type_none);
     if (!passage) return false;
     passage->features |= area_features_chimney_down;
@@ -265,10 +297,18 @@ chimney_down_two_levels(struct digger *digger)
     // TODO: add chimney to existing area?
     passage = digger_dig_passage(digger_down_1, 1, wall_type_solid);
     if (!passage) return false;
-    passage->features |= area_features_chimney_down | area_features_chimney_up;
+    passage->features |= area_features_chimney_up;
     digger_move_backward(digger_down_1, 1);
     tile = generator_tile_at(digger_down_1->generator, digger_down_1->point);
-    tile->features |= tile_features_chimney_up | tile_features_chimney_down;
+    tile->features |= tile_features_chimney_up;
+    if (digger_down_1->point.z == generator_max_level(digger_down_1->generator)) {
+        digger_move_forward(digger_down_1, 1);
+        return true;
+    }
+    
+    passage->features |= area_features_chimney_down;
+    tile->features |= tile_features_chimney_down;
+    
     struct digger *digger_down_2 = generator_copy_digger(digger_down_1->generator, digger_down_1);
     digger_move_forward(digger_down_1, 1);
     
@@ -972,7 +1012,9 @@ stairs(struct digger *digger)
         return true;
     } else if (score == 10) {
         // down dead end (1 in 6 chance to chute down 1 level)
-        if (!stairs_down_one_level(digger)) return false;
+        struct area *area = stairs_down_one_level(digger);
+        if (!area) return false;
+        check_for_chute_down_one_level(digger, area);
         generator_delete_digger(digger->generator, digger);
         return true;
     } else if (score == 11) {
@@ -987,7 +1029,6 @@ stairs(struct digger *digger)
         // chimney down 2 levels, passage continues, check again in 30’
         if (!chimney_down_two_levels(digger)) return false;
         return digger_dig_passage(digger, 3, wall_type_none);
-        return false;
     } else if (score <= 16) {
         // trap door down 1 level, passage continues, check again in 30’
         return false;
@@ -1009,42 +1050,42 @@ stairs(struct digger *digger)
 }
 
 
-static bool
+static struct area *
 stairs_down_one_level(struct digger *digger)
 {
-    int next_level = digger->point.z + 1;
-    if (next_level > generator_max_level(digger->generator)) return false;
+    if (digger->point.z == generator_max_level(digger->generator)) return NULL;
     
-    if (!digger_dig_stairs_down(digger, 2, wall_type_none)) return false;
+    if (!digger_dig_stairs_down(digger, 2, wall_type_none)) return NULL;
     
     digger_descend(digger, 1);
     digger_move_backward(digger, 1);
     digger_spin_180_degrees(digger);
-    if (!digger_dig_stairs_up(digger, 2, wall_type_none)) return false;
+    if (!digger_dig_stairs_up(digger, 2, wall_type_none)) return NULL;
     digger_spin_180_degrees(digger);
     digger_move_forward(digger, 3);
     
-    if (!digger_dig_passage(digger, 1, wall_type_none)) return false;
-    return true;
+    return digger_dig_passage(digger, 1, wall_type_none);
 }
 
 
-static bool
+static struct area *
 stairs_up_one_level(struct digger *digger)
 {
-    if (!digger_dig_stairs_up(digger, 2, wall_type_none)) return false;
+    struct area *stairs_up = digger_dig_stairs_up(digger, 2, wall_type_none);
+    if (!stairs_up) return NULL;
     
     digger_ascend(digger, 1);
-    if (digger->point.z < generator_min_level(digger->generator)) return true;
+    if (digger->point.z < generator_min_level(digger->generator)) {
+        return stairs_up;
+    }
     
     digger_move_backward(digger, 1);
     digger_spin_180_degrees(digger);
-    if (!digger_dig_stairs_down(digger, 2, wall_type_none)) return false;
+    if (!digger_dig_stairs_down(digger, 2, wall_type_none)) return NULL;
     digger_spin_180_degrees(digger);
     digger_move_forward(digger, 3);
     
-    if (!digger_dig_passage(digger, 1, wall_type_none)) return false;
-    return true;
+    return digger_dig_passage(digger, 1, wall_type_none);
 }
 
 

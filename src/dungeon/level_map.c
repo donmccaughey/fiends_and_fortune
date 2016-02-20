@@ -283,6 +283,12 @@ tile_top_half(struct level_map const *level_map,
         half_tile[1] = '(';
         half_tile[3] = ')';
     }
+    if (tile->features & tile_features_chute_entrance) {
+        half_tile[2] = '@';
+    }
+    if (tile->features & tile_features_chute_exit) {
+        half_tile[2] = '*';
+    }
     
     // east door
     struct tile *east_tile = level_map_tile_at(level_map, point_east(point));

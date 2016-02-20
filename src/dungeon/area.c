@@ -82,6 +82,16 @@ area_alloc_description(struct area const *area)
         realloc_append_level_description(&description, level + 1);
     }
     
+    if (area->features & area_features_chute_entrance) {
+        str_realloc_append_formatted(&description, ", chute down to ");
+        realloc_append_level_description(&description, level + 1);
+    }
+    
+    if (area->features & area_features_chute_exit) {
+        str_realloc_append_formatted(&description, ", chute down from ");
+        realloc_append_level_description(&description, level - 1);
+    }
+    
     return description;
 }
 
