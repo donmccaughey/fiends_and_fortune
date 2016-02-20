@@ -272,7 +272,7 @@ tile_top_half(struct level_map const *level_map,
         half_tile[0] = '|';
         half_tile[1] = ']';
     } else if (wall_type_secret_door == tile->walls.west) {
-        half_tile[0] = 's';
+        half_tile[0] = '$';
     }
     
     // features

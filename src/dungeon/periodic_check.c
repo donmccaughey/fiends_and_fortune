@@ -3,6 +3,7 @@
 #include <stddef.h>
 
 #include "common/dice.h"
+#include "common/fail.h"
 #include "common/int.h"
 #include "common/rnd.h"
 
@@ -14,13 +15,12 @@
 #include "wall_type.h"
 
 
-static bool
-check_area_for_secret_doors(struct digger *digger, struct area *area);
+static void
+check_area_for_secret_doors(struct generator *generator, struct area *area);
 
 static void
-check_wall_for_secret_door(struct digger *digger,
-                           struct tile *inside_tile,
-                           struct tile *outside_tile,
+check_wall_for_secret_door(struct generator *generator,
+                           struct point point,
                            enum direction direction);
 
 static bool
@@ -31,6 +31,9 @@ chimney_up_one_level(struct digger *digger);
 
 static bool
 chimney_up_two_levels(struct digger *digger);
+
+static bool
+dead_end(struct digger *digger);
 
 static struct digger *
 exit_location(struct digger *digger, struct area *chamber_or_room);
@@ -162,7 +165,7 @@ chambers(struct digger *digger, enum wall_type entrance_type)
     }
     
     if (check_for_secret_doors) {
-        if (!check_area_for_secret_doors(digger, chamber)) return false;
+        check_area_for_secret_doors(digger->generator, chamber);
     }
     
     generator_delete_digger(digger->generator, digger);
@@ -170,82 +173,74 @@ chambers(struct digger *digger, enum wall_type entrance_type)
 }
 
 
-static bool
-check_area_for_secret_doors(struct digger *digger, struct area *area)
+static void
+check_area_for_secret_doors(struct generator *generator, struct area *area)
 {
     int z = area->box.origin.z;
-    struct point end = box_end_point(area->box);
     
-    struct point inside_point;
-    struct tile *inside_tile;
-    struct point outside_point;
-    struct tile *outside_tile;
     for (int i = 0; i < area->box.size.width; ++i) {
         int x = area->box.origin.x + i;
-        int y = area->box.origin.y;
-        inside_point = point_make(x, y, z);
-        inside_tile = generator_tile_at(digger->generator, inside_point);
-        if (wall_type_solid == inside_tile->walls.south) {
-            outside_point = point_south(inside_point);
-            outside_tile = generator_tile_at(digger->generator, outside_point);
-            check_wall_for_secret_door(digger, inside_tile,
-                                       outside_tile, direction_south);
-        }
+        int south_y = area->box.origin.y;
+        struct point south_point = point_make(x, south_y, z);
+        check_wall_for_secret_door(generator, south_point, direction_south);
         
-        outside_point = point_make(x, end.y, z);
-        outside_tile = generator_tile_at(digger->generator, outside_point);
-        if (wall_type_solid == outside_tile->walls.south) {
-            inside_point = point_south(outside_point);
-            inside_tile = generator_tile_at(digger->generator, inside_point);
-            check_wall_for_secret_door(digger, inside_tile,
-                                       outside_tile, direction_north);
-        }
+        int north_y = south_y + area->box.size.length - 1;
+        struct point north_point = point_make(x, north_y, z);
+        check_wall_for_secret_door(generator, north_point, direction_north);
     }
     
     for (int j = 0; j < area->box.size.length; ++j) {
-        int x = area->box.origin.x;
+        int west_x = area->box.origin.x;
         int y = area->box.origin.y + j;
-        inside_point = point_make(x, y, z);
-        inside_tile = generator_tile_at(digger->generator, inside_point);
-        if (wall_type_solid == inside_tile->walls.west) {
-            outside_point = point_west(inside_point);
-            outside_tile = generator_tile_at(digger->generator, outside_point);
-            check_wall_for_secret_door(digger, inside_tile,
-                                       outside_tile, direction_west);
-        }
+        struct point west_point = point_make(west_x, y, z);
+        check_wall_for_secret_door(generator, west_point, direction_west);
         
-        outside_point = point_make(end.x, y, z);
-        outside_tile = generator_tile_at(digger->generator, outside_point);
-        if (wall_type_solid == outside_tile->walls.west) {
-            inside_point = point_west(outside_point);
-            inside_tile = generator_tile_at(digger->generator, inside_point);
-            check_wall_for_secret_door(digger, inside_tile,
-                                       outside_tile, direction_east);
-        }
+        int east_x = west_x + area->box.size.width - 1;
+        struct point east_point = point_make(east_x, y, z);
+        check_wall_for_secret_door(generator, east_point, direction_east);
     }
-    return true;
 }
 
 
 static void
-check_wall_for_secret_door(struct digger *digger,
-                           struct tile *inside_tile,
-                           struct tile *outside_tile,
+check_wall_for_secret_door(struct generator *generator,
+                           struct point point,
                            enum direction direction)
 {
-    int score = roll("1d4", digger->generator->rnd);
+    struct tile *inside_tile = generator_tile_at(generator, point);
+    struct tile *outside_tile = generator_tile_at(generator,
+                                                  point_move(point, 1, direction));
+    switch (direction) {
+        case direction_north:
+            if (wall_type_solid != outside_tile->walls.south) return;
+            break;
+        case direction_south:
+            if (wall_type_solid != inside_tile->walls.south) return;
+            break;
+        case direction_east:
+            if (wall_type_solid != outside_tile->walls.west) return;
+            break;
+        case direction_west:
+            if (wall_type_solid != inside_tile->walls.west) return;
+            break;
+        default:
+            fail("Unrecognized direction %i", direction);
+            break;
+    }
+    
+    int score = roll("1d4", generator->rnd);
     if (score == 1) {
         if (tile_type_empty == outside_tile->type) {
-            generator_set_wall(digger->generator,
+            generator_set_wall(generator,
                                inside_tile->point,
                                direction,
                                wall_type_secret_door);
         } else {
-            struct digger *door_digger = generator_add_digger(digger->generator,
-                                                              inside_tile->point,
+            struct digger *door_digger = generator_add_digger(generator,
+                                                              point_move(point, 1, direction),
                                                               direction);
             if (!space_beyond_door(door_digger, wall_type_secret_door, false)) {
-                generator_delete_digger(digger->generator, door_digger);
+                generator_delete_digger(generator, door_digger);
             }
         }
     }
@@ -373,6 +368,21 @@ chimney_up_two_levels(struct digger *digger)
     tile->features |= tile_features_chimney_down;
     digger_move_forward(digger_up_2, 1);
     
+    return true;
+}
+
+
+static bool
+dead_end(struct digger *digger)
+{
+    digger_move_backward(digger, 1);
+    check_wall_for_secret_door(digger->generator, digger->point,
+                               digger->direction);
+    check_wall_for_secret_door(digger->generator, digger->point,
+                               direction_90_degrees_left(digger->direction));
+    check_wall_for_secret_door(digger->generator, digger->point,
+                               direction_90_degrees_right(digger->direction));
+    generator_delete_digger(digger->generator, digger);
     return true;
 }
 
@@ -571,9 +581,7 @@ periodic_check(struct digger *digger)
     } else if (score == 17) {
         return stairs(digger);
     } else if (score == 18) {
-        // dead end
-        generator_delete_digger(digger->generator, digger);
-        return true;
+        return dead_end(digger);
     } else if (score == 19) {
         // trick/trap
         return true;
@@ -674,7 +682,7 @@ rooms(struct digger *digger, enum wall_type entrance_type)
     }
     
     if (check_for_secret_doors) {
-        if (!check_area_for_secret_doors(digger, room)) return false;
+        check_area_for_secret_doors(digger->generator, room);
     }
     
     generator_delete_digger(digger->generator, digger);
