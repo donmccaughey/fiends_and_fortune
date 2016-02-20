@@ -1,3 +1,7 @@
+- dungeon: when digging chimney two levels down, leave intermediate tile solid
+    if not currently excavated; make sure that if the tile is later excavated,
+    the chimney is preserved
+- dungeon: fix printing problem where an empty level is sometimes printed
 - remove points?
 - split magic_item.c up
 - on various magic item table structs, change sale_value_in_gp to cp

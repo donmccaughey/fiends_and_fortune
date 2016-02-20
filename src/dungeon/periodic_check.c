@@ -15,6 +15,15 @@
 
 
 static bool
+check_area_for_secret_doors(struct digger *digger, struct area *area);
+
+static void
+check_wall_for_secret_door(struct digger *digger,
+                           struct tile *inside_tile,
+                           struct tile *outside_tile,
+                           enum direction direction);
+
+static bool
 chimney_down_two_levels(struct digger *digger);
 
 static bool
@@ -45,7 +54,9 @@ static bool
 side_passages(struct digger *digger);
 
 static bool
-space_beyond_door(struct digger *digger, bool is_straight_ahead);
+space_beyond_door(struct digger *digger,
+                  enum wall_type door_type,
+                  bool is_straight_ahead);
 
 static bool
 stairs(struct digger *digger);
@@ -108,7 +119,8 @@ chambers(struct digger *digger, enum wall_type entrance_type)
         if (orientation) swap(&length, &width);
     }
     
-    int left_offsets[max(length, width)];
+    int max_left_offsets_count = max(length, width);
+    int left_offsets[max_left_offsets_count];
     fill_shuffled(digger->generator->rnd, left_offsets, width);
     for (int i = 0; i < width; ++i) {
         chamber = digger_dig_chamber(digger, length, width, left_offsets[i], entrance_type);
@@ -138,7 +150,7 @@ chambers(struct digger *digger, enum wall_type entrance_type)
         // TODO: don't fail if no possible exit
         struct digger *exit_digger = exit_location(digger, chamber);
         if (!exit_digger) return false;
-        if (!space_beyond_door(exit_digger, false)) return false;
+        if (!space_beyond_door(exit_digger, wall_type_door, false)) return false;
     }
     
     for (int i = 0; i < passage_count; ++i) {
@@ -149,8 +161,94 @@ chambers(struct digger *digger, enum wall_type entrance_type)
         if (!digger_dig_passage(exit_digger, 3, wall_type_none)) return false;
     }
     
+    if (check_for_secret_doors) {
+        if (!check_area_for_secret_doors(digger, chamber)) return false;
+    }
+    
     generator_delete_digger(digger->generator, digger);
     return true;
+}
+
+
+static bool
+check_area_for_secret_doors(struct digger *digger, struct area *area)
+{
+    int z = area->box.origin.z;
+    struct point end = box_end_point(area->box);
+    
+    struct point inside_point;
+    struct tile *inside_tile;
+    struct point outside_point;
+    struct tile *outside_tile;
+    for (int i = 0; i < area->box.size.width; ++i) {
+        int x = area->box.origin.x + i;
+        int y = area->box.origin.y;
+        inside_point = point_make(x, y, z);
+        inside_tile = generator_tile_at(digger->generator, inside_point);
+        if (wall_type_solid == inside_tile->walls.south) {
+            outside_point = point_south(inside_point);
+            outside_tile = generator_tile_at(digger->generator, outside_point);
+            check_wall_for_secret_door(digger, inside_tile,
+                                       outside_tile, direction_south);
+        }
+        
+        outside_point = point_make(x, end.y, z);
+        outside_tile = generator_tile_at(digger->generator, outside_point);
+        if (wall_type_solid == outside_tile->walls.south) {
+            inside_point = point_south(outside_point);
+            inside_tile = generator_tile_at(digger->generator, inside_point);
+            check_wall_for_secret_door(digger, inside_tile,
+                                       outside_tile, direction_north);
+        }
+    }
+    
+    for (int j = 0; j < area->box.size.length; ++j) {
+        int x = area->box.origin.x;
+        int y = area->box.origin.y + j;
+        inside_point = point_make(x, y, z);
+        inside_tile = generator_tile_at(digger->generator, inside_point);
+        if (wall_type_solid == inside_tile->walls.west) {
+            outside_point = point_west(inside_point);
+            outside_tile = generator_tile_at(digger->generator, outside_point);
+            check_wall_for_secret_door(digger, inside_tile,
+                                       outside_tile, direction_west);
+        }
+        
+        outside_point = point_make(end.x, y, z);
+        outside_tile = generator_tile_at(digger->generator, outside_point);
+        if (wall_type_solid == outside_tile->walls.west) {
+            inside_point = point_west(outside_point);
+            inside_tile = generator_tile_at(digger->generator, inside_point);
+            check_wall_for_secret_door(digger, inside_tile,
+                                       outside_tile, direction_east);
+        }
+    }
+    return true;
+}
+
+
+static void
+check_wall_for_secret_door(struct digger *digger,
+                           struct tile *inside_tile,
+                           struct tile *outside_tile,
+                           enum direction direction)
+{
+    int score = roll("1d4", digger->generator->rnd);
+    if (score == 1) {
+        if (tile_type_empty == outside_tile->type) {
+            generator_set_wall(digger->generator,
+                               inside_tile->point,
+                               direction,
+                               wall_type_secret_door);
+        } else {
+            struct digger *door_digger = generator_add_digger(digger->generator,
+                                                              inside_tile->point,
+                                                              direction);
+            if (!space_beyond_door(door_digger, wall_type_secret_door, false)) {
+                generator_delete_digger(digger->generator, door_digger);
+            }
+        }
+    }
 }
 
 
@@ -302,18 +400,18 @@ doors(struct digger *digger)
         struct digger *left_digger = generator_copy_digger(digger->generator,
                                                            digger);
         digger_turn_90_degrees_left(left_digger);
-        if (!space_beyond_door(left_digger, false)) return false;
+        if (!space_beyond_door(left_digger, wall_type_door, false)) return false;
     }
     
     if (door_right) {
         struct digger *right_digger = generator_copy_digger(digger->generator,
                                                             digger);
         digger_turn_90_degrees_right(right_digger);
-        if (!space_beyond_door(right_digger, false)) return false;
+        if (!space_beyond_door(right_digger, wall_type_door, false)) return false;
     }
     
     if (door_ahead) {
-        if (!space_beyond_door(digger, true)) return false;
+        if (!space_beyond_door(digger, wall_type_door, true)) return false;
     } else {
         if (!digger_dig_passage(digger, 3, wall_type_none)) return false;
     }
@@ -564,7 +662,7 @@ rooms(struct digger *digger, enum wall_type entrance_type)
         // TODO: don't fail if no possible exit
         struct digger *exit_digger = exit_location(digger, room);
         if (!exit_digger) return false;
-        if (!space_beyond_door(exit_digger, false)) return false;
+        if (!space_beyond_door(exit_digger, wall_type_door, false)) return false;
     }
     
     for (int i = 0; i < passage_count; ++i) {
@@ -573,6 +671,10 @@ rooms(struct digger *digger, enum wall_type entrance_type)
         if (!exit_digger) return false;
         // TODO: check exit direction
         if (!digger_dig_passage(exit_digger, 3, wall_type_none)) return false;
+    }
+    
+    if (check_for_secret_doors) {
+        if (!check_area_for_secret_doors(digger, room)) return false;
     }
     
     generator_delete_digger(digger->generator, digger);
@@ -753,22 +855,24 @@ side_passages(struct digger *digger)
 
 
 static bool
-space_beyond_door(struct digger *digger, bool is_straight_ahead)
+space_beyond_door(struct digger *digger,
+                  enum wall_type door_type,
+                  bool is_straight_ahead)
 {
     int score = roll("1d20", digger->generator->rnd);
     if (score <= 4) {
         // parallel passage or 10x10 room
         if (is_straight_ahead) {
-            if (!digger_dig_room(digger, 1, 1, 0, wall_type_door)) return true;
+            if (!digger_dig_room(digger, 1, 1, 0, door_type)) return true;
         } else {
             if (digger->generator->padding) {
                 int const distance = digger->generator->padding;
-                if (!digger_dig_passage(digger, distance, wall_type_door)) {
+                if (!digger_dig_passage(digger, distance, door_type)) {
                     return false;
                 }
                 if (!digger_dig_intersection(digger)) return false;
             } else {
-                if (!digger_dig_passage(digger, 1, wall_type_door)) {
+                if (!digger_dig_passage(digger, 1, door_type)) {
                     return false;
                 }
             }
@@ -786,24 +890,24 @@ space_beyond_door(struct digger *digger, bool is_straight_ahead)
         return true;
     } else if (score <= 8) {
         // passage straight ahead
-        if (!digger_dig_passage(digger, 3, wall_type_door)) return false;
+        if (!digger_dig_passage(digger, 3, door_type)) return false;
         return true;
     } else if (score == 9) {
         // passage 45 degrees ahead/behind
         // TODO: 45 degree turn
-        if (!digger_dig_passage(digger, 3, wall_type_door)) return false;
+        if (!digger_dig_passage(digger, 3, door_type)) return false;
         return true;
     } else if (score == 10) {
         // passage 45 degrees behind/ahead
         // TODO: 45 degree turn
-        if (!digger_dig_passage(digger, 3, wall_type_door)) return false;
+        if (!digger_dig_passage(digger, 3, door_type)) return false;
         return true;
     } else if (score <= 18) {
         if (is_straight_ahead || !digger->generator->padding) {
-            if (!rooms(digger, wall_type_door)) return false;
+            if (!rooms(digger, door_type)) return false;
         } else if (digger->generator->padding) {
             int const distance = digger->generator->padding;
-            if (!digger_dig_passage(digger, distance, wall_type_door)) {
+            if (!digger_dig_passage(digger, distance, door_type)) {
                 return true;
             }
             if (!rooms(digger, wall_type_none)) return false;
@@ -811,10 +915,10 @@ space_beyond_door(struct digger *digger, bool is_straight_ahead)
         return true;
     } else {
         if (is_straight_ahead || !digger->generator->padding) {
-            if (!chambers(digger, wall_type_door)) return false;
+            if (!chambers(digger, door_type)) return false;
         } else {
             int const distance = digger->generator->padding;
-            if (!digger_dig_passage(digger, distance, wall_type_door)) {
+            if (!digger_dig_passage(digger, distance, door_type)) {
                 return false;
             }
             if (!chambers(digger, wall_type_none)) return false;

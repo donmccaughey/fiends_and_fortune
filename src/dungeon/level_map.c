@@ -203,6 +203,8 @@ tile_bottom_half(struct level_map const *level_map,
         strcpy(half_tile, "----");
     } else if (wall_type_door == tile->walls.south) {
         strcpy(half_tile, "-[-]");
+    } else if (wall_type_secret_door == tile->walls.south) {
+        strcpy(half_tile, "--s-");
     }
     
     // west wall
@@ -269,6 +271,8 @@ tile_top_half(struct level_map const *level_map,
     } else if (wall_type_door == tile->walls.west) {
         half_tile[0] = '|';
         half_tile[1] = ']';
+    } else if (wall_type_secret_door == tile->walls.west) {
+        half_tile[0] = 's';
     }
     
     // features
