@@ -11,6 +11,7 @@ static struct {
     { action_check, "check" },
     { action_dungeon, "dungeon" },
     { action_each, "each" },
+    { action_game, "game" },
     { action_magic, "magic" },
     { action_map, "map" },
     { action_table, "table" },

@@ -8,6 +8,8 @@
 
 #include "dungeon/dungeon.h"
 
+#include "game/game.h"
+
 #include "treasure/gem.h"
 #include "treasure/jewelry.h"
 #include "treasure/treasure_map.h"
@@ -45,6 +47,9 @@ generate_treasure_type(struct rnd *rnd, FILE *out, char letter);
 
 static void
 generate_treasure_type_table(FILE *out);
+
+static void
+play_game(struct rnd *rnd);
 
 static void
 print_dungeon(struct dungeon *dungeon, FILE *out);
@@ -298,46 +303,58 @@ main(int argc, char *argv[])
         return options->error? EXIT_FAILURE : EXIT_SUCCESS;
     }
     
-    fprintf(out, "Fiends and Fortune\n");
-    switch (options->action) {
-        case action_character:
-            generate_character(options->rnd, out, options->character_method);
-            break;
-        case action_check:
-            check(out, options->check_constant);
-            break;
-        case action_dungeon:
-            if (options->dungeon_type_small) {
-                generate_sample_dungeon(options->rnd, out);
-            } else {
-                generate_random_dungeon(options->rnd, out);
-            }
-            break;
-        case action_each:
-            generate_each_treasure(options->rnd, out);
-            break;
-        case action_magic:
-            generate_magic_items(options->rnd, out, options->magic_count);
-            break;
-        case action_map:
-            generate_map(options->rnd, out);
-            break;
-        case action_table:
-            generate_treasure_type_table(out);
-            break;
-        case action_treasure:
-            generate_treasure_type(options->rnd, out, options->treasure_type);
-            break;
-        default:
-            fprintf(stderr, "%s: unrecognized option\n", options->command_name);
-            break;
+    if (action_game == options->action) {
+        play_game(options->rnd);
+    } else {
+        fprintf(out, "Fiends and Fortune\n");
+        switch (options->action) {
+            case action_character:
+                generate_character(options->rnd, out, options->character_method);
+                break;
+            case action_check:
+                check(out, options->check_constant);
+                break;
+            case action_dungeon:
+                if (options->dungeon_type_small) {
+                    generate_sample_dungeon(options->rnd, out);
+                } else {
+                    generate_random_dungeon(options->rnd, out);
+                }
+                break;
+            case action_each:
+                generate_each_treasure(options->rnd, out);
+                break;
+            case action_magic:
+                generate_magic_items(options->rnd, out, options->magic_count);
+                break;
+            case action_map:
+                generate_map(options->rnd, out);
+                break;
+            case action_table:
+                generate_treasure_type_table(out);
+                break;
+            case action_treasure:
+                generate_treasure_type(options->rnd, out, options->treasure_type);
+                break;
+            default:
+                fprintf(stderr, "%s: unrecognized option\n", options->command_name);
+                break;
+        }
+        fprintf(out, "\n");
     }
-    
-    fprintf(out, "\n");
     
     options_free(options);
     alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
+}
+
+
+static void
+play_game(struct rnd *rnd)
+{
+    struct game *game = game_alloc();
+    game_play(game);
+    game_free(game);
 }
 
 

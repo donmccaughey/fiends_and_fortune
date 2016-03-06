@@ -236,6 +236,7 @@ options_print_usage(struct options const *options)
     fprintf(out, "  dungeon [TYPE]      generate a dungeon where TYPE is\n");
     fprintf(out, "                        `random' or `small' (default `random')\n");
     fprintf(out, "  each                generate one of each treasure\n");
+    fprintf(out, "  game                play the game\n");
     fprintf(out, "  magic [COUNT]       generate COUNT magic items (default 10)\n");
     fprintf(out, "  map                 generate one treasure map\n");
     fprintf(out, "  table               generate the treasure type table\n");
