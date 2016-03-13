@@ -23,6 +23,8 @@ int
 game_play(struct game *game)
 {
     initscr();
+    wborder(stdscr, '|', '|', '-', '-', '+', '+', '+', '+');
+    move(1, 1);
     printw("Hello, world!");
     refresh();
     getch();
