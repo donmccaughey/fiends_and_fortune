@@ -1,9 +1,12 @@
 #ifndef FNF_GAME_GAME_H_INCLUDED
 #define FNF_GAME_GAME_H_INCLUDED
 
+#include <ncurses.h>
+#include <menu.h>
+
 
 struct game {
-    
+    MENU *menu;
 };
 
 

@@ -43,13 +43,14 @@
 		D4092F901B65D6C200BFD0B3 /* str.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F861B65D6C200BFD0B3 /* str.c */; };
 		D4092F911B65D6C200BFD0B3 /* str.h in Headers */ = {isa = PBXBuildFile; fileRef = D4092F871B65D6C200BFD0B3 /* str.h */; };
 		D4092F941B65D80800BFD0B3 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D4092F931B65D80800BFD0B3 /* main.c */; };
+		D414ED341C9637AE0067AF0B /* libncurses.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D414ED331C9637AE0067AF0B /* libncurses.tbd */; };
+		D414ED361C9637E60067AF0B /* libmenu.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D414ED351C9637E60067AF0B /* libmenu.tbd */; };
 		D47B33E61C71D1C300390717 /* check.out in CopyFiles */ = {isa = PBXBuildFile; fileRef = D406B65E1C71CAF30037171B /* check.out */; };
 		D47B33E71C71D1C300390717 /* check.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D47B33DF1C71CDAC00390717 /* check.sh */; };
 		D47B33EC1C7444C400390717 /* options.c in Sources */ = {isa = PBXBuildFile; fileRef = D47B33EA1C7444C400390717 /* options.c */; };
 		D47B33EF1C74539B00390717 /* action.c in Sources */ = {isa = PBXBuildFile; fileRef = D47B33EE1C74539B00390717 /* action.c */; };
 		D47B33F21C7561DF00390717 /* method.c in Sources */ = {isa = PBXBuildFile; fileRef = D47B33F01C7561DF00390717 /* method.c */; };
 		D47B33F31C7561DF00390717 /* method.h in Headers */ = {isa = PBXBuildFile; fileRef = D47B33F11C7561DF00390717 /* method.h */; };
-		D4AE5AF51C94FF9200F29972 /* libmenu.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D4AE5AF41C94FF9200F29972 /* libmenu.tbd */; };
 		D4BD32A71B6A06560007527A /* coins.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BD32991B6A06560007527A /* coins.c */; };
 		D4BD32A81B6A06560007527A /* coins.h in Headers */ = {isa = PBXBuildFile; fileRef = D4BD329A1B6A06560007527A /* coins.h */; };
 		D4BD32A91B6A06560007527A /* gem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BD329B1B6A06560007527A /* gem.c */; };
@@ -76,7 +77,6 @@
 		D4D495C11C643D2600BC80C9 /* level_map.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D495BF1C643D2600BC80C9 /* level_map.h */; };
 		D4E9A5151C8BB722005ED58A /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = D4E9A5131C8BB722005ED58A /* game.c */; };
 		D4E9A5161C8BB722005ED58A /* game.h in Headers */ = {isa = PBXBuildFile; fileRef = D4E9A5141C8BB722005ED58A /* game.h */; };
-		D4E9A5181C8BB859005ED58A /* libncurses.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D4E9A5171C8BB859005ED58A /* libncurses.tbd */; };
 		D4EA14DA1C5EE1A400EF508F /* generator.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA14D81C5EE1A400EF508F /* generator.c */; };
 		D4EA14DB1C5EE1A400EF508F /* generator.h in Headers */ = {isa = PBXBuildFile; fileRef = D4EA14D91C5EE1A400EF508F /* generator.h */; };
 		D4EA14DE1C602CDB00EF508F /* digger.c in Sources */ = {isa = PBXBuildFile; fileRef = D4EA14DC1C602CDB00EF508F /* digger.c */; };
@@ -184,6 +184,8 @@
 		D4092F861B65D6C200BFD0B3 /* str.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = str.c; sourceTree = "<group>"; };
 		D4092F871B65D6C200BFD0B3 /* str.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = str.h; sourceTree = "<group>"; };
 		D4092F931B65D80800BFD0B3 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		D414ED331C9637AE0067AF0B /* libncurses.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libncurses.tbd; path = usr/lib/libncurses.tbd; sourceTree = SDKROOT; };
+		D414ED351C9637E60067AF0B /* libmenu.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libmenu.tbd; path = usr/lib/libmenu.tbd; sourceTree = SDKROOT; };
 		D41D32CA1A4339BC00484607 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D41D32CB1A4339BC00484607 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D43ED590142146F800D25EEC /* unit_tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit_tests; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -196,7 +198,6 @@
 		D47B33EE1C74539B00390717 /* action.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = action.c; sourceTree = "<group>"; };
 		D47B33F01C7561DF00390717 /* method.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = method.c; sourceTree = "<group>"; };
 		D47B33F11C7561DF00390717 /* method.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = method.h; sourceTree = "<group>"; };
-		D4AE5AF41C94FF9200F29972 /* libmenu.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libmenu.tbd; path = usr/lib/libmenu.tbd; sourceTree = SDKROOT; };
 		D4BCC61517D30DD000C76D11 /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
 		D4BD32991B6A06560007527A /* coins.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coins.c; sourceTree = "<group>"; };
 		D4BD329A1B6A06560007527A /* coins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coins.h; sourceTree = "<group>"; };
@@ -224,7 +225,6 @@
 		D4D495BF1C643D2600BC80C9 /* level_map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = level_map.h; sourceTree = "<group>"; };
 		D4E9A5131C8BB722005ED58A /* game.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = game.c; sourceTree = "<group>"; };
 		D4E9A5141C8BB722005ED58A /* game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
-		D4E9A5171C8BB859005ED58A /* libncurses.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libncurses.tbd; path = usr/lib/libncurses.tbd; sourceTree = SDKROOT; };
 		D4EA14D81C5EE1A400EF508F /* generator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = generator.c; sourceTree = "<group>"; };
 		D4EA14D91C5EE1A400EF508F /* generator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = generator.h; sourceTree = "<group>"; };
 		D4EA14DC1C602CDB00EF508F /* digger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = digger.c; sourceTree = "<group>"; };
@@ -252,9 +252,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D414ED361C9637E60067AF0B /* libmenu.tbd in Frameworks */,
+				D414ED341C9637AE0067AF0B /* libncurses.tbd in Frameworks */,
 				D4092F611B65D42B00BFD0B3 /* libfnf.a in Frameworks */,
-				D4AE5AF51C94FF9200F29972 /* libmenu.tbd in Frameworks */,
-				D4E9A5181C8BB859005ED58A /* libncurses.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,6 +326,15 @@
 				D47B33EA1C7444C400390717 /* options.c */,
 			);
 			path = fnf;
+			sourceTree = "<group>";
+		};
+		D414ED371C9638100067AF0B /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				D414ED351C9637E60067AF0B /* libmenu.tbd */,
+				D414ED331C9637AE0067AF0B /* libncurses.tbd */,
+			);
+			name = Libraries;
 			sourceTree = "<group>";
 		};
 		D4BD32981B6A06560007527A /* treasure */ = {
@@ -412,14 +421,13 @@
 		D4F73444140EF3DF0096618F = {
 			isa = PBXGroup;
 			children = (
-				D4AE5AF41C94FF9200F29972 /* libmenu.tbd */,
-				D4E9A5171C8BB859005ED58A /* libncurses.tbd */,
 				D41D32CA1A4339BC00484607 /* LICENSE */,
 				D41D32CB1A4339BC00484607 /* README.md */,
 				B0F476949E9068D9FFB2A6D8 /* TODO.txt */,
 				D4BCC61517D30DD000C76D11 /* docs */,
 				D4F73460140EF4380096618F /* src */,
 				D406B65D1C71CAF30037171B /* tests */,
+				D414ED371C9638100067AF0B /* Libraries */,
 				D4F73450140EF3E00096618F /* Products */,
 			);
 			sourceTree = "<group>";
