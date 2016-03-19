@@ -10,49 +10,56 @@
 
 struct result {
     enum result_type type;
-    union {
-        int error_code;
-    };
+    int error_code;
 };
 
 
 inline bool
-result_is_success(struct result result) {
+result_is_success(struct result result)
+{
     return result_type_success == result.type;
 }
 
 
 inline struct result
-result_make_success(void) {
-    return (struct result){
-        .type=result_type_success
-    };
+result_success(void)
+{
+    return (struct result){ .type=result_type_success };
 }
 
-
+    
 inline struct result
-result_make_system_error(void) {
+result_system_error(void)
+{
     return (struct result){
         .type=result_type_system_error,
         .error_code=errno
     };
 }
 
+    
+inline struct result
+result_ncurses_err(void)
+{
+    return (struct result){ .type=result_type_ncurses_err };
+}
+
 
 inline struct result
-result_make_ncurses_err(void) {
+result_ncurses_error(int error_code)
+{
     return (struct result){
-        .type=result_type_ncurses_err
+        .type=result_type_ncurses_error,
+        .error_code=error_code
     };
 }
 
 
 inline struct result
-result_make_ncurses_error(int error_code) {
-    return (struct result){
-        .type=result_type_ncurses_error,
-        .error_code=error_code
-    };
+result_set_system_error(int error_code)
+{
+    errno = error_code;
+    return result_system_error();
 }
 
 

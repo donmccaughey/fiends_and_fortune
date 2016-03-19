@@ -47,6 +47,8 @@
 		D414ED361C9637E60067AF0B /* libmenu.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D414ED351C9637E60067AF0B /* libmenu.tbd */; };
 		D414ED3A1C9CD2560067AF0B /* result.c in Sources */ = {isa = PBXBuildFile; fileRef = D414ED381C9CD2560067AF0B /* result.c */; };
 		D414ED3B1C9CD2560067AF0B /* result.h in Headers */ = {isa = PBXBuildFile; fileRef = D414ED391C9CD2560067AF0B /* result.h */; };
+		D414ED3F1C9CF09A0067AF0B /* selection.c in Sources */ = {isa = PBXBuildFile; fileRef = D414ED3D1C9CF09A0067AF0B /* selection.c */; };
+		D414ED401C9CF09A0067AF0B /* selection.h in Headers */ = {isa = PBXBuildFile; fileRef = D414ED3E1C9CF09A0067AF0B /* selection.h */; };
 		D47B33E61C71D1C300390717 /* check.out in CopyFiles */ = {isa = PBXBuildFile; fileRef = D406B65E1C71CAF30037171B /* check.out */; };
 		D47B33E71C71D1C300390717 /* check.sh in CopyFiles */ = {isa = PBXBuildFile; fileRef = D47B33DF1C71CDAC00390717 /* check.sh */; };
 		D47B33EC1C7444C400390717 /* options.c in Sources */ = {isa = PBXBuildFile; fileRef = D47B33EA1C7444C400390717 /* options.c */; };
@@ -191,6 +193,8 @@
 		D414ED381C9CD2560067AF0B /* result.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = result.c; sourceTree = "<group>"; };
 		D414ED391C9CD2560067AF0B /* result.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = result.h; sourceTree = "<group>"; };
 		D414ED3C1C9CD2860067AF0B /* result_type.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = result_type.h; sourceTree = "<group>"; };
+		D414ED3D1C9CF09A0067AF0B /* selection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = selection.c; sourceTree = "<group>"; };
+		D414ED3E1C9CF09A0067AF0B /* selection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = selection.h; sourceTree = "<group>"; };
 		D41D32CA1A4339BC00484607 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		D41D32CB1A4339BC00484607 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D43ED590142146F800D25EEC /* unit_tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = unit_tests; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -422,6 +426,8 @@
 			children = (
 				D4E9A5141C8BB722005ED58A /* game.h */,
 				D4E9A5131C8BB722005ED58A /* game.c */,
+				D414ED3E1C9CF09A0067AF0B /* selection.h */,
+				D414ED3D1C9CF09A0067AF0B /* selection.c */,
 			);
 			path = game;
 			sourceTree = "<group>";
@@ -471,6 +477,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D4E9A5161C8BB722005ED58A /* game.h in Headers */,
+				D414ED401C9CF09A0067AF0B /* selection.h in Headers */,
 				D414ED3B1C9CD2560067AF0B /* result.h in Headers */,
 				D4092F911B65D6C200BFD0B3 /* str.h in Headers */,
 				D4BD32B21B6A06560007527A /* treasure_map.h in Headers */,
@@ -637,6 +644,7 @@
 				D4E9A5151C8BB722005ED58A /* game.c in Sources */,
 				D4D495B81C6321A000BC80C9 /* orientation.c in Sources */,
 				D47B33F21C7561DF00390717 /* method.c in Sources */,
+				D414ED3F1C9CF09A0067AF0B /* selection.c in Sources */,
 				D406B64B1C66C60F0037171B /* size.c in Sources */,
 				D4092F8A1B65D6C200BFD0B3 /* dice.c in Sources */,
 				B0F470B6DFA53A807F7AE464 /* point.c in Sources */,
