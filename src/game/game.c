@@ -1,7 +1,12 @@
 #include "game.h"
 
-#include <assert.h>
+#include <ctype.h>
+#include <errno.h>
+#include <limits.h>
+#include <string.h>
+
 #include "common/alloc_or_die.h"
+#include "common/result.h"
 
 
 struct {
@@ -15,6 +20,53 @@ struct {
 };
 int action_menu_items_count = sizeof action_menu_items
                             / sizeof action_menu_items[0];
+
+
+static struct result
+get_menu_selection(MENU *menu, WINDOW *window);
+
+
+static struct result
+draw_window(WINDOW *window, char const *title)
+{
+    int result = wborder(window, '|', '|', '-', '-', '+', '+', '+', '+');
+    if (OK != result) return result_make_ncurses_err();
+    
+    // TODO: handle UTF-8 correctly
+    size_t title_string_length = strlen(title);
+    if (title_string_length > (size_t)INT_MAX) {
+        errno = ERANGE;
+        return result_make_system_error();
+    }
+    
+    if (title_string_length) {
+        int title_string_width = (int)title_string_length;
+        int window_height;
+        int window_width;
+        getmaxyx(window, window_height, window_width);
+        
+        char const left_frame[] = "| ";
+        char const right_frame[] = " |";
+        
+        int const left_frame_width = sizeof(left_frame) - 1;
+        int const right_frame_width = sizeof(right_frame) - 1;
+        
+        int const left_border_width = 1;
+        int const right_border_width = 1;
+        
+        int window_top_width = window_width - left_border_width - right_border_width;
+        int title_width = left_frame_width + title_string_width + right_frame_width;
+        if (window_top_width >= title_width) {
+            int start = left_border_width + (window_top_width - title_width) / 2;
+            mvwprintw(window, 0, start, "%s%s%s", left_frame, title, right_frame);
+        } else {
+            // TODO: elide title
+        }
+    }
+    
+    result = wrefresh(window);
+    return (ERR == result) ? result_make_ncurses_err() : result_make_success();
+}
 
 
 struct game *
@@ -88,16 +140,13 @@ game_free(struct game *game)
 int
 game_play(struct game *game)
 {
-    int result;
+    struct result result = draw_window(stdscr, "Fiends and Fortune");
+    if (!result_is_success(result)) return -1;
     
-    wborder(stdscr, '|', '|', '-', '-', '+', '+', '+', '+');
-    result = refresh();
-    if (ERR == result) return -1;
-
     int menu_height;
     int menu_width;
-    result = scale_menu(game->menu, &menu_height, &menu_width);
-    if (E_OK != result) return -1;
+    int result_code = scale_menu(game->menu, &menu_height, &menu_width);
+    if (E_OK != result_code) return -1;
     
     int main_window_height;
     int main_window_width;
@@ -112,16 +161,20 @@ game_play(struct game *game)
                                  menu_window_y, menu_window_x);
     if (!menu_window) return -1;
     
-    result = keypad(menu_window, TRUE);
-    if (ERR == result) {
+    result_code = keypad(menu_window, TRUE);
+    if (ERR == result_code) {
         delwin(menu_window);
         return -1;
     }
     
-    wborder(menu_window, '|', '|', '-', '-', '+', '+', '+', '+');
+    result = draw_window(menu_window, "Action");
+    if (!result_is_success(result)) {
+        delwin(menu_window);
+        return -1;
+    }
     
-    result = set_menu_win(game->menu, menu_window);
-    if (E_OK != result) {
+    result_code = set_menu_win(game->menu, menu_window);
+    if (E_OK != result_code) {
         delwin(menu_window);
         return -1;
     }
@@ -138,76 +191,93 @@ game_play(struct game *game)
         return -1;
     }
     
-    result = set_menu_sub(game->menu, menu_sub);
-    if (E_OK != result) {
+    result_code = set_menu_sub(game->menu, menu_sub);
+    if (E_OK != result_code) {
         delwin(menu_sub);
         delwin(menu_window);
         return -1;
     }
     
-    result = set_menu_sub(game->menu, menu_sub);
-    if (E_OK != result) {
+    result_code = set_menu_sub(game->menu, menu_sub);
+    if (E_OK != result_code) {
         delwin(menu_sub);
         delwin(menu_window);
         return -1;
     }
     
-    result = post_menu(game->menu);
-    if (E_OK != result) {
+    result_code = post_menu(game->menu);
+    if (E_OK != result_code) {
         delwin(menu_sub);
         delwin(menu_window);
         return -1;
     }
     
-    result = wrefresh(menu_window);
-    if (ERR == result) {
+    result_code = wrefresh(menu_window);
+    if (ERR == result_code) {
         unpost_menu(game->menu);
         delwin(menu_sub);
         delwin(menu_window);
         return -1;
     }
     
+    result = get_menu_selection(game->menu, menu_window);
+    if (!result_is_success(result)) return -1;
+    
     bool has_error = false;
+    result_code = unpost_menu(game->menu);
+    if (E_OK != result_code) has_error = true;
+    
+    result_code = delwin(menu_sub);
+    if (E_OK != result_code) has_error = true;
+
+    result_code = delwin(menu_window);
+    if (ERR == result_code) has_error = true;
+    
+    return has_error ? -1 : 0;
+}
+
+
+static struct result
+get_menu_selection(MENU *menu, WINDOW *window)
+{
     while (true) {
-        int ch = wgetch(menu_window);
+        int ch = wgetch(window);
         
-        if (ERR == ch) {
-            has_error = true;
-            break;
-        }
+        if (ERR == ch) return result_make_ncurses_err();
         
         if (KEY_DOWN == ch) {
-            result = menu_driver(game->menu, REQ_DOWN_ITEM);
+            int result = menu_driver(menu, REQ_DOWN_ITEM);
             if (   E_REQUEST_DENIED != result
                 && E_OK != result)
             {
-                has_error = true;
+                return result_make_ncurses_error(result);
             }
         }
         
         if (KEY_UP == ch) {
-            result = menu_driver(game->menu, REQ_UP_ITEM);
+            int result = menu_driver(menu, REQ_UP_ITEM);
             if (   E_REQUEST_DENIED != result
                 && E_OK != result)
             {
-                has_error = true;
+                return result_make_ncurses_error(result);
             }
         }
         
-        if ('1' == ch) break;
-        if ('2' == ch) break;
-        if ('3' == ch) break;
-        if ('q' == ch) break;
+        if ('\r' == ch) break;
+        
+        if (!isalnum(ch)) continue;
+        
+        ITEM **items = menu_items(menu);
+        if (items) {
+            for (int i = 0; i < item_count(menu); ++i) {
+                char const *name = item_name(items[i]);
+                if (name && ch == name[0]) {
+                    set_current_item(menu, items[i]);
+                    return result_make_success();
+                }
+            }
+        }
     }
     
-    result = unpost_menu(game->menu);
-    if (E_OK != result) has_error = true;
-    
-    result = delwin(menu_sub);
-    if (E_OK != result) has_error = true;
-
-    result = delwin(menu_window);
-    if (ERR == result) has_error = true;
-    
-    return has_error ? -1 : 0;
+    return result_make_success();
 }
