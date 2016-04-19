@@ -92,23 +92,37 @@ get_selection(struct selection *selection)
 
 
 struct result
-selection_add_item(struct selection *selection, char const *description)
+selection_add_item(struct selection *selection,
+                   char const *description,
+                   selection_action_fn *action)
 {
     if (!selection) return result_set_system_error(EINVAL);
     if (!description) return result_set_system_error(EINVAL);
     if (!description[0]) return result_set_system_error(EINVAL);
         
     int index = selection->items_count;
+    int null_index = index + 1;
     ++selection->items_count;
     selection->items = reallocarray_or_die(selection->items,
                                            selection->items_count + 1,
                                            sizeof(ITEM *));
     
-    char name[2] = "1";
+    char name[] = "1";
     name[0] += index;
-    selection->items[index] = new_item(strdup_or_die(name),
-                                       strdup_or_die(description));
-    if (!selection->items[index]) return result_system_error();
+    char *name_dup = strdup_or_die(name);
+    char *description_dup = strdup_or_die(description);
+    selection->items[index] = new_item(name_dup, description_dup);
+    if (!selection->items[index]) {
+        free_or_die(description_dup);
+        free_or_die(name_dup);
+        return result_system_error();
+    }
+    
+    struct selection_item *selection_item = calloc_or_die(1, sizeof(struct selection_item));
+    selection_item->action = action;
+    set_item_userptr(selection->items[index], selection_item);
+    
+    selection->items[null_index] = NULL;
     
     return result_success();
 }
@@ -145,6 +159,7 @@ selection_free(struct selection *selection)
     for (int i = 0; i < selection->items_count; ++i) {
         free_or_die((char *)item_name(selection->items[i]));
         free_or_die((char *)item_description(selection->items[i]));
+        free_or_die(item_userptr(selection->items[i]));
         free_item(selection->items[i]);
     }
     free_or_die(selection->items);
@@ -153,20 +168,34 @@ selection_free(struct selection *selection)
 }
 
 
+selection_action_fn *
+selection_selected_action(struct selection *selection)
+{
+    if (selection->index < 0) return NULL;
+    if (selection->index >= selection->items_count) return NULL;
+    
+    ITEM *item = selection->items[selection->index];
+    struct selection_item *selection_item = item_userptr(item);
+    return selection_item->action;
+}
+
+
 struct result
 selection_show(struct selection *selection, WINDOW *parent)
 {
-    if (!selection) {
-        return result_set_system_error(EINVAL);
-    }
+    if (!selection) return result_set_system_error(EINVAL);
     
     selection->menu = new_menu(selection->items);
+    if (!selection->menu) return result_ncurses_errno();
     
     int menu_height;
     int menu_width;
     int code = scale_menu(selection->menu, &menu_height, &menu_width);
     if (E_OK != code) return result_ncurses_error(code);
-        
+    
+    int title_width = (int)strlen(selection->title) + 1;
+    if (title_width > menu_width) menu_width = title_width;
+    
     int main_window_height;
     int main_window_width;
     getmaxyx(parent, main_window_height, main_window_width);
@@ -181,13 +210,13 @@ selection_show(struct selection *selection, WINDOW *parent)
     if (!selection->window) return result_ncurses_err();
     
     code = keypad(selection->window, TRUE);
-    if (ERR == code) return result_ncurses_error(code);
+    if (ERR == code) return result_ncurses_err();
         
     struct result result = draw_window(selection);
     if (!result_is_success(result)) return result;
     
     code = set_menu_win(selection->menu, selection->window);
-    if (E_OK != code) return result_ncurses_err();
+    if (E_OK != code) return result_ncurses_error(code);
     
     int menu_sub_height = menu_height;
     int menu_sub_width = menu_width;
@@ -200,14 +229,14 @@ selection_show(struct selection *selection, WINDOW *parent)
     if (!selection->sub_window) return result_ncurses_err();
     
     code = set_menu_sub(selection->menu, selection->sub_window);
-    if (E_OK != code) return result_ncurses_err();
+    if (E_OK != code) return result_ncurses_error(code);
     
     selection->index = 0;
     code = post_menu(selection->menu);
     if (E_OK != code) return result_ncurses_error(code);
     
     code = wrefresh(selection->window);
-    if (ERR == code) return result_ncurses_error(code);
+    if (ERR == code) return result_ncurses_err();
         
     result = get_selection(selection);
     if (!result_is_success(result)) return result;
@@ -217,7 +246,13 @@ selection_show(struct selection *selection, WINDOW *parent)
     
     code = unpost_menu(selection->menu);
     if (E_OK != code) return result_ncurses_error(code);
+    
+    code = wclear(selection->window);
+    if (ERR == code) return result_ncurses_err();
         
+    code = wrefresh(selection->window);
+    if (ERR == code) return result_ncurses_err();
+    
     code = free_menu(selection->menu);
     if (E_OK != code) return result_ncurses_error(code);
     selection->menu = NULL;
@@ -229,6 +264,6 @@ selection_show(struct selection *selection, WINDOW *parent)
     code = delwin(selection->window);
     if (E_OK != code) return result_ncurses_error(code);
     selection->window = NULL;
-        
+    
     return result_success();
 }

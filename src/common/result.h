@@ -46,6 +46,16 @@ result_ncurses_err(void)
 
 
 inline struct result
+result_ncurses_errno(void)
+{
+    return (struct result){
+        .type=result_type_ncurses_error,
+        .error_code=errno
+    };
+}
+
+
+inline struct result
 result_ncurses_error(int error_code)
 {
     return (struct result){

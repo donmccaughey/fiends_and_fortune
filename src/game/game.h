@@ -4,13 +4,16 @@
 #include <ncurses.h>
 
 
+struct rnd;
+
+
 struct game {
-    
+    struct rnd *rnd;
 };
 
 
 struct game *
-game_alloc(void);
+game_alloc(struct rnd *rnd);
 
 void
 game_free(struct game *game);

@@ -14,6 +14,9 @@ extern inline struct result
 result_ncurses_err(void);
 
 extern inline struct result
+result_ncurses_errno(void);
+
+extern inline struct result
 result_ncurses_error(int error_code);
 
 extern inline struct result

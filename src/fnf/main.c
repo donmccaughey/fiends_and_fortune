@@ -352,7 +352,7 @@ main(int argc, char *argv[])
 static void
 play_game(struct rnd *rnd)
 {
-    struct game *game = game_alloc();
+    struct game *game = game_alloc(rnd);
     game_play(game);
     game_free(game);
 }

@@ -5,7 +5,12 @@
 #include <menu.h>
 
 
+struct game;
 struct result;
+
+
+typedef struct result
+(selection_action_fn)(struct game *game);
 
 
 struct selection {
@@ -19,6 +24,11 @@ struct selection {
 };
 
 
+struct selection_item {
+    selection_action_fn *action;
+};
+
+
 struct selection *
 selection_alloc(char const *title);
 
@@ -26,13 +36,15 @@ void
 selection_free(struct selection *selection);
 
 struct result
-selection_add_item(struct selection *selection, char const *description);
+selection_add_item(struct selection *selection,
+                   char const *description,
+                   selection_action_fn *action);
 
 struct result
 selection_show(struct selection *selection, WINDOW *parent);
 
-int
-selection_index(struct selection *selection);
+selection_action_fn *
+selection_selected_action(struct selection *selection);
 
 
 #endif
