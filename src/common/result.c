@@ -1,5 +1,32 @@
 #include "result.h"
 
+#include <stdio.h>
+#include <string.h>
+
+
+void
+result_print_error(struct result result)
+{
+    switch (result.type) {
+        case result_type_success:
+            break;
+        case result_type_ncurses_err:
+            fprintf(stderr, "Ncurses Error\n");
+            break;
+        case result_type_ncurses_error:
+            fprintf(stderr, "Ncurses Error: %i: %s\n",
+                    result.error_code, strerror(result.error_code));
+            break;
+        case result_type_system_error:
+            fprintf(stderr, "System Error: %i: %s\n",
+                    result.error_code, strerror(result.error_code));
+            break;
+        default:
+            fprintf(stderr, "Error\n");
+            break;
+    }
+}
+
 
 extern inline bool
 result_is_success(struct result result);

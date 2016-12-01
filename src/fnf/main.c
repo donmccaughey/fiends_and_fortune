@@ -2,6 +2,7 @@
 
 #include "common/alloc_or_die.h"
 #include "common/dice.h"
+#include "common/result.h"
 #include "common/rnd.h"
 
 #include "character/character.h"
@@ -352,9 +353,12 @@ main(int argc, char *argv[])
 static void
 play_game(struct rnd *rnd)
 {
-    struct game *game = game_alloc(rnd);
-    game_play(game);
-    game_free(game);
+    struct game *game = game_alloc_or_die(rnd);
+    struct result result = game_show(game);
+    if (result_is_success(result)) result = game_run(game);
+    game_hide(game);
+    if (!result_is_success(result)) result_print_error(result);
+    game_free_or_die(game);
 }
 
 

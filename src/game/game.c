@@ -11,12 +11,14 @@
 static void
 draw_character_sheet(struct game *game, int characteristics[6])
 {
-    mvwprintw(stdscr, 0, 0, "Strength:     %2i\n", characteristics[0]);
-    mvwprintw(stdscr, 1, 0, "Intelligence: %2i\n", characteristics[1]);
-    mvwprintw(stdscr, 2, 0, "Wisdom:       %2i\n", characteristics[2]);
-    mvwprintw(stdscr, 3, 0, "Dexterity:    %2i\n", characteristics[3]);
-    mvwprintw(stdscr, 4, 0, "Constitution: %2i\n", characteristics[4]);
-    mvwprintw(stdscr, 5, 0, "Charisma:     %2i\n", characteristics[5]);
+    int x = 2;
+    int y = 1;
+    mvwprintw(stdscr, y + 0, x, "Strength:     %2i\n", characteristics[0]);
+    mvwprintw(stdscr, y + 1, x, "Intelligence: %2i\n", characteristics[1]);
+    mvwprintw(stdscr, y + 2, x, "Wisdom:       %2i\n", characteristics[2]);
+    mvwprintw(stdscr, y + 3, x, "Dexterity:    %2i\n", characteristics[3]);
+    mvwprintw(stdscr, y + 4, x, "Constitution: %2i\n", characteristics[4]);
+    mvwprintw(stdscr, y + 5, x, "Charisma:     %2i\n", characteristics[5]);
 }
 
 
@@ -132,7 +134,7 @@ create_character_using_method_special_NPC(struct game *game)
 static struct result
 create_character(struct game *game)
 {
-    struct selection *selection = selection_alloc("Create Character");
+    struct selection *selection = selection_alloc_or_die("Create Character");
     if (!selection) return result_system_error();
     
     selection_add_item(selection, "Simple", create_character_using_simple_method);
@@ -146,7 +148,7 @@ create_character(struct game *game)
     
     struct result result = selection_show(selection, stdscr);
     selection_action_fn *action = selection_selected_action(selection);
-    selection_free(selection);
+    selection_free_or_die(selection);
     if (!result_is_success(result)) return result;
     
     int code = wrefresh(stdscr);
@@ -179,82 +181,103 @@ generate_treasure(struct game *game)
 }
 
 
+static struct result
+quit_game(struct game *game)
+{
+    game->is_running = false;
+    return result_success();
+}
+
+
 struct game *
-game_alloc(struct rnd *rnd)
+game_alloc_or_die(struct rnd *rnd)
 {
     struct game *game = calloc_or_die(1, sizeof(struct game));
-    
     game->rnd = rnd;
-    
-    WINDOW *window = initscr();
-    if (!window) {
-        game_free(game);
-        return NULL;
-    }
-    
-    int result = cbreak();
-    if (ERR == result) {
-        game_free(game);
-        return NULL;
-    }
-    
-    result = noecho();
-    if (ERR == result) {
-        game_free(game);
-        return NULL;
-    }
-    
-    nonl();
-    
-    result = intrflush(stdscr, FALSE);
-    if (ERR == result) {
-        game_free(game);
-        return NULL;
-    }
-    
-    result = keypad(stdscr, TRUE);
-    if (ERR == result) {
-        game_free(game);
-        return NULL;
-    }
-    
     return game;
 }
 
 
 void
-game_free(struct game *game)
+game_free_or_die(struct game *game)
 {
-    if (!game) return;
-    
-    endwin();
     free_or_die(game);
 }
 
 
-int
-game_play(struct game *game)
+void
+game_hide(struct game *game)
 {
-    struct selection *selection = selection_alloc("Fiends & Fortune");
-    if (!selection) return -1;
+    if (game) endwin();
+}
+
+
+struct result
+game_run(struct game *game)
+{
+    game->is_running = true;
+    
+    struct selection *selection = selection_alloc_or_die("Fiends & Fortune");
     
     selection_add_item(selection, "Create Character", create_character);
     selection_add_item(selection, "Generate Treasure", generate_treasure);
     selection_add_item(selection, "Generate Dungeon", generate_dungeon);
-    selection_add_item(selection, "Quit", NULL);
+    selection_add_item(selection, "Quit", quit_game);
     
-    struct result result = selection_show(selection, stdscr);
-    selection_action_fn *action = selection_selected_action(selection);
-    selection_free(selection);
-    if (!result_is_success(result)) return -1;
-    
-    int code = wrefresh(stdscr);
-    if (ERR == code) return -1;
-    
-    if (action) {
-        result = action(game);
-        if (!result_is_success(result)) return -1;
+    struct result result = result_success();
+    while (game->is_running) {
+        result = selection_show(selection, stdscr);
+        if (!result_is_success(result)) break;
+        
+        int code = wrefresh(stdscr);
+        if (ERR == code) {
+            result = result_ncurses_err();
+            break;
+        }
+
+        selection_action_fn *action = selection_selected_action(selection);
+        if (action) {
+            result = action(game);
+            if (!result_is_success(result)) break;
+        }
+        
+        code = werase(stdscr);
+        if (ERR == code) {
+            result = result_ncurses_err();
+            break;
+        }
+        
+        code = wrefresh(stdscr);
+        if (ERR == code) {
+            result = result_ncurses_err();
+            break;
+        }
     }
     
-    return 0;
+    selection_free_or_die(selection);
+    return result;
+}
+
+
+struct result
+game_show(struct game *game)
+{
+    WINDOW *window = initscr();
+    if (!window) return result_ncurses_err();
+
+    int code = cbreak();
+    if (ERR == code) return result_ncurses_err();
+
+    code = noecho();
+    if (ERR == code) return result_ncurses_err();
+
+    nonl();
+
+    code = intrflush(stdscr, FALSE);
+    if (ERR == code) return result_ncurses_err();
+
+    code = keypad(stdscr, TRUE);
+    if (ERR == code) return result_ncurses_err();
+
+    return result_success();
 }

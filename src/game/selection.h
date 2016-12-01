@@ -30,10 +30,10 @@ struct selection_item {
 
 
 struct selection *
-selection_alloc(char const *title);
+selection_alloc_or_die(char const *title);
 
 void
-selection_free(struct selection *selection);
+selection_free_or_die(struct selection *selection);
 
 struct result
 selection_add_item(struct selection *selection,

@@ -1,5 +1,6 @@
 #include "selection.h"
 
+#include <assert.h>
 #include <ctype.h>
 #include <limits.h>
 
@@ -25,8 +26,8 @@ draw_window(struct selection *selection)
         int window_width;
         getmaxyx(selection->window, window_height, window_width);
         
-        char const left_frame[] = "| ";
-        char const right_frame[] = " |";
+        char const left_frame[] = "- ";
+        char const right_frame[] = " -";
         
         int const left_frame_width = sizeof(left_frame) - 1;
         int const right_frame_width = sizeof(right_frame) - 1;
@@ -129,12 +130,9 @@ selection_add_item(struct selection *selection,
 
 
 struct selection *
-selection_alloc(char const *title)
+selection_alloc_or_die(char const *title)
 {
-    if (!title || !title[0]) {
-        errno = EINVAL;
-        return NULL;
-    }
+    assert(title && title[0]);
     
     struct selection *selection = calloc_or_die(1, sizeof(struct selection));
     selection->index = -1;
@@ -145,7 +143,7 @@ selection_alloc(char const *title)
 
 
 void
-selection_free(struct selection *selection)
+selection_free_or_die(struct selection *selection)
 {
     if (!selection) return;
     

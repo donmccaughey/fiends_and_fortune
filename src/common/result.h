@@ -65,6 +65,10 @@ result_ncurses_error(int error_code)
 }
 
 
+void
+result_print_error(struct result result);
+
+
 inline struct result
 result_set_system_error(int error_code)
 {
