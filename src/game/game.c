@@ -1,5 +1,7 @@
 #include "game.h"
 
+#include <sys/ioctl.h>
+
 #include "character/character.h"
 
 #include "common/alloc_or_die.h"
@@ -166,7 +168,7 @@ create_character(struct game *game)
 static struct result
 generate_dungeon(struct game *game)
 {
-    mvprintw(1, 1, "Generate Dungeon");
+    mvprintw(1, 2, "Generate Dungeon");
     getch();
     return result_success();
 }
@@ -175,7 +177,7 @@ generate_dungeon(struct game *game)
 static struct result
 generate_treasure(struct game *game)
 {
-    mvprintw(1, 1, "Generate Treasure");
+    mvprintw(1, 2, "Generate Treasure");
     getch();
     return result_success();
 }
@@ -186,6 +188,15 @@ quit_game(struct game *game)
 {
     game->is_running = false;
     return result_success();
+}
+
+
+static void
+resize_window(int signal)
+{
+    struct winsize winsize;
+    ioctl(0, TIOCGWINSZ, &winsize);
+    resizeterm(winsize.ws_row, winsize.ws_col);
 }
 
 
@@ -208,7 +219,9 @@ game_free_or_die(struct game *game)
 void
 game_hide(struct game *game)
 {
-    if (game) endwin();
+    if (!game) return;
+    endwin();
+    signal(SIGWINCH, game->previous_signal_handler);
 }
 
 
@@ -262,6 +275,9 @@ game_run(struct game *game)
 struct result
 game_show(struct game *game)
 {
+    game->previous_signal_handler = signal(SIGWINCH, resize_window);
+    if (SIG_ERR == game->previous_signal_handler) return result_system_error();
+    
     WINDOW *window = initscr();
     if (!window) return result_ncurses_err();
 
