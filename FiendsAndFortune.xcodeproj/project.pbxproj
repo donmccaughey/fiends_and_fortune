@@ -55,6 +55,7 @@
 		D47B33EF1C74539B00390717 /* action.c in Sources */ = {isa = PBXBuildFile; fileRef = D47B33EE1C74539B00390717 /* action.c */; };
 		D47B33F21C7561DF00390717 /* method.c in Sources */ = {isa = PBXBuildFile; fileRef = D47B33F01C7561DF00390717 /* method.c */; };
 		D47B33F31C7561DF00390717 /* method.h in Headers */ = {isa = PBXBuildFile; fileRef = D47B33F11C7561DF00390717 /* method.h */; };
+		D48EF50B1DF149CC00D5E312 /* libform.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D48EF50A1DF149CC00D5E312 /* libform.tbd */; };
 		D4BD32A71B6A06560007527A /* coins.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BD32991B6A06560007527A /* coins.c */; };
 		D4BD32A81B6A06560007527A /* coins.h in Headers */ = {isa = PBXBuildFile; fileRef = D4BD329A1B6A06560007527A /* coins.h */; };
 		D4BD32A91B6A06560007527A /* gem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BD329B1B6A06560007527A /* gem.c */; };
@@ -207,6 +208,7 @@
 		D47B33EE1C74539B00390717 /* action.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = action.c; sourceTree = "<group>"; };
 		D47B33F01C7561DF00390717 /* method.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = method.c; sourceTree = "<group>"; };
 		D47B33F11C7561DF00390717 /* method.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = method.h; sourceTree = "<group>"; };
+		D48EF50A1DF149CC00D5E312 /* libform.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libform.tbd; path = usr/lib/libform.tbd; sourceTree = SDKROOT; };
 		D4BCC61517D30DD000C76D11 /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
 		D4BD32991B6A06560007527A /* coins.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coins.c; sourceTree = "<group>"; };
 		D4BD329A1B6A06560007527A /* coins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coins.h; sourceTree = "<group>"; };
@@ -261,6 +263,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D48EF50B1DF149CC00D5E312 /* libform.tbd in Frameworks */,
 				D414ED361C9637E60067AF0B /* libmenu.tbd in Frameworks */,
 				D414ED341C9637AE0067AF0B /* libncurses.tbd in Frameworks */,
 				D4092F611B65D42B00BFD0B3 /* libfnf.a in Frameworks */,
@@ -347,6 +350,14 @@
 				D414ED331C9637AE0067AF0B /* libncurses.tbd */,
 			);
 			name = Libraries;
+			sourceTree = "<group>";
+		};
+		D48EF5091DF149CC00D5E312 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D48EF50A1DF149CC00D5E312 /* libform.tbd */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D4BD32981B6A06560007527A /* treasure */ = {
@@ -443,6 +454,7 @@
 				D406B65D1C71CAF30037171B /* tests */,
 				D414ED371C9638100067AF0B /* Libraries */,
 				D4F73450140EF3E00096618F /* Products */,
+				D48EF5091DF149CC00D5E312 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};

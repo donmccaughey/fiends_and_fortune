@@ -1,5 +1,7 @@
 #include "game.h"
 
+#include <form.h>
+
 #include <sys/ioctl.h>
 
 #include "character/character.h"
@@ -178,7 +180,60 @@ static struct result
 generate_treasure(struct game *game)
 {
     mvprintw(1, 2, "Generate Treasure");
-    getch();
+    
+    int height = 1;
+    int width = 1;
+    int x = 18;
+    int y = 3;
+    int offscreen_rows = 0;
+    int buffer_count = 0;
+    FIELD *treasure_type = new_field(height, width, y, x, offscreen_rows, buffer_count);
+    if (!treasure_type) return result_ncurses_errno();
+        
+    int code = set_field_back(treasure_type, A_UNDERLINE);
+    if (E_OK != code) return result_ncurses_error(code);
+    
+    height = 1;
+    width = 1;
+    x = 20;
+    y = 3;
+    offscreen_rows = 0;
+    buffer_count = 0;
+    FIELD *done = new_field(height, width, y, x, offscreen_rows, buffer_count);
+    if (!done) return result_ncurses_errno();
+    
+    FIELD *fields[] = {
+        treasure_type, done, NULL
+    };
+
+    FORM *form = new_form(fields);
+    if (!form) return result_ncurses_errno();
+    
+    code = post_form(form);
+    if (E_OK != code) return result_ncurses_error(code);
+    
+    code = refresh();
+    if (ERR == code) return result_ncurses_err();
+    
+    mvprintw(3, 2, "Treasure Type:");
+        
+    code = refresh();
+    if (ERR == code) return result_ncurses_err();
+    
+    int ch;
+    while ('\r' != (ch = getch())) {
+        form_driver(form, ch);
+    }
+    
+    code = unpost_form(form);
+    if (E_OK != code) return result_ncurses_error(code);
+
+    code = free_form(form);
+    if (E_OK != code) return result_ncurses_error(code);
+    
+    code = free_field(treasure_type);
+    if (E_OK != code) return result_ncurses_error(code);
+    
     return result_success();
 }
 
