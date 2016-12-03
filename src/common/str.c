@@ -138,7 +138,5 @@ str_realloc_append_formatted_from_va_list(char **str,
     size_t size = original_length + append_length + 1;
     *str = realloc_or_die(*str, size);
     
-    va_list arguments_copy;
-    va_copy(arguments_copy, arguments);
     vsprintf(*str + original_length, format, arguments);
 }

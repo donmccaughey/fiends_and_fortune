@@ -66,6 +66,9 @@ str_realloc_format_test(void)
     str_realloc_append_formatted(&str, " x %.2f", M_PI);
     assert(0 == strcmp("foobarbaz 42 x 3.14", str));
     
+    str_realloc_append_formatted(&str, " x %i%%", 42);
+    assert(0 == strcmp("foobarbaz 42 x 3.14 x 42%", str));
+    
     free_or_die(str);
 }
 

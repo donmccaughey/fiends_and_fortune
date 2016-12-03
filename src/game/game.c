@@ -1,5 +1,6 @@
 #include "game.h"
 
+#include <ctype.h>
 #include <form.h>
 
 #include <sys/ioctl.h>
@@ -7,7 +8,15 @@
 #include "character/character.h"
 
 #include "common/alloc_or_die.h"
+#include "common/dice.h"
 #include "common/result.h"
+
+#include "treasure/treasure.h"
+#include "treasure/gem.h"
+#include "treasure/jewelry.h"
+#include "treasure/magic_item.h"
+#include "treasure/treasure_map.h"
+#include "treasure/treasure_type.h"
 
 #include "selection.h"
 
@@ -166,11 +175,94 @@ create_character(struct game *game)
     return result_success();
 }
 
+/*
+static struct result
+enumerate_treasure_items(struct game *game, struct treasure *treasure)
+{
+    if (treasure->gems_count) {
+        fprintf(out, "  Gems: --------------------------------\n");
+        for (int i = 0; i < treasure->gems_count; ++i) {
+            fprintf(out, "    %2i  %s\n", i + 1, treasure->gems[i].true_description);
+        }
+    }
+    
+    if (treasure->jewelry_count) {
+        fprintf(out, "  Jewelry: -----------------------------\n");
+        for (int i = 0; i < treasure->jewelry_count; ++i) {
+            fprintf(out, "    %2i  %s\n",
+                    i + 1, treasure->jewelry[i].true_description);
+        }
+    }
+    
+    if (treasure->maps_count) {
+        fprintf(out, "  Maps: --------------------------------\n");
+        for (int i = 0; i < treasure->maps_count; ++i) {
+            fprintf(out, "    %2i  %s\n", i + 1, treasure->maps[i].true_description);
+        }
+    }
+    
+    if (treasure->magic_items_count) {
+        fprintf(out, "  Magic Items: -------------------------\n");
+        for (int i = 0; i < treasure->magic_items_count; ++i) {
+            fprintf(out, "    %2i  %s\n",
+                    i + 1, treasure->magic_items[i].true_description);
+            if (treasure->magic_items[i].true_details) {
+                int j = 0;
+                while (treasure->magic_items[i].true_details[j]) {
+                    fprintf(out, "            %s\n",
+                            treasure->magic_items[i].true_details[j]);
+                    ++j;
+                }
+            }
+        }
+    }
+}
+*/
 
 static struct result
 generate_dungeon(struct game *game)
 {
     mvprintw(1, 2, "Generate Dungeon");
+    getch();
+    return result_success();
+}
+
+
+static struct result
+generate_treasure_type(struct game *game, char letter)
+{
+    int code = ERR;
+    
+    code = erase();
+    if (ERR == code) return result_ncurses_err();
+    
+    int x = 2;
+    int y = 1;
+    
+    code = mvprintw(y, x, "Treasure type %c", letter);
+    if (ERR == code) return result_ncurses_err();
+    y = 3;
+    
+    int individual_count = 0;
+    if (letter >= 'J' && letter <= 'N') {
+        individual_count = roll("1d10", game->rnd);
+    }
+    
+    struct treasure treasure;
+    treasure_initialize(&treasure);
+    treasure_type_generate(treasure_type_by_letter(letter), game->rnd, individual_count, &treasure);
+    
+    char *description = treasure_alloc_description(&treasure);
+    int value_cp = treasure_value_in_cp(&treasure);
+    char *value_gp = coins_alloc_gp_cp_description(value_cp);
+    code = mvprintw(y, x, "%s (total %s)\n", description, value_gp);
+    free_or_die(value_gp);
+    free_or_die(description);
+    
+    //enumerate_treasure_items(&treasure, out);
+    
+    treasure_finalize(&treasure);
+    
     getch();
     return result_success();
 }
@@ -223,6 +315,15 @@ generate_treasure(struct game *game)
     int ch;
     while ('\r' != (ch = getch())) {
         form_driver(form, ch);
+    }
+    
+    char *buffer = field_buffer(treasure_type, 0);
+    if (!buffer) return result_ncurses_errno();
+    
+    char letter = toupper(buffer[0]);
+    if (letter >= 'A' && letter <= 'Z') {
+        struct result result = generate_treasure_type(game, letter);
+        if (!result_is_success(result)) return result;
     }
     
     code = unpost_form(form);
