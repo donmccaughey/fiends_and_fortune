@@ -175,49 +175,75 @@ create_character(struct game *game)
     return result_success();
 }
 
-/*
+
 static struct result
 enumerate_treasure_items(struct game *game, struct treasure *treasure)
 {
+    int code = ERR;
+    
+    int x = 4;
+    int y = 4;
+    
     if (treasure->gems_count) {
-        fprintf(out, "  Gems: --------------------------------\n");
+        code = mvprintw(y, x, "Gems: --------------------------------");
+        if (ERR == code) return result_ncurses_err();
+        ++y;
         for (int i = 0; i < treasure->gems_count; ++i) {
-            fprintf(out, "    %2i  %s\n", i + 1, treasure->gems[i].true_description);
+            code = mvprintw(y, x, "%2i  %s", i + 1, treasure->gems[i].true_description);
+            if (ERR == code) return result_ncurses_err();
+            ++y;
         }
     }
     
     if (treasure->jewelry_count) {
-        fprintf(out, "  Jewelry: -----------------------------\n");
+        code = mvprintw(y, x, "Jewelry: -----------------------------");
+        if (ERR == code) return result_ncurses_err();
+        ++y;
         for (int i = 0; i < treasure->jewelry_count; ++i) {
-            fprintf(out, "    %2i  %s\n",
-                    i + 1, treasure->jewelry[i].true_description);
+            code = mvprintw(y, x, "%2i  %s\n",
+                            i + 1, treasure->jewelry[i].true_description);
+            if (ERR == code) return result_ncurses_err();
+            ++y;
         }
     }
     
     if (treasure->maps_count) {
-        fprintf(out, "  Maps: --------------------------------\n");
+        code = mvprintw(y, x, "Maps: --------------------------------");
+        if (ERR == code) return result_ncurses_err();
+        ++y;
         for (int i = 0; i < treasure->maps_count; ++i) {
-            fprintf(out, "    %2i  %s\n", i + 1, treasure->maps[i].true_description);
+            code = mvprintw(y, x, "%2i  %s\n", i + 1, treasure->maps[i].true_description);
+            if (ERR == code) return result_ncurses_err();
+            ++y;
         }
     }
     
     if (treasure->magic_items_count) {
-        fprintf(out, "  Magic Items: -------------------------\n");
+        code = mvprintw(y, x, "Magic Items: -------------------------");
+        if (ERR == code) return result_ncurses_err();
+        ++y;
         for (int i = 0; i < treasure->magic_items_count; ++i) {
-            fprintf(out, "    %2i  %s\n",
-                    i + 1, treasure->magic_items[i].true_description);
+            code = mvprintw(y, x, "%2i  %s",
+                            i + 1, treasure->magic_items[i].true_description);
+            if (ERR == code) return result_ncurses_err();
+            ++y;
             if (treasure->magic_items[i].true_details) {
                 int j = 0;
                 while (treasure->magic_items[i].true_details[j]) {
-                    fprintf(out, "            %s\n",
-                            treasure->magic_items[i].true_details[j]);
+                    code = mvprintw(y, x + 8, "%s",
+                                    treasure->magic_items[i].true_details[j]);
+                    if (ERR == code) return result_ncurses_err();
+                    ++y;
                     ++j;
                 }
             }
         }
     }
+    
+    move(y, x);
+    return result_success();
 }
-*/
+
 
 static struct result
 generate_dungeon(struct game *game)
@@ -259,7 +285,7 @@ generate_treasure_type(struct game *game, char letter)
     free_or_die(value_gp);
     free_or_die(description);
     
-    //enumerate_treasure_items(&treasure, out);
+    enumerate_treasure_items(game, &treasure);
     
     treasure_finalize(&treasure);
     
