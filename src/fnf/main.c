@@ -16,6 +16,8 @@
 #include "treasure/treasure_map.h"
 #include "treasure/treasure_type.h"
 
+#include "tui/app.h"
+
 
 static void
 check(FILE *out, uint32_t constant);
@@ -54,6 +56,9 @@ play_game(struct rnd *rnd);
 
 static void
 print_dungeon(struct dungeon *dungeon, FILE *out);
+
+static void
+run_tui(void);
 
 
 static void
@@ -306,6 +311,8 @@ main(int argc, char *argv[])
     
     if (action_game == options->action) {
         play_game(options->rnd);
+    } else if (action_tui == options->action) {
+        run_tui();
     } else {
         fprintf(out, "Fiends and Fortune\n");
         switch (options->action) {
@@ -377,4 +384,18 @@ print_dungeon(struct dungeon *dungeon, FILE *out)
         fprintf(out, "Level %i Areas of Interest:\n", level);
         dungeon_print_areas_for_level(dungeon, level, out);
     }
+}
+
+
+static void
+run_tui(void)
+{
+    struct app *app = app_alloc();
+    
+    struct result result = app_run(app);
+    if (!result_is_success(result)) {
+        result_print_error(result);
+    }
+    
+    app_free(app);
 }

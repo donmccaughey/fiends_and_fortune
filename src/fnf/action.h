@@ -14,6 +14,7 @@ enum action {
     action_map,
     action_table,
     action_treasure,
+    action_tui,
 };
 
 

@@ -15,6 +15,7 @@ static struct {
     { action_magic, "magic" },
     { action_map, "map" },
     { action_table, "table" },
+    { action_tui, "tui" },
 };
 static int action_strings_count = sizeof action_strings
                                 / sizeof action_strings[0];
