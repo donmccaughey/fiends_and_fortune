@@ -6,23 +6,31 @@
 
 #include "common/alloc_or_die.h"
 
-#include "desktop.h"
+#include "screen.h"
+#include "view.h"
+
+
+static struct result
+update_windows(struct app *app)
+{
+    int code = doupdate();
+    return (ERR == code) ? result_ncurses_err(): result_success();
+}
 
 
 static struct result
 dispatch_events(struct app *app)
 {
     struct result result = result_success();
-    WINDOW *active_window = app->desktop->window;
     app->is_running = true;
     do {
-        result = window_enable_keyboard(active_window);
+        result = update_windows(app);
         if (!result_is_success(result)) {
             app_quit(app);
             break;
         }
         
-        int ch = wgetch(app->desktop->window);
+        int ch = view_read_char(app->active_view);
         if (ERR == ch) {
             result = result_ncurses_err();
             app_quit(app);
@@ -45,11 +53,27 @@ terminal_window_did_change(int signal)
 }
 
 
+struct result
+app_activate_view(struct app *app, struct view *view)
+{
+    struct result result = view_enable_keyboard(view);
+    if (!result_is_success(result)) return result;
+    
+    result = view_invalidate(view);
+    if (!result_is_success(result)) return result;
+    
+    app->active_view = view;
+    return result_success();
+}
+
+
 struct app *
 app_alloc(void)
 {
     struct app *app = calloc_or_die(1, sizeof(struct app));
-    app->desktop = desktop_alloc();
+    app->views = calloc_or_die(1, sizeof(struct view *));
+    app->views[0] = screen_alloc();
+    app->views_count = 1;
     return app;
 }
 
@@ -58,7 +82,10 @@ void
 app_free(struct app *app)
 {
     if (!app) return;
-    desktop_free(app->desktop);
+    for (int i = 0; i < app->views_count; ++i) {
+        view_free(app->views[i]);
+    }
+    free_or_die(app->views);
     free_or_die(app);
 }
 
@@ -71,11 +98,34 @@ app_run(struct app *app)
         return result_system_error();
     }
     
-    struct result result = desktop_show(app->desktop);
+    struct result result = result_success();
+    
+    for (int i = 0; i < app->views_count; ++i) {
+        result = app->views[i]->create(app->views[i], app);
+        if (!result_is_success(result)) break;
+    }
+    
+    if (result_is_success(result)) {
+        for (int i = 0; i < app->views_count; ++i) {
+            result = app->views[i]->draw(app->views[i], app);
+            if (!result_is_success(result)) break;
+            
+            result = view_invalidate(app->views[i]);
+            if (!result_is_success(result)) break;
+        }
+    }
+    
+    if (!app->active_view) {
+        result = app_activate_view(app, app->views[0]);
+    }
+    
     if (result_is_success(result)) {
         result = dispatch_events(app);
     }
-    desktop_hide(app->desktop);
+    
+    for (int i = app->views_count - 1; i >= 0; --i) {
+        app->views[i]->destroy(app->views[i], app);
+    }
     
     signal(SIGWINCH, previous_sigwinch_handler);
     return result;
@@ -87,3 +137,9 @@ app_quit(struct app *app)
 {
     app->is_running = false;
 }
+
+extern inline struct view *
+app_get_screen(struct app *app);
+
+extern inline struct rect
+app_get_screen_rect(struct app *app);
