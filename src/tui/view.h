@@ -22,11 +22,15 @@ typedef void
 typedef struct result
 (view_draw_fn)(struct view *view, struct app *app);
 
+typedef void
+(view_on_key_fn)(struct view *view, struct app *app, int key);
+
 
 struct view {
     view_create_fn *create;
     view_destroy_fn *destroy;
     view_draw_fn *draw;
+    view_on_key_fn *on_key;
     void *user_data;
     WINDOW *window;
 };
@@ -36,6 +40,7 @@ struct view *
 view_alloc(view_create_fn *create,
            view_destroy_fn *destroy,
            view_draw_fn *draw,
+           view_on_key_fn *on_key,
            void *user_data);
 
 void
@@ -55,7 +60,7 @@ view_invalidate(struct view *view)
 }
 
 inline int
-view_read_char(struct view *view)
+view_read_key(struct view *view)
 {
     return wgetch(view->window);
 }

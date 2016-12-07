@@ -11,11 +11,7 @@
 
 
 static struct result
-update_windows(struct app *app)
-{
-    int code = doupdate();
-    return (ERR == code) ? result_ncurses_err(): result_success();
-}
+update_windows(struct app *app);
 
 
 static struct result
@@ -30,15 +26,14 @@ dispatch_events(struct app *app)
             break;
         }
         
-        int ch = view_read_char(app->active_view);
-        if (ERR == ch) {
+        int key = view_read_key(app->active_view);
+        if (ERR == key) {
             result = result_ncurses_err();
             app_quit(app);
             break;
         }
         
-        // TODO: dispatch key event
-        
+        app->active_view->on_key(app->active_view, app, key);
     } while (app->is_running);
     return result;
 }
@@ -50,6 +45,14 @@ terminal_window_did_change(int signal)
     struct winsize winsize;
     ioctl(0, TIOCGWINSZ, &winsize);
     resizeterm(winsize.ws_row, winsize.ws_col);
+}
+
+
+static struct result
+update_windows(struct app *app)
+{
+    int code = doupdate();
+    return (ERR == code) ? result_ncurses_err(): result_success();
 }
 
 
@@ -137,6 +140,7 @@ app_quit(struct app *app)
 {
     app->is_running = false;
 }
+
 
 extern inline struct view *
 app_get_screen(struct app *app);
