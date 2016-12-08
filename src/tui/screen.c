@@ -21,6 +21,8 @@ create(struct view *screen, struct app *app)
     
     nonl();
     
+    app_hide_cursor(app);
+    
     return result_success();
 }
 
@@ -35,29 +37,34 @@ destroy(struct view *screen, struct app *app)
 static struct result
 draw(struct view *screen, struct app *app)
 {
-    int code = box(screen->window, 0, 0);
-    if (ERR == code) return result_ncurses_err();
-    
     struct rect rect = view_get_rect(screen);
     int x = rect.width - 5;
     int y = rect.height - 2;
-    code = mvwprintw(screen->window, y, x, "tui");
+    int code = mvwprintw(screen->window, y, x, "tui");
     if (ERR == code) return result_ncurses_err();
     
-    code = move(1, 2);
+    code = move(rect.height, rect.width);
     return (ERR == code) ? result_ncurses_err() : result_success();
 }
 
 
-static void
+static struct result
 on_key(struct view *view, struct app *app, int key)
 {
     static int const ctrl_Q = 'Q' - 64;
     if (ctrl_Q == key) {
         app_quit(app);
     } else {
-        flash();
+        int code = cbreak();
+        if (ERR == code) return result_ncurses_err();
+        
+        code = beep();
+        if (ERR == code) return result_ncurses_err();
+        
+        code = raw();
+        if (ERR == code) return result_ncurses_err();
     }
+    return result_success();
 }
 
 

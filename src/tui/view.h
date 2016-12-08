@@ -22,7 +22,7 @@ typedef void
 typedef struct result
 (view_draw_fn)(struct view *view, struct app *app);
 
-typedef void
+typedef struct result
 (view_on_key_fn)(struct view *view, struct app *app, int key);
 
 

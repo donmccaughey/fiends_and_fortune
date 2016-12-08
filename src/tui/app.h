@@ -34,6 +34,12 @@ app_activate_view(struct app *app, struct view *view);
 void
 app_quit(struct app *app);
 
+inline void
+app_hide_cursor(struct app *app)
+{
+    curs_set(0);
+}
+
 inline struct view *
 app_get_screen(struct app *app)
 {
@@ -44,6 +50,12 @@ inline struct rect
 app_get_screen_rect(struct app *app)
 {
     return window_get_rect(app_get_screen(app)->window);
+}
+
+inline void
+app_show_cursor(struct app *app)
+{
+    curs_set(1);
 }
 
 #endif

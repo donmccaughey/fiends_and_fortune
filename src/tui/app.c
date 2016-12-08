@@ -33,7 +33,11 @@ dispatch_events(struct app *app)
             break;
         }
         
-        app->active_view->on_key(app->active_view, app, key);
+        result = app->active_view->on_key(app->active_view, app, key);
+        if (!result_is_success(result)) {
+            app_quit(app);
+            break;
+        }
     } while (app->is_running);
     return result;
 }
@@ -147,3 +151,9 @@ app_get_screen(struct app *app);
 
 extern inline struct rect
 app_get_screen_rect(struct app *app);
+
+extern inline void
+app_hide_cursor(struct app *app);
+
+extern inline void
+app_show_cursor(struct app *app);
