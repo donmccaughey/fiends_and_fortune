@@ -31,6 +31,9 @@ app_run(struct app *app);
 struct result
 app_activate_view(struct app *app, struct view *view);
 
+struct result
+app_add_view(struct app *app, struct view *view);
+
 void
 app_quit(struct app *app);
 
@@ -41,16 +44,19 @@ app_hide_cursor(struct app *app)
 }
 
 inline struct view *
-app_get_screen(struct app *app)
+app_get_screen_view(struct app *app)
 {
     return app->views[0];
 }
 
 inline struct rect
-app_get_screen_rect(struct app *app)
+app_get_screen_view_rect(struct app *app)
 {
-    return window_get_rect(app_get_screen(app)->window);
+    return window_get_rect(app_get_screen_view(app)->window);
 }
+
+struct result
+app_ring_bell(struct app *app);
 
 inline void
 app_show_cursor(struct app *app)

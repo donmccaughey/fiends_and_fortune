@@ -56,8 +56,8 @@
 		D47B33F21C7561DF00390717 /* method.c in Sources */ = {isa = PBXBuildFile; fileRef = D47B33F01C7561DF00390717 /* method.c */; };
 		D47B33F31C7561DF00390717 /* method.h in Headers */ = {isa = PBXBuildFile; fileRef = D47B33F11C7561DF00390717 /* method.h */; };
 		D48EF50B1DF149CC00D5E312 /* libform.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D48EF50A1DF149CC00D5E312 /* libform.tbd */; };
-		D48EF5261DF51CDC00D5E312 /* screen.c in Sources */ = {isa = PBXBuildFile; fileRef = D48EF5241DF51CDC00D5E312 /* screen.c */; };
-		D48EF5271DF51CDC00D5E312 /* screen.h in Headers */ = {isa = PBXBuildFile; fileRef = D48EF5251DF51CDC00D5E312 /* screen.h */; };
+		D48EF5261DF51CDC00D5E312 /* screen_view.c in Sources */ = {isa = PBXBuildFile; fileRef = D48EF5241DF51CDC00D5E312 /* screen_view.c */; };
+		D48EF5271DF51CDC00D5E312 /* screen_view.h in Headers */ = {isa = PBXBuildFile; fileRef = D48EF5251DF51CDC00D5E312 /* screen_view.h */; };
 		D48EF52E1DF52D7D00D5E312 /* rect.c in Sources */ = {isa = PBXBuildFile; fileRef = D48EF52C1DF52D7D00D5E312 /* rect.c */; };
 		D48EF52F1DF52D7D00D5E312 /* rect.h in Headers */ = {isa = PBXBuildFile; fileRef = D48EF52D1DF52D7D00D5E312 /* rect.h */; };
 		D48EF5321DF5355A00D5E312 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = D48EF5301DF5355A00D5E312 /* window.c */; };
@@ -65,6 +65,8 @@
 		D48EF5341DF684C900D5E312 /* app.c in Sources */ = {isa = PBXBuildFile; fileRef = D48EF5151DF4FC7D00D5E312 /* app.c */; };
 		D48EF5371DF68AC400D5E312 /* view.c in Sources */ = {isa = PBXBuildFile; fileRef = D48EF5351DF68AC400D5E312 /* view.c */; };
 		D48EF5381DF68AC400D5E312 /* view.h in Headers */ = {isa = PBXBuildFile; fileRef = D48EF5361DF68AC400D5E312 /* view.h */; };
+		D48EF53B1DFA68AA00D5E312 /* menu_view.c in Sources */ = {isa = PBXBuildFile; fileRef = D48EF5391DFA68AA00D5E312 /* menu_view.c */; };
+		D48EF53C1DFA68AA00D5E312 /* menu_view.h in Headers */ = {isa = PBXBuildFile; fileRef = D48EF53A1DFA68AA00D5E312 /* menu_view.h */; };
 		D4BD32A71B6A06560007527A /* coins.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BD32991B6A06560007527A /* coins.c */; };
 		D4BD32A81B6A06560007527A /* coins.h in Headers */ = {isa = PBXBuildFile; fileRef = D4BD329A1B6A06560007527A /* coins.h */; };
 		D4BD32A91B6A06560007527A /* gem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BD329B1B6A06560007527A /* gem.c */; };
@@ -220,14 +222,16 @@
 		D48EF50A1DF149CC00D5E312 /* libform.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libform.tbd; path = usr/lib/libform.tbd; sourceTree = SDKROOT; };
 		D48EF5151DF4FC7D00D5E312 /* app.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = app.c; sourceTree = "<group>"; };
 		D48EF5161DF4FC7D00D5E312 /* app.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = app.h; sourceTree = "<group>"; };
-		D48EF5241DF51CDC00D5E312 /* screen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = screen.c; sourceTree = "<group>"; };
-		D48EF5251DF51CDC00D5E312 /* screen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = screen.h; sourceTree = "<group>"; };
+		D48EF5241DF51CDC00D5E312 /* screen_view.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = screen_view.c; sourceTree = "<group>"; };
+		D48EF5251DF51CDC00D5E312 /* screen_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = screen_view.h; sourceTree = "<group>"; };
 		D48EF52C1DF52D7D00D5E312 /* rect.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = rect.c; sourceTree = "<group>"; };
 		D48EF52D1DF52D7D00D5E312 /* rect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rect.h; sourceTree = "<group>"; };
 		D48EF5301DF5355A00D5E312 /* window.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = window.c; sourceTree = "<group>"; };
 		D48EF5311DF5355A00D5E312 /* window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = window.h; sourceTree = "<group>"; };
 		D48EF5351DF68AC400D5E312 /* view.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = view.c; sourceTree = "<group>"; };
 		D48EF5361DF68AC400D5E312 /* view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = view.h; sourceTree = "<group>"; };
+		D48EF5391DFA68AA00D5E312 /* menu_view.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = menu_view.c; sourceTree = "<group>"; };
+		D48EF53A1DFA68AA00D5E312 /* menu_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu_view.h; sourceTree = "<group>"; };
 		D4BCC61517D30DD000C76D11 /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
 		D4BD32991B6A06560007527A /* coins.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coins.c; sourceTree = "<group>"; };
 		D4BD329A1B6A06560007527A /* coins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coins.h; sourceTree = "<group>"; };
@@ -384,10 +388,12 @@
 			children = (
 				D48EF5161DF4FC7D00D5E312 /* app.h */,
 				D48EF5151DF4FC7D00D5E312 /* app.c */,
+				D48EF53A1DFA68AA00D5E312 /* menu_view.h */,
+				D48EF5391DFA68AA00D5E312 /* menu_view.c */,
 				D48EF52D1DF52D7D00D5E312 /* rect.h */,
 				D48EF52C1DF52D7D00D5E312 /* rect.c */,
-				D48EF5251DF51CDC00D5E312 /* screen.h */,
-				D48EF5241DF51CDC00D5E312 /* screen.c */,
+				D48EF5251DF51CDC00D5E312 /* screen_view.h */,
+				D48EF5241DF51CDC00D5E312 /* screen_view.c */,
 				D48EF5361DF68AC400D5E312 /* view.h */,
 				D48EF5351DF68AC400D5E312 /* view.c */,
 				D48EF5311DF5355A00D5E312 /* window.h */,
@@ -537,7 +543,7 @@
 				D48EF52F1DF52D7D00D5E312 /* rect.h in Headers */,
 				D47B33F31C7561DF00390717 /* method.h in Headers */,
 				D406B6481C66C5760037171B /* box.h in Headers */,
-				D48EF5271DF51CDC00D5E312 /* screen.h in Headers */,
+				D48EF5271DF51CDC00D5E312 /* screen_view.h in Headers */,
 				D4BD32AC1B6A06560007527A /* jewelry.h in Headers */,
 				D4BD32AE1B6A06560007527A /* magic_item.h in Headers */,
 				D4BD32B41B6A06560007527A /* treasure_type.h in Headers */,
@@ -546,6 +552,7 @@
 				D4D495C11C643D2600BC80C9 /* level_map.h in Headers */,
 				D4092F891B65D6C200BFD0B3 /* alloc_or_die.h in Headers */,
 				D4BD32C71B6AECE90007527A /* language.h in Headers */,
+				D48EF53C1DFA68AA00D5E312 /* menu_view.h in Headers */,
 				D406B64C1C66C60F0037171B /* size.h in Headers */,
 				D4BD32AA1B6A06560007527A /* gem.h in Headers */,
 				D48EF5381DF68AC400D5E312 /* view.h in Headers */,
@@ -697,12 +704,13 @@
 				D4092F901B65D6C200BFD0B3 /* str.c in Sources */,
 				D406B6471C66C5760037171B /* box.c in Sources */,
 				D4E9A5151C8BB722005ED58A /* game.c in Sources */,
+				D48EF53B1DFA68AA00D5E312 /* menu_view.c in Sources */,
 				D4D495B81C6321A000BC80C9 /* orientation.c in Sources */,
 				D47B33F21C7561DF00390717 /* method.c in Sources */,
 				D414ED3F1C9CF09A0067AF0B /* selection.c in Sources */,
 				D406B64B1C66C60F0037171B /* size.c in Sources */,
 				D4092F8A1B65D6C200BFD0B3 /* dice.c in Sources */,
-				D48EF5261DF51CDC00D5E312 /* screen.c in Sources */,
+				D48EF5261DF51CDC00D5E312 /* screen_view.c in Sources */,
 				D48EF5371DF68AC400D5E312 /* view.c in Sources */,
 				B0F470B6DFA53A807F7AE464 /* point.c in Sources */,
 				D406B6531C6F16720037171B /* exit.c in Sources */,

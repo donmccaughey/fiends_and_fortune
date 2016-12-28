@@ -20,9 +20,15 @@ window_get_rect(WINDOW *window)
     };
 }
 
-
 struct result
 window_enable_keyboard(WINDOW *window);
+
+inline struct result
+window_invalidate(WINDOW *window)
+{
+    int code = wnoutrefresh(window);
+    return (ERR == code) ? result_ncurses_err() : result_success();
+}
 
             
 #endif

@@ -55,8 +55,7 @@ view_enable_keyboard(struct view *view)
 inline struct result
 view_invalidate(struct view *view)
 {
-    int code = wnoutrefresh(view->window);
-    return (ERR == code) ? result_ncurses_err() : result_success();
+    return window_invalidate(view->window);
 }
 
 inline int

@@ -6,12 +6,8 @@
 
 #include "common/alloc_or_die.h"
 
-#include "screen.h"
+#include "screen_view.h"
 #include "view.h"
-
-
-static struct result
-update_windows(struct app *app);
 
 
 static struct result
@@ -20,12 +16,6 @@ dispatch_events(struct app *app)
     struct result result = result_success();
     app->is_running = true;
     do {
-        result = update_windows(app);
-        if (!result_is_success(result)) {
-            app_quit(app);
-            break;
-        }
-        
         int key = view_read_key(app->active_view);
         if (ERR == key) {
             result = result_ncurses_err();
@@ -52,24 +42,24 @@ terminal_window_did_change(int signal)
 }
 
 
-static struct result
-update_windows(struct app *app)
-{
-    int code = doupdate();
-    return (ERR == code) ? result_ncurses_err(): result_success();
-}
-
-
 struct result
 app_activate_view(struct app *app, struct view *view)
 {
     struct result result = view_enable_keyboard(view);
     if (!result_is_success(result)) return result;
     
-    result = view_invalidate(view);
-    if (!result_is_success(result)) return result;
-    
     app->active_view = view;
+    return result_success();
+}
+
+
+struct result
+app_add_view(struct app *app, struct view *view)
+{
+    int index = app->views_count;
+    ++app->views_count;
+    app->views = reallocarray_or_die(app->views, app->views_count, sizeof(struct view *));
+    app->views[index] = view;
     return result_success();
 }
 
@@ -79,7 +69,7 @@ app_alloc(void)
 {
     struct app *app = calloc_or_die(1, sizeof(struct app));
     app->views = calloc_or_die(1, sizeof(struct view *));
-    app->views[0] = screen_alloc();
+    app->views[0] = screen_view_alloc();
     app->views_count = 1;
     return app;
 }
@@ -94,6 +84,22 @@ app_free(struct app *app)
     }
     free_or_die(app->views);
     free_or_die(app);
+}
+
+
+struct result
+app_ring_bell(struct app *app)
+{
+    int code = cbreak();
+    if (ERR == code) return result_ncurses_err();
+    
+    code = beep();
+    if (ERR == code) return result_ncurses_err();
+    
+    code = raw();
+    if (ERR == code) return result_ncurses_err();
+    
+    return result_success();
 }
 
 
@@ -116,15 +122,16 @@ app_run(struct app *app)
         for (int i = 0; i < app->views_count; ++i) {
             result = app->views[i]->draw(app->views[i], app);
             if (!result_is_success(result)) break;
-            
-            result = view_invalidate(app->views[i]);
-            if (!result_is_success(result)) break;
+            wnoutrefresh(app->views[i]->window);
         }
     }
     
     if (!app->active_view) {
-        result = app_activate_view(app, app->views[0]);
+        int i = app->views_count - 1;
+        result = app_activate_view(app, app->views[i]);
     }
+    
+    doupdate();
     
     if (result_is_success(result)) {
         result = dispatch_events(app);
@@ -147,10 +154,10 @@ app_quit(struct app *app)
 
 
 extern inline struct view *
-app_get_screen(struct app *app);
+app_get_screen_view(struct app *app);
 
 extern inline struct rect
-app_get_screen_rect(struct app *app);
+app_get_screen_view_rect(struct app *app);
 
 extern inline void
 app_hide_cursor(struct app *app);

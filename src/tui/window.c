@@ -18,3 +18,6 @@ window_enable_keyboard(WINDOW *window)
 
 extern inline struct rect
 window_get_rect(WINDOW *window);
+
+extern inline struct result
+window_invalidate(WINDOW *window);

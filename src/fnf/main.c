@@ -17,6 +17,7 @@
 #include "treasure/treasure_type.h"
 
 #include "tui/app.h"
+#include "tui/menu_view.h"
 
 
 static void
@@ -391,6 +392,13 @@ static void
 run_tui(void)
 {
     struct app *app = app_alloc();
+    
+    struct view *menu_view = menu_view_alloc("Select an Item");
+    menu_view_add_item(menu_view, "Try Item One");
+    menu_view_add_item(menu_view, "Item Two Is Better");
+    menu_view_add_item(menu_view, "You'll Love Item Three");
+    
+    app_add_view(app, menu_view);
     
     struct result result = app_run(app);
     if (!result_is_success(result)) {
