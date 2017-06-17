@@ -1,5 +1,6 @@
 #include "menu_view.h"
 
+#include <ctype.h>
 #include <limits.h>
 #include <menu.h>
 
@@ -162,7 +163,37 @@ draw(struct view *menu_view, struct app *app)
 static struct result
 on_key(struct view *menu_view, struct app *app, int key)
 {
-    app_quit(app);
+    struct menu *menu = menu_view->user_data;
+    
+    if (KEY_DOWN == key) {
+        int result = menu_driver(menu->menu, REQ_DOWN_ITEM);
+        if (E_OK != result && E_REQUEST_DENIED != result) {
+            return result_ncurses_error(result);
+        }
+    }
+    
+    if (KEY_UP == key) {
+        int result = menu_driver(menu->menu, REQ_UP_ITEM);
+        if (E_OK != result && E_REQUEST_DENIED != result) {
+            return result_ncurses_error(result);
+        }
+    }
+    
+    if ('\r' == key) {
+        app_quit(app);
+        return result_success();
+    }
+    
+    if (!isalnum(key)) return result_success();
+    
+    for (int i = 0; i < menu->items_count; ++i) {
+        char const *name = item_name(menu->items[i]);
+        if (name && key == name[0]) {
+            set_current_item(menu->menu, menu->items[i]);
+            return result_success();
+        }
+    }
+    
     return result_success();
 }
 
