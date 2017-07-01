@@ -19,6 +19,9 @@ void
 point_test(void);
 
 void
+ptr_array_test(void);
+
+void
 str_test(void);
 
 
@@ -33,6 +36,7 @@ main (int argc, const char *argv[])
     dungeon_test();
     generator_test();
     point_test();
+    ptr_array_test();
     str_test();
     
     fprintf(out, "Okay\n");

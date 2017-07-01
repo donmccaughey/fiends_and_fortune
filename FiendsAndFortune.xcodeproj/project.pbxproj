@@ -87,6 +87,8 @@
 		D4BD32C71B6AECE90007527A /* language.h in Headers */ = {isa = PBXBuildFile; fileRef = D4BD32C31B6AECE90007527A /* language.h */; };
 		D4BD32C81B6AECE90007527A /* spell.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BD32C41B6AECE90007527A /* spell.c */; };
 		D4BD32C91B6AECE90007527A /* spell.h in Headers */ = {isa = PBXBuildFile; fileRef = D4BD32C51B6AECE90007527A /* spell.h */; };
+		D4C2F0FA1F0758B7002F6AD6 /* ptr_array_test.c in Sources */ = {isa = PBXBuildFile; fileRef = D4C2F0F81F075703002F6AD6 /* ptr_array_test.c */; };
+		D4C2F0FB1F0758C4002F6AD6 /* ptr_array.c in Sources */ = {isa = PBXBuildFile; fileRef = D4C2F0F51F0754F5002F6AD6 /* ptr_array.c */; };
 		D4D495B81C6321A000BC80C9 /* orientation.c in Sources */ = {isa = PBXBuildFile; fileRef = D4D495B61C6321A000BC80C9 /* orientation.c */; };
 		D4D495B91C6321A000BC80C9 /* orientation.h in Headers */ = {isa = PBXBuildFile; fileRef = D4D495B71C6321A000BC80C9 /* orientation.h */; };
 		D4D495C01C643D2600BC80C9 /* level_map.c in Sources */ = {isa = PBXBuildFile; fileRef = D4D495BE1C643D2600BC80C9 /* level_map.c */; };
@@ -253,6 +255,9 @@
 		D4BD32C31B6AECE90007527A /* language.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = language.h; sourceTree = "<group>"; };
 		D4BD32C41B6AECE90007527A /* spell.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = spell.c; sourceTree = "<group>"; };
 		D4BD32C51B6AECE90007527A /* spell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spell.h; sourceTree = "<group>"; };
+		D4C2F0F51F0754F5002F6AD6 /* ptr_array.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ptr_array.c; sourceTree = "<group>"; };
+		D4C2F0F61F0754F5002F6AD6 /* ptr_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ptr_array.h; sourceTree = "<group>"; };
+		D4C2F0F81F075703002F6AD6 /* ptr_array_test.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ptr_array_test.c; sourceTree = "<group>"; };
 		D4D495B61C6321A000BC80C9 /* orientation.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = orientation.c; sourceTree = "<group>"; };
 		D4D495B71C6321A000BC80C9 /* orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = orientation.h; sourceTree = "<group>"; };
 		D4D495BE1C643D2600BC80C9 /* level_map.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = level_map.c; sourceTree = "<group>"; };
@@ -312,6 +317,7 @@
 				D406B6611C71CBBC0037171B /* dungeon */,
 				D406B6601C71CBBC0037171B /* dice_test.c */,
 				D406B6661C71CBBC0037171B /* main.c */,
+				D4C2F0F81F075703002F6AD6 /* ptr_array_test.c */,
 				D406B6671C71CBBC0037171B /* str_test.c */,
 			);
 			path = unit_tests;
@@ -341,6 +347,8 @@
 				D406B6541C6FB8D60037171B /* int.c */,
 				D4BD32C31B6AECE90007527A /* language.h */,
 				D4BD32C21B6AECE90007527A /* language.c */,
+				D4C2F0F61F0754F5002F6AD6 /* ptr_array.h */,
+				D4C2F0F51F0754F5002F6AD6 /* ptr_array.c */,
 				D414ED391C9CD2560067AF0B /* result.h */,
 				D414ED381C9CD2560067AF0B /* result.c */,
 				D414ED3C1C9CD2860067AF0B /* result_type.h */,
@@ -699,6 +707,7 @@
 				D4BD32AB1B6A06560007527A /* jewelry.c in Sources */,
 				D48EF5341DF684C900D5E312 /* app.c in Sources */,
 				D4EA14DA1C5EE1A400EF508F /* generator.c in Sources */,
+				D4C2F0FB1F0758C4002F6AD6 /* ptr_array.c in Sources */,
 				D4BD32C61B6AECE90007527A /* language.c in Sources */,
 				D4BD32B11B6A06560007527A /* treasure_map.c in Sources */,
 				D4092F901B65D6C200BFD0B3 /* str.c in Sources */,
@@ -735,6 +744,7 @@
 				D406B6681C71CBBC0037171B /* dice_test.c in Sources */,
 				D406B66D1C71CBBC0037171B /* main.c in Sources */,
 				D406B6691C71CBBC0037171B /* box_test.c in Sources */,
+				D4C2F0FA1F0758B7002F6AD6 /* ptr_array_test.c in Sources */,
 				D406B66E1C71CBBC0037171B /* str_test.c in Sources */,
 				D406B66A1C71CBBC0037171B /* dungeon_test.c in Sources */,
 				D406B66B1C71CBBC0037171B /* generator_test.c in Sources */,
