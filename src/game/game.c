@@ -9,7 +9,9 @@
 
 #include "common/alloc_or_die.h"
 #include "common/dice.h"
+#include "common/ptr_array.h"
 #include "common/result.h"
+#include "common/str.h"
 
 #include "treasure/treasure.h"
 #include "treasure/gem.h"
@@ -179,68 +181,58 @@ create_character(struct game *game)
 static struct result
 enumerate_treasure_items(struct game *game, struct treasure *treasure)
 {
-    int code = ERR;
-    
-    int x = 4;
-    int y = 4;
+    struct ptr_array *lines = ptr_array_alloc();
     
     if (treasure->gems_count) {
-        code = mvprintw(y, x, "Gems: --------------------------------");
-        if (ERR == code) return result_ncurses_err();
-        ++y;
+        ptr_array_add(lines, strdup_or_die("Gems: --------------------------------"));
         for (int i = 0; i < treasure->gems_count; ++i) {
-            code = mvprintw(y, x, "%2i  %s", i + 1, treasure->gems[i].true_description);
-            if (ERR == code) return result_ncurses_err();
-            ++y;
+            ptr_array_add(lines, str_alloc_formatted("%2i  %s", i + 1, treasure->gems[i].true_description));
         }
     }
     
     if (treasure->jewelry_count) {
-        code = mvprintw(y, x, "Jewelry: -----------------------------");
-        if (ERR == code) return result_ncurses_err();
-        ++y;
+        ptr_array_add(lines, strdup_or_die("Jewelry: -----------------------------"));
         for (int i = 0; i < treasure->jewelry_count; ++i) {
-            code = mvprintw(y, x, "%2i  %s\n",
-                            i + 1, treasure->jewelry[i].true_description);
-            if (ERR == code) return result_ncurses_err();
-            ++y;
+            ptr_array_add(lines, str_alloc_formatted("%2i  %s\n", i + 1, treasure->jewelry[i].true_description));
         }
     }
     
     if (treasure->maps_count) {
-        code = mvprintw(y, x, "Maps: --------------------------------");
-        if (ERR == code) return result_ncurses_err();
-        ++y;
+        ptr_array_add(lines, strdup_or_die("Maps: --------------------------------"));
         for (int i = 0; i < treasure->maps_count; ++i) {
-            code = mvprintw(y, x, "%2i  %s\n", i + 1, treasure->maps[i].true_description);
-            if (ERR == code) return result_ncurses_err();
-            ++y;
+            ptr_array_add(lines, str_alloc_formatted("%2i  %s\n", i + 1, treasure->maps[i].true_description));
         }
     }
     
     if (treasure->magic_items_count) {
-        code = mvprintw(y, x, "Magic Items: -------------------------");
-        if (ERR == code) return result_ncurses_err();
-        ++y;
+        ptr_array_add(lines, strdup_or_die("Magic Items: -------------------------"));
         for (int i = 0; i < treasure->magic_items_count; ++i) {
-            code = mvprintw(y, x, "%2i  %s",
-                            i + 1, treasure->magic_items[i].true_description);
-            if (ERR == code) return result_ncurses_err();
-            ++y;
+            ptr_array_add(lines, str_alloc_formatted("%2i  %s", i + 1, treasure->magic_items[i].true_description));
             if (treasure->magic_items[i].true_details) {
                 int j = 0;
                 while (treasure->magic_items[i].true_details[j]) {
-                    code = mvprintw(y, x + 8, "%s",
-                                    treasure->magic_items[i].true_details[j]);
-                    if (ERR == code) return result_ncurses_err();
-                    ++y;
+                    ptr_array_add(lines, str_alloc_formatted("        %s", treasure->magic_items[i].true_details[j]));
                     ++j;
                 }
             }
         }
     }
     
+    int code = ERR;
+    
+    int x = 4;
+    int y = 4;
+    
+    for (int i = 0; i < lines->count; ++i) {
+        code = mvprintw(y, x, lines->elements[i]);
+        if (ERR == code) return result_ncurses_err();
+        ++y;
+    }
+    
     move(y, x);
+    
+    ptr_array_clear(lines, free_or_die);
+    ptr_array_free(lines);
     return result_success();
 }
 
