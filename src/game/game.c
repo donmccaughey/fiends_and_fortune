@@ -264,22 +264,29 @@ generate_treasure_type(struct game *game, char letter)
     
     int code = ERR;
     
-    code = erase();
-    if (ERR == code) return result_ncurses_err();
-    
     WINDOW *pad = newpad(pad_height, pad_width);
     if ( ! pad) return result_ncurses_err();
         
+        int x = 0;
+        int y = 0;
+        for (int i = 0; i < lines->count; ++i) {
+            code = mvwprintw(pad, y, x, "%s", lines->elements[i]);
+            if (ERR == code) {
+                mvwprintw(stdscr, y - 1, 0, "*");
+            }
+            ++y;
+        }
+    
+    ptr_array_clear(lines, free_or_die);
+    ptr_array_free(lines);
+    
+    curs_set(0);
+    
+    code = erase();
+    if (ERR == code) return result_ncurses_err();
+    
     code = box(stdscr, 0, 0);
     if (ERR == code) return result_ncurses_err();
-        
-    int x = 0;
-    int y = 0;
-    for (int i = 0; i < lines->count; ++i) {
-        code = mvwprintw(pad, y, x, "%s", lines->elements[i]);
-        if (ERR == code) return result_ncurses_err();
-        ++y;
-    }
     
     code = wnoutrefresh(stdscr);
     if (ERR == code) return result_ncurses_err();
@@ -301,16 +308,18 @@ generate_treasure_type(struct game *game, char letter)
         getmaxyx(stdscr, y, x);
         int hidden_line_count = pad_height - (y - 2);
         
-        if ('j' == ch) {
+        if ('j' == ch || KEY_DOWN == ch) {
             if (hidden_line_count > 0 && y_offset > 0) {
                 --y_offset;
-                prefresh(pad, y_offset, 0, 1, 2, y - 2, x - 4);
+                code = prefresh(pad, y_offset, 0, 1, 2, y - 2, x - 4);
+                if (ERR == code) return result_ncurses_err();
             }
         }
-        if ('k' == ch) {
+        if ('k' == ch || KEY_UP == ch) {
             if (hidden_line_count > 0 && y_offset < hidden_line_count) {
                 ++y_offset;
-                prefresh(pad, y_offset, 0, 1, 2, y - 2, x - 4);
+                code = prefresh(pad, y_offset, 0, 1, 2, y - 2, x - 4);
+                if (ERR == code) return result_ncurses_err();
             }
         }
     }
@@ -321,8 +330,7 @@ generate_treasure_type(struct game *game, char letter)
     code = delwin(pad);
     if (E_OK != code) return result_ncurses_error(code);
     
-    ptr_array_clear(lines, free_or_die);
-    ptr_array_free(lines);
+    curs_set(1);
     
     return result_success();
 }
