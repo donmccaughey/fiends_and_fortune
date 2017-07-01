@@ -284,14 +284,39 @@ generate_treasure_type(struct game *game, char letter)
     code = wnoutrefresh(stdscr);
     if (ERR == code) return result_ncurses_err();
     
+    int y_offset = 0;
     getmaxyx(stdscr, y, x);
-    code = pnoutrefresh(pad, 0, 0, 1, 2, y - 2, x - 4);
+    code = pnoutrefresh(pad, y_offset, 0, 1, 2, y - 2, x - 4);
     if (ERR == code) return result_ncurses_err();
     
     code = doupdate();
     if (ERR == code) return result_ncurses_err();
+        
+    code = keypad(pad, TRUE);
+    if (ERR == code) return result_ncurses_err();
     
-    getch();
+    int ch;
+    while ((ch = wgetch(pad)) != 'q') {
+        int x, y;
+        getmaxyx(stdscr, y, x);
+        int hidden_line_count = pad_height - (y - 2);
+        
+        if ('j' == ch) {
+            if (hidden_line_count > 0 && y_offset > 0) {
+                --y_offset;
+                prefresh(pad, y_offset, 0, 1, 2, y - 2, x - 4);
+            }
+        }
+        if ('k' == ch) {
+            if (hidden_line_count > 0 && y_offset < hidden_line_count) {
+                ++y_offset;
+                prefresh(pad, y_offset, 0, 1, 2, y - 2, x - 4);
+            }
+        }
+    }
+    
+    code = keypad(stdscr, TRUE);
+    if (ERR == code) return result_ncurses_err();
     
     code = delwin(pad);
     if (E_OK != code) return result_ncurses_error(code);
