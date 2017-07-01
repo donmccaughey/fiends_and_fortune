@@ -178,11 +178,9 @@ create_character(struct game *game)
 }
 
 
-static struct result
-enumerate_treasure_items(struct game *game, struct treasure *treasure)
+static void
+enumerate_treasure_items(struct game *game, struct treasure *treasure, struct ptr_array *lines)
 {
-    struct ptr_array *lines = ptr_array_alloc();
-    
     if (treasure->gems_count) {
         ptr_array_add(lines, strdup_or_die("Gems: --------------------------------"));
         for (int i = 0; i < treasure->gems_count; ++i) {
@@ -193,14 +191,14 @@ enumerate_treasure_items(struct game *game, struct treasure *treasure)
     if (treasure->jewelry_count) {
         ptr_array_add(lines, strdup_or_die("Jewelry: -----------------------------"));
         for (int i = 0; i < treasure->jewelry_count; ++i) {
-            ptr_array_add(lines, str_alloc_formatted("%2i  %s\n", i + 1, treasure->jewelry[i].true_description));
+            ptr_array_add(lines, str_alloc_formatted("%2i  %s", i + 1, treasure->jewelry[i].true_description));
         }
     }
     
     if (treasure->maps_count) {
         ptr_array_add(lines, strdup_or_die("Maps: --------------------------------"));
         for (int i = 0; i < treasure->maps_count; ++i) {
-            ptr_array_add(lines, str_alloc_formatted("%2i  %s\n", i + 1, treasure->maps[i].true_description));
+            ptr_array_add(lines, str_alloc_formatted("%2i  %s", i + 1, treasure->maps[i].true_description));
         }
     }
     
@@ -217,23 +215,6 @@ enumerate_treasure_items(struct game *game, struct treasure *treasure)
             }
         }
     }
-    
-    int code = ERR;
-    
-    int x = 4;
-    int y = 4;
-    
-    for (int i = 0; i < lines->count; ++i) {
-        code = mvprintw(y, x, lines->elements[i]);
-        if (ERR == code) return result_ncurses_err();
-        ++y;
-    }
-    
-    move(y, x);
-    
-    ptr_array_clear(lines, free_or_die);
-    ptr_array_free(lines);
-    return result_success();
 }
 
 
@@ -249,17 +230,10 @@ generate_dungeon(struct game *game)
 static struct result
 generate_treasure_type(struct game *game, char letter)
 {
-    int code = ERR;
+    struct ptr_array *lines = ptr_array_alloc();
     
-    code = erase();
-    if (ERR == code) return result_ncurses_err();
-    
-    int x = 2;
-    int y = 1;
-    
-    code = mvprintw(y, x, "Treasure type %c", letter);
-    if (ERR == code) return result_ncurses_err();
-    y = 3;
+    ptr_array_add(lines, str_alloc_formatted("Treasure type %c", letter));
+    ptr_array_add(lines, strdup_or_die(""));
     
     int individual_count = 0;
     if (letter >= 'J' && letter <= 'N') {
@@ -273,15 +247,58 @@ generate_treasure_type(struct game *game, char letter)
     char *description = treasure_alloc_description(&treasure);
     int value_cp = treasure_value_in_cp(&treasure);
     char *value_gp = coins_alloc_gp_cp_description(value_cp);
-    code = mvprintw(y, x, "%s (total %s)\n", description, value_gp);
+    ptr_array_add(lines, str_alloc_formatted("%s (total %s)", description, value_gp));
     free_or_die(value_gp);
     free_or_die(description);
     
-    enumerate_treasure_items(game, &treasure);
+    enumerate_treasure_items(game, &treasure, lines);
     
     treasure_finalize(&treasure);
     
+    int pad_width = 0;
+    int pad_height = lines->count;
+    for (int i = 0; i < lines->count; ++i) {
+        int length = (int)strlen(lines->elements[i]);
+        if (length > pad_width) pad_width = length;
+    }
+    
+    int code = ERR;
+    
+    code = erase();
+    if (ERR == code) return result_ncurses_err();
+    
+    WINDOW *pad = newpad(pad_height, pad_width);
+    if ( ! pad) return result_ncurses_err();
+        
+    code = box(stdscr, 0, 0);
+    if (ERR == code) return result_ncurses_err();
+        
+    int x = 0;
+    int y = 0;
+    for (int i = 0; i < lines->count; ++i) {
+        code = mvwprintw(pad, y, x, "%s", lines->elements[i]);
+        if (ERR == code) return result_ncurses_err();
+        ++y;
+    }
+    
+    code = wnoutrefresh(stdscr);
+    if (ERR == code) return result_ncurses_err();
+    
+    getmaxyx(stdscr, y, x);
+    code = pnoutrefresh(pad, 0, 0, 1, 2, y - 2, x - 4);
+    if (ERR == code) return result_ncurses_err();
+    
+    code = doupdate();
+    if (ERR == code) return result_ncurses_err();
+    
     getch();
+    
+    code = delwin(pad);
+    if (E_OK != code) return result_ncurses_error(code);
+    
+    ptr_array_clear(lines, free_or_die);
+    ptr_array_free(lines);
+    
     return result_success();
 }
 
