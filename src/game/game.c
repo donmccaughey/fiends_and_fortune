@@ -282,7 +282,7 @@ generate_treasure_type(struct game *game, char letter)
     
     curs_set(0);
     
-    code = erase();
+    code = werase(stdscr);
     if (ERR == code) return result_ncurses_err();
     
     code = box(stdscr, 0, 0);
@@ -315,14 +315,14 @@ generate_treasure_type(struct game *game, char letter)
         getmaxyx(stdscr, y, x);
         int hidden_line_count = pad_height - (y - 2);
         
-        if ('j' == ch || KEY_DOWN == ch) {
+        if ('k' == ch || KEY_UP == ch) {
             if (hidden_line_count > 0 && y_offset > 0) {
                 --y_offset;
                 code = prefresh(pad, y_offset, 0, 1, 2, y - 2, x - 4);
                 if (ERR == code) return result_ncurses_err();
             }
         }
-        if ('k' == ch || KEY_UP == ch) {
+        if ('j' == ch || KEY_DOWN == ch) {
             if (hidden_line_count > 0 && y_offset < hidden_line_count) {
                 ++y_offset;
                 code = prefresh(pad, y_offset, 0, 1, 2, y - 2, x - 4);
