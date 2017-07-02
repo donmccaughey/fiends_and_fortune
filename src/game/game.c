@@ -302,8 +302,15 @@ generate_treasure_type(struct game *game, char letter)
     code = keypad(pad, TRUE);
     if (ERR == code) return result_ncurses_err();
     
+    set_escdelay(25);
+    
     int ch;
-    while ((ch = wgetch(pad)) != 'q') {
+    while (true) {
+        ch = wgetch(pad);
+        if ('q' == ch || 27 == ch) {
+            break;
+        }
+        
         int x, y;
         getmaxyx(stdscr, y, x);
         int hidden_line_count = pad_height - (y - 2);
