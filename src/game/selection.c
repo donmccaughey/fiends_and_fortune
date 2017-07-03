@@ -58,18 +58,15 @@ draw_window(struct selection *selection)
 static struct result
 get_selection(struct selection *selection)
 {
-    curs_set(1);
     while (true) {
         int ch = wgetch(selection->window);
         if (ERR == ch) {
-            curs_set(0);
             return result_ncurses_err();
         }
         
         if (KEY_DOWN == ch) {
             int result = menu_driver(selection->menu, REQ_DOWN_ITEM);
             if (E_OK != result && E_REQUEST_DENIED != result) {
-                curs_set(0);
                 return result_ncurses_error(result);
             }
         }
@@ -77,7 +74,6 @@ get_selection(struct selection *selection)
         if (KEY_UP == ch) {
             int result = menu_driver(selection->menu, REQ_UP_ITEM);
             if (E_OK != result && E_REQUEST_DENIED != result) {
-                curs_set(0);
                 return result_ncurses_error(result);
             }
         }
@@ -89,7 +85,6 @@ get_selection(struct selection *selection)
                 char const *name = item_name(selection->items[i]);
                 if (name && ch == name[0]) {
                     set_current_item(selection->menu, selection->items[i]);
-                    curs_set(0);
                     return result_success();
                 }
             }
@@ -101,14 +96,12 @@ get_selection(struct selection *selection)
                 struct selection_item *selection_item = item_userptr(selection->items[i]);
                 if (ch == selection_item->shortcut_key) {
                     set_current_item(selection->menu, selection->items[i]);
-                    curs_set(0);
                     return result_success();
                 }
             }
         }
     }
     
-    curs_set(0);
     return result_success();
 }
 

@@ -306,8 +306,6 @@ generate_treasure_type(struct game *game, char letter)
     ptr_array_clear(lines, free_or_die);
     ptr_array_free(lines);
     
-    curs_set(0);
-    
     code = werase(stdscr);
     if (ERR == code) return result_ncurses_err();
     
@@ -363,8 +361,6 @@ generate_treasure_type(struct game *game, char letter)
     code = delwin(pad);
     if (E_OK != code) return result_ncurses_error(code);
     
-    curs_set(1);
-    
     return result_success();
 }
 
@@ -409,13 +405,17 @@ generate_treasure(struct game *game)
     if (ERR == code) return result_ncurses_err();
     
     mvprintw(3, 2, "Treasure Type:");
-        
+    
     code = refresh();
     if (ERR == code) return result_ncurses_err();
     
     int ch;
     while ('\r' != (ch = getch())) {
+        if (isalpha(ch)) {
+            ch = toupper(ch);
+        }
         form_driver(form, ch);
+        form_driver(form, REQ_FIRST_FIELD);
     }
     
     char *buffer = field_buffer(treasure_type, 0);
@@ -551,6 +551,8 @@ game_show(struct game *game)
 
     code = keypad(stdscr, TRUE);
     if (ERR == code) return result_ncurses_err();
+    
+    curs_set(0);
 
     return result_success();
 }
