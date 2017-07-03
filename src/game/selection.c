@@ -6,6 +6,7 @@
 
 #include "common/alloc_or_die.h"
 #include "common/result.h"
+#include "common/str.h"
 
 
 static struct result
@@ -57,13 +58,18 @@ draw_window(struct selection *selection)
 static struct result
 get_selection(struct selection *selection)
 {
+    curs_set(1);
     while (true) {
         int ch = wgetch(selection->window);
-        if (ERR == ch) return result_ncurses_err();
+        if (ERR == ch) {
+            curs_set(0);
+            return result_ncurses_err();
+        }
         
         if (KEY_DOWN == ch) {
             int result = menu_driver(selection->menu, REQ_DOWN_ITEM);
             if (E_OK != result && E_REQUEST_DENIED != result) {
+                curs_set(0);
                 return result_ncurses_error(result);
             }
         }
@@ -71,23 +77,38 @@ get_selection(struct selection *selection)
         if (KEY_UP == ch) {
             int result = menu_driver(selection->menu, REQ_UP_ITEM);
             if (E_OK != result && E_REQUEST_DENIED != result) {
+                curs_set(0);
                 return result_ncurses_error(result);
             }
         }
         
         if ('\r' == ch) break;
         
-        if (!isalnum(ch)) continue;
+        if (isnumber(ch)) {
+            for (int i = 0; i < selection->items_count; ++i) {
+                char const *name = item_name(selection->items[i]);
+                if (name && ch == name[0]) {
+                    set_current_item(selection->menu, selection->items[i]);
+                    curs_set(0);
+                    return result_success();
+                }
+            }
+        }
         
-        for (int i = 0; i < selection->items_count; ++i) {
-            char const *name = item_name(selection->items[i]);
-            if (name && ch == name[0]) {
-                set_current_item(selection->menu, selection->items[i]);
-                return result_success();
+        if (isalpha(ch)) {
+            ch = tolower(ch);
+            for (int i = 0; i < selection->items_count; ++i) {
+                struct selection_item *selection_item = item_userptr(selection->items[i]);
+                if (ch == selection_item->shortcut_key) {
+                    set_current_item(selection->menu, selection->items[i]);
+                    curs_set(0);
+                    return result_success();
+                }
             }
         }
     }
     
+    curs_set(0);
     return result_success();
 }
 
@@ -100,7 +121,7 @@ selection_add_item(struct selection *selection,
     if (!selection) return result_set_system_error(EINVAL);
     if (!description) return result_set_system_error(EINVAL);
     if (!description[0]) return result_set_system_error(EINVAL);
-        
+    
     int index = selection->items_count;
     int null_index = index + 1;
     ++selection->items_count;
@@ -108,19 +129,30 @@ selection_add_item(struct selection *selection,
                                            selection->items_count + 1,
                                            sizeof(ITEM *));
     
-    char name[] = "1";
-    name[0] += index;
-    char *name_dup = strdup_or_die(name);
+    char *name = str_alloc_formatted("%i", index + 1);
+    
     char *description_dup = strdup_or_die(description);
-    selection->items[index] = new_item(name_dup, description_dup);
+    char *shortcut_start = strchr(description_dup, '&');
+    int shortcut_key = 0;
+    int shortcut_index = -1;
+    if (shortcut_start && '&' != shortcut_start[1]) {
+        char *end_of_description = &shortcut_start[1];
+        shortcut_key = tolower(end_of_description[0]);
+        shortcut_index = (int)(end_of_description - description_dup);
+        memmove(shortcut_start, end_of_description, strlen(end_of_description) + 1);
+    }
+    
+    selection->items[index] = new_item(name, description_dup);
     if (!selection->items[index]) {
         free_or_die(description_dup);
-        free_or_die(name_dup);
+        free_or_die(name);
         return result_system_error();
     }
     
     struct selection_item *selection_item = calloc_or_die(1, sizeof(struct selection_item));
     selection_item->action = action;
+    selection_item->shortcut_key = shortcut_key;
+    selection_item->shortcut_index = shortcut_index;
     set_item_userptr(selection->items[index], selection_item);
     
     selection->items[null_index] = NULL;

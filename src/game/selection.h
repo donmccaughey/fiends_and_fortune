@@ -26,6 +26,8 @@ struct selection {
 
 struct selection_item {
     selection_action_fn *action;
+    int shortcut_key;
+    int shortcut_index;
 };
 
 

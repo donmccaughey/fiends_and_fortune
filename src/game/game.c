@@ -24,16 +24,41 @@
 
 
 static void
-draw_character_sheet(struct game *game, int characteristics[6])
+draw_character_sheet(struct game *game,
+                     enum characteristic_generation_method method,
+                     int characteristics[6])
 {
     int x = 2;
     int y = 1;
+    
     mvwprintw(stdscr, y + 0, x, "Strength:     %2i\n", characteristics[0]);
     mvwprintw(stdscr, y + 1, x, "Intelligence: %2i\n", characteristics[1]);
     mvwprintw(stdscr, y + 2, x, "Wisdom:       %2i\n", characteristics[2]);
     mvwprintw(stdscr, y + 3, x, "Dexterity:    %2i\n", characteristics[3]);
     mvwprintw(stdscr, y + 4, x, "Constitution: %2i\n", characteristics[4]);
     mvwprintw(stdscr, y + 5, x, "Charisma:     %2i\n", characteristics[5]);
+    
+    char const *method_name;
+    switch (method) {
+        case characteristic_generation_method_simple:
+            method_name = "simple method"; break;
+        case characteristic_generation_method_1:
+            method_name = "method 1"; break;
+        case characteristic_generation_method_2:
+            method_name = "method 2"; break;
+        case characteristic_generation_method_3:
+            method_name = "method 3"; break;
+        case characteristic_generation_method_4:
+            method_name = "method 4"; break;
+        case characteristic_generation_method_general_NPC:
+            method_name = "general NPC method"; break;
+        case characteristic_generation_method_special_NPC:
+            method_name = "special NPC method"; break;
+        default:
+            method_name = "other method"; break;
+    }
+    
+    mvwprintw(stdscr, y + 7, x, "(%s)", method_name);
 }
 
 
@@ -44,7 +69,7 @@ create_character_using_simple_method(struct game *game)
     int *characteristics = alloc_characteristics(game->rnd,
                                                  characteristic_generation_method_simple,
                                                  special_characteristics);
-    draw_character_sheet(game, characteristics);
+    draw_character_sheet(game, characteristic_generation_method_simple, characteristics);
     free_or_die(characteristics);
     getch();
     
@@ -59,7 +84,7 @@ create_character_using_method_1(struct game *game)
     int *characteristics = alloc_characteristics(game->rnd,
                                                  characteristic_generation_method_1,
                                                  special_characteristics);
-    draw_character_sheet(game, characteristics);
+    draw_character_sheet(game, characteristic_generation_method_1, characteristics);
     // TODO: player assigns rolls
     free_or_die(characteristics);
     getch();
@@ -75,7 +100,7 @@ create_character_using_method_2(struct game *game)
     int *characteristics = alloc_characteristics(game->rnd,
                                                  characteristic_generation_method_2,
                                                  special_characteristics);
-    draw_character_sheet(game, characteristics);
+    draw_character_sheet(game, characteristic_generation_method_2, characteristics);
     // TODO: player assigns rolls
     free_or_die(characteristics);
     getch();
@@ -91,7 +116,7 @@ create_character_using_method_3(struct game *game)
     int *characteristics = alloc_characteristics(game->rnd,
                                                  characteristic_generation_method_3,
                                                  special_characteristics);
-    draw_character_sheet(game, characteristics);
+    draw_character_sheet(game, characteristic_generation_method_3, characteristics);
     free_or_die(characteristics);
     getch();
     
@@ -107,7 +132,7 @@ create_character_using_method_4(struct game *game)
                                                  characteristic_generation_method_4,
                                                  special_characteristics);
     // TODO: player chooses from 12 characters
-    draw_character_sheet(game, characteristics);
+    draw_character_sheet(game, characteristic_generation_method_4, characteristics);
     free_or_die(characteristics);
     getch();
     
@@ -122,7 +147,7 @@ create_character_using_method_general_NPC(struct game *game)
     int *characteristics = alloc_characteristics(game->rnd,
                                                  characteristic_generation_method_general_NPC,
                                                  special_characteristics);
-    draw_character_sheet(game, characteristics);
+    draw_character_sheet(game, characteristic_generation_method_general_NPC, characteristics);
     free_or_die(characteristics);
     getch();
     
@@ -138,7 +163,7 @@ create_character_using_method_special_NPC(struct game *game)
     int *characteristics = alloc_characteristics(game->rnd,
                                                  characteristic_generation_method_special_NPC,
                                                  special_characteristics);
-    draw_character_sheet(game, characteristics);
+    draw_character_sheet(game, characteristic_generation_method_special_NPC, characteristics);
     free_or_die(characteristics);
     getch();
     
@@ -152,14 +177,14 @@ create_character(struct game *game)
     struct selection *selection = selection_alloc_or_die("Create Character");
     if (!selection) return result_system_error();
     
-    selection_add_item(selection, "Simple", create_character_using_simple_method);
     selection_add_item(selection, "Method 1", create_character_using_method_1);
     selection_add_item(selection, "Method 2", create_character_using_method_2);
     selection_add_item(selection, "Method 3", create_character_using_method_3);
     selection_add_item(selection, "Method 4", create_character_using_method_4);
-    selection_add_item(selection, "General NPC", create_character_using_method_general_NPC);
-    selection_add_item(selection, "Special NPC", create_character_using_method_special_NPC);
-    selection_add_item(selection, "Back", NULL);
+    selection_add_item(selection, "&Simple", create_character_using_simple_method);
+    selection_add_item(selection, "&General NPC", create_character_using_method_general_NPC);
+    selection_add_item(selection, "Special &NPC", create_character_using_method_special_NPC);
+    selection_add_item(selection, "&Back", NULL);
     
     struct result result = selection_show(selection, stdscr);
     selection_action_fn *action = selection_selected_action(selection);
@@ -286,7 +311,7 @@ generate_treasure_type(struct game *game, char letter)
     code = werase(stdscr);
     if (ERR == code) return result_ncurses_err();
     
-    code = box(stdscr, 0, 0);
+    code = wborder(stdscr, '|', '|', '-', '-', '+', '+', '+', '+');
     if (ERR == code) return result_ncurses_err();
     
     code = wnoutrefresh(stdscr);
@@ -464,10 +489,10 @@ game_run(struct game *game)
     
     struct selection *selection = selection_alloc_or_die("Fiends & Fortune");
     
-    selection_add_item(selection, "Create Character", create_character);
-    selection_add_item(selection, "Generate Treasure", generate_treasure);
-    selection_add_item(selection, "Generate Dungeon", generate_dungeon);
-    selection_add_item(selection, "Quit", quit_game);
+    selection_add_item(selection, "Create &Character", create_character);
+    selection_add_item(selection, "Generate &Treasure", generate_treasure);
+    selection_add_item(selection, "Generate &Dungeon", generate_dungeon);
+    selection_add_item(selection, "&Quit", quit_game);
     
     struct result result = result_success();
     while (game->is_running) {
