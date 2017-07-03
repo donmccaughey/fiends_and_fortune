@@ -233,12 +233,13 @@ generate_treasure_type(struct game *game, char letter)
     struct ptr_array *lines = ptr_array_alloc();
     
     ptr_array_add(lines, str_alloc_formatted("Treasure type %c", letter));
-    ptr_array_add(lines, strdup_or_die(""));
     
     int individual_count = 0;
     if (letter >= 'J' && letter <= 'N') {
         individual_count = roll("1d10", game->rnd);
+        ptr_array_add(lines, str_alloc_formatted("    %i individuals", individual_count));
     }
+    ptr_array_add(lines, strdup_or_die(""));
     
     struct treasure treasure;
     treasure_initialize(&treasure);
