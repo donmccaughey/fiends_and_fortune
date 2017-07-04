@@ -1,7 +1,9 @@
 #include "game.h"
 
+#include <assert.h>
 #include <ctype.h>
 #include <form.h>
+#include <limits.h>
 
 #include <sys/ioctl.h>
 
@@ -12,6 +14,10 @@
 #include "common/ptr_array.h"
 #include "common/result.h"
 #include "common/str.h"
+
+#include "dungeon/dungeon.h"
+#include "dungeon/level_map.h"
+#include "dungeon/text_rectangle.h"
 
 #include "treasure/treasure.h"
 #include "treasure/gem.h"
@@ -243,11 +249,246 @@ enumerate_treasure_items(struct game *game, struct treasure *treasure, struct pt
 }
 
 
+static WINDOW *
+pad_for_dungeon_level(struct dungeon *dungeon, int level)
+{
+    struct level_map *level_map = level_map_alloc(dungeon, level);
+    struct text_rectangle *text_rectangle = level_map_alloc_text_graph(level_map);
+    
+    int pad_width = text_rectangle->column_count;
+    int pad_height = text_rectangle->row_count;
+    
+    WINDOW *pad = newpad(pad_height, pad_width);
+    if ( ! pad) {
+        text_rectangle_free(text_rectangle);
+        level_map_free(level_map);
+        return NULL;
+    }
+    
+    int x = 0;
+    int y = 0;
+    for (int i = 0; i < pad_height; ++i) {
+        char *row = text_rectangle_row_at(text_rectangle, i);
+        int code = mvwprintw(pad, y, x, "%*s", pad_width, row);
+        if (ERR == code) { /* ignore */ }
+        ++y;
+    }
+    
+    text_rectangle_free(text_rectangle);
+    level_map_free(level_map);
+    
+    return pad;
+}
+
+
+static struct result
+draw_scroll_window(WINDOW *window, char const *title)
+{
+    int code = ERR;
+    
+    code = werase(window);
+    if (ERR == code) return result_ncurses_err();
+    
+    code = wborder(window, '|', '|', '-', '-', '+', '+', '+', '+');
+    if (ERR == code) return result_ncurses_err();
+    
+    if (title) {
+        int width, height;
+        getmaxyx(window, height, width);
+        size_t title_length = strlen(title);
+        assert(title_length < (size_t)INT_MAX);
+        if (title_length) {
+            int title_width = (int)title_length;
+            if (title_width <= width - 6) {
+                int x = (width - title_width) / 2 - 1;
+                mvwprintw(window, 0, x, " %s ", title);
+            } else {
+                int x = 2;
+                mvwprintw(window, 0, x, " %*s ", width = 6, title);
+            }
+        }
+    }
+    
+    code = wnoutrefresh(window);
+    if (ERR == code) return result_ncurses_err();
+    
+    return result_success();
+}
+
+
+static struct result
+draw_scroll_window_for_level(WINDOW *window, int level)
+{
+    char *title = str_alloc_formatted("Level %i", level);
+    struct result result = draw_scroll_window(window, title);
+    free_or_die(title);
+    return result;
+}
+
+
 static struct result
 generate_dungeon(struct game *game)
 {
-    mvprintw(1, 2, "Generate Dungeon");
-    getch();
+    int code = ERR;
+    
+    mvprintw(1, 2, "Generating Dungeon...");
+    wrefresh(stdscr);
+    
+    struct dungeon *dungeon = dungeon_alloc();
+    dungeon_generate(dungeon, game->rnd);
+    
+    int starting_level = dungeon_starting_level(dungeon);
+    int ending_level = dungeon_ending_level(dungeon);
+    
+    int level = starting_level;
+    
+    WINDOW *pad = pad_for_dungeon_level(dungeon, level);
+    if ( ! pad) {
+        dungeon_free(dungeon);
+        return result_ncurses_err();
+    }
+    
+    struct result result = draw_scroll_window_for_level(stdscr, level);
+    if (!result_is_success(result)) {
+        dungeon_free(dungeon);
+        return result_ncurses_err();
+    }
+    
+    int x_offset = 0;
+    int y_offset = 0;
+    int width, height;
+    getmaxyx(stdscr, height, width);
+    code = pnoutrefresh(pad, y_offset, x_offset, 1, 2, height - 2, width - 4);
+    if (ERR == code) return result_ncurses_err();
+    
+    code = doupdate();
+    if (ERR == code) return result_ncurses_err();
+        
+    code = keypad(pad, TRUE);
+    if (ERR == code) return result_ncurses_err();
+    
+    set_escdelay(25);
+    
+    int ch;
+    while (true) {
+        ch = wgetch(pad);
+        if ('q' == ch || 27 == ch) {
+            break;
+        }
+        
+        int width, height;
+        getmaxyx(stdscr, height, width);
+        int pad_width, pad_height;
+        getmaxyx(pad, pad_height, pad_width);
+        int hidden_column_count = pad_width - (width - 4);
+        int hidden_line_count = pad_height - (height - 2);
+        
+        if ('k' == ch || KEY_UP == ch) {
+            if (hidden_line_count > 0 && y_offset > 0) {
+                y_offset -= 2;
+                code = prefresh(pad, y_offset, x_offset, 1, 2, height - 2, width - 4);
+                if (ERR == code) return result_ncurses_err();
+            }
+        }
+        if ('j' == ch || KEY_DOWN == ch) {
+            if (hidden_line_count > 0 && y_offset < hidden_line_count) {
+                y_offset += 2;
+                code = prefresh(pad, y_offset, x_offset, 1, 2, height - 2, width - 4);
+                if (ERR == code) return result_ncurses_err();
+            }
+        }
+        if ('h' == ch || KEY_LEFT == ch) {
+            if (hidden_column_count > 0 && x_offset > 0) {
+                x_offset -= 4;
+                code = prefresh(pad, y_offset, x_offset, 1, 2, height - 2, width - 4);
+                if (ERR == code) return result_ncurses_err();
+            }
+        }
+        if ('l' == ch || KEY_RIGHT == ch) {
+            if (hidden_column_count > 0 && x_offset < hidden_column_count) {
+                x_offset += 4;
+                code = prefresh(pad, y_offset, x_offset, 1, 2, height - 2, width - 4);
+                if (ERR == code) return result_ncurses_err();
+            }
+        }
+        if ('u' == ch) {
+            if (level > starting_level) {
+                --level;
+                x_offset = 0;
+                y_offset = 0;
+                
+                code = delwin(pad);
+                if (E_OK != code) {
+                    dungeon_free(dungeon);
+                    return result_ncurses_error(code);
+                }
+                
+                pad = pad_for_dungeon_level(dungeon, level);
+                if ( ! pad) {
+                    dungeon_free(dungeon);
+                    return result_ncurses_err();
+                }
+                
+                struct result result = draw_scroll_window_for_level(stdscr, level);
+                if (!result_is_success(result)) {
+                    dungeon_free(dungeon);
+                    return result_ncurses_err();
+                }
+                
+                code = pnoutrefresh(pad, y_offset, x_offset, 1, 2, height - 2, width - 4);
+                if (ERR == code) return result_ncurses_err();
+                
+                code = doupdate();
+                if (ERR == code) return result_ncurses_err();
+                
+                code = keypad(pad, TRUE);
+                if (ERR == code) return result_ncurses_err();
+            }
+        }
+        if ('d' == ch) {
+            if (level < ending_level) {
+                ++level;
+                x_offset = 0;
+                y_offset = 0;
+                
+                code = delwin(pad);
+                if (E_OK != code) {
+                    dungeon_free(dungeon);
+                    return result_ncurses_error(code);
+                }
+                
+                pad = pad_for_dungeon_level(dungeon, level);
+                if ( ! pad) {
+                    dungeon_free(dungeon);
+                    return result_ncurses_err();
+                }
+                
+                struct result result = draw_scroll_window_for_level(stdscr, level);
+                if (!result_is_success(result)) {
+                    dungeon_free(dungeon);
+                    return result_ncurses_err();
+                }
+                
+                code = pnoutrefresh(pad, y_offset, x_offset, 1, 2, height - 2, width - 4);
+                if (ERR == code) return result_ncurses_err();
+                
+                code = doupdate();
+                if (ERR == code) return result_ncurses_err();
+                
+                code = keypad(pad, TRUE);
+                if (ERR == code) return result_ncurses_err();
+            }
+        }
+    }
+    
+    code = keypad(stdscr, TRUE);
+    if (ERR == code) return result_ncurses_err();
+    
+    code = delwin(pad);
+    if (E_OK != code) return result_ncurses_error(code);
+    
+    dungeon_free(dungeon);
+    
     return result_success();
 }
 
@@ -293,15 +534,15 @@ generate_treasure_type(struct game *game, char letter)
     WINDOW *pad = newpad(pad_height, pad_width);
     if ( ! pad) return result_ncurses_err();
         
-        int x = 0;
-        int y = 0;
-        for (int i = 0; i < lines->count; ++i) {
-            code = mvwprintw(pad, y, x, "%s", lines->elements[i]);
-            if (ERR == code) {
-                mvwprintw(stdscr, y - 1, 0, "*");
-            }
-            ++y;
+    int x = 0;
+    int y = 0;
+    for (int i = 0; i < lines->count; ++i) {
+        code = mvwprintw(pad, y, x, "%s", lines->elements[i]);
+        if (ERR == code) {
+            mvwprintw(pad, y, 0, "*");
         }
+        ++y;
+    }
     
     ptr_array_clear(lines, free_or_die);
     ptr_array_free(lines);

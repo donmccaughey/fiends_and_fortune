@@ -18,7 +18,7 @@ static size_t
 chars_size(int column_count, int row_count)
 {
     return array_size_or_die(horizontal_char_count(column_count), row_count)
-    + 1;
+         + 1;
 }
 
 
@@ -116,7 +116,7 @@ text_rectangle_row_at(struct text_rectangle *text_rectangle, int row_index)
 {
     assert(row_index >= 0 && row_index <= text_rectangle->row_count);
     return text_rectangle->chars
-    + (horizontal_char_count(text_rectangle->column_count) * row_index);
+         + (horizontal_char_count(text_rectangle->column_count) * row_index);
 }
 
 
@@ -125,6 +125,6 @@ text_rectangle_row_end_at(struct text_rectangle *text_rectangle, int row_index)
 {
     assert(row_index >= 0 && row_index <= text_rectangle->row_count);
     return text_rectangle->chars
-    + (horizontal_char_count(text_rectangle->column_count) * row_index)
-    + text_rectangle->column_count;
+         + (horizontal_char_count(text_rectangle->column_count) * row_index)
+         + text_rectangle->column_count;
 }
