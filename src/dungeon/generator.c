@@ -76,6 +76,7 @@ generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
     generator->rnd = rnd;
     
     generator->padding = rnd_next_uniform_value(rnd, 2);
+    generator->max_iteration_count = 100;
     generator->max_size = size_make(30, 20, 5);
     
     generator->areas = calloc_or_die(1, sizeof(struct area *));
@@ -225,8 +226,6 @@ generator_free(struct generator *generator)
 void
 generator_generate(struct generator *generator)
 {
-    int const max_interation_count = 100;
-    
     struct digger *digger = generator_add_digger(generator,
                                                  point_make(0, 0, 1),
                                                  direction_north);
@@ -235,7 +234,7 @@ generator_generate(struct generator *generator)
     generator_commit(generator);
     
     while (   generator->diggers_count
-           && generator->iteration_count < max_interation_count)
+           && generator->iteration_count < generator->max_iteration_count)
     {
         struct digger **diggers = arraydup_or_die(generator->diggers,
                                                   generator->diggers_count,

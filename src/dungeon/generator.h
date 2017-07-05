@@ -25,6 +25,7 @@ struct generator {
     int diggers_count;
     struct dungeon *dungeon;
     int iteration_count;
+    int max_iteration_count;
     struct size max_size;
     int padding;
     struct rnd *rnd;
