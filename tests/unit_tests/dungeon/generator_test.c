@@ -17,7 +17,7 @@ generator_add_digger_test(void)
 {
     struct dungeon *dungeon = dungeon_alloc();
     
-    struct generator *generator = generator_alloc(dungeon, global_rnd);
+    struct generator *generator = generator_alloc(dungeon, global_rnd, NULL, NULL);
     assert(0 == generator->diggers_count);
     
     struct digger *digger1 = generator_add_digger(generator,

@@ -242,7 +242,7 @@ static void
 generate_random_dungeon(struct rnd *rnd, FILE *out)
 {
     struct dungeon *dungeon = dungeon_alloc();
-    dungeon_generate(dungeon, rnd);
+    dungeon_generate(dungeon, rnd, NULL, NULL);
     print_dungeon(dungeon, out);
     dungeon_free(dungeon);
 }

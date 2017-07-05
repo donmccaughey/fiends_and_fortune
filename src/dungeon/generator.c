@@ -69,7 +69,10 @@ generator_add_digger(struct generator *generator,
 
 
 struct generator *
-generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
+generator_alloc(struct dungeon *dungeon,
+                struct rnd *rnd,
+                generator_progress_callback *progress_callback,
+                void *callback_user_data)
 {
     struct generator *generator = calloc_or_die(1, sizeof(struct generator));
     generator->dungeon = dungeon;
@@ -83,6 +86,10 @@ generator_alloc(struct dungeon *dungeon, struct rnd *rnd)
     generator->diggers = calloc_or_die(1, sizeof(struct digger *));
     generator->saved_diggers = calloc_or_die(1, sizeof(struct digger));
     generator->tiles = calloc_or_die(1, sizeof(struct tile *));
+    
+    generator->progress_callback = progress_callback;
+    generator->callback_user_data = callback_user_data;
+    
     return generator;
 }
 
@@ -249,6 +256,10 @@ generator_generate(struct generator *generator)
         }
         free_or_die(diggers);
         ++generator->iteration_count;
+        if (generator->progress_callback) {
+            generator->progress_callback(generator,
+                                         generator->callback_user_data);
+        }
     }
 }
 

@@ -16,6 +16,7 @@
 #include "common/str.h"
 
 #include "dungeon/dungeon.h"
+#include "dungeon/generator.h"
 #include "dungeon/level_map.h"
 #include "dungeon/text_rectangle.h"
 
@@ -370,20 +371,42 @@ draw_dungeon_level(struct dungeon *dungeon,
 }
 
 
+static void
+dungeon_generation_progress(struct generator *generator, void *user_data)
+{
+    WINDOW *window = user_data;
+    mvwprintw(window, 3, 2, "%i iterations", generator->iteration_count);
+    mvwprintw(window, 4, 2, "%i diggers", generator->diggers_count);
+    mvwprintw(window, 5, 2, "%i areas", generator->dungeon->areas_count);
+    mvwprintw(window, 6, 2, "%i tiles", generator->dungeon->tiles_count);
+    wrefresh(window);
+}
+
+
 static struct result
 generate_dungeon(struct game *game)
 {
     int code = ERR;
     WINDOW *window = stdscr;
     
-    mvprintw(1, 2, "Generating Dungeon...");
+    mvwprintw(window, 1, 2, "Generating dungeon...");
     wrefresh(window);
     
     struct dungeon *dungeon = dungeon_alloc();
-    dungeon_generate(dungeon, game->rnd);
+    dungeon_generate(dungeon, game->rnd, dungeon_generation_progress, window);
     
     int starting_level = dungeon_starting_level(dungeon);
     int ending_level = dungeon_ending_level(dungeon);
+    
+    code = werase(window);
+    if (ERR == code) return result_ncurses_err();
+    
+    mvwprintw(window, 1, 2, "Dungeon generated");
+    mvwprintw(window, 3, 2, "starting level: %i", starting_level);
+    mvwprintw(window, 4, 2, "ending level: %i", ending_level);
+    mvwprintw(window, 5, 2, "%i areas", dungeon->areas_count);
+    mvwprintw(window, 6, 2, "%i tiles", dungeon->tiles_count);
+    wgetch(window);
     
     int level = starting_level;
     

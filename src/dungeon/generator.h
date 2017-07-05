@@ -14,8 +14,12 @@
 struct area;
 struct digger;
 struct dungeon;
+struct generator;
 struct rnd;
 struct tile;
+
+
+typedef void (generator_progress_callback)(struct generator *generator, void *user_data);
 
 
 struct generator {
@@ -33,11 +37,16 @@ struct generator {
     int saved_diggers_count;
     struct tile **tiles;
     int tiles_count;
+    generator_progress_callback *progress_callback;
+    void *callback_user_data;
 };
 
 
 struct generator *
-generator_alloc(struct dungeon *dungeon, struct rnd *rnd);
+generator_alloc(struct dungeon *dungeon,
+                struct rnd *rnd,
+                generator_progress_callback *progress_callback,
+                void *callback_user_data);
 
 void
 generator_free(struct generator *generator);

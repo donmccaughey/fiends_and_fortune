@@ -98,9 +98,15 @@ dungeon_free(struct dungeon *dungeon)
 
 
 void
-dungeon_generate(struct dungeon *dungeon, struct rnd *rnd)
+dungeon_generate(struct dungeon *dungeon,
+                 struct rnd *rnd,
+                 dungeon_progress_callback *progress_callback,
+                 void *callback_user_data)
 {
-    struct generator *generator = generator_alloc(dungeon, rnd);
+    struct generator *generator = generator_alloc(dungeon,
+                                                  rnd,
+                                                  progress_callback,
+                                                  callback_user_data);
     generator_generate(generator);
     generator_free(generator);
 }
@@ -109,7 +115,7 @@ dungeon_generate(struct dungeon *dungeon, struct rnd *rnd)
 void
 dungeon_generate_small(struct dungeon *dungeon)
 {
-    struct generator *generator = generator_alloc(dungeon, global_rnd);
+    struct generator *generator = generator_alloc(dungeon, global_rnd, NULL, NULL);
     generator_generate_small(generator);
     generator_free(generator);
 }
