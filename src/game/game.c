@@ -218,7 +218,10 @@ enumerate_treasure_items(struct game *game, struct treasure *treasure, struct pt
     if (treasure->gems_count) {
         ptr_array_add(lines, strdup_or_die("Gems: --------------------------------"));
         for (int i = 0; i < treasure->gems_count; ++i) {
-            ptr_array_add(lines, str_alloc_formatted("%2i  %s", i + 1, treasure->gems[i].true_description));
+            ptr_array_add(lines, str_alloc_formatted("%2i  %s", i + 1,
+                                                     treasure->gems[i].visible_description));
+            ptr_array_add(lines, str_alloc_formatted("      %s",
+                                                     treasure->gems[i].true_description));
         }
     }
     
