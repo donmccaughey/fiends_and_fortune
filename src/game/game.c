@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include <form.h>
 #include <limits.h>
+#include <time.h>
 
 #include <sys/ioctl.h>
 
@@ -18,6 +19,7 @@
 #include "dungeon/dungeon.h"
 #include "dungeon/generator.h"
 #include "dungeon/level_map.h"
+#include "dungeon/size.h"
 #include "dungeon/text_rectangle.h"
 
 #include "treasure/treasure.h"
@@ -377,8 +379,13 @@ dungeon_generation_progress(struct generator *generator, void *user_data)
     WINDOW *window = user_data;
     mvwprintw(window, 3, 2, "%i iterations", generator->iteration_count);
     mvwprintw(window, 4, 2, "%i diggers", generator->diggers_count);
+    wclrtoeol(window);
     mvwprintw(window, 5, 2, "%i areas", generator->dungeon->areas_count);
     mvwprintw(window, 6, 2, "%i tiles", generator->dungeon->tiles_count);
+    mvwprintw(window, 7, 2, "%i max depth", generator->max_size.height);
+    mvwprintw(window, 8, 2, "%i max width", generator->max_size.width);
+    mvwprintw(window, 9, 2, "%i max length", generator->max_size.length);
+    mvwprintw(window, 10, 2, "%i padding", generator->padding);
     wrefresh(window);
 }
 
@@ -392,8 +399,19 @@ generate_dungeon(struct game *game)
     mvwprintw(window, 1, 2, "Generating dungeon...");
     wrefresh(window);
     
+    clock_t start_clock = clock();
+    
     struct dungeon *dungeon = dungeon_alloc();
-    dungeon_generate(dungeon, game->rnd, dungeon_generation_progress, window);
+    struct generator *generator = generator_alloc(dungeon,
+                                                  game->rnd,
+                                                  dungeon_generation_progress,
+                                                  window);
+    generator->max_iteration_count = 100;
+    generator->max_size = size_make(30, 20, 5);
+    generator_generate(generator);
+    
+    clock_t end_clock = clock();
+    double generation_time = (double)(end_clock - start_clock) / CLOCKS_PER_SEC;
     
     int starting_level = dungeon_starting_level(dungeon);
     int ending_level = dungeon_ending_level(dungeon);
@@ -402,11 +420,15 @@ generate_dungeon(struct game *game)
     if (ERR == code) return result_ncurses_err();
     
     mvwprintw(window, 1, 2, "Dungeon generated");
-    mvwprintw(window, 3, 2, "starting level: %i", starting_level);
-    mvwprintw(window, 4, 2, "ending level: %i", ending_level);
+    mvwprintw(window, 3, 2, "%i iterations", generator->iteration_count);
+    mvwprintw(window, 4, 2, "%.2f seconds", generation_time);
     mvwprintw(window, 5, 2, "%i areas", dungeon->areas_count);
     mvwprintw(window, 6, 2, "%i tiles", dungeon->tiles_count);
+    mvwprintw(window, 7, 2, "starting level: %i", starting_level);
+    mvwprintw(window, 8, 2, "ending level: %i", ending_level);
     wgetch(window);
+    
+    generator_free(generator);
     
     int level = starting_level;
     
