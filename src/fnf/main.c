@@ -90,7 +90,8 @@ enumerate_treasure_items(struct treasure *treasure, FILE *out)
     if (treasure->gems_count) {
         fprintf(out, "  Gems: --------------------------------\n");
         for (int i = 0; i < treasure->gems_count; ++i) {
-            fprintf(out, "    %2i  %s\n", i + 1, treasure->gems[i].true_description);
+            fprintf(out, "    %2i  %s\n", i + 1, treasure->gems[i].visible_description);
+            fprintf(out, "          %s\n", treasure->gems[i].true_description);
         }
     }
     
