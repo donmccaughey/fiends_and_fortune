@@ -14,6 +14,7 @@
 #include "common/dice.h"
 #include "common/ptr_array.h"
 #include "common/result.h"
+#include "common/rnd.h"
 #include "common/str.h"
 
 #include "dungeon/dungeon.h"
@@ -385,10 +386,12 @@ dungeon_generation_progress(struct generator *generator, void *user_data)
     wclrtoeol(window);
     mvwprintw(window, 5, 2, "%i areas", generator->dungeon->areas_count);
     mvwprintw(window, 6, 2, "%i tiles", generator->dungeon->tiles_count);
-    mvwprintw(window, 7, 2, "%i max depth", generator->max_size.height);
-    mvwprintw(window, 8, 2, "%i max width", generator->max_size.width);
-    mvwprintw(window, 9, 2, "%i max length", generator->max_size.length);
-    mvwprintw(window, 10, 2, "%i padding", generator->padding);
+    
+    mvwprintw(window, 8, 2, "%i max depth", generator->max_size.height);
+    mvwprintw(window, 9, 2, "%i max width", generator->max_size.width);
+    mvwprintw(window, 10, 2, "%i max length", generator->max_size.length);
+    
+    mvwprintw(window, 12, 2, "%i padding", generator->padding);
     wrefresh(window);
 }
 
@@ -405,13 +408,23 @@ generate_dungeon(struct game *game)
     clock_t start_clock = clock();
     
     struct dungeon *dungeon = dungeon_alloc();
+    
+    unsigned short random_seed[3];
+    random_seed[0] = rnd_next_uniform_value_in_range(global_rnd, 0, USHRT_MAX);
+    random_seed[1] = rnd_next_uniform_value_in_range(global_rnd, 0, USHRT_MAX);
+    random_seed[2] = rnd_next_uniform_value_in_range(global_rnd, 0, USHRT_MAX);
+    
+    struct rnd *rnd = rnd_alloc_jrand48(random_seed);
+    
     struct generator *generator = generator_alloc(dungeon,
-                                                  game->rnd,
+                                                  rnd,
                                                   dungeon_generation_progress,
                                                   window);
     generator->max_iteration_count = 100;
     generator->max_size = size_make(30, 20, 5);
     generator_generate(generator);
+    
+    rnd_free(rnd);
     
     clock_t end_clock = clock();
     double generation_time = (double)(end_clock - start_clock) / CLOCKS_PER_SEC;
@@ -423,12 +436,24 @@ generate_dungeon(struct game *game)
     if (ERR == code) return result_ncurses_err();
     
     mvwprintw(window, 1, 2, "Dungeon generated");
+    
     mvwprintw(window, 3, 2, "%i iterations", generator->iteration_count);
-    mvwprintw(window, 4, 2, "%.2f seconds", generation_time);
+    mvwprintw(window, 4, 2, "%i diggers", generator->diggers_count);
     mvwprintw(window, 5, 2, "%i areas", dungeon->areas_count);
     mvwprintw(window, 6, 2, "%i tiles", dungeon->tiles_count);
-    mvwprintw(window, 7, 2, "starting level: %i", starting_level);
-    mvwprintw(window, 8, 2, "ending level: %i", ending_level);
+    
+    mvwprintw(window, 8, 2, "%i max depth", generator->max_size.height);
+    mvwprintw(window, 9, 2, "%i max width", generator->max_size.width);
+    mvwprintw(window, 10, 2, "%i max length", generator->max_size.length);
+    
+    mvwprintw(window, 12, 2, "%i padding", generator->padding);
+    
+    mvwprintw(window, 14, 2, "starting level: %i", starting_level);
+    mvwprintw(window, 15, 2, "ending level: %i", ending_level);
+    
+    mvwprintw(window, 17, 2, "%.2f seconds", generation_time);
+    mvwprintw(window, 18, 2, "random seed: (%hu, %hu, %hu)",
+              random_seed[0], random_seed[1], random_seed[2]);
     wgetch(window);
     
     generator_free(generator);
