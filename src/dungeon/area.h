@@ -34,7 +34,13 @@ char *
 area_alloc_description(struct area const *area);
 
 bool
+area_is_chamber_or_room(struct area const *area);
+
+bool
 area_is_interesting(struct area const *area);
+
+bool
+area_is_level_transition(struct area const *area);
 
 struct point
 area_center_point(struct area const *area);

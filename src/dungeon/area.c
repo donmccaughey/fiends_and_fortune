@@ -114,12 +114,27 @@ area_free(struct area *area)
 
 
 bool
+area_is_chamber_or_room(struct area const *area)
+{
+    if (area_type_chamber == area->type) return true;
+    if (area_type_room == area->type) return true;
+    return false;
+}
+
+
+bool
 area_is_interesting(struct area const *area)
 {
-    if (area_type_chamber ==  area->type) return true;
-    if (area_type_room ==  area->type) return true;
-    if (area_type_stairs_down ==  area->type) return true;
-    if (area_type_stairs_up ==  area->type) return true;
+    return area_is_chamber_or_room(area)
+        || area_is_level_transition(area);
+}
+
+
+bool
+area_is_level_transition(struct area const *area)
+{
+    if (area_type_stairs_down == area->type) return true;
+    if (area_type_stairs_up == area->type) return true;
     if (area->features) return true;
     return false;
 }

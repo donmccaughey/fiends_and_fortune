@@ -150,10 +150,25 @@ dungeon_level_count(struct dungeon const *dungeon)
 void
 dungeon_print_areas_for_level(struct dungeon *dungeon, int level, FILE *out)
 {
+    fprintf(out, "  Entrances and Exits:\n");
     for (int i = 0; i < dungeon->areas_count; ++i) {
         struct area *area = dungeon->areas[i];
         if (level != area->box.origin.z) continue;
-        if (area_is_interesting(area)) {
+        if (area_is_level_transition(area)) {
+            char *location = point_alloc_xy(area_center_point(area));
+            char *description = area_alloc_description(area);
+            fprintf(out, "    %-12s %s\n", location, description);
+            free_or_die(location);
+            free_or_die(description);
+        }
+    }
+    
+    fprintf(out, "\n");
+    fprintf(out, "  Chambers and Rooms:\n");
+    for (int i = 0; i < dungeon->areas_count; ++i) {
+        struct area *area = dungeon->areas[i];
+        if (level != area->box.origin.z) continue;
+        if (area_is_chamber_or_room(area)) {
             char *location = point_alloc_xy(area_center_point(area));
             char *description = area_alloc_description(area);
             fprintf(out, "    %-12s %s\n", location, description);

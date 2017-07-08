@@ -17,6 +17,7 @@
 #include "common/rnd.h"
 #include "common/str.h"
 
+#include "dungeon/area.h"
 #include "dungeon/dungeon.h"
 #include "dungeon/generator.h"
 #include "dungeon/level_map.h"
@@ -377,6 +378,97 @@ draw_dungeon_level(struct dungeon *dungeon,
 }
 
 
+static struct result
+list_dungeon_level_areas(struct dungeon *dungeon,
+                         int level,
+                         WINDOW *window,
+                         WINDOW **pad,
+                         int *x_offset,
+                         int *y_offset)
+{
+    int code = ERR;
+    
+    struct result result = draw_scroll_window_for_level(window, level);
+    if (!result_is_success(result)) {
+        return result_ncurses_err();
+    }
+    
+    if (*pad) {
+        code = delwin(*pad);
+        if (E_OK != code) {
+            return result_ncurses_error(code);
+        }
+    }
+    
+    struct ptr_array *lines = ptr_array_alloc();
+    ptr_array_add(lines, strdup_or_die("Entrances and Exits:"));
+    for (int i = 0; i < dungeon->areas_count; ++i) {
+        struct area *area = dungeon->areas[i];
+        if (level != area->box.origin.z) continue;
+        if (area_is_level_transition(area)) {
+            char *location = point_alloc_xy(area_center_point(area));
+            char *description = area_alloc_description(area);
+            ptr_array_add(lines, str_alloc_formatted("  %-12s %s", location, description));
+            free_or_die(location);
+            free_or_die(description);
+        }
+    }
+    
+    ptr_array_add(lines, strdup_or_die(""));
+    ptr_array_add(lines, strdup_or_die("Chambers and Rooms:"));
+    
+    for (int i = 0; i < dungeon->areas_count; ++i) {
+        struct area *area = dungeon->areas[i];
+        if (level != area->box.origin.z) continue;
+        if (area_is_chamber_or_room(area)) {
+            char *location = point_alloc_xy(area_center_point(area));
+            char *description = area_alloc_description(area);
+            ptr_array_add(lines, str_alloc_formatted("  %-12s %s", location, description));
+            free_or_die(location);
+            free_or_die(description);
+        }
+    }
+    
+    int pad_width = 0;
+    int pad_height = lines->count;
+    for (int i = 0; i < lines->count; ++i) {
+        int length = (int)strlen(lines->elements[i]);
+        if (length > pad_width) pad_width = length;
+    }
+    
+    *pad = newpad(pad_height, pad_width);
+    if ( ! *pad) return result_ncurses_err();
+    
+    int x = 0;
+    int y = 0;
+    for (int i = 0; i < lines->count; ++i) {
+        code = mvwprintw(*pad, y, x, "%s", lines->elements[i]);
+        if (ERR == code) {
+            mvwprintw(*pad, y, 0, "*");
+        }
+        ++y;
+    }
+    
+    ptr_array_clear(lines, free_or_die);
+    ptr_array_free(lines);
+    
+    *x_offset = 0;
+    *y_offset = 0;
+    int width, height;
+    getmaxyx(window, height, width);
+    code = pnoutrefresh(*pad, *y_offset, *x_offset, 1, 2, height - 2, width - 4);
+    if (ERR == code) return result_ncurses_err();
+    
+    code = doupdate();
+    if (ERR == code) return result_ncurses_err();
+    
+    code = keypad(*pad, TRUE);
+    if (ERR == code) return result_ncurses_err();
+    
+    return result_success();
+}
+
+
 static void
 dungeon_generation_progress(struct generator *generator, void *user_data)
 {
@@ -469,8 +561,7 @@ generate_dungeon(struct game *game)
         dungeon_free(dungeon);
         return result_ncurses_err();
     }
-    
-    set_escdelay(25);
+    bool showing_map = true;
     
     int ch;
     while (true) {
@@ -514,14 +605,38 @@ generate_dungeon(struct game *game)
                 if (ERR == code) return result_ncurses_err();
             }
         }
-        if ('u' == ch) {
-            if (level > starting_level) {
-                --level;
-                
+        if ('\r' == ch) {
+            showing_map = !showing_map;
+            if (showing_map) {
                 struct result result = draw_dungeon_level(dungeon, level, window, &pad, &x_offset, &y_offset);
                 if (!result_is_success(result)) {
                     dungeon_free(dungeon);
                     return result_ncurses_err();
+                }
+            } else {
+                struct result result = list_dungeon_level_areas(dungeon, level, window, &pad, &x_offset, &y_offset);
+                if (!result_is_success(result)) {
+                    dungeon_free(dungeon);
+                    return result_ncurses_err();
+                }
+            }
+        }
+        if ('u' == ch) {
+            if (level > starting_level) {
+                --level;
+                
+                if (showing_map) {
+                    struct result result = draw_dungeon_level(dungeon, level, window, &pad, &x_offset, &y_offset);
+                    if (!result_is_success(result)) {
+                        dungeon_free(dungeon);
+                        return result_ncurses_err();
+                    }
+                } else {
+                    struct result result = list_dungeon_level_areas(dungeon, level, window, &pad, &x_offset, &y_offset);
+                    if (!result_is_success(result)) {
+                        dungeon_free(dungeon);
+                        return result_ncurses_err();
+                    }
                 }
             }
         }
@@ -529,10 +644,18 @@ generate_dungeon(struct game *game)
             if (level < ending_level) {
                 ++level;
                 
-                struct result result = draw_dungeon_level(dungeon, level, window, &pad, &x_offset, &y_offset);
-                if (!result_is_success(result)) {
-                    dungeon_free(dungeon);
-                    return result_ncurses_err();
+                if (showing_map) {
+                    struct result result = draw_dungeon_level(dungeon, level, window, &pad, &x_offset, &y_offset);
+                    if (!result_is_success(result)) {
+                        dungeon_free(dungeon);
+                        return result_ncurses_err();
+                    }
+                } else {
+                    struct result result = list_dungeon_level_areas(dungeon, level, window, &pad, &x_offset, &y_offset);
+                    if (!result_is_success(result)) {
+                        dungeon_free(dungeon);
+                        return result_ncurses_err();
+                    }
                 }
             }
         }
@@ -820,6 +943,8 @@ game_run(struct game *game)
             result = result_ncurses_err();
             break;
         }
+        
+        set_escdelay(25);
     }
     
     selection_free_or_die(selection);
