@@ -20,7 +20,6 @@ treasure_type_alloc_description(struct treasure_type *treasure_type,
 void
 treasure_type_generate(struct treasure_type *treasure_type,
                        struct rnd *rnd,
-                       int individual_count,
                        struct treasure *treasure);
 
 struct treasure_type *

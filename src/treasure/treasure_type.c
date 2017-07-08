@@ -702,8 +702,7 @@ describe_maps_or_magic(struct maps_or_magic *maps_or_magic);
 static void
 generate_coins(int *coins,
                struct rnd *rnd,
-               struct coins_gems_or_jewelry *coins_type,
-               int individual_count);
+               struct coins_gems_or_jewelry *coins_type);
 
 static void
 generate_gems(struct treasure *treasure, struct rnd *rnd);
@@ -845,21 +844,15 @@ describe_maps_or_magic(struct maps_or_magic *maps_or_magic)
 void
 treasure_type_generate(struct treasure_type *treasure_type,
                        struct rnd *rnd,
-                       int individual_count,
                        struct treasure *treasure)
 {
     treasure->type = treasure_type;
     
-    generate_coins(&treasure->coins.cp, rnd,
-                   &treasure_type->copper, individual_count);
-    generate_coins(&treasure->coins.sp, rnd,
-                   &treasure_type->silver, individual_count);
-    generate_coins(&treasure->coins.ep, rnd,
-                   &treasure_type->electrum, individual_count);
-    generate_coins(&treasure->coins.gp, rnd,
-                   &treasure_type->gold, individual_count);
-    generate_coins(&treasure->coins.pp, rnd,
-                   &treasure_type->platinum, individual_count);
+    generate_coins(&treasure->coins.cp, rnd, &treasure_type->copper);
+    generate_coins(&treasure->coins.sp, rnd, &treasure_type->silver);
+    generate_coins(&treasure->coins.ep, rnd, &treasure_type->electrum);
+    generate_coins(&treasure->coins.gp, rnd, &treasure_type->gold);
+    generate_coins(&treasure->coins.pp, rnd, &treasure_type->platinum);
     generate_gems(treasure, rnd);
     generate_jewelry(treasure, rnd);
     generate_maps_or_magic(treasure, rnd);
@@ -869,20 +862,16 @@ treasure_type_generate(struct treasure_type *treasure_type,
 static void
 generate_coins(int *coins,
                struct rnd *rnd,
-               struct coins_gems_or_jewelry *coins_type,
-               int individual_count)
+               struct coins_gems_or_jewelry *coins_type)
 {
     *coins = 0;
     if (!coins_type->percent_chance) return;
     if (coins_type->is_per_individual) {
-        assert(individual_count > 0);
-        for (int i = 0; i < individual_count; ++i) {
-            *coins += roll(coins_type->amount, rnd);
-        }
+        *coins += roll(coins_type->amount, rnd);
     } else {
         int percent_score = roll("1d100", rnd);
         if (percent_score <= coins_type->percent_chance) {
-            *coins = roll(coins_type->amount, rnd); // * coins_type->multiplier;
+            *coins = roll(coins_type->amount, rnd);
         }
     }
 }

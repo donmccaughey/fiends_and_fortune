@@ -265,15 +265,10 @@ generate_treasure_type(struct rnd *rnd, FILE *out, char letter)
     struct treasure treasure;
     
     fprintf(out, "Treasure type %c", letter);
-    int individual_count = 0;
-    if (letter >= 'J' && letter <= 'N') {
-        individual_count = roll("1d10", rnd);
-        fprintf(out, " (%i individuals)", individual_count);
-    }
     fprintf(out, "\n");
     
     treasure_initialize(&treasure);
-    treasure_type_generate(treasure_type_by_letter(letter), rnd, individual_count, &treasure);
+    treasure_type_generate(treasure_type_by_letter(letter), rnd, &treasure);
     
     char *description = treasure_alloc_description(&treasure);
     int value_cp = treasure_value_in_cp(&treasure);

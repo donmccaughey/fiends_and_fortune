@@ -679,17 +679,11 @@ generate_treasure_type(struct game *game, char letter)
     struct ptr_array *lines = ptr_array_alloc();
     
     ptr_array_add(lines, str_alloc_formatted("Treasure type %c", letter));
-    
-    int individual_count = 0;
-    if (letter >= 'J' && letter <= 'N') {
-        individual_count = roll("1d10", game->rnd);
-        ptr_array_add(lines, str_alloc_formatted("    %i individuals", individual_count));
-    }
     ptr_array_add(lines, strdup_or_die(""));
     
     struct treasure treasure;
     treasure_initialize(&treasure);
-    treasure_type_generate(treasure_type_by_letter(letter), game->rnd, individual_count, &treasure);
+    treasure_type_generate(treasure_type_by_letter(letter), game->rnd, &treasure);
     
     char *description = treasure_alloc_description(&treasure);
     int value_cp = treasure_value_in_cp(&treasure);
@@ -718,9 +712,7 @@ generate_treasure_type(struct game *game, char letter)
     int y = 0;
     for (int i = 0; i < lines->count; ++i) {
         code = mvwprintw(pad, y, x, "%s", lines->elements[i]);
-        if (ERR == code) {
-            mvwprintw(pad, y, 0, "*");
-        }
+        if (ERR == code) { /* ignore */ }
         ++y;
     }
     
