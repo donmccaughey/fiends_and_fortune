@@ -2,6 +2,7 @@
 
 #include "common/alloc_or_die.h"
 #include "common/dice.h"
+#include "common/ptr_array.h"
 #include "common/result.h"
 #include "common/rnd.h"
 
@@ -263,22 +264,19 @@ static void
 generate_treasure_type(struct rnd *rnd, FILE *out, char letter)
 {
     struct treasure treasure;
-    
-    fprintf(out, "Treasure type %c", letter);
-    fprintf(out, "\n");
-    
     treasure_initialize(&treasure);
     treasure_type_generate(treasure_type_by_letter(letter), rnd, &treasure);
     
-    char *description = treasure_alloc_description(&treasure);
-    int value_cp = treasure_value_in_cp(&treasure);
-    char *value_gp = coins_alloc_gp_cp_description(value_cp);
-    fprintf(out, "  %s (total %s)\n", description, value_gp);
-    free_or_die(value_gp);
-    free_or_die(description);
-    enumerate_treasure_items(&treasure, out);
+    struct ptr_array *lines = treasure_alloc_details(&treasure);
     
     treasure_finalize(&treasure);
+    
+    for (int i = 0; i < lines->count; ++i) {
+        fprintf(out, "%s\n", lines->elements[i]);
+    }
+    
+    ptr_array_clear(lines, free_or_die);
+    ptr_array_free(lines);
 }
 
 

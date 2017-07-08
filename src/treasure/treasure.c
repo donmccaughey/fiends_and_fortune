@@ -5,12 +5,14 @@
 #include <string.h>
 
 #include "common/alloc_or_die.h"
+#include "common/ptr_array.h"
 #include "common/str.h"
 
 #include "coins.h"
 #include "gem.h"
 #include "jewelry.h"
 #include "treasure_map.h"
+#include "treasure_type.h"
 
 
 char *
@@ -83,6 +85,64 @@ treasure_alloc_description(struct treasure *treasure)
         }
     }
     return description;
+}
+
+
+struct ptr_array *
+treasure_alloc_details(struct treasure *treasure)
+{
+    struct ptr_array *lines = ptr_array_alloc();
+    
+    char *treasure_type_name = treasure_type_alloc_name(treasure->type);
+    ptr_array_add(lines, str_alloc_formatted("Treasure type %s", treasure_type_name));
+    free_or_die(treasure_type_name);
+    
+    char *description = treasure_alloc_description(treasure);
+    int value_cp = treasure_value_in_cp(treasure);
+    char *value_gp = coins_alloc_gp_cp_description(value_cp);
+    ptr_array_add(lines, str_alloc_formatted("    %s (total %s)", description, value_gp));
+    free_or_die(value_gp);
+    free_or_die(description);
+    
+    if (treasure->gems_count) {
+        ptr_array_add(lines, strdup_or_die("Gems: --------------------------------"));
+        for (int i = 0; i < treasure->gems_count; ++i) {
+            ptr_array_add(lines, str_alloc_formatted("    %2i  %s", i + 1,
+                                                     treasure->gems[i].visible_description));
+            ptr_array_add(lines, str_alloc_formatted("          %s",
+                                                     treasure->gems[i].true_description));
+        }
+    }
+    
+    if (treasure->jewelry_count) {
+        ptr_array_add(lines, strdup_or_die("Jewelry: -----------------------------"));
+        for (int i = 0; i < treasure->jewelry_count; ++i) {
+            ptr_array_add(lines, str_alloc_formatted("    %2i  %s", i + 1, treasure->jewelry[i].true_description));
+        }
+    }
+    
+    if (treasure->maps_count) {
+        ptr_array_add(lines, strdup_or_die("Maps: --------------------------------"));
+        for (int i = 0; i < treasure->maps_count; ++i) {
+            ptr_array_add(lines, str_alloc_formatted("    %2i  %s", i + 1, treasure->maps[i].true_description));
+        }
+    }
+    
+    if (treasure->magic_items_count) {
+        ptr_array_add(lines, strdup_or_die("Magic Items: -------------------------"));
+        for (int i = 0; i < treasure->magic_items_count; ++i) {
+            ptr_array_add(lines, str_alloc_formatted("    %2i  %s", i + 1, treasure->magic_items[i].true_description));
+            if (treasure->magic_items[i].true_details) {
+                int j = 0;
+                while (treasure->magic_items[i].true_details[j]) {
+                    ptr_array_add(lines, str_alloc_formatted("            %s", treasure->magic_items[i].true_details[j]));
+                    ++j;
+                }
+            }
+        }
+    }
+    
+    return lines;
 }
 
 

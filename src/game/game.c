@@ -214,49 +214,6 @@ create_character(struct game *game)
 }
 
 
-static void
-enumerate_treasure_items(struct game *game, struct treasure *treasure, struct ptr_array *lines)
-{
-    if (treasure->gems_count) {
-        ptr_array_add(lines, strdup_or_die("Gems: --------------------------------"));
-        for (int i = 0; i < treasure->gems_count; ++i) {
-            ptr_array_add(lines, str_alloc_formatted("%2i  %s", i + 1,
-                                                     treasure->gems[i].visible_description));
-            ptr_array_add(lines, str_alloc_formatted("      %s",
-                                                     treasure->gems[i].true_description));
-        }
-    }
-    
-    if (treasure->jewelry_count) {
-        ptr_array_add(lines, strdup_or_die("Jewelry: -----------------------------"));
-        for (int i = 0; i < treasure->jewelry_count; ++i) {
-            ptr_array_add(lines, str_alloc_formatted("%2i  %s", i + 1, treasure->jewelry[i].true_description));
-        }
-    }
-    
-    if (treasure->maps_count) {
-        ptr_array_add(lines, strdup_or_die("Maps: --------------------------------"));
-        for (int i = 0; i < treasure->maps_count; ++i) {
-            ptr_array_add(lines, str_alloc_formatted("%2i  %s", i + 1, treasure->maps[i].true_description));
-        }
-    }
-    
-    if (treasure->magic_items_count) {
-        ptr_array_add(lines, strdup_or_die("Magic Items: -------------------------"));
-        for (int i = 0; i < treasure->magic_items_count; ++i) {
-            ptr_array_add(lines, str_alloc_formatted("%2i  %s", i + 1, treasure->magic_items[i].true_description));
-            if (treasure->magic_items[i].true_details) {
-                int j = 0;
-                while (treasure->magic_items[i].true_details[j]) {
-                    ptr_array_add(lines, str_alloc_formatted("        %s", treasure->magic_items[i].true_details[j]));
-                    ++j;
-                }
-            }
-        }
-    }
-}
-
-
 static WINDOW *
 pad_for_dungeon_level(struct dungeon *dungeon, int level)
 {
@@ -676,23 +633,11 @@ generate_dungeon(struct game *game)
 static struct result
 generate_treasure_type(struct game *game, char letter)
 {
-    struct ptr_array *lines = ptr_array_alloc();
-    
-    ptr_array_add(lines, str_alloc_formatted("Treasure type %c", letter));
-    ptr_array_add(lines, strdup_or_die(""));
-    
     struct treasure treasure;
     treasure_initialize(&treasure);
     treasure_type_generate(treasure_type_by_letter(letter), game->rnd, &treasure);
     
-    char *description = treasure_alloc_description(&treasure);
-    int value_cp = treasure_value_in_cp(&treasure);
-    char *value_gp = coins_alloc_gp_cp_description(value_cp);
-    ptr_array_add(lines, str_alloc_formatted("%s (total %s)", description, value_gp));
-    free_or_die(value_gp);
-    free_or_die(description);
-    
-    enumerate_treasure_items(game, &treasure, lines);
+    struct ptr_array *lines = treasure_alloc_details(&treasure);
     
     treasure_finalize(&treasure);
     

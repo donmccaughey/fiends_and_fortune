@@ -772,6 +772,13 @@ treasure_type_alloc_description(struct treasure_type *treasure_type,
 }
 
 
+char *
+treasure_type_alloc_name(struct treasure_type *treasure_type)
+{
+    return str_alloc_formatted("%c", treasure_type->letter);
+}
+
+
 static char *
 describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry *coins_gems_or_jewelry)
 {

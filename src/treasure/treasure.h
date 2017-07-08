@@ -9,6 +9,7 @@
 struct gem;
 struct jewelry;
 struct magic_item;
+struct ptr_array;
 struct rnd;
 struct treasure_map;
 struct treasure_type;
@@ -30,6 +31,9 @@ struct treasure {
 
 char *
 treasure_alloc_description(struct treasure *treasure);
+
+struct ptr_array *
+treasure_alloc_details(struct treasure *treasure);
 
 void
 treasure_finalize(struct treasure *treasure);

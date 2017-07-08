@@ -17,6 +17,9 @@ char *
 treasure_type_alloc_description(struct treasure_type *treasure_type,
                                 bool include_header);
 
+char *
+treasure_type_alloc_name(struct treasure_type *treasure_type);
+
 void
 treasure_type_generate(struct treasure_type *treasure_type,
                        struct rnd *rnd,
