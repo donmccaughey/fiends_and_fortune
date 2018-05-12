@@ -9,6 +9,7 @@
 #include "area.h"
 #include "digger.h"
 #include "dungeon.h"
+#include "dungeon_options.h"
 #include "periodic_check.h"
 #include "tile.h"
 
@@ -71,6 +72,7 @@ generator_add_digger(struct generator *generator,
 struct generator *
 generator_alloc(struct dungeon *dungeon,
                 struct rnd *rnd,
+                struct dungeon_options *dungeon_options,
                 generator_progress_callback *progress_callback,
                 void *callback_user_data)
 {
@@ -78,9 +80,9 @@ generator_alloc(struct dungeon *dungeon,
     generator->dungeon = dungeon;
     generator->rnd = rnd;
     
-    generator->padding = rnd_next_uniform_value(rnd, 2);
-    generator->max_iteration_count = 100;
-    generator->max_size = size_make(30, 20, 5);
+    generator->max_iteration_count = dungeon_options->max_iteration_count;
+    generator->max_size = dungeon_options->max_size;
+    generator->padding = dungeon_options->padding;
     
     generator->areas = calloc_or_die(1, sizeof(struct area *));
     generator->diggers = calloc_or_die(1, sizeof(struct digger *));

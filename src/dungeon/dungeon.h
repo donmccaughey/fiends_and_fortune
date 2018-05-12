@@ -9,6 +9,7 @@
 
 
 struct area;
+struct dungeon_options;
 struct generator;
 struct rnd;
 struct tile;
@@ -34,6 +35,7 @@ dungeon_free(struct dungeon *dungeon);
 void
 dungeon_generate(struct dungeon *dungeon,
                  struct rnd *rnd,
+                 struct dungeon_options *dungeon_options,
                  dungeon_progress_callback *progress_callback,
                  void *callback_user_data);
 

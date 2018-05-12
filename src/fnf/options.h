@@ -10,6 +10,7 @@
 #include "character/method.h"
 
 
+struct dungeon_options;
 struct rnd;
 
 
@@ -24,6 +25,7 @@ struct options {
     };
     char *command_name;
     bool debug;
+    struct dungeon_options *dungeon_options;
     bool error;
     bool help;
     struct rnd *rnd;

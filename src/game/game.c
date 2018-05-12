@@ -19,6 +19,7 @@
 
 #include "dungeon/area.h"
 #include "dungeon/dungeon.h"
+#include "dungeon/dungeon_options.h"
 #include "dungeon/generator.h"
 #include "dungeon/level_map.h"
 #include "dungeon/size.h"
@@ -465,13 +466,14 @@ generate_dungeon(struct game *game)
     
     struct rnd *rnd = rnd_alloc_jrand48(random_seed);
     
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
     struct generator *generator = generator_alloc(dungeon,
                                                   rnd,
+                                                  dungeon_options,
                                                   dungeon_generation_progress,
                                                   window);
-    generator->max_iteration_count = 100;
-    generator->max_size = size_make(30, 20, 5);
     generator_generate(generator);
+    dungeon_options_free(dungeon_options);
     
     rnd_free(rnd);
     

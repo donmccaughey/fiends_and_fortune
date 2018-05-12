@@ -9,6 +9,7 @@
 #include "character/character.h"
 
 #include "dungeon/dungeon.h"
+#include "dungeon/dungeon_options.h"
 
 #include "game/game.h"
 
@@ -42,7 +43,9 @@ static void
 generate_magic_items(struct rnd *rnd, FILE *out, int count);
 
 static void
-generate_random_dungeon(struct rnd *rnd, FILE *out);
+generate_random_dungeon(struct rnd *rnd,
+                        struct dungeon_options *dungeon_options,
+                        FILE *out);
 
 static void
 generate_sample_dungeon(struct rnd *rnd, FILE *out);
@@ -67,12 +70,13 @@ static void
 check(FILE *out, uint32_t constant)
 {
     struct rnd *fake_rnd = rnd_alloc_fake_fixed(constant);
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
     
     generate_treasure_type_table(out);
     generate_map(fake_rnd, out);
     generate_each_treasure(fake_rnd, out);
     generate_sample_dungeon(fake_rnd, out);
-    generate_random_dungeon(fake_rnd, out);
+    generate_random_dungeon(fake_rnd, dungeon_options, out);
     generate_character(fake_rnd, out, characteristic_generation_method_simple);
     generate_character(fake_rnd, out, characteristic_generation_method_1);
     generate_character(fake_rnd, out, characteristic_generation_method_2);
@@ -81,6 +85,7 @@ check(FILE *out, uint32_t constant)
     generate_character(fake_rnd, out, characteristic_generation_method_general_NPC);
     generate_character(fake_rnd, out, characteristic_generation_method_special_NPC);
     
+    dungeon_options_free(dungeon_options);
     rnd_free(fake_rnd);
 }
 
@@ -241,10 +246,12 @@ generate_magic_items(struct rnd *rnd, FILE *out, int count)
 
 
 static void
-generate_random_dungeon(struct rnd *rnd, FILE *out)
+generate_random_dungeon(struct rnd *rnd,
+                        struct dungeon_options *dungeon_options,
+                        FILE *out)
 {
     struct dungeon *dungeon = dungeon_alloc();
-    dungeon_generate(dungeon, rnd, NULL, NULL);
+    dungeon_generate(dungeon, rnd, dungeon_options, NULL, NULL);
     print_dungeon(dungeon, out);
     dungeon_free(dungeon);
 }
@@ -320,7 +327,9 @@ main(int argc, char *argv[])
                 if (options->dungeon_type_small) {
                     generate_sample_dungeon(options->rnd, out);
                 } else {
-                    generate_random_dungeon(options->rnd, out);
+                    generate_random_dungeon(options->rnd,
+                                            options->dungeon_options,
+                                            out);
                 }
                 break;
             case action_each:

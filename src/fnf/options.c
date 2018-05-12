@@ -7,6 +7,8 @@
 #include "common/alloc_or_die.h"
 #include "common/rnd.h"
 
+#include "dungeon/dungeon_options.h"
+
 
 static struct option long_options[] = {
     {
@@ -207,6 +209,7 @@ options_free(struct options *options)
     if (options) {
         rnd_free(options->rnd);
         free_or_die(options->command_name);
+        dungeon_options_free(options->dungeon_options);
         free_or_die(options);
     }
 }
@@ -256,6 +259,8 @@ set_action_modifier_defaults(struct options *options, char const *action_string)
             break;
         case action_dungeon:
             options->dungeon_type_small = false;
+            options->dungeon_options = dungeon_options_alloc_default();
+            options->dungeon_options->padding = rnd_next_uniform_value(options->rnd, 2);
             break;
         case action_magic:
             options->magic_count = 10;

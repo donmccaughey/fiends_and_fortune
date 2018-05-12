@@ -5,6 +5,7 @@
 
 #include "dungeon/digger.h"
 #include "dungeon/dungeon.h"
+#include "dungeon/dungeon_options.h"
 #include "dungeon/generator.h"
 
 
@@ -17,7 +18,8 @@ generator_add_digger_test(void)
 {
     struct dungeon *dungeon = dungeon_alloc();
     
-    struct generator *generator = generator_alloc(dungeon, global_rnd, NULL, NULL);
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
+    struct generator *generator = generator_alloc(dungeon, global_rnd, dungeon_options, NULL, NULL);
     assert(0 == generator->diggers_count);
     
     struct digger *digger1 = generator_add_digger(generator,
@@ -53,6 +55,7 @@ generator_add_digger_test(void)
     assert(digger3 == generator->diggers[0]);
     
     generator_free(generator);
+    dungeon_options_free(dungeon_options);
     dungeon_free(dungeon);
 }
 

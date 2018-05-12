@@ -5,6 +5,7 @@
 #include "common/rnd.h"
 
 #include "area.h"
+#include "dungeon_options.h"
 #include "generator.h"
 #include "level_map.h"
 #include "text_rectangle.h"
@@ -100,11 +101,13 @@ dungeon_free(struct dungeon *dungeon)
 void
 dungeon_generate(struct dungeon *dungeon,
                  struct rnd *rnd,
+                 struct dungeon_options *dungeon_options,
                  dungeon_progress_callback *progress_callback,
                  void *callback_user_data)
 {
     struct generator *generator = generator_alloc(dungeon,
                                                   rnd,
+                                                  dungeon_options,
                                                   progress_callback,
                                                   callback_user_data);
     generator_generate(generator);
@@ -115,9 +118,15 @@ dungeon_generate(struct dungeon *dungeon,
 void
 dungeon_generate_small(struct dungeon *dungeon)
 {
-    struct generator *generator = generator_alloc(dungeon, global_rnd, NULL, NULL);
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
+    struct generator *generator = generator_alloc(dungeon,
+                                                  global_rnd,
+                                                  dungeon_options,
+                                                  NULL,
+                                                  NULL);
     generator_generate_small(generator);
     generator_free(generator);
+    dungeon_options_free(dungeon_options);
 }
 
 

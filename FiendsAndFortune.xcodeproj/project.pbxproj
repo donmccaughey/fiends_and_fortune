@@ -67,6 +67,7 @@
 		D48EF5381DF68AC400D5E312 /* view.h in Headers */ = {isa = PBXBuildFile; fileRef = D48EF5361DF68AC400D5E312 /* view.h */; };
 		D48EF53B1DFA68AA00D5E312 /* menu_view.c in Sources */ = {isa = PBXBuildFile; fileRef = D48EF5391DFA68AA00D5E312 /* menu_view.c */; };
 		D48EF53C1DFA68AA00D5E312 /* menu_view.h in Headers */ = {isa = PBXBuildFile; fileRef = D48EF53A1DFA68AA00D5E312 /* menu_view.h */; };
+		D4B1A27C20A6A861007F29EF /* dungeon_options.c in Sources */ = {isa = PBXBuildFile; fileRef = D4B1A27A20A6A20D007F29EF /* dungeon_options.c */; };
 		D4BD32A71B6A06560007527A /* coins.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BD32991B6A06560007527A /* coins.c */; };
 		D4BD32A81B6A06560007527A /* coins.h in Headers */ = {isa = PBXBuildFile; fileRef = D4BD329A1B6A06560007527A /* coins.h */; };
 		D4BD32A91B6A06560007527A /* gem.c in Sources */ = {isa = PBXBuildFile; fileRef = D4BD329B1B6A06560007527A /* gem.c */; };
@@ -234,6 +235,8 @@
 		D48EF5361DF68AC400D5E312 /* view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = view.h; sourceTree = "<group>"; };
 		D48EF5391DFA68AA00D5E312 /* menu_view.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = menu_view.c; sourceTree = "<group>"; };
 		D48EF53A1DFA68AA00D5E312 /* menu_view.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = menu_view.h; sourceTree = "<group>"; };
+		D4B1A27920A6A20D007F29EF /* dungeon_options.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = dungeon_options.h; sourceTree = "<group>"; };
+		D4B1A27A20A6A20D007F29EF /* dungeon_options.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dungeon_options.c; sourceTree = "<group>"; };
 		D4BCC61517D30DD000C76D11 /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
 		D4BD32991B6A06560007527A /* coins.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = coins.c; sourceTree = "<group>"; };
 		D4BD329A1B6A06560007527A /* coins.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = coins.h; sourceTree = "<group>"; };
@@ -457,6 +460,8 @@
 				B0F47EED5F7346D1FF553BE5 /* direction.c */,
 				B0F4737EABC473ABC0211C7B /* dungeon.h */,
 				B0F47DEDA0B2CB7A8EA912A7 /* dungeon.c */,
+				D4B1A27920A6A20D007F29EF /* dungeon_options.h */,
+				D4B1A27A20A6A20D007F29EF /* dungeon_options.c */,
 				D406B6511C6EF8C30037171B /* exit.h */,
 				D406B6501C6EF8C30037171B /* exit.c */,
 				D4EA14D91C5EE1A400EF508F /* generator.h */,
@@ -715,6 +720,7 @@
 				D4E9A5151C8BB722005ED58A /* game.c in Sources */,
 				D48EF53B1DFA68AA00D5E312 /* menu_view.c in Sources */,
 				D4D495B81C6321A000BC80C9 /* orientation.c in Sources */,
+				D4B1A27C20A6A861007F29EF /* dungeon_options.c in Sources */,
 				D47B33F21C7561DF00390717 /* method.c in Sources */,
 				D414ED3F1C9CF09A0067AF0B /* selection.c in Sources */,
 				D406B64B1C66C60F0037171B /* size.c in Sources */,
