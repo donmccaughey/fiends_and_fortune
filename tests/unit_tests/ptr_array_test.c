@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "common/alloc_or_die.h"
 #include "common/ptr_array.h"
 
 
@@ -160,7 +161,7 @@ ptr_array_increase_capacity_test(void)
     int test_count = 1024;
 
     for (int i = 0; i < test_count; ++i) {
-        char *element = strdup("foo");
+        char *element = strdup_or_die("foo");
         assert(element);
         ptr_array_add(ptr_array, element);
         assert(ptr_array->elements[i] == element);
@@ -174,7 +175,7 @@ ptr_array_increase_capacity_test(void)
         void *element;
         ptr_array_remove_at(ptr_array, i, &element);
         assert(expected == element);
-        free(element);
+        free_or_die(element);
     }
 
     ptr_array_free(ptr_array);
