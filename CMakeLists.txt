@@ -3,7 +3,8 @@ project(fiends_and_fortune C)
 
 set(CMAKE_C_STANDARD 99)
 enable_testing()
-
+add_compile_options(--coverage)
+set (CMAKE_EXE_LINKER_FLAGS  --coverage)
 
 find_library(form REQUIRED)
 find_library(menu REQUIRED)
