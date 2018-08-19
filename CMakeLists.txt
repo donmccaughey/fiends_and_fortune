@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.11)
 project(fiends_and_fortune C)
 
 set(CMAKE_C_STANDARD 99)

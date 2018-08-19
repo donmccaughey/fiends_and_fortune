@@ -1,0 +1,14 @@
+language: c
+
+os:
+    - osx
+
+compiler:
+    - clang
+
+install:
+    - cmake -G "Unix Makefiles" .
+
+script:
+    - make all test
+
