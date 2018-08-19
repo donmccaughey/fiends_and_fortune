@@ -1,0 +1,4 @@
+#!/bin/bash
+set -euo pipefail
+
+./fnf check | diff fnf_check.out -

@@ -23,7 +23,7 @@ a C toolchain, [CMake][31] and the [`ncurses`][32] library installed.
     mkdir tmp
     cd tmp
     cmake -G "Unix Makefiles" ..
-    make check
+    make all test
 
 [31]: https://cmake.org
 [32]: https://invisible-island.net/ncurses/

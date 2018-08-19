@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.12)
 project(fiends_and_fortune C)
 
 set(CMAKE_C_STANDARD 99)
+enable_testing()
 
 
 find_library(form REQUIRED)
@@ -17,7 +18,6 @@ add_executable(fnf
         src/fnf/main.c
         )
 target_link_libraries(fnf libfnf form menu ncurses)
-
 
 # ----- library -----
 
@@ -89,14 +89,20 @@ add_executable(unit_tests
         )
 target_include_directories(unit_tests PUBLIC src/dungeon)
 target_link_libraries(unit_tests libfnf)
+add_test(unit_tests unit_tests)
 
 
 # ----- functional tests -----
 
+configure_file(tests/fnf_check.out fnf_check.out)
+configure_file(tests/fnf_check fnf_check)
+add_test(fnf_check fnf_check)
+
+
+# ----- run all tests -----
+
 add_custom_target(check
-        COMMAND ./check.sh
+        COMMAND unit_tests
+        COMMAND ./fnf_check
         )
 add_dependencies(check fnf unit_tests)
-
-configure_file(tests/check.out check.out)
-configure_file(tests/check.sh check.sh)

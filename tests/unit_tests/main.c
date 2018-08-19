@@ -28,9 +28,6 @@ str_test(void);
 int
 main (int argc, const char *argv[])
 {
-    FILE *out = stdout;
-    fprintf(out, "Fiends and Fortune unit tests\n");
-    
     box_test();
     dice_test();
     dungeon_test();
@@ -38,8 +35,6 @@ main (int argc, const char *argv[])
     point_test();
     ptr_array_test();
     str_test();
-    
-    fprintf(out, "Okay\n");
     alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }
