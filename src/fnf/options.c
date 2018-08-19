@@ -47,7 +47,10 @@ static char const short_options[] = "dhj:v";
 
 
 static void
-get_action_modifier(struct options *options, char const *modifier_string);
+get_action_modifiers(struct options *options,
+                     int argc,
+                     char *argv[],
+                     int start_index);
 
 static void
 set_action_modifier_defaults(struct options *options, char const *action_string);
@@ -76,25 +79,23 @@ get_action(struct options *options, int argc, char *argv[], int start_index)
     }
     
     set_action_modifier_defaults(options, action_string);
-    if (!remaining_arg_count) return;
-    
-    char const *modifier_string = argv[i];
-    ++i;
-    --remaining_arg_count;
-    get_action_modifier(options, modifier_string);
-    
-    while (remaining_arg_count > 0) {
-        fprintf(stderr, "%s: invalid option (ignored) - %s\n",
-                options->command_name, argv[i]);
-        ++i;
-        --remaining_arg_count;
-    }
+    if (remaining_arg_count) get_action_modifiers(options, argc, argv, i);
 }
 
 
 static void
-get_action_modifier(struct options *options, char const *modifier_string)
+get_action_modifiers(struct options *options,
+                     int argc,
+                     char *argv[],
+                     int start_index)
 {
+    int i = start_index;
+    int remaining_arg_count = argc - i;
+    
+    char const *modifier_string = argv[i];
+    ++i;
+    --remaining_arg_count;
+    
     switch (options->action) {
         case action_character:
             options->character_method = characteristic_generation_method_from_string(modifier_string);
@@ -135,6 +136,13 @@ get_action_modifier(struct options *options, char const *modifier_string)
             break;
         default:
             break;
+    }
+    
+    while (remaining_arg_count > 0) {
+        fprintf(stderr, "%s: invalid option (ignored) - %s\n",
+                options->command_name, argv[i]);
+        ++i;
+        --remaining_arg_count;
     }
 }
 
