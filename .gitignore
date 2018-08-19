@@ -1,8 +1,8 @@
 .DS_Store
-.idea
 build
+cmake-build-debug
 project.xcworkspace
 tmp
+workspace.xml
 xcuserdata
-xcshareddata
 
