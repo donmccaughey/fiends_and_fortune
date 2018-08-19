@@ -1,3 +1,4 @@
+- cmake: investigate enable_testing()
 - dungeon: when digging chimney two levels down, leave intermediate tile solid
     if not currently excavated; make sure that if the tile is later excavated,
     the chimney is preserved
