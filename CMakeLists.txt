@@ -35,6 +35,7 @@ target_include_directories(base PUBLIC src)
 
 add_executable(base_tests
         src/base/base_tests.c
+        src/base/int_test.c
         src/base/ptr_array_test.c
         src/base/str_test.c
         )
