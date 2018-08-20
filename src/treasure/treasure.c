@@ -3,10 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "common/alloc_or_die.h"
-#include "common/ptr_array.h"
-#include "common/str.h"
+#include <base/base.h>
 
 #include "coins.h"
 #include "gem.h"

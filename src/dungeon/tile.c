@@ -1,8 +1,7 @@
 #include "tile.h"
 
 #include <stdlib.h>
-
-#include "common/alloc_or_die.h"
+#include <base/base.h>
 
 
 static int

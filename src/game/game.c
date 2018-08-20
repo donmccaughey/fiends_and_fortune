@@ -5,17 +5,13 @@
 #include <form.h>
 #include <limits.h>
 #include <time.h>
-
+#include <base/base.h>
 #include <sys/ioctl.h>
 
 #include "character/character.h"
 
-#include "common/alloc_or_die.h"
 #include "common/dice.h"
-#include "common/ptr_array.h"
 #include "common/result.h"
-#include "common/rnd.h"
-#include "common/str.h"
 
 #include "dungeon/area.h"
 #include "dungeon/dungeon.h"

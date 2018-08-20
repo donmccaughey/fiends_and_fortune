@@ -1,8 +1,8 @@
-#ifndef INT_H_INCLUDED
-#define INT_H_INCLUDED
+#ifndef FNF_BASE_INT_H_INCLUDED
+#define FNF_BASE_INT_H_INCLUDED
 
 
-#include "rnd.h"
+#include <base/rnd.h>
 
 
 inline void

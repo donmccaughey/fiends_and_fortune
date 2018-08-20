@@ -3,8 +3,7 @@
 #include <assert.h>
 #include <limits.h>
 #include <stdarg.h>
-
-#include "common/alloc_or_die.h"
+#include <base/base.h>
 
 
 static int

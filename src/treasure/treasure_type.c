@@ -1,12 +1,9 @@
 #include "treasure_type.h"
 
 #include <assert.h>
+#include <base/base.h>
 
-#include "common/alloc_or_die.h"
 #include "common/dice.h"
-#include "common/fail.h"
-#include "common/rnd.h"
-#include "common/str.h"
 
 #include "gem.h"
 #include "jewelry.h"

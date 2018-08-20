@@ -1,8 +1,6 @@
 #include "area.h"
 
-#include "common/alloc_or_die.h"
-#include "common/int.h"
-#include "common/str.h"
+#include <base/base.h>
 
 #include "orientation.h"
 #include "tile.h"

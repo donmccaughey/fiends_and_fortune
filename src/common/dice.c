@@ -4,9 +4,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <stdlib.h>
-
-#include "rnd.h"
-#include "str.h"
+#include <base/base.h>
 
 
 static inline double

@@ -11,31 +11,48 @@ find_library(menu REQUIRED)
 find_library(ncurses REQUIRED)
 
 
-# ----- command -----
+# ----- fnf command -----
 
 add_executable(fnf
         src/fnf/action.c
         src/fnf/options.c
         src/fnf/main.c
         )
-target_link_libraries(fnf libfnf form menu ncurses)
+target_link_libraries(fnf libfnf base form menu ncurses)
 
-# ----- library -----
+
+# ----- fnf base library -----
+
+add_library(base STATIC
+        src/base/alloc_or_die.c
+        src/base/fail.c
+        src/base/int.c
+        src/base/ptr_array.c
+        src/base/rnd.c
+        src/base/str.c
+        )
+target_include_directories(base PUBLIC src)
+
+add_executable(base_tests
+        src/base/base_tests.c
+        src/base/ptr_array_test.c
+        src/base/str_test.c
+        )
+target_include_directories(base_tests PUBLIC src)
+target_link_libraries(base_tests base)
+add_test(base_tests base_tests)
+
+
+# ----- fnf library -----
 
 add_library(libfnf STATIC
         src/character/character.c
         src/character/method.c
 
-        src/common/alloc_or_die.c
         src/common/dice.c
-        src/common/fail.c
-        src/common/int.c
         src/common/language.c
-        src/common/ptr_array.c
         src/common/result.c
-        src/common/rnd.c
         src/common/spell.c
-        src/common/str.c
 
         src/dungeon/area.c
         src/dungeon/box.c
@@ -72,7 +89,7 @@ add_library(libfnf STATIC
         src/tui/window.c
         )
 target_include_directories(libfnf PUBLIC src)
-set_target_properties(libfnf PROPERTIES PREFIX "")
+set_target_properties(libfnf PROPERTIES OUTPUT_NAME "fnf")
 
 
 # ----- unit tests -----
@@ -85,11 +102,9 @@ add_executable(unit_tests
 
         tests/unit_tests/dice_test.c
         tests/unit_tests/main.c
-        tests/unit_tests/ptr_array_test.c
-        tests/unit_tests/str_test.c
         )
 target_include_directories(unit_tests PUBLIC src/dungeon)
-target_link_libraries(unit_tests libfnf)
+target_link_libraries(unit_tests base libfnf)
 add_test(unit_tests unit_tests)
 
 
@@ -103,6 +118,7 @@ add_test(fnf_check fnf_check)
 # ----- run all tests -----
 
 add_custom_target(check
+        COMMAND base_tests
         COMMAND unit_tests
         COMMAND ./fnf_check
         )

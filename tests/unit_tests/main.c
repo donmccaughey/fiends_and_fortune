@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <base/base.h>
 
-#include "common/alloc_or_die.h"
 
 void
 box_test(void);
@@ -18,12 +18,6 @@ generator_test(void);
 void
 point_test(void);
 
-void
-ptr_array_test(void);
-
-void
-str_test(void);
-
 
 int
 main (int argc, const char *argv[])
@@ -33,8 +27,6 @@ main (int argc, const char *argv[])
     dungeon_test();
     generator_test();
     point_test();
-    ptr_array_test();
-    str_test();
     alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }

@@ -1,10 +1,10 @@
 #include "language.h"
 
 #include <string.h>
+#include <base/base.h>
 
 #include "dice.h"
-#include "fail.h"
-#include "rnd.h"
+#include "base/rnd.h"
 
 
 static bool

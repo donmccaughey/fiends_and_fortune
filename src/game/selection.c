@@ -3,10 +3,9 @@
 #include <assert.h>
 #include <ctype.h>
 #include <limits.h>
+#include <base/base.h>
 
-#include "common/alloc_or_die.h"
 #include "common/result.h"
-#include "common/str.h"
 
 
 static struct result

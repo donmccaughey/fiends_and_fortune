@@ -1,10 +1,8 @@
 #include "app.h"
 
 #include <signal.h>
-
+#include <base/base.h>
 #include <sys/ioctl.h>
-
-#include "common/alloc_or_die.h"
 
 #include "screen_view.h"
 #include "view.h"

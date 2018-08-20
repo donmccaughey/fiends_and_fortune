@@ -3,9 +3,7 @@
 #include <ctype.h>
 #include <getopt.h>
 #include <libgen.h>
-
-#include "common/alloc_or_die.h"
-#include "common/rnd.h"
+#include <base/base.h>
 
 #include "dungeon/dungeon_options.h"
 

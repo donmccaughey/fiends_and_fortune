@@ -2,9 +2,7 @@
 
 #include <assert.h>
 #include <limits.h>
-
-#include "common/fail.h"
-#include "common/str.h"
+#include <base/base.h>
 
 
 struct point

@@ -2,11 +2,10 @@
 
 #include <assert.h>
 #include <stddef.h>
+#include <base/base.h>
 
 #include "generator.h"
 #include "tile.h"
-
-#include "common/fail.h"
 
 
 int

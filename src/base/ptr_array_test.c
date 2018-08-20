@@ -2,9 +2,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "common/alloc_or_die.h"
-#include "common/ptr_array.h"
+#include <base/base.h>
 
 
 void

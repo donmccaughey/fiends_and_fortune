@@ -1,10 +1,9 @@
 #include "options.h"
 
-#include "common/alloc_or_die.h"
+#include <base/base.h>
+
 #include "common/dice.h"
-#include "common/ptr_array.h"
 #include "common/result.h"
-#include "common/rnd.h"
 
 #include "character/character.h"
 

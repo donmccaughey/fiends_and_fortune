@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include "common/rnd.h"
+#include <base/base.h>
 
 #include "dungeon/dungeon.h"
 #include "dungeon/tile.h"

@@ -1,11 +1,9 @@
 #include "periodic_check.h"
 
 #include <stddef.h>
+#include <base/base.h>
 
 #include "common/dice.h"
-#include "common/fail.h"
-#include "common/int.h"
-#include "common/rnd.h"
 
 #include "area.h"
 #include "digger.h"

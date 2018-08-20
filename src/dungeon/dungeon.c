@@ -1,8 +1,6 @@
 #include "dungeon.h"
 
-#include "common/alloc_or_die.h"
-#include "common/int.h"
-#include "common/rnd.h"
+#include <base/base.h>
 
 #include "area.h"
 #include "dungeon_options.h"

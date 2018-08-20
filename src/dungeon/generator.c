@@ -1,10 +1,7 @@
 #include "generator.h"
 
 #include <assert.h>
-
-#include "common/alloc_or_die.h"
-#include "common/fail.h"
-#include "common/rnd.h"
+#include <base/base.h>
 
 #include "area.h"
 #include "digger.h"

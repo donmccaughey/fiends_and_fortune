@@ -1,8 +1,7 @@
 #include "level_map.h"
 
 #include <assert.h>
-
-#include "common/alloc_or_die.h"
+#include <base/base.h>
 
 #include "dungeon.h"
 #include "orientation.h"

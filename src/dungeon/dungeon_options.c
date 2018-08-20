@@ -1,6 +1,6 @@
 #include "dungeon_options.h"
 
-#include "common/alloc_or_die.h"
+#include <base/base.h>
 
 
 struct dungeon_options *

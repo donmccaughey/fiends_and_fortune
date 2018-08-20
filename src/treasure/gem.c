@@ -3,11 +3,9 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+#include <base/base.h>
 
-#include "common/alloc_or_die.h"
 #include "common/dice.h"
-#include "common/rnd.h"
-#include "common/str.h"
 
 #include "coins.h"
 

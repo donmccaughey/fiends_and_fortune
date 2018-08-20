@@ -1,5 +1,5 @@
-#ifndef FNF_COMMON_STR_H_INCLUDED
-#define FNF_COMMON_STR_H_INCLUDED
+#ifndef FNF_BASE_STR_H_INCLUDED
+#define FNF_BASE_STR_H_INCLUDED
 
 
 #include <stdarg.h>

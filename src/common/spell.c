@@ -2,10 +2,9 @@
 
 #include <assert.h>
 #include <stddef.h>
+#include <base/base.h>
 
 #include "dice.h"
-#include "fail.h"
-#include "rnd.h"
 
 
 char const *

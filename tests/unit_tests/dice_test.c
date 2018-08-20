@@ -1,9 +1,10 @@
 #include <assert.h>
 #include <string.h>
 
-#include "common/alloc_or_die.h"
+#include <base/base.h>
+
 #include "common/dice.h"
-#include "common/rnd.h"
+#include "base/rnd.h"
 
 
 void

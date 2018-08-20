@@ -1,9 +1,7 @@
 #include "digger.h"
 
 #include <assert.h>
-
-#include "common/alloc_or_die.h"
-#include "common/fail.h"
+#include <base/base.h>
 
 #include "generator.h"
 #include "tile.h"

@@ -1,9 +1,7 @@
 #include "coins.h"
 
 #include <stdio.h>
-
-#include "common/alloc_or_die.h"
-#include "common/str.h"
+#include <base/base.h>
 
 
 char *

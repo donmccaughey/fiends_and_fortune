@@ -1,5 +1,5 @@
-#ifndef PTR_ARRAY_H_INCLUDED
-#define PTR_ARRAY_H_INCLUDED
+#ifndef FNF_BASE_PTR_ARRAY_H_INCLUDED
+#define FNF_BASE_PTR_ARRAY_H_INCLUDED
 
 
 #include <stdbool.h>

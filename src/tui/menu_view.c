@@ -3,12 +3,12 @@
 #include <ctype.h>
 #include <limits.h>
 #include <menu.h>
+#include <base/base.h>
 
 #include "app.h"
 #include "rect.h"
 #include "view.h"
 
-#include "common/alloc_or_die.h"
 #include "common/result.h"
 
 

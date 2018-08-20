@@ -1,7 +1,6 @@
 #include <assert.h>
 #include <stddef.h>
-
-#include "common/rnd.h"
+#include <base/base.h>
 
 #include "dungeon/digger.h"
 #include "dungeon/dungeon.h"
