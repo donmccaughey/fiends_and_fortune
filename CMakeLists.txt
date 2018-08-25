@@ -3,7 +3,7 @@ project(fiends_and_fortune C)
 
 set(CMAKE_C_STANDARD 99)
 enable_testing()
-add_compile_options(--coverage)
+add_compile_options(--coverage -g -O0)
 set (CMAKE_EXE_LINKER_FLAGS  --coverage)
 
 find_library(form REQUIRED)
@@ -113,12 +113,14 @@ add_test(unit_tests unit_tests)
 
 configure_file(tests/fnf_check.out fnf_check.out)
 configure_file(tests/fnf_check fnf_check)
+configure_file(tests/precheck precheck)
 add_test(fnf_check fnf_check)
 
 
 # ----- run all tests -----
 
 add_custom_target(check
+        COMMAND ./precheck
         COMMAND base_tests
         COMMAND unit_tests
         COMMAND ./fnf_check
