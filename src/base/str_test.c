@@ -54,6 +54,22 @@ str_alloc_empty_test(void)
 
 
 static void
+str_formatted_length_test(void)
+{
+    size_t length = str_formatted_length("");
+    assert(0 == length);
+
+    length = str_formatted_length("foobar");
+    assert(6 == length);
+
+    length = str_formatted_length("%i", 123);
+    assert(3 == length);
+
+    length = str_formatted_length("%s = %0.2f", "pi", M_PI);
+    assert(9 == length); // "pi = 3.14"
+}
+
+static void
 str_realloc_append_formatted_test(void)
 {
     char *str = NULL;
@@ -85,5 +101,6 @@ str_test(void)
 {
     str_alloc_centered_and_formatted_test();
     str_alloc_empty_test();
+    str_formatted_length_test();
     str_realloc_append_formatted_test();
 }
