@@ -48,11 +48,8 @@ str_alloc_centered_and_formatted_from_va_list(int width,
 }
 
 
-char *
-str_alloc_empty(void)
-{
-    return calloc_or_die(1, 1);
-}
+extern char *
+str_alloc_empty(void);
 
 
 char *
@@ -103,11 +100,8 @@ str_formatted_length_from_va_list(char const *format, va_list arguments)
 }
 
 
-bool
-str_not_empty(char const *str)
-{
-    return str && str[0];
-}
+extern bool
+str_not_empty(char const *str);
 
 
 void
