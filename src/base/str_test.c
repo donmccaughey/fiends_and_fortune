@@ -54,6 +54,27 @@ str_alloc_empty_test(void)
 
 
 static void
+str_empty_test(void)
+{
+    assert(str_empty(NULL));
+    assert(str_empty(""));
+
+    assert( ! str_empty("foobar"));
+}
+
+
+static void
+str_eq_test(void)
+{
+    assert(str_eq("", ""));
+    assert(str_eq("foo", "foo"));
+
+    assert( ! str_eq("foo", "bar"));
+    assert( ! str_eq("foo", "foobar"));
+}
+
+
+static void
 str_formatted_length_test(void)
 {
     size_t length = str_formatted_length("");
@@ -67,6 +88,16 @@ str_formatted_length_test(void)
 
     length = str_formatted_length("%s = %0.2f", "pi", M_PI);
     assert(9 == length); // "pi = 3.14"
+}
+
+
+static void
+str_not_empty_test(void)
+{
+    assert(str_not_empty("foobar"));
+
+    assert( ! str_not_empty(NULL));
+    assert( ! str_not_empty(""));
 }
 
 static void
@@ -101,6 +132,9 @@ str_test(void)
 {
     str_alloc_centered_and_formatted_test();
     str_alloc_empty_test();
+    str_empty_test();
+    str_eq_test();
     str_formatted_length_test();
+    str_not_empty_test();
     str_realloc_append_formatted_test();
 }

@@ -3,7 +3,6 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "alloc_or_die.h"
 #include "fail.h"
 
 
@@ -74,6 +73,14 @@ str_alloc_formatted_from_va_list(char const *format, va_list arguments)
     vasprintf_or_die(&str, format, arguments);
     return str;
 }
+
+
+extern bool
+str_empty(char const *str);
+
+
+extern bool
+str_eq(char const *str1, char const *str2);
 
 
 size_t

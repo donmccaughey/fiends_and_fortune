@@ -5,6 +5,7 @@
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <string.h>
 #include <base/alloc_or_die.h>
 
 
@@ -27,6 +28,18 @@ str_alloc_formatted(char const *format, ...);
 
 char *
 str_alloc_formatted_from_va_list(char const *format, va_list arguments);
+
+inline bool
+str_empty(char const *str)
+{
+    return ! str || ! str[0];
+}
+
+inline bool
+str_eq(char const *str1, char const *str2)
+{
+    return 0 == strcmp(str1, str2);
+}
 
 size_t
 str_formatted_length(char const *format, ...);
