@@ -1,4 +1,4 @@
-#include "method.h"
+#include "characteristic_generation_method.h"
 
 #include <string.h>
 

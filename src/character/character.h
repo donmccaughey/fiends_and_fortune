@@ -5,7 +5,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <character/method.h>
+#include <character/characteristic_generation_method.h>
 
 
 #define STRENGTH      ((uint32_t) 0x0001u)
