@@ -1,11 +1,10 @@
-#ifndef FNF_COMMON_RESULT_H_INCLUDED
-#define FNF_COMMON_RESULT_H_INCLUDED
+#ifndef FNF_BASE_RESULT_H_INCLUDED
+#define FNF_BASE_RESULT_H_INCLUDED
 
 
 #include <errno.h>
 #include <stdbool.h>
-
-#include "result_type.h"
+#include <base/result_type.h>
 
 
 struct result {

@@ -3,12 +3,11 @@
 
 
 #include <stdbool.h>
+#include <base/base.h>
 
 #include "rect.h"
 #include "view.h"
 #include "window.h"
-
-#include "common/result.h"
 
 
 struct app {

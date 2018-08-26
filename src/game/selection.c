@@ -5,8 +5,6 @@
 #include <limits.h>
 #include <base/base.h>
 
-#include "common/result.h"
-
 
 static struct result
 draw_window(struct selection *selection)

@@ -3,10 +3,9 @@
 
 
 #include <ncurses.h>
+#include <base/base.h>
 
 #include "window.h"
-
-#include "common/result.h"
 
 
 struct app;

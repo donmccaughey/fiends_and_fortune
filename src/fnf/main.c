@@ -3,7 +3,6 @@
 #include <base/base.h>
 
 #include "common/dice.h"
-#include "common/result.h"
 
 #include "character/character.h"
 

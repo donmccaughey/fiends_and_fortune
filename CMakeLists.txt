@@ -27,6 +27,7 @@ add_library(base STATIC
         src/base/fail.c
         src/base/int.c
         src/base/ptr_array.c
+        src/base/result.c
         src/base/rnd.c
         src/base/str.c)
 target_include_directories(base PUBLIC src)
@@ -36,6 +37,7 @@ add_executable(base_tests
         src/base/int_test.c
         src/base/ptr_array_test.c
         src/base/str_test.c
+        src/base/result_test.c
         src/base/rnd_test.c)
 target_include_directories(base_tests PUBLIC src)
 target_link_libraries(base_tests base)
@@ -50,7 +52,6 @@ add_library(libfnf STATIC
 
         src/common/dice.c
         src/common/language.c
-        src/common/result.c
         src/common/spell.c
 
         src/dungeon/area.c

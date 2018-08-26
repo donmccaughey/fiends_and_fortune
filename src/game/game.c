@@ -11,7 +11,6 @@
 #include "character/character.h"
 
 #include "common/dice.h"
-#include "common/result.h"
 
 #include "dungeon/area.h"
 #include "dungeon/dungeon.h"

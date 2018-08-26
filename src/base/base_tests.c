@@ -9,6 +9,9 @@ void
 ptr_array_test(void);
 
 void
+result_test(void);
+
+void
 rnd_test(void);
 
 void
@@ -20,6 +23,7 @@ main (int argc, const char *argv[])
 {
     int_test();
     ptr_array_test();
+    result_test();
     rnd_test();
     str_test();
     alloc_count_is_zero_or_die();

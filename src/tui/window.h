@@ -3,10 +3,9 @@
 
 
 #include <ncurses.h>
+#include <base/base.h>
 
 #include "rect.h"
-
-#include "common/result.h"
 
 
 inline struct rect

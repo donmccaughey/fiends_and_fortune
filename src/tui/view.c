@@ -2,8 +2,6 @@
 
 #include <base/base.h>
 
-#include "common/result.h"
-
 
 struct view *
 view_alloc(view_create_fn *create,

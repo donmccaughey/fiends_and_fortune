@@ -5,8 +5,6 @@
 #include "app.h"
 #include "view.h"
 
-#include "common/result.h"
-
 
 static struct result
 create(struct view *screen_view, struct app *app)

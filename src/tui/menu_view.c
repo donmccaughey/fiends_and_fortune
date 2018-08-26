@@ -9,8 +9,6 @@
 #include "rect.h"
 #include "view.h"
 
-#include "common/result.h"
-
 
 struct menu {
     ITEM **items;

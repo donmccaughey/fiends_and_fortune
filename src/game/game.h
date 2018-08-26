@@ -4,8 +4,7 @@
 #include <ncurses.h>
 #include <signal.h>
 #include <stdbool.h>
-
-#include "common/result.h"
+#include <base/base.h>
 
 
 struct rnd;
