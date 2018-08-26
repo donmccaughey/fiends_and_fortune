@@ -6,9 +6,8 @@
 #include <string.h>
 #include <background/background.h>
 #include <base/base.h>
+#include <magic/magic.h>
 #include <mechanics/mechanics.h>
-
-#include "common/spell.h"
 
 #include "coins.h"
 

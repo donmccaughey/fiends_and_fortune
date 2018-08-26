@@ -17,7 +17,7 @@ add_executable(fnf
         src/fnf/action.c
         src/fnf/options.c
         src/fnf/main.c)
-target_link_libraries(fnf base mechanics background libfnf form menu ncurses)
+target_link_libraries(fnf base mechanics background magic libfnf form menu ncurses)
 
 
 # ----- base library -----
@@ -78,13 +78,27 @@ target_link_libraries(background_tests background base mechanics)
 add_test(background_tests background_tests)
 
 
+# ----- magic library -----
+
+add_library(magic STATIC
+        src/magic/spell.c
+        )
+target_include_directories(magic PUBLIC src)
+
+add_executable(magic_tests
+        src/magic/magic_tests.c
+        src/magic/spell_test.c
+        )
+target_include_directories(magic_tests PUBLIC src)
+target_link_libraries(magic_tests magic base mechanics)
+add_test(magic_tests magic_tests)
+
+
 # ----- fnf library -----
 
 add_library(libfnf STATIC
         src/character/character.c
         src/character/method.c
-
-        src/common/spell.c
 
         src/dungeon/area.c
         src/dungeon/box.c
@@ -153,6 +167,7 @@ add_custom_target(check
         COMMAND ./precheck
         COMMAND background_tests
         COMMAND base_tests
+        COMMAND magic_tests
         COMMAND mechanics_tests
         COMMAND unit_tests
         COMMAND ./fnf_check
