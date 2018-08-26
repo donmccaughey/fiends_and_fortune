@@ -3,8 +3,7 @@
 #include <assert.h>
 #include <stddef.h>
 #include <base/base.h>
-
-#include "dice.h"
+#include <mechanics/mechanics.h>
 
 
 char const *

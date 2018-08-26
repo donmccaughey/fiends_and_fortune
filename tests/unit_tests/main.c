@@ -7,9 +7,6 @@ void
 box_test(void);
 
 void
-dice_test(void);
-
-void
 dungeon_test(void);
 
 void
@@ -20,10 +17,9 @@ point_test(void);
 
 
 int
-main (int argc, const char *argv[])
+main(int argc, char *argv[])
 {
     box_test();
-    dice_test();
     dungeon_test();
     generator_test();
     point_test();

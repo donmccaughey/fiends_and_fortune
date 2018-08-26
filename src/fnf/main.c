@@ -1,8 +1,7 @@
 #include "options.h"
 
 #include <base/base.h>
-
-#include "common/dice.h"
+#include <mechanics/mechanics.h>
 
 #include "character/character.h"
 

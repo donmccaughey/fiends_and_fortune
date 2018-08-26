@@ -2,8 +2,7 @@
 
 #include <stddef.h>
 #include <base/base.h>
-
-#include "common/dice.h"
+#include <mechanics/mechanics.h>
 
 #include "area.h"
 #include "digger.h"

@@ -3,8 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <base/base.h>
-
-#include "common/dice.h"
+#include <mechanics/mechanics.h>
 
 #include "gem.h"
 #include "jewelry.h"

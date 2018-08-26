@@ -6,11 +6,10 @@
 #include <limits.h>
 #include <time.h>
 #include <base/base.h>
+#include <mechanics/mechanics.h>
 #include <sys/ioctl.h>
 
 #include "character/character.h"
-
-#include "common/dice.h"
 
 #include "dungeon/area.h"
 #include "dungeon/dungeon.h"

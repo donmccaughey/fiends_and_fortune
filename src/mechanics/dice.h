@@ -1,5 +1,5 @@
-#ifndef FNF_COMMON_DICE_H_INCLUDED
-#define FNF_COMMON_DICE_H_INCLUDED
+#ifndef FNF_MECHANICS_DICE_H_INCLUDED
+#define FNF_MECHANICS_DICE_H_INCLUDED
 
 
 #include <stdbool.h>
@@ -71,4 +71,4 @@ int
 roll(char const *dice_string, struct rnd *rnd);
 
 
-#endif /* #ifndef DICE_H_INCLUDED */
+#endif

@@ -17,10 +17,10 @@ add_executable(fnf
         src/fnf/action.c
         src/fnf/options.c
         src/fnf/main.c)
-target_link_libraries(fnf libfnf base form menu ncurses)
+target_link_libraries(fnf base mechanics libfnf form menu ncurses)
 
 
-# ----- fnf base library -----
+# ----- base library -----
 
 add_library(base STATIC
         src/base/alloc_or_die.c
@@ -44,13 +44,26 @@ target_link_libraries(base_tests base)
 add_test(base_tests base_tests)
 
 
+# ----- mechanics library -----
+
+add_library(mechanics STATIC
+        src/mechanics/dice.c)
+target_include_directories(mechanics PUBLIC src)
+
+add_executable(mechanics_tests
+        src/mechanics/dice_test.c
+        src/mechanics/mechanics_tests.c)
+target_include_directories(mechanics_tests PUBLIC src)
+target_link_libraries(mechanics_tests mechanics base)
+add_test(mechanics_tests mechanics_tests)
+
+
 # ----- fnf library -----
 
 add_library(libfnf STATIC
         src/character/character.c
         src/character/method.c
 
-        src/common/dice.c
         src/common/language.c
         src/common/spell.c
 
@@ -99,10 +112,9 @@ add_executable(unit_tests
         tests/unit_tests/dungeon/generator_test.c
         tests/unit_tests/dungeon/point_test.c
 
-        tests/unit_tests/dice_test.c
         tests/unit_tests/main.c)
 target_include_directories(unit_tests PUBLIC src/dungeon)
-target_link_libraries(unit_tests base libfnf)
+target_link_libraries(unit_tests base mechanics libfnf)
 add_test(unit_tests unit_tests)
 
 
@@ -119,6 +131,7 @@ add_test(fnf_check fnf_check)
 add_custom_target(check
         COMMAND ./precheck
         COMMAND base_tests
+        COMMAND mechanics_tests
         COMMAND unit_tests
         COMMAND ./fnf_check)
 add_dependencies(check fnf unit_tests)

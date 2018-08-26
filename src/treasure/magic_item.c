@@ -5,8 +5,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <base/base.h>
+#include <mechanics/mechanics.h>
 
-#include "common/dice.h"
 #include "common/language.h"
 #include "common/spell.h"
 

@@ -19,7 +19,7 @@ str_test(void);
 
 
 int
-main (int argc, const char *argv[])
+main(int argc, char *argv[])
 {
     int_test();
     ptr_array_test();

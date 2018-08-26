@@ -2,9 +2,7 @@
 #include <string.h>
 
 #include <base/base.h>
-
-#include "common/dice.h"
-#include "base/rnd.h"
+#include <mechanics/mechanics.h>
 
 
 void
