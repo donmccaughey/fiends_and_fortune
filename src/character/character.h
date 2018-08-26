@@ -5,7 +5,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "method.h"
+#include <character/method.h>
 
 
 #define STRENGTH      ((uint32_t) 0x0001u)

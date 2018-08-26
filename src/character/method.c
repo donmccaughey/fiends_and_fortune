@@ -38,7 +38,7 @@ characteristic_generation_method_description(enum characteristic_generation_meth
             return "roll 3d6 once per characteristic; change any die of 1 to 3 or 6 to 4";
         case characteristic_generation_method_special_NPC:
             return "roll 3d6 once per normal characteristic; for profession characteristic(s), add 1 to each die less than 6";
-        default: return "Unknown character generation method";
+        default: return "unknown character generation method";
     }
 }
 

@@ -7,7 +7,7 @@
 
 #include "action.h"
 
-#include "character/method.h"
+#include <character/character.h>
 
 
 struct dungeon_options;

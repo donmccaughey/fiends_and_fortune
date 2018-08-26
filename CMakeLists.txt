@@ -20,6 +20,7 @@ add_executable(fnf
 target_link_libraries(fnf
         background
         base
+        character
         magic
         mechanics
         libfnf
@@ -72,6 +73,22 @@ target_link_libraries(base_tests base)
 add_test(base_tests base_tests)
 
 
+# ----- character library -----
+add_library(character STATIC
+        src/character/character.c
+        src/character/method.c
+        )
+target_include_directories(character PUBLIC src)
+
+add_executable(character_tests
+        src/character/character_tests.c
+        src/character/method_test.c
+        )
+target_include_directories(character_tests PUBLIC src)
+target_link_libraries(character_tests character base mechanics)
+add_test(character_tests character_tests)
+
+
 # ----- magic library -----
 
 add_library(magic STATIC
@@ -107,9 +124,6 @@ add_test(mechanics_tests mechanics_tests)
 # ----- fnf library -----
 
 add_library(libfnf STATIC
-        src/character/character.c
-        src/character/method.c
-
         src/dungeon/area.c
         src/dungeon/box.c
         src/dungeon/digger.c
@@ -177,6 +191,7 @@ add_custom_target(check
         COMMAND ./precheck
         COMMAND background_tests
         COMMAND base_tests
+        COMMAND character_tests
         COMMAND magic_tests
         COMMAND mechanics_tests
         COMMAND unit_tests
