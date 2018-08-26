@@ -382,7 +382,7 @@ dice_roll_with_average_scoring_test(void)
 {
     struct rnd *ascending = rnd_alloc_fake_ascending(0);
     struct rnd *always_one = rnd_alloc_fake_fixed(0);
-    struct rnd *always_two = rnd_alloc_fake_fixed(1);
+    struct rnd *always_six = rnd_alloc_fake_fixed(5);
     int score;
 
     score = dice_roll_with_average_scoring(dice_make(3, 6), ascending);
@@ -391,12 +391,12 @@ dice_roll_with_average_scoring_test(void)
     score = dice_roll_with_average_scoring(dice_make(3, 6), always_one);
     assert(9 == score);
 
-    score = dice_roll_with_average_scoring(dice_make(3, 6), always_two);
-    assert(6 == score);
+    score = dice_roll_with_average_scoring(dice_make(3, 6), always_six);
+    assert(12 == score);
 
     rnd_free(ascending);
     rnd_free(always_one);
-    rnd_free(always_two);
+    rnd_free(always_six);
 }
 
 
