@@ -17,7 +17,7 @@ add_executable(fnf
         src/fnf/action.c
         src/fnf/options.c
         src/fnf/main.c)
-target_link_libraries(fnf base mechanics libfnf form menu ncurses)
+target_link_libraries(fnf base mechanics background libfnf form menu ncurses)
 
 
 # ----- base library -----
@@ -29,7 +29,8 @@ add_library(base STATIC
         src/base/ptr_array.c
         src/base/result.c
         src/base/rnd.c
-        src/base/str.c)
+        src/base/str.c
+        )
 target_include_directories(base PUBLIC src)
 
 add_executable(base_tests
@@ -38,7 +39,8 @@ add_executable(base_tests
         src/base/ptr_array_test.c
         src/base/str_test.c
         src/base/result_test.c
-        src/base/rnd_test.c)
+        src/base/rnd_test.c
+        )
 target_include_directories(base_tests PUBLIC src)
 target_link_libraries(base_tests base)
 add_test(base_tests base_tests)
@@ -47,15 +49,33 @@ add_test(base_tests base_tests)
 # ----- mechanics library -----
 
 add_library(mechanics STATIC
-        src/mechanics/dice.c)
+        src/mechanics/dice.c
+        )
 target_include_directories(mechanics PUBLIC src)
 
 add_executable(mechanics_tests
         src/mechanics/dice_test.c
-        src/mechanics/mechanics_tests.c)
+        src/mechanics/mechanics_tests.c
+        )
 target_include_directories(mechanics_tests PUBLIC src)
 target_link_libraries(mechanics_tests mechanics base)
 add_test(mechanics_tests mechanics_tests)
+
+
+# ----- background library -----
+
+add_library(background STATIC
+        src/background/language.c
+        )
+target_include_directories(background PUBLIC src)
+
+add_executable(background_tests
+        src/background/background_tests.c
+        src/background/language_test.c
+        )
+target_include_directories(background_tests PUBLIC src)
+target_link_libraries(background_tests background base mechanics)
+add_test(background_tests background_tests)
 
 
 # ----- fnf library -----
@@ -64,7 +84,6 @@ add_library(libfnf STATIC
         src/character/character.c
         src/character/method.c
 
-        src/common/language.c
         src/common/spell.c
 
         src/dungeon/area.c
@@ -99,7 +118,8 @@ add_library(libfnf STATIC
         src/tui/rect.c
         src/tui/screen_view.c
         src/tui/view.c
-        src/tui/window.c)
+        src/tui/window.c
+        )
 target_include_directories(libfnf PUBLIC src)
 set_target_properties(libfnf PROPERTIES OUTPUT_NAME "fnf")
 
@@ -112,7 +132,8 @@ add_executable(unit_tests
         tests/unit_tests/dungeon/generator_test.c
         tests/unit_tests/dungeon/point_test.c
 
-        tests/unit_tests/main.c)
+        tests/unit_tests/main.c
+        )
 target_include_directories(unit_tests PUBLIC src/dungeon)
 target_link_libraries(unit_tests base mechanics libfnf)
 add_test(unit_tests unit_tests)
@@ -130,8 +151,10 @@ add_test(fnf_check fnf_check)
 
 add_custom_target(check
         COMMAND ./precheck
+        COMMAND background_tests
         COMMAND base_tests
         COMMAND mechanics_tests
         COMMAND unit_tests
-        COMMAND ./fnf_check)
+        COMMAND ./fnf_check
+        )
 add_dependencies(check fnf unit_tests)

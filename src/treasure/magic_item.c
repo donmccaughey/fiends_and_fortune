@@ -4,10 +4,10 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <background/background.h>
 #include <base/base.h>
 #include <mechanics/mechanics.h>
 
-#include "common/language.h"
 #include "common/spell.h"
 
 #include "coins.h"
