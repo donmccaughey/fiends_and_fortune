@@ -17,7 +17,33 @@ add_executable(fnf
         src/fnf/action.c
         src/fnf/options.c
         src/fnf/main.c)
-target_link_libraries(fnf base mechanics background magic libfnf form menu ncurses)
+target_link_libraries(fnf
+        background
+        base
+        magic
+        mechanics
+        libfnf
+        # external dependencies
+        form
+        menu
+        ncurses
+        )
+
+
+# ----- background library -----
+
+add_library(background STATIC
+        src/background/language.c
+        )
+target_include_directories(background PUBLIC src)
+
+add_executable(background_tests
+        src/background/background_tests.c
+        src/background/language_test.c
+        )
+target_include_directories(background_tests PUBLIC src)
+target_link_libraries(background_tests background base mechanics)
+add_test(background_tests background_tests)
 
 
 # ----- base library -----
@@ -46,38 +72,6 @@ target_link_libraries(base_tests base)
 add_test(base_tests base_tests)
 
 
-# ----- mechanics library -----
-
-add_library(mechanics STATIC
-        src/mechanics/dice.c
-        )
-target_include_directories(mechanics PUBLIC src)
-
-add_executable(mechanics_tests
-        src/mechanics/dice_test.c
-        src/mechanics/mechanics_tests.c
-        )
-target_include_directories(mechanics_tests PUBLIC src)
-target_link_libraries(mechanics_tests mechanics base)
-add_test(mechanics_tests mechanics_tests)
-
-
-# ----- background library -----
-
-add_library(background STATIC
-        src/background/language.c
-        )
-target_include_directories(background PUBLIC src)
-
-add_executable(background_tests
-        src/background/background_tests.c
-        src/background/language_test.c
-        )
-target_include_directories(background_tests PUBLIC src)
-target_link_libraries(background_tests background base mechanics)
-add_test(background_tests background_tests)
-
-
 # ----- magic library -----
 
 add_library(magic STATIC
@@ -92,6 +86,22 @@ add_executable(magic_tests
 target_include_directories(magic_tests PUBLIC src)
 target_link_libraries(magic_tests magic base mechanics)
 add_test(magic_tests magic_tests)
+
+
+# ----- mechanics library -----
+
+add_library(mechanics STATIC
+        src/mechanics/dice.c
+        )
+target_include_directories(mechanics PUBLIC src)
+
+add_executable(mechanics_tests
+        src/mechanics/dice_test.c
+        src/mechanics/mechanics_tests.c
+        )
+target_include_directories(mechanics_tests PUBLIC src)
+target_link_libraries(mechanics_tests mechanics base)
+add_test(mechanics_tests mechanics_tests)
 
 
 # ----- fnf library -----
