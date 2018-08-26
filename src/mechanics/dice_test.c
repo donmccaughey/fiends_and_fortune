@@ -326,6 +326,29 @@ dice_roll_with_average_scoring_test(void)
 
 
 static void
+dice_roll_and_adjust_upwards_test(void)
+{
+    struct rnd *ascending = rnd_alloc_fake_ascending(3);
+    struct rnd *always_five = rnd_alloc_fake_fixed(4);
+    struct rnd *always_six = rnd_alloc_fake_fixed(5);
+    int score;
+
+    score = dice_roll_and_adjust_upwards(dice_make(3, 6), ascending);
+    assert(17 == score);
+
+    score = dice_roll_and_adjust_upwards(dice_make(3, 6), always_five);
+    assert(18 == score);
+
+    score = dice_roll_and_adjust_upwards(dice_make(3, 6), always_six);
+    assert(18 == score);
+
+    rnd_free(ascending);
+    rnd_free(always_five);
+    rnd_free(always_six);
+}
+
+
+static void
 dice_roll_and_drop_lowest_test(void)
 {
     struct rnd *ascending = rnd_alloc_fake_ascending(0);
@@ -358,5 +381,6 @@ dice_test(void)
     dice_roll_test();
     roll_test();
     dice_roll_with_average_scoring_test();
+    dice_roll_and_adjust_upwards_test();
     dice_roll_and_drop_lowest_test();
 }
