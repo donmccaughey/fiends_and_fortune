@@ -199,31 +199,26 @@ dice_parse(char const *dice_string)
 
 
 int
-dice_roll_with_average_scoring(struct dice dice, struct rnd *rnd)
+dice_roll(struct dice dice, struct rnd *rnd, int die_scores[])
 {
     assert(dice_is_valid(dice));
     assert(rnd);
-
-    int die_scores[dice.count];
-    dice_roll(dice, rnd, die_scores);
     
-    int const high_roll = dice.sides;
-    int const low_roll = 1;
-    int const low_plus_high = high_roll + low_roll;
-    int const low_average = low_plus_high / 2;
-    int const high_average = low_average + (low_plus_high % 2);
-    
-    int score = 0;
-    for (int i = 0; i < dice.count; ++i) {
-        if (die_scores[i] == low_roll) {
-            score += low_average;
-        } else if (die_scores[i] == high_roll) {
-            score += high_average;
-        } else {
-            score += die_scores[i];
+    if (dice.count == 0) {
+        return dice.modifier * dice.multiplier;
+    } else if (dice.sides == 1) {
+        return (dice.count + dice.modifier) * dice.multiplier;
+    } else {
+        int score = dice.modifier;
+        for (int i = 0; i < dice.count; ++i) {
+            int die_score = (int)rnd_next_uniform_value_in_range(rnd,
+                                                                 1,
+                                                                 dice.sides);
+            if (die_scores) die_scores[i] = die_score;
+            score += die_score;
         }
+        return score * dice.multiplier;
     }
-    return score;
 }
 
 
@@ -235,7 +230,7 @@ dice_roll_and_adjust_upwards(struct dice dice, struct rnd *rnd)
 
     int die_scores[dice.count];
     dice_roll(dice, rnd, die_scores);
-    
+
     int score = 0;
     for (int i = 0; i < dice.count; ++i) {
         if (die_scores[i] < 6) {
@@ -257,7 +252,7 @@ dice_roll_and_drop_lowest(struct dice dice, struct rnd *rnd)
     int die_scores[dice.count];
     dice_roll(dice, rnd, die_scores);
     qsort(die_scores, (size_t)dice.count, sizeof die_scores[0], compare_die_scores);
-    
+
     int score = 0;
     for (int i = 1; i < dice.count; ++i) {
         score += die_scores[i];
@@ -267,26 +262,31 @@ dice_roll_and_drop_lowest(struct dice dice, struct rnd *rnd)
 
 
 int
-dice_roll(struct dice dice, struct rnd *rnd, int die_scores[])
+dice_roll_with_average_scoring(struct dice dice, struct rnd *rnd)
 {
     assert(dice_is_valid(dice));
     assert(rnd);
-    
-    if (dice.count == 0) {
-        return dice.modifier * dice.multiplier;
-    } else if (dice.sides == 1) {
-        return (dice.count + dice.modifier) * dice.multiplier;
-    } else {
-        int score = dice.modifier;
-        for (int i = 0; i < dice.count; ++i) {
-            int die_score = (int)rnd_next_uniform_value_in_range(rnd,
-                                                                 1,
-                                                                 dice.sides);
-            if (die_scores) die_scores[i] = die_score;
-            score += die_score;
+
+    int die_scores[dice.count];
+    dice_roll(dice, rnd, die_scores);
+
+    int const high_roll = dice.sides;
+    int const low_roll = 1;
+    int const low_plus_high = high_roll + low_roll;
+    int const low_average = low_plus_high / 2;
+    int const high_average = low_average + (low_plus_high % 2);
+
+    int score = 0;
+    for (int i = 0; i < dice.count; ++i) {
+        if (die_scores[i] == low_roll) {
+            score += low_average;
+        } else if (die_scores[i] == high_roll) {
+            score += high_average;
+        } else {
+            score += die_scores[i];
         }
-        return score * dice.multiplier;
     }
+    return score;
 }
 
 

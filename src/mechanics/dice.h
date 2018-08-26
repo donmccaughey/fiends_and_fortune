@@ -59,13 +59,13 @@ int
 dice_roll(struct dice dice, struct rnd *rnd, int die_scores[]);
 
 int
-dice_roll_with_average_scoring(struct dice dice, struct rnd *rnd);
-
-int
 dice_roll_and_adjust_upwards(struct dice dice, struct rnd *rnd);
 
 int
 dice_roll_and_drop_lowest(struct dice dice, struct rnd *rnd);
+
+int
+dice_roll_with_average_scoring(struct dice dice, struct rnd *rnd);
 
 int
 roll(char const *dice_string, struct rnd *rnd);
