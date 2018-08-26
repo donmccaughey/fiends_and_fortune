@@ -93,11 +93,15 @@ next_fake_ascending_uniform_value_in_range(void *user_data,
                                            uint32_t inclusive_upper_bound)
 {
     uint32_t *ascending_value = user_data;
-    uint32_t normalized_exclusive_upper_bound = inclusive_upper_bound
-                                              - inclusive_lower_bound
-                                              + 1;
-    return inclusive_lower_bound
-         + ((*ascending_value)++ % normalized_exclusive_upper_bound);
+    if (0 == inclusive_lower_bound && UINT32_MAX == inclusive_upper_bound) {
+        return (*ascending_value)++;
+    } else {
+        uint32_t normalized_exclusive_upper_bound = inclusive_upper_bound
+                                                  - inclusive_lower_bound
+                                                  + 1;
+        return inclusive_lower_bound
+             + ((*ascending_value)++ % normalized_exclusive_upper_bound);
+    }
 }
 
 
@@ -121,10 +125,15 @@ next_fake_fixed_uniform_value_in_range(void *user_data,
                                        uint32_t inclusive_upper_bound)
 {
     uint32_t *fixed_value = user_data;
-    uint32_t normalized_exclusive_upper_bound = inclusive_upper_bound
-                                              - inclusive_lower_bound
-                                              + 1;
-    return inclusive_lower_bound + (*fixed_value % normalized_exclusive_upper_bound);
+    if (0 == inclusive_lower_bound && UINT32_MAX == inclusive_upper_bound) {
+        return *fixed_value;
+    } else {
+        uint32_t normalized_exclusive_upper_bound = inclusive_upper_bound
+                                                  - inclusive_lower_bound
+                                                  + 1;
+        return inclusive_lower_bound
+             + (*fixed_value % normalized_exclusive_upper_bound);
+    }
 }
 
 
@@ -163,10 +172,14 @@ next_fake_median_uniform_value_in_range(void *user_data,
                                         uint32_t inclusive_lower_bound,
                                         uint32_t inclusive_upper_bound)
 {
-    uint32_t normalized_exclusive_upper_bound = inclusive_upper_bound
-                                              - inclusive_lower_bound
-                                              + 1;
-    return inclusive_lower_bound + (normalized_exclusive_upper_bound / 2);
+    if (0 == inclusive_lower_bound && UINT32_MAX == inclusive_upper_bound) {
+        return UINT32_MAX / 2;
+    } else {
+        uint32_t normalized_exclusive_upper_bound = inclusive_upper_bound
+                                                  - inclusive_lower_bound
+                                                  + 1;
+        return inclusive_lower_bound + (normalized_exclusive_upper_bound / 2);
+    }
 }
 
 
@@ -219,11 +232,15 @@ next_jrand48_uniform_value_in_range(void *user_data,
                                     uint32_t inclusive_lower_bound,
                                     uint32_t inclusive_upper_bound)
 {
-    uint32_t normalized_exclusive_upper_bound = inclusive_upper_bound
-                                              - inclusive_lower_bound
-                                              + 1;
-    return inclusive_lower_bound
-         + next_jrand48_uniform_value(user_data, normalized_exclusive_upper_bound);
+    if (0 == inclusive_lower_bound && UINT32_MAX == inclusive_upper_bound) {
+        return next_jrand48_value(user_data);
+    } else {
+        uint32_t normalized_exclusive_upper_bound = inclusive_upper_bound
+                                                  - inclusive_lower_bound
+                                                  + 1;
+        return inclusive_lower_bound
+             + next_jrand48_uniform_value(user_data, normalized_exclusive_upper_bound);
+    }
 }
 
 

@@ -4,7 +4,7 @@ project(fiends_and_fortune C)
 set(CMAKE_C_STANDARD 99)
 enable_testing()
 add_compile_options(--coverage -g -O0)
-set (CMAKE_EXE_LINKER_FLAGS  --coverage)
+set (CMAKE_EXE_LINKER_FLAGS --coverage)
 
 find_library(form REQUIRED)
 find_library(menu REQUIRED)
@@ -16,8 +16,7 @@ find_library(ncurses REQUIRED)
 add_executable(fnf
         src/fnf/action.c
         src/fnf/options.c
-        src/fnf/main.c
-        )
+        src/fnf/main.c)
 target_link_libraries(fnf libfnf base form menu ncurses)
 
 
@@ -29,8 +28,7 @@ add_library(base STATIC
         src/base/int.c
         src/base/ptr_array.c
         src/base/rnd.c
-        src/base/str.c
-        )
+        src/base/str.c)
 target_include_directories(base PUBLIC src)
 
 add_executable(base_tests
@@ -38,7 +36,7 @@ add_executable(base_tests
         src/base/int_test.c
         src/base/ptr_array_test.c
         src/base/str_test.c
-        )
+        src/base/rnd_test.c)
 target_include_directories(base_tests PUBLIC src)
 target_link_libraries(base_tests base)
 add_test(base_tests base_tests)
@@ -87,8 +85,7 @@ add_library(libfnf STATIC
         src/tui/rect.c
         src/tui/screen_view.c
         src/tui/view.c
-        src/tui/window.c
-        )
+        src/tui/window.c)
 target_include_directories(libfnf PUBLIC src)
 set_target_properties(libfnf PROPERTIES OUTPUT_NAME "fnf")
 
@@ -102,8 +99,7 @@ add_executable(unit_tests
         tests/unit_tests/dungeon/point_test.c
 
         tests/unit_tests/dice_test.c
-        tests/unit_tests/main.c
-        )
+        tests/unit_tests/main.c)
 target_include_directories(unit_tests PUBLIC src/dungeon)
 target_link_libraries(unit_tests base libfnf)
 add_test(unit_tests unit_tests)
@@ -123,6 +119,5 @@ add_custom_target(check
         COMMAND ./precheck
         COMMAND base_tests
         COMMAND unit_tests
-        COMMAND ./fnf_check
-        )
+        COMMAND ./fnf_check)
 add_dependencies(check fnf unit_tests)
