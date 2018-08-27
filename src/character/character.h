@@ -29,11 +29,6 @@ struct character {
     int charisma;
 };
 
-void
-character_finalize(struct character *character);
-
-void
-character_initialize(struct character *character);
 
 int *
 alloc_characteristics(struct rnd *rnd,
