@@ -8,10 +8,10 @@ characteristics_test(void);
 
 
 static void
-alloc_characteristics_invalid_test(void)
+characteristics_alloc_invalid_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = alloc_characteristics(rnd,
+    int *characteristics = characteristics_alloc(rnd,
                                                  characteristic_generation_method_invalid,
                                                  NO_SPECIAL_CHARACTERISTICS);
 
@@ -22,16 +22,16 @@ alloc_characteristics_invalid_test(void)
     assert(6 == characteristics[4]);
     assert(15 == characteristics[5]);
 
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     rnd_free(rnd);
 }
 
 
 static void
-alloc_characteristics_simple_test(void)
+characteristics_alloc_simple_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = alloc_characteristics(rnd,
+    int *characteristics = characteristics_alloc(rnd,
                                                  characteristic_generation_method_simple,
                                                  NO_SPECIAL_CHARACTERISTICS);
 
@@ -42,16 +42,16 @@ alloc_characteristics_simple_test(void)
     assert(6 == characteristics[4]);
     assert(15 == characteristics[5]);
 
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     rnd_free(rnd);
 }
 
 
 static void
-alloc_characteristics_method1_test(void)
+characteristics_alloc_method1_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = alloc_characteristics(rnd,
+    int *characteristics = characteristics_alloc(rnd,
                                                  characteristic_generation_method_1,
                                                  NO_SPECIAL_CHARACTERISTICS);
 
@@ -62,16 +62,16 @@ alloc_characteristics_method1_test(void)
     assert(9 == characteristics[4]);
     assert(9 == characteristics[5]);
 
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     rnd_free(rnd);
 }
 
 
 static void
-alloc_characteristics_method2_test(void)
+characteristics_alloc_method2_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = alloc_characteristics(rnd,
+    int *characteristics = characteristics_alloc(rnd,
                                                  characteristic_generation_method_2,
                                                  NO_SPECIAL_CHARACTERISTICS);
 
@@ -82,16 +82,16 @@ alloc_characteristics_method2_test(void)
     assert(15 == characteristics[4]);
     assert(15 == characteristics[5]);
 
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     rnd_free(rnd);
 }
 
 
 static void
-alloc_characteristics_method3_test(void)
+characteristics_alloc_method3_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = alloc_characteristics(rnd,
+    int *characteristics = characteristics_alloc(rnd,
                                                  characteristic_generation_method_3,
                                                  NO_SPECIAL_CHARACTERISTICS);
 
@@ -102,16 +102,16 @@ alloc_characteristics_method3_test(void)
     assert(15 == characteristics[4]);
     assert(15 == characteristics[5]);
 
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     rnd_free(rnd);
 }
 
 
 static void
-alloc_characteristics_method4_test(void)
+characteristics_alloc_method4_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = alloc_characteristics(rnd,
+    int *characteristics = characteristics_alloc(rnd,
                                                  characteristic_generation_method_4,
                                                  NO_SPECIAL_CHARACTERISTICS);
 
@@ -199,16 +199,16 @@ alloc_characteristics_method4_test(void)
     assert(6 == characteristics[70]);
     assert(15 == characteristics[71]);
 
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     rnd_free(rnd);
 }
 
 
 static void
-alloc_characteristics_method_general_NPC_test(void)
+characteristics_alloc_method_general_NPC_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = alloc_characteristics(rnd,
+    int *characteristics = characteristics_alloc(rnd,
                                                  characteristic_generation_method_general_NPC,
                                                  NO_SPECIAL_CHARACTERISTICS);
 
@@ -219,16 +219,16 @@ alloc_characteristics_method_general_NPC_test(void)
     assert(8 == characteristics[4]);
     assert(13 == characteristics[5]);
 
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     rnd_free(rnd);
 }
 
 
 static void
-alloc_characteristics_method_special_NPC_test(void)
+characteristics_alloc_method_special_NPC_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = alloc_characteristics(rnd,
+    int *characteristics = characteristics_alloc(rnd,
                                                  characteristic_generation_method_special_NPC,
                                                  NO_SPECIAL_CHARACTERISTICS);
 
@@ -239,16 +239,16 @@ alloc_characteristics_method_special_NPC_test(void)
     assert(6 == characteristics[4]);
     assert(15 == characteristics[5]);
 
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     rnd_free(rnd);
 }
 
 
 static void
-alloc_characteristics_method_special_NPC_STRENGTH_test(void)
+characteristics_alloc_method_special_NPC_STRENGTH_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = alloc_characteristics(rnd,
+    int *characteristics = characteristics_alloc(rnd,
                                                  characteristic_generation_method_special_NPC,
                                                  STRENGTH);
 
@@ -259,16 +259,16 @@ alloc_characteristics_method_special_NPC_STRENGTH_test(void)
     assert(6 == characteristics[4]);
     assert(15 == characteristics[5]);
 
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     rnd_free(rnd);
 }
 
 
 static void
-alloc_characteristics_method_special_NPC_DEXTERITY_CONSTITUTION_test(void)
+characteristics_alloc_method_special_NPC_DEXTERITY_CONSTITUTION_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = alloc_characteristics(rnd,
+    int *characteristics = characteristics_alloc(rnd,
                                                  characteristic_generation_method_special_NPC,
                                                  DEXTERITY | CONSTITUTION);
 
@@ -279,7 +279,7 @@ alloc_characteristics_method_special_NPC_DEXTERITY_CONSTITUTION_test(void)
     assert(9 == characteristics[4]);
     assert(15 == characteristics[5]);
 
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     rnd_free(rnd);
 }
 
@@ -287,14 +287,14 @@ alloc_characteristics_method_special_NPC_DEXTERITY_CONSTITUTION_test(void)
 void
 characteristics_test(void)
 {
-    alloc_characteristics_invalid_test();
-    alloc_characteristics_simple_test();
-    alloc_characteristics_method1_test();
-    alloc_characteristics_method2_test();
-    alloc_characteristics_method3_test();
-    alloc_characteristics_method4_test();
-    alloc_characteristics_method_general_NPC_test();
-    alloc_characteristics_method_special_NPC_test();
-    alloc_characteristics_method_special_NPC_STRENGTH_test();
-    alloc_characteristics_method_special_NPC_DEXTERITY_CONSTITUTION_test();
+    characteristics_alloc_invalid_test();
+    characteristics_alloc_simple_test();
+    characteristics_alloc_method1_test();
+    characteristics_alloc_method2_test();
+    characteristics_alloc_method3_test();
+    characteristics_alloc_method4_test();
+    characteristics_alloc_method_general_NPC_test();
+    characteristics_alloc_method_special_NPC_test();
+    characteristics_alloc_method_special_NPC_STRENGTH_test();
+    characteristics_alloc_method_special_NPC_DEXTERITY_CONSTITUTION_test();
 }

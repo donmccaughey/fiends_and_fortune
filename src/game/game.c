@@ -71,11 +71,11 @@ static struct result
 create_character_using_simple_method(struct game *game)
 {
     uint32_t special_characteristics = STRENGTH;
-    int *characteristics = alloc_characteristics(game->rnd,
+    int *characteristics = characteristics_alloc(game->rnd,
                                                  characteristic_generation_method_simple,
                                                  special_characteristics);
     draw_character_sheet(game, characteristic_generation_method_simple, characteristics);
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     getch();
     
     return result_success();
@@ -86,12 +86,12 @@ static struct result
 create_character_using_method_1(struct game *game)
 {
     uint32_t special_characteristics = STRENGTH;
-    int *characteristics = alloc_characteristics(game->rnd,
+    int *characteristics = characteristics_alloc(game->rnd,
                                                  characteristic_generation_method_1,
                                                  special_characteristics);
     draw_character_sheet(game, characteristic_generation_method_1, characteristics);
     // TODO: player assigns rolls
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     getch();
     
     return result_success();
@@ -102,12 +102,12 @@ static struct result
 create_character_using_method_2(struct game *game)
 {
     uint32_t special_characteristics = STRENGTH;
-    int *characteristics = alloc_characteristics(game->rnd,
+    int *characteristics = characteristics_alloc(game->rnd,
                                                  characteristic_generation_method_2,
                                                  special_characteristics);
     draw_character_sheet(game, characteristic_generation_method_2, characteristics);
     // TODO: player assigns rolls
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     getch();
     
     return result_success();
@@ -118,11 +118,11 @@ static struct result
 create_character_using_method_3(struct game *game)
 {
     uint32_t special_characteristics = STRENGTH;
-    int *characteristics = alloc_characteristics(game->rnd,
+    int *characteristics = characteristics_alloc(game->rnd,
                                                  characteristic_generation_method_3,
                                                  special_characteristics);
     draw_character_sheet(game, characteristic_generation_method_3, characteristics);
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     getch();
     
     return result_success();
@@ -133,12 +133,12 @@ static struct result
 create_character_using_method_4(struct game *game)
 {
     uint32_t special_characteristics = STRENGTH;
-    int *characteristics = alloc_characteristics(game->rnd,
+    int *characteristics = characteristics_alloc(game->rnd,
                                                  characteristic_generation_method_4,
                                                  special_characteristics);
     // TODO: player chooses from 12 characters
     draw_character_sheet(game, characteristic_generation_method_4, characteristics);
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     getch();
     
     return result_success();
@@ -149,11 +149,11 @@ static struct result
 create_character_using_method_general_NPC(struct game *game)
 {
     uint32_t special_characteristics = STRENGTH;
-    int *characteristics = alloc_characteristics(game->rnd,
+    int *characteristics = characteristics_alloc(game->rnd,
                                                  characteristic_generation_method_general_NPC,
                                                  special_characteristics);
     draw_character_sheet(game, characteristic_generation_method_general_NPC, characteristics);
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     getch();
     
     return result_success();
@@ -165,11 +165,11 @@ create_character_using_method_special_NPC(struct game *game)
 {
     // TODO: choose profession and profession characteristics
     uint32_t special_characteristics = STRENGTH;
-    int *characteristics = alloc_characteristics(game->rnd,
+    int *characteristics = characteristics_alloc(game->rnd,
                                                  characteristic_generation_method_special_NPC,
                                                  special_characteristics);
     draw_character_sheet(game, characteristic_generation_method_special_NPC, characteristics);
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
     getch();
     
     return result_success();

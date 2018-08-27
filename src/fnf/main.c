@@ -137,7 +137,8 @@ generate_character(struct rnd *rnd,
 {
     char const *method_name = characteristic_generation_method_name(method);
     uint32_t special_characteristics = STRENGTH;
-    int *characteristics = alloc_characteristics(rnd, method, special_characteristics);
+    int *characteristics = characteristics_alloc(rnd, method,
+                                                 special_characteristics);
     if (   method == characteristic_generation_method_1
         || method == characteristic_generation_method_2)
     {
@@ -193,7 +194,7 @@ generate_character(struct rnd *rnd,
         fprintf(out, "  Constitution: %2i\n", characteristics[4]);
         fprintf(out, "  Charisma:     %2i\n", characteristics[5]);
     }
-    free_or_die(characteristics);
+    characteristics_free(characteristics);
 }
 
 

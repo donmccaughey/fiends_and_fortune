@@ -21,9 +21,12 @@ struct rnd;
 
 
 int *
-alloc_characteristics(struct rnd *rnd,
+characteristics_alloc(struct rnd *rnd,
                       enum characteristic_generation_method method,
                       uint32_t characteristic_flags);
+
+void
+characteristics_free(int *characteristics);
 
 
 #endif

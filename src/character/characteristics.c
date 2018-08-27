@@ -52,7 +52,7 @@ compare_characteristic_sets(void const *characteristic_set1,
 
 
 int *
-alloc_characteristics(struct rnd *rnd,
+characteristics_alloc(struct rnd *rnd,
                       enum characteristic_generation_method method,
                       uint32_t characteristic_flags)
 {
@@ -125,4 +125,11 @@ alloc_characteristics(struct rnd *rnd,
             break;
     }
     return characteristics;
+}
+
+
+void
+characteristics_free(int *characteristics)
+{
+    free_or_die(characteristics);
 }
