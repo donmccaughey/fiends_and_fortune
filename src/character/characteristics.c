@@ -54,7 +54,7 @@ compare_characteristic_sets(void const *characteristic_set1,
 int *
 characteristics_alloc(struct rnd *rnd,
                       enum characteristic_generation_method method,
-                      uint32_t characteristic_flags)
+                      enum characteristic_flag flags)
 {
     int *characteristics;
     switch (method) {
@@ -108,8 +108,8 @@ characteristics_alloc(struct rnd *rnd,
             characteristics = calloc_or_die(characteristic_count,
                                             characteristic_size);
             for (int i = 0; i < characteristic_count; ++i) {
-                uint32_t characteristicFlag = STRENGTH << i;
-                if (characteristic_flags & characteristicFlag) {
+                uint32_t flag = characteristic_flag_strength << i;
+                if (flags & flag) {
                     characteristics[i] = dice_roll_and_adjust_upwards(dice_make(3, 6), rnd);
                 } else {
                     characteristics[i] = roll("3d6", rnd);

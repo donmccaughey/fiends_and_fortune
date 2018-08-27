@@ -70,7 +70,7 @@ draw_character_sheet(struct game *game,
 static struct result
 create_character_using_simple_method(struct game *game)
 {
-    uint32_t special_characteristics = STRENGTH;
+    uint32_t special_characteristics = characteristic_flag_strength;
     int *characteristics = characteristics_alloc(game->rnd,
                                                  characteristic_generation_method_simple,
                                                  special_characteristics);
@@ -85,7 +85,7 @@ create_character_using_simple_method(struct game *game)
 static struct result
 create_character_using_method_1(struct game *game)
 {
-    uint32_t special_characteristics = STRENGTH;
+    uint32_t special_characteristics = characteristic_flag_strength;
     int *characteristics = characteristics_alloc(game->rnd,
                                                  characteristic_generation_method_1,
                                                  special_characteristics);
@@ -101,7 +101,7 @@ create_character_using_method_1(struct game *game)
 static struct result
 create_character_using_method_2(struct game *game)
 {
-    uint32_t special_characteristics = STRENGTH;
+    uint32_t special_characteristics = characteristic_flag_strength;
     int *characteristics = characteristics_alloc(game->rnd,
                                                  characteristic_generation_method_2,
                                                  special_characteristics);
@@ -117,7 +117,7 @@ create_character_using_method_2(struct game *game)
 static struct result
 create_character_using_method_3(struct game *game)
 {
-    uint32_t special_characteristics = STRENGTH;
+    uint32_t special_characteristics = characteristic_flag_strength;
     int *characteristics = characteristics_alloc(game->rnd,
                                                  characteristic_generation_method_3,
                                                  special_characteristics);
@@ -132,7 +132,7 @@ create_character_using_method_3(struct game *game)
 static struct result
 create_character_using_method_4(struct game *game)
 {
-    uint32_t special_characteristics = STRENGTH;
+    uint32_t special_characteristics = characteristic_flag_strength;
     int *characteristics = characteristics_alloc(game->rnd,
                                                  characteristic_generation_method_4,
                                                  special_characteristics);
@@ -148,7 +148,7 @@ create_character_using_method_4(struct game *game)
 static struct result
 create_character_using_method_general_NPC(struct game *game)
 {
-    uint32_t special_characteristics = STRENGTH;
+    uint32_t special_characteristics = characteristic_flag_strength;
     int *characteristics = characteristics_alloc(game->rnd,
                                                  characteristic_generation_method_general_NPC,
                                                  special_characteristics);
@@ -164,7 +164,7 @@ static struct result
 create_character_using_method_special_NPC(struct game *game)
 {
     // TODO: choose profession and profession characteristics
-    uint32_t special_characteristics = STRENGTH;
+    uint32_t special_characteristics = characteristic_flag_strength;
     int *characteristics = characteristics_alloc(game->rnd,
                                                  characteristic_generation_method_special_NPC,
                                                  special_characteristics);

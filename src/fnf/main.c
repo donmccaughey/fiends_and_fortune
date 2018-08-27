@@ -136,7 +136,7 @@ generate_character(struct rnd *rnd,
                    enum characteristic_generation_method method)
 {
     char const *method_name = characteristic_generation_method_name(method);
-    uint32_t special_characteristics = STRENGTH;
+    uint32_t special_characteristics = characteristic_flag_strength;
     int *characteristics = characteristics_alloc(rnd, method,
                                                  special_characteristics);
     if (   method == characteristic_generation_method_1
