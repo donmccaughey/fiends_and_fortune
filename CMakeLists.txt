@@ -76,12 +76,14 @@ add_test(base_tests base_tests)
 # ----- character library -----
 add_library(character STATIC
         src/character/character.c
+        src/character/characteristics.c
         src/character/characteristic_generation_method.c
         )
 target_include_directories(character PUBLIC src)
 
 add_executable(character_tests
         src/character/character_tests.c
+        src/character/characteristics_test.c
         src/character/characteristic_generation_method_test.c
         )
 target_include_directories(character_tests PUBLIC src)

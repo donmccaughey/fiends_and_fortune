@@ -4,7 +4,7 @@
 
 
 void
-method_test(void);
+characteristic_generation_method_test(void);
 
 
 static void
@@ -44,7 +44,7 @@ characteristic_generation_method_from_string_test(void)
 
 
 void
-method_test(void)
+characteristic_generation_method_test(void)
 {
     characteristic_generation_method_description_test();
     characteristic_generation_method_name_test();
