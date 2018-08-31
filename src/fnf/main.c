@@ -136,65 +136,115 @@ generate_character(struct rnd *rnd,
                    enum characteristic_generation_method method)
 {
     char const *method_name = characteristic_generation_method_name(method);
-    uint32_t special_characteristics = characteristic_flag_strength;
-    int *characteristics = characteristics_alloc(rnd, method,
-                                                 special_characteristics);
-    if (   method == characteristic_generation_method_1
-        || method == characteristic_generation_method_2)
+    const char *method_description = characteristic_generation_method_description(method);
+
+    enum characteristic_flag special_characteristics = characteristic_flag_strength;
+    struct characteristic_rolls *rolls = characteristic_rolls_alloc(rnd,
+                                                                    method,
+                                                                    special_characteristics);
+    if (characteristic_rolls_type_six_scores == rolls->type)
     {
         fprintf(out, "Character (%s): -------------------------\n", method_name);
-        fprintf(out, "(%s)\n", characteristic_generation_method_description(method));
+        fprintf(out, "(%s)\n", method_description);
         for (int i = 0; i < 6; ++i) {
-            fprintf(out, "  %2i) %i\n", i + 1, characteristics[i]);
+            fprintf(out, "  %2i) %i\n", i + 1, rolls->scores[i]);
         }
-    } else if (method == characteristic_generation_method_4) {
+    } else if (characteristic_rolls_type_twelve_sets_of_six_characteristics == rolls->type) {
         fprintf(out, "Possible Characters (%s): -------------------------\n", method_name);
-        fprintf(out, "(%s)\n", characteristic_generation_method_description(method));
+        fprintf(out, "(%s)\n", method_description);
         fprintf(out, "                 %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n",
                 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
         fprintf(out, "                 %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s   %2s\n",
                 "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--", "--");
         fprintf(out, "  Strength:      %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n",
-                characteristics[0], characteristics[0 + 6], characteristics[0 + 12],
-                characteristics[0 + 18], characteristics[0 + 24], characteristics[0 + 30],
-                characteristics[0 + 36], characteristics[0 + 42], characteristics[0 + 48],
-                characteristics[0 + 54], characteristics[0 + 60], characteristics[0 + 66]);
+                rolls->characteristics_sets[0].strength,
+                rolls->characteristics_sets[1].strength,
+                rolls->characteristics_sets[2].strength,
+                rolls->characteristics_sets[3].strength,
+                rolls->characteristics_sets[4].strength,
+                rolls->characteristics_sets[5].strength,
+                rolls->characteristics_sets[6].strength,
+                rolls->characteristics_sets[7].strength,
+                rolls->characteristics_sets[8].strength,
+                rolls->characteristics_sets[9].strength,
+                rolls->characteristics_sets[10].strength,
+                rolls->characteristics_sets[11].strength);
         fprintf(out, "  Intelligence:  %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n",
-                characteristics[1], characteristics[1 + 6], characteristics[1 + 12],
-                characteristics[1 + 18], characteristics[1 + 24], characteristics[1 + 30],
-                characteristics[1 + 36], characteristics[1 + 42], characteristics[1 + 48],
-                characteristics[1 + 54], characteristics[1 + 60], characteristics[1 + 66]);
+                rolls->characteristics_sets[0].intelligence,
+                rolls->characteristics_sets[1].intelligence,
+                rolls->characteristics_sets[2].intelligence,
+                rolls->characteristics_sets[3].intelligence,
+                rolls->characteristics_sets[4].intelligence,
+                rolls->characteristics_sets[5].intelligence,
+                rolls->characteristics_sets[6].intelligence,
+                rolls->characteristics_sets[7].intelligence,
+                rolls->characteristics_sets[8].intelligence,
+                rolls->characteristics_sets[9].intelligence,
+                rolls->characteristics_sets[10].intelligence,
+                rolls->characteristics_sets[11].intelligence);
         fprintf(out, "  Wisdom:        %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n",
-                characteristics[2], characteristics[2 + 6], characteristics[2 + 12],
-                characteristics[2 + 18], characteristics[2 + 24], characteristics[2 + 30],
-                characteristics[2 + 36], characteristics[2 + 42], characteristics[2 + 48],
-                characteristics[2 + 54], characteristics[2 + 60], characteristics[2 + 66]);
+                rolls->characteristics_sets[0].wisdom,
+                rolls->characteristics_sets[1].wisdom,
+                rolls->characteristics_sets[2].wisdom,
+                rolls->characteristics_sets[3].wisdom,
+                rolls->characteristics_sets[4].wisdom,
+                rolls->characteristics_sets[5].wisdom,
+                rolls->characteristics_sets[6].wisdom,
+                rolls->characteristics_sets[7].wisdom,
+                rolls->characteristics_sets[8].wisdom,
+                rolls->characteristics_sets[9].wisdom,
+                rolls->characteristics_sets[10].wisdom,
+                rolls->characteristics_sets[11].wisdom);
         fprintf(out, "  Dexterity:     %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n",
-                characteristics[3], characteristics[3 + 6], characteristics[3 + 12],
-                characteristics[3 + 18], characteristics[3 + 24], characteristics[3 + 30],
-                characteristics[3 + 36], characteristics[3 + 42], characteristics[3 + 48],
-                characteristics[3 + 54], characteristics[3 + 60], characteristics[3 + 66]);
+                rolls->characteristics_sets[0].dexterity,
+                rolls->characteristics_sets[1].dexterity,
+                rolls->characteristics_sets[2].dexterity,
+                rolls->characteristics_sets[3].dexterity,
+                rolls->characteristics_sets[4].dexterity,
+                rolls->characteristics_sets[5].dexterity,
+                rolls->characteristics_sets[6].dexterity,
+                rolls->characteristics_sets[7].dexterity,
+                rolls->characteristics_sets[8].dexterity,
+                rolls->characteristics_sets[9].dexterity,
+                rolls->characteristics_sets[10].dexterity,
+                rolls->characteristics_sets[11].dexterity);
         fprintf(out, "  Constitution:  %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n",
-                characteristics[4], characteristics[4 + 6], characteristics[4 + 12],
-                characteristics[4 + 18], characteristics[4 + 24], characteristics[4 + 30],
-                characteristics[4 + 36], characteristics[4 + 42], characteristics[4 + 48],
-                characteristics[4 + 54], characteristics[4 + 60], characteristics[4 + 66]);
+                rolls->characteristics_sets[0].constitution,
+                rolls->characteristics_sets[1].constitution,
+                rolls->characteristics_sets[2].constitution,
+                rolls->characteristics_sets[3].constitution,
+                rolls->characteristics_sets[4].constitution,
+                rolls->characteristics_sets[5].constitution,
+                rolls->characteristics_sets[6].constitution,
+                rolls->characteristics_sets[7].constitution,
+                rolls->characteristics_sets[8].constitution,
+                rolls->characteristics_sets[9].constitution,
+                rolls->characteristics_sets[10].constitution,
+                rolls->characteristics_sets[11].constitution);
         fprintf(out, "  Charisma:      %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i   %2i\n",
-                characteristics[5], characteristics[5 + 6], characteristics[5 + 12],
-                characteristics[5 + 18], characteristics[5 + 24], characteristics[5 + 30],
-                characteristics[5 + 36], characteristics[5 + 42], characteristics[5 + 48],
-                characteristics[5 + 54], characteristics[5 + 60], characteristics[5 + 66]);
+                rolls->characteristics_sets[0].charisma,
+                rolls->characteristics_sets[1].charisma,
+                rolls->characteristics_sets[2].charisma,
+                rolls->characteristics_sets[3].charisma,
+                rolls->characteristics_sets[4].charisma,
+                rolls->characteristics_sets[5].charisma,
+                rolls->characteristics_sets[6].charisma,
+                rolls->characteristics_sets[7].charisma,
+                rolls->characteristics_sets[8].charisma,
+                rolls->characteristics_sets[9].charisma,
+                rolls->characteristics_sets[10].charisma,
+                rolls->characteristics_sets[11].charisma);
     } else {
         fprintf(out, "Character (%s): -------------------------\n", method_name);
-        fprintf(out, "(%s)\n", characteristic_generation_method_description(method));
-        fprintf(out, "  Strength:     %2i\n", characteristics[0]);
-        fprintf(out, "  Intelligence: %2i\n", characteristics[1]);
-        fprintf(out, "  Wisdom:       %2i\n", characteristics[2]);
-        fprintf(out, "  Dexterity:    %2i\n", characteristics[3]);
-        fprintf(out, "  Constitution: %2i\n", characteristics[4]);
-        fprintf(out, "  Charisma:     %2i\n", characteristics[5]);
+        fprintf(out, "(%s)\n", method_description);
+        fprintf(out, "  Strength:     %2i\n", rolls->characteristics.strength);
+        fprintf(out, "  Intelligence: %2i\n", rolls->characteristics.intelligence);
+        fprintf(out, "  Wisdom:       %2i\n", rolls->characteristics.wisdom);
+        fprintf(out, "  Dexterity:    %2i\n", rolls->characteristics.dexterity);
+        fprintf(out, "  Constitution: %2i\n", rolls->characteristics.constitution);
+        fprintf(out, "  Charisma:     %2i\n", rolls->characteristics.charisma);
     }
-    characteristics_free(characteristics);
+    characteristic_rolls_free(rolls);
 }
 
 

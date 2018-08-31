@@ -108,7 +108,7 @@ characteristics_alloc(struct rnd *rnd,
             characteristics = calloc_or_die(characteristic_count,
                                             characteristic_size);
             for (int i = 0; i < characteristic_count; ++i) {
-                uint32_t flag = characteristic_flag_strength << i;
+                enum characteristic_flag flag = characteristic_flag_strength << i;
                 if (flags & flag) {
                     characteristics[i] = dice_roll_and_adjust_upwards(dice_make(3, 6), rnd);
                 } else {

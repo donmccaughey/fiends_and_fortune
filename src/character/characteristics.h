@@ -12,6 +12,16 @@
 struct rnd;
 
 
+struct characteristics {
+    int strength;
+    int intelligence;
+    int wisdom;
+    int dexterity;
+    int constitution;
+    int charisma;
+};
+
+
 int *
 characteristics_alloc(struct rnd *rnd,
                       enum characteristic_generation_method method,

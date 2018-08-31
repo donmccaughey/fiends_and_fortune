@@ -2,9 +2,10 @@
 #define FNF_CHARACTER_CHARACTER_H_INCLUDED
 
 
-#include <character/characteristics.h>
 #include <character/characteristic_flag.h>
 #include <character/characteristic_generation_method.h>
+#include <character/characteristic_rolls.h>
+#include <character/characteristics.h>
 
 
 struct character {
