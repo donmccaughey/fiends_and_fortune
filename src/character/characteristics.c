@@ -25,6 +25,11 @@ static int
 compare_characteristic_sets(void const *characteristic_set1,
                             void const *characteristic_set2);
 
+static int
+special_NPC_roll(struct rnd *rnd,
+                 enum characteristic_flag flags,
+                 enum characteristic_flag flag);
+
 
 static int
 compare_characteristics(void const *characteristic1,
@@ -77,13 +82,15 @@ characteristics_alloc(struct rnd *rnd,
             break;
         case characteristic_generation_method_3:
             characteristics = calloc_or_die(characteristic_count, characteristic_size);
-            for (size_t i = 0; i < characteristic_count; ++i) {
-                for (int j = 0; j < method_3_roll_count; ++j) {
-                    int characteristic = roll("3d6", rnd);
-                    if (characteristic > characteristics[i]) {
-                        characteristics[i] = characteristic;
-                    }
-                }
+            {
+                struct characteristics *characteristics_struct = characteristics_alloc_method_3(rnd);
+                characteristics[0] = characteristics_struct->strength;
+                characteristics[1] = characteristics_struct->intelligence;
+                characteristics[2] = characteristics_struct->wisdom;
+                characteristics[3] = characteristics_struct->dexterity;
+                characteristics[4] = characteristics_struct->constitution;
+                characteristics[5] = characteristics_struct->charisma;
+                characteristics_struct_free(characteristics_struct);
             }
             break;
         case characteristic_generation_method_4:
@@ -99,31 +106,134 @@ characteristics_alloc(struct rnd *rnd,
             break;
         case characteristic_generation_method_general_NPC:
             characteristics = calloc_or_die(characteristic_count, characteristic_size);
-            for (size_t i = 0; i < characteristic_count; ++i) {
-                characteristics[i] = dice_roll_with_average_scoring(dice_make(3, 6), rnd);
+            {
+                struct characteristics *characteristics_struct = characteristics_alloc_general_NPC(rnd);
+                characteristics[0] = characteristics_struct->strength;
+                characteristics[1] = characteristics_struct->intelligence;
+                characteristics[2] = characteristics_struct->wisdom;
+                characteristics[3] = characteristics_struct->dexterity;
+                characteristics[4] = characteristics_struct->constitution;
+                characteristics[5] = characteristics_struct->charisma;
+                characteristics_struct_free(characteristics_struct);
             }
             break;
         case characteristic_generation_method_special_NPC:
         {
-            characteristics = calloc_or_die(characteristic_count,
-                                            characteristic_size);
-            for (int i = 0; i < characteristic_count; ++i) {
-                enum characteristic_flag flag = characteristic_flag_strength << i;
-                if (flags & flag) {
-                    characteristics[i] = dice_roll_and_adjust_upwards(dice_make(3, 6), rnd);
-                } else {
-                    characteristics[i] = roll("3d6", rnd);
-                }
+            characteristics = calloc_or_die(characteristic_count, characteristic_size);
+            {
+                struct characteristics *characteristics_struct = characteristics_alloc_special_NPC(rnd, flags);
+                characteristics[0] = characteristics_struct->strength;
+                characteristics[1] = characteristics_struct->intelligence;
+                characteristics[2] = characteristics_struct->wisdom;
+                characteristics[3] = characteristics_struct->dexterity;
+                characteristics[4] = characteristics_struct->constitution;
+                characteristics[5] = characteristics_struct->charisma;
+                characteristics_struct_free(characteristics_struct);
             }
             break;
         }
         default:
             characteristics = calloc_or_die(characteristic_count, characteristic_size);
-            for (size_t i = 0; i < characteristic_count; ++i) {
-                characteristics[i] = roll("3d6", rnd);
+             {
+                struct characteristics *characteristics_struct = characteristics_alloc_simple_method(rnd);
+                characteristics[0] = characteristics_struct->strength;
+                characteristics[1] = characteristics_struct->intelligence;
+                characteristics[2] = characteristics_struct->wisdom;
+                characteristics[3] = characteristics_struct->dexterity;
+                characteristics[4] = characteristics_struct->constitution;
+                characteristics[5] = characteristics_struct->charisma;
+                characteristics_struct_free(characteristics_struct);
             }
             break;
     }
+    return characteristics;
+}
+
+
+struct characteristics *
+characteristics_alloc_general_NPC(struct rnd *rnd)
+{
+    struct characteristics *characteristics = calloc_or_die(1, sizeof(struct characteristics));
+    struct dice threeD6 = dice_make(3, 6);
+    characteristics->strength = dice_roll_with_average_scoring(threeD6, rnd);
+    characteristics->intelligence = dice_roll_with_average_scoring(threeD6, rnd);
+    characteristics->wisdom = dice_roll_with_average_scoring(threeD6, rnd);
+    characteristics->dexterity = dice_roll_with_average_scoring(threeD6, rnd);
+    characteristics->constitution = dice_roll_with_average_scoring(threeD6, rnd);
+    characteristics->charisma = dice_roll_with_average_scoring(threeD6, rnd);
+    return characteristics;
+}
+
+
+struct characteristics *
+characteristics_alloc_method_3(struct rnd *rnd)
+{
+    struct characteristics *characteristics = calloc_or_die(1, sizeof(struct characteristics));
+    for (int i = 0; i < method_3_roll_count; ++i) {
+        int characteristic = roll("3d6", rnd);
+        if (characteristic > characteristics->strength) {
+            characteristics->strength = characteristic;
+        }
+    }
+    for (int i = 0; i < method_3_roll_count; ++i) {
+        int characteristic = roll("3d6", rnd);
+        if (characteristic > characteristics->intelligence) {
+            characteristics->intelligence = characteristic;
+        }
+    }
+    for (int i = 0; i < method_3_roll_count; ++i) {
+        int characteristic = roll("3d6", rnd);
+        if (characteristic > characteristics->wisdom) {
+            characteristics->wisdom = characteristic;
+        }
+    }
+    for (int i = 0; i < method_3_roll_count; ++i) {
+        int characteristic = roll("3d6", rnd);
+        if (characteristic > characteristics->dexterity) {
+            characteristics->dexterity = characteristic;
+        }
+    }
+    for (int i = 0; i < method_3_roll_count; ++i) {
+        int characteristic = roll("3d6", rnd);
+        if (characteristic > characteristics->constitution) {
+            characteristics->constitution = characteristic;
+        }
+    }
+    for (int i = 0; i < method_3_roll_count; ++i) {
+        int characteristic = roll("3d6", rnd);
+        if (characteristic > characteristics->charisma) {
+            characteristics->charisma = characteristic;
+        }
+    }
+    return characteristics;
+}
+
+
+struct characteristics *
+characteristics_alloc_simple_method(struct rnd *rnd)
+{
+    struct characteristics *characteristics = calloc_or_die(1, sizeof(struct characteristics));
+    characteristics->strength = roll("3d6", rnd);
+    characteristics->intelligence = roll("3d6", rnd);
+    characteristics->wisdom = roll("3d6", rnd);
+    characteristics->dexterity = roll("3d6", rnd);
+    characteristics->constitution = roll("3d6", rnd);
+    characteristics->charisma = roll("3d6", rnd);
+    return characteristics;
+}
+
+
+struct characteristics *
+characteristics_alloc_special_NPC(struct rnd *rnd,
+                                  enum characteristic_flag flags)
+{
+    struct characteristics *characteristics = calloc_or_die(1, sizeof(struct characteristics));
+    characteristics->strength = special_NPC_roll(rnd, flags, characteristic_flag_strength);
+    characteristics->intelligence = special_NPC_roll(rnd, flags, characteristic_flag_intelligence);
+    characteristics->wisdom = special_NPC_roll(rnd, flags, characteristic_flag_wisdom);
+    characteristics->dexterity = special_NPC_roll(rnd, flags, characteristic_flag_dexterity);
+    characteristics->constitution = special_NPC_roll(rnd, flags, characteristic_flag_constitution);
+    characteristics->charisma = special_NPC_roll(rnd, flags, characteristic_flag_charisma);
     return characteristics;
 }
 
@@ -132,4 +242,22 @@ void
 characteristics_free(int *characteristics)
 {
     free_or_die(characteristics);
+}
+
+
+void
+characteristics_struct_free(struct characteristics *characteristics)
+{
+    free_or_die(characteristics);
+}
+
+
+static int
+special_NPC_roll(struct rnd *rnd,
+                 enum characteristic_flag flags,
+                 enum characteristic_flag flag)
+{
+    struct dice threeD6 = dice_make(3, 6);
+    return flag & flags ? dice_roll_and_adjust_upwards(threeD6, rnd)
+                        : dice_roll(threeD6, rnd, NULL);
 }

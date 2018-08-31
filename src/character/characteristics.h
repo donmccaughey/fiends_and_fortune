@@ -27,8 +27,24 @@ characteristics_alloc(struct rnd *rnd,
                       enum characteristic_generation_method method,
                       enum characteristic_flag flags);
 
+struct characteristics *
+characteristics_alloc_general_NPC(struct rnd *rnd);
+
+struct characteristics *
+characteristics_alloc_method_3(struct rnd *rnd);
+
+struct characteristics *
+characteristics_alloc_simple_method(struct rnd *rnd);
+
+struct characteristics *
+characteristics_alloc_special_NPC(struct rnd *rnd,
+                                  enum characteristic_flag flags);
+
 void
 characteristics_free(int *characteristics);
+
+void
+characteristics_struct_free(struct characteristics *characteristics);
 
 
 #endif

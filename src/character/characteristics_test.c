@@ -48,6 +48,24 @@ characteristics_alloc_simple_test(void)
 
 
 static void
+characteristics_alloc_simple_method_test(void)
+{
+    struct rnd *rnd = rnd_alloc_fake_ascending(0);
+    struct characteristics *characteristics = characteristics_alloc_simple_method(rnd);
+
+    assert(6 == characteristics->strength);
+    assert(15 == characteristics->intelligence);
+    assert(6 == characteristics->wisdom);
+    assert(15 == characteristics->dexterity);
+    assert(6 == characteristics->constitution);
+    assert(15 == characteristics->charisma);
+
+    characteristics_struct_free(characteristics);
+    rnd_free(rnd);
+}
+
+
+static void
 characteristics_alloc_method1_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
@@ -103,6 +121,24 @@ characteristics_alloc_method3_test(void)
     assert(15 == characteristics[5]);
 
     characteristics_free(characteristics);
+    rnd_free(rnd);
+}
+
+
+static void
+characteristics_alloc_method_3_test(void)
+{
+    struct rnd *rnd = rnd_alloc_fake_ascending(0);
+    struct characteristics *characteristics = characteristics_alloc_method_3(rnd);
+
+    assert(15 == characteristics->strength);
+    assert(15 == characteristics->intelligence);
+    assert(15 == characteristics->wisdom);
+    assert(15 == characteristics->dexterity);
+    assert(15 == characteristics->constitution);
+    assert(15 == characteristics->charisma);
+
+    characteristics_struct_free(characteristics);
     rnd_free(rnd);
 }
 
@@ -225,6 +261,24 @@ characteristics_alloc_method_general_NPC_test(void)
 
 
 static void
+characteristics_struct_alloc_method_general_NPC_test(void)
+{
+    struct rnd *rnd = rnd_alloc_fake_ascending(0);
+    struct characteristics *characteristics = characteristics_alloc_general_NPC(rnd);
+
+    assert(8 == characteristics->strength);
+    assert(13 == characteristics->intelligence);
+    assert(8 == characteristics->wisdom);
+    assert(13 == characteristics->dexterity);
+    assert(8 == characteristics->constitution);
+    assert(13 == characteristics->charisma);
+
+    characteristics_struct_free(characteristics);
+    rnd_free(rnd);
+}
+
+
+static void
 characteristics_alloc_method_special_NPC_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
@@ -240,6 +294,25 @@ characteristics_alloc_method_special_NPC_test(void)
     assert(15 == characteristics[5]);
 
     characteristics_free(characteristics);
+    rnd_free(rnd);
+}
+
+
+static void
+characteristics_struct_alloc_method_special_NPC_test(void)
+{
+    struct rnd *rnd = rnd_alloc_fake_ascending(0);
+    struct characteristics *characteristics = characteristics_alloc_special_NPC(rnd,
+                                                                                characteristic_flag_none);
+
+    assert(6 == characteristics->strength);
+    assert(15 == characteristics->intelligence);
+    assert(6 == characteristics->wisdom);
+    assert(15 == characteristics->dexterity);
+    assert(6 == characteristics->constitution);
+    assert(15 == characteristics->charisma);
+
+    characteristics_struct_free(characteristics);
     rnd_free(rnd);
 }
 
@@ -265,6 +338,25 @@ characteristics_alloc_method_special_NPC_STRENGTH_test(void)
 
 
 static void
+characteristics_struct_alloc_method_special_NPC_STRENGTH_test(void)
+{
+    struct rnd *rnd = rnd_alloc_fake_ascending(0);
+    struct characteristics *characteristics = characteristics_alloc_special_NPC(rnd,
+                                                                                characteristic_flag_strength);
+
+    assert(9 == characteristics->strength);
+    assert(15 == characteristics->intelligence);
+    assert(6 == characteristics->wisdom);
+    assert(15 == characteristics->dexterity);
+    assert(6 == characteristics->constitution);
+    assert(15 == characteristics->charisma);
+
+    characteristics_struct_free(characteristics);
+    rnd_free(rnd);
+}
+
+
+static void
 characteristics_alloc_method_special_NPC_DEXTERITY_CONSTITUTION_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
@@ -284,17 +376,42 @@ characteristics_alloc_method_special_NPC_DEXTERITY_CONSTITUTION_test(void)
 }
 
 
+static void
+characteristics_struct_alloc_method_special_NPC_DEXTERITY_CONSTITUTION_test(void)
+{
+    struct rnd *rnd = rnd_alloc_fake_ascending(0);
+    struct characteristics *characteristics = characteristics_alloc_special_NPC(rnd,
+                                                                                characteristic_flag_dexterity | characteristic_flag_constitution);
+
+    assert(6 == characteristics->strength);
+    assert(15 == characteristics->intelligence);
+    assert(6 == characteristics->wisdom);
+    assert(17 == characteristics->dexterity);
+    assert(9 == characteristics->constitution);
+    assert(15 == characteristics->charisma);
+
+    characteristics_struct_free(characteristics);
+    rnd_free(rnd);
+}
+
+
 void
 characteristics_test(void)
 {
     characteristics_alloc_invalid_test();
     characteristics_alloc_simple_test();
+    characteristics_alloc_simple_method_test();
     characteristics_alloc_method1_test();
     characteristics_alloc_method2_test();
     characteristics_alloc_method3_test();
+    characteristics_alloc_method_3_test();
     characteristics_alloc_method4_test();
     characteristics_alloc_method_general_NPC_test();
+    characteristics_struct_alloc_method_general_NPC_test();
     characteristics_alloc_method_special_NPC_test();
+    characteristics_struct_alloc_method_special_NPC_test();
     characteristics_alloc_method_special_NPC_STRENGTH_test();
+    characteristics_struct_alloc_method_special_NPC_STRENGTH_test();
     characteristics_alloc_method_special_NPC_DEXTERITY_CONSTITUTION_test();
+    characteristics_struct_alloc_method_special_NPC_DEXTERITY_CONSTITUTION_test();
 }
