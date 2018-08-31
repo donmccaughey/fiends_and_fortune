@@ -61,8 +61,14 @@ characteristics_alloc(struct rnd *rnd,
                       enum characteristic_generation_method method,
                       enum characteristic_flag flags)
 {
-    int *characteristics;
+    int *characteristics = NULL;
     switch (method) {
+        case characteristic_generation_method_invalid:
+            UNEXPECTED_CASE(characteristic_generation_method_invalid);
+            break;
+        case characteristic_generation_method_simple:
+            UNEXPECTED_CASE(characteristic_generation_method_simple);
+            break;
         case characteristic_generation_method_1:
             characteristics = calloc_or_die(characteristic_count, characteristic_size);
             for (size_t i = 0; i < characteristic_count; ++i) {
@@ -81,17 +87,7 @@ characteristics_alloc(struct rnd *rnd,
                   compare_characteristics);
             break;
         case characteristic_generation_method_3:
-            characteristics = calloc_or_die(characteristic_count, characteristic_size);
-            {
-                struct characteristics *characteristics_struct = characteristics_alloc_method_3(rnd);
-                characteristics[0] = characteristics_struct->strength;
-                characteristics[1] = characteristics_struct->intelligence;
-                characteristics[2] = characteristics_struct->wisdom;
-                characteristics[3] = characteristics_struct->dexterity;
-                characteristics[4] = characteristics_struct->constitution;
-                characteristics[5] = characteristics_struct->charisma;
-                characteristics_struct_free(characteristics_struct);
-            }
+            UNEXPECTED_CASE(characteristic_generation_method_3);
             break;
         case characteristic_generation_method_4:
             characteristics = calloc_or_die(method_4_characteristic_count,
@@ -105,45 +101,10 @@ characteristics_alloc(struct rnd *rnd,
                   compare_characteristic_sets);
             break;
         case characteristic_generation_method_general_NPC:
-            characteristics = calloc_or_die(characteristic_count, characteristic_size);
-            {
-                struct characteristics *characteristics_struct = characteristics_alloc_general_NPC(rnd);
-                characteristics[0] = characteristics_struct->strength;
-                characteristics[1] = characteristics_struct->intelligence;
-                characteristics[2] = characteristics_struct->wisdom;
-                characteristics[3] = characteristics_struct->dexterity;
-                characteristics[4] = characteristics_struct->constitution;
-                characteristics[5] = characteristics_struct->charisma;
-                characteristics_struct_free(characteristics_struct);
-            }
+            UNEXPECTED_CASE(characteristic_generation_method_general_NPC);
             break;
         case characteristic_generation_method_special_NPC:
-        {
-            characteristics = calloc_or_die(characteristic_count, characteristic_size);
-            {
-                struct characteristics *characteristics_struct = characteristics_alloc_special_NPC(rnd, flags);
-                characteristics[0] = characteristics_struct->strength;
-                characteristics[1] = characteristics_struct->intelligence;
-                characteristics[2] = characteristics_struct->wisdom;
-                characteristics[3] = characteristics_struct->dexterity;
-                characteristics[4] = characteristics_struct->constitution;
-                characteristics[5] = characteristics_struct->charisma;
-                characteristics_struct_free(characteristics_struct);
-            }
-            break;
-        }
-        default:
-            characteristics = calloc_or_die(characteristic_count, characteristic_size);
-             {
-                struct characteristics *characteristics_struct = characteristics_alloc_simple_method(rnd);
-                characteristics[0] = characteristics_struct->strength;
-                characteristics[1] = characteristics_struct->intelligence;
-                characteristics[2] = characteristics_struct->wisdom;
-                characteristics[3] = characteristics_struct->dexterity;
-                characteristics[4] = characteristics_struct->constitution;
-                characteristics[5] = characteristics_struct->charisma;
-                characteristics_struct_free(characteristics_struct);
-            }
+            UNEXPECTED_CASE(characteristic_generation_method_special_NPC);
             break;
     }
     return characteristics;

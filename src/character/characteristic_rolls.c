@@ -83,16 +83,9 @@ characteristic_rolls_free(struct characteristic_rolls *rolls)
 static void
 general_NPC(struct characteristic_rolls *rolls, struct rnd *rnd)
 {
-    int *scores = characteristics_alloc(rnd,
-                                        characteristic_generation_method_general_NPC,
-                                        characteristic_flag_none);
-    rolls->characteristics.strength = scores[0];
-    rolls->characteristics.intelligence = scores[1];
-    rolls->characteristics.wisdom = scores[2];
-    rolls->characteristics.dexterity = scores[3];
-    rolls->characteristics.constitution = scores[4];
-    rolls->characteristics.charisma = scores[5];
-    characteristics_free(scores);
+    struct characteristics *characteristics = characteristics_alloc_general_NPC(rnd);
+    memcpy(&rolls->characteristics, characteristics, sizeof rolls->characteristics);
+    characteristics_struct_free(characteristics);
 }
 
 
@@ -121,16 +114,9 @@ method_2(struct characteristic_rolls *rolls, struct rnd *rnd)
 static void
 method_3(struct characteristic_rolls *rolls, struct rnd *rnd)
 {
-    int *scores = characteristics_alloc(rnd,
-                                        characteristic_generation_method_3,
-                                        characteristic_flag_none);
-    rolls->characteristics.strength = scores[0];
-    rolls->characteristics.intelligence = scores[1];
-    rolls->characteristics.wisdom = scores[2];
-    rolls->characteristics.dexterity = scores[3];
-    rolls->characteristics.constitution = scores[4];
-    rolls->characteristics.charisma = scores[5];
-    characteristics_free(scores);
+    struct characteristics *characteristics = characteristics_alloc_method_3(rnd);
+    memcpy(&rolls->characteristics, characteristics, sizeof rolls->characteristics);
+    characteristics_struct_free(characteristics);
 }
 
 
@@ -156,16 +142,9 @@ method_4(struct characteristic_rolls *rolls, struct rnd *rnd)
 static void
 simple_method(struct characteristic_rolls *rolls, struct rnd *rnd)
 {
-    int *scores = characteristics_alloc(rnd,
-                                        characteristic_generation_method_simple,
-                                        characteristic_flag_none);
-    rolls->characteristics.strength = scores[0];
-    rolls->characteristics.intelligence = scores[1];
-    rolls->characteristics.wisdom = scores[2];
-    rolls->characteristics.dexterity = scores[3];
-    rolls->characteristics.constitution = scores[4];
-    rolls->characteristics.charisma = scores[5];
-    characteristics_free(scores);
+    struct characteristics *characteristics = characteristics_alloc_simple_method(rnd);
+    memcpy(&rolls->characteristics, characteristics, sizeof rolls->characteristics);
+    characteristics_struct_free(characteristics);
 }
 
 
@@ -174,14 +153,7 @@ special_NPC(struct characteristic_rolls *rolls,
             enum characteristic_flag flags,
             struct rnd *rnd)
 {
-    int *scores = characteristics_alloc(rnd,
-                                        characteristic_generation_method_special_NPC,
-                                        flags);
-    rolls->characteristics.strength = scores[0];
-    rolls->characteristics.intelligence = scores[1];
-    rolls->characteristics.wisdom = scores[2];
-    rolls->characteristics.dexterity = scores[3];
-    rolls->characteristics.constitution = scores[4];
-    rolls->characteristics.charisma = scores[5];
-    characteristics_free(scores);
+    struct characteristics *characteristics = characteristics_alloc_special_NPC(rnd, flags);
+    memcpy(&rolls->characteristics, characteristics, sizeof rolls->characteristics);
+    characteristics_struct_free(characteristics);
 }

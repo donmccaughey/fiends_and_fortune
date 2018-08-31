@@ -8,46 +8,6 @@ characteristics_test(void);
 
 
 static void
-characteristics_alloc_invalid_test(void)
-{
-    struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = characteristics_alloc(rnd,
-                                                 characteristic_generation_method_invalid,
-                                                 characteristic_flag_none);
-
-    assert(6 == characteristics[0]);
-    assert(15 == characteristics[1]);
-    assert(6 == characteristics[2]);
-    assert(15 == characteristics[3]);
-    assert(6 == characteristics[4]);
-    assert(15 == characteristics[5]);
-
-    characteristics_free(characteristics);
-    rnd_free(rnd);
-}
-
-
-static void
-characteristics_alloc_simple_test(void)
-{
-    struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = characteristics_alloc(rnd,
-                                                 characteristic_generation_method_simple,
-                                                 characteristic_flag_none);
-
-    assert(6 == characteristics[0]);
-    assert(15 == characteristics[1]);
-    assert(6 == characteristics[2]);
-    assert(15 == characteristics[3]);
-    assert(6 == characteristics[4]);
-    assert(15 == characteristics[5]);
-
-    characteristics_free(characteristics);
-    rnd_free(rnd);
-}
-
-
-static void
 characteristics_alloc_simple_method_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
@@ -91,26 +51,6 @@ characteristics_alloc_method2_test(void)
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
     int *characteristics = characteristics_alloc(rnd,
                                                  characteristic_generation_method_2,
-                                                 characteristic_flag_none);
-
-    assert(15 == characteristics[0]);
-    assert(15 == characteristics[1]);
-    assert(15 == characteristics[2]);
-    assert(15 == characteristics[3]);
-    assert(15 == characteristics[4]);
-    assert(15 == characteristics[5]);
-
-    characteristics_free(characteristics);
-    rnd_free(rnd);
-}
-
-
-static void
-characteristics_alloc_method3_test(void)
-{
-    struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = characteristics_alloc(rnd,
-                                                 characteristic_generation_method_3,
                                                  characteristic_flag_none);
 
     assert(15 == characteristics[0]);
@@ -244,26 +184,6 @@ static void
 characteristics_alloc_method_general_NPC_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = characteristics_alloc(rnd,
-                                                 characteristic_generation_method_general_NPC,
-                                                 characteristic_flag_none);
-
-    assert(8 == characteristics[0]);
-    assert(13 == characteristics[1]);
-    assert(8 == characteristics[2]);
-    assert(13 == characteristics[3]);
-    assert(8 == characteristics[4]);
-    assert(13 == characteristics[5]);
-
-    characteristics_free(characteristics);
-    rnd_free(rnd);
-}
-
-
-static void
-characteristics_struct_alloc_method_general_NPC_test(void)
-{
-    struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristics *characteristics = characteristics_alloc_general_NPC(rnd);
 
     assert(8 == characteristics->strength);
@@ -282,26 +202,6 @@ static void
 characteristics_alloc_method_special_NPC_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = characteristics_alloc(rnd,
-                                                 characteristic_generation_method_special_NPC,
-                                                 characteristic_flag_none);
-
-    assert(6 == characteristics[0]);
-    assert(15 == characteristics[1]);
-    assert(6 == characteristics[2]);
-    assert(15 == characteristics[3]);
-    assert(6 == characteristics[4]);
-    assert(15 == characteristics[5]);
-
-    characteristics_free(characteristics);
-    rnd_free(rnd);
-}
-
-
-static void
-characteristics_struct_alloc_method_special_NPC_test(void)
-{
-    struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristics *characteristics = characteristics_alloc_special_NPC(rnd,
                                                                                 characteristic_flag_none);
 
@@ -318,27 +218,7 @@ characteristics_struct_alloc_method_special_NPC_test(void)
 
 
 static void
-characteristics_alloc_method_special_NPC_STRENGTH_test(void)
-{
-    struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = characteristics_alloc(rnd,
-                                                 characteristic_generation_method_special_NPC,
-                                                 characteristic_flag_strength);
-
-    assert(9 == characteristics[0]);
-    assert(15 == characteristics[1]);
-    assert(6 == characteristics[2]);
-    assert(15 == characteristics[3]);
-    assert(6 == characteristics[4]);
-    assert(15 == characteristics[5]);
-
-    characteristics_free(characteristics);
-    rnd_free(rnd);
-}
-
-
-static void
-characteristics_struct_alloc_method_special_NPC_STRENGTH_test(void)
+characteristics_alloc_method_special_NPC_with_strength_flag_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristics *characteristics = characteristics_alloc_special_NPC(rnd,
@@ -357,27 +237,8 @@ characteristics_struct_alloc_method_special_NPC_STRENGTH_test(void)
 
 
 static void
-characteristics_alloc_method_special_NPC_DEXTERITY_CONSTITUTION_test(void)
-{
-    struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = characteristics_alloc(rnd,
-                                                 characteristic_generation_method_special_NPC,
-                                                 characteristic_flag_dexterity | characteristic_flag_constitution);
-
-    assert(6 == characteristics[0]);
-    assert(15 == characteristics[1]);
-    assert(6 == characteristics[2]);
-    assert(17 == characteristics[3]);
-    assert(9 == characteristics[4]);
-    assert(15 == characteristics[5]);
-
-    characteristics_free(characteristics);
-    rnd_free(rnd);
-}
-
-
-static void
-characteristics_struct_alloc_method_special_NPC_DEXTERITY_CONSTITUTION_test(void)
+characteristics_alloc_method_special_NPC_with_dexterity_and_constitution_flags_test(
+        void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristics *characteristics = characteristics_alloc_special_NPC(rnd,
@@ -398,20 +259,13 @@ characteristics_struct_alloc_method_special_NPC_DEXTERITY_CONSTITUTION_test(void
 void
 characteristics_test(void)
 {
-    characteristics_alloc_invalid_test();
-    characteristics_alloc_simple_test();
     characteristics_alloc_simple_method_test();
     characteristics_alloc_method1_test();
     characteristics_alloc_method2_test();
-    characteristics_alloc_method3_test();
     characteristics_alloc_method_3_test();
     characteristics_alloc_method4_test();
     characteristics_alloc_method_general_NPC_test();
-    characteristics_struct_alloc_method_general_NPC_test();
     characteristics_alloc_method_special_NPC_test();
-    characteristics_struct_alloc_method_special_NPC_test();
-    characteristics_alloc_method_special_NPC_STRENGTH_test();
-    characteristics_struct_alloc_method_special_NPC_STRENGTH_test();
-    characteristics_alloc_method_special_NPC_DEXTERITY_CONSTITUTION_test();
-    characteristics_struct_alloc_method_special_NPC_DEXTERITY_CONSTITUTION_test();
+    characteristics_alloc_method_special_NPC_with_strength_flag_test();
+    characteristics_alloc_method_special_NPC_with_dexterity_and_constitution_flags_test();
 }
