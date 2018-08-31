@@ -26,46 +26,6 @@ characteristics_alloc_simple_method_test(void)
 
 
 static void
-characteristics_alloc_method1_test(void)
-{
-    struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = characteristics_alloc(rnd,
-                                                 characteristic_generation_method_1,
-                                                 characteristic_flag_none);
-
-    assert(15 == characteristics[0]);
-    assert(15 == characteristics[1]);
-    assert(13 == characteristics[2]);
-    assert(13 == characteristics[3]);
-    assert(9 == characteristics[4]);
-    assert(9 == characteristics[5]);
-
-    characteristics_free(characteristics);
-    rnd_free(rnd);
-}
-
-
-static void
-characteristics_alloc_method2_test(void)
-{
-    struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    int *characteristics = characteristics_alloc(rnd,
-                                                 characteristic_generation_method_2,
-                                                 characteristic_flag_none);
-
-    assert(15 == characteristics[0]);
-    assert(15 == characteristics[1]);
-    assert(15 == characteristics[2]);
-    assert(15 == characteristics[3]);
-    assert(15 == characteristics[4]);
-    assert(15 == characteristics[5]);
-
-    characteristics_free(characteristics);
-    rnd_free(rnd);
-}
-
-
-static void
 characteristics_alloc_method_3_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
@@ -260,8 +220,6 @@ void
 characteristics_test(void)
 {
     characteristics_alloc_simple_method_test();
-    characteristics_alloc_method1_test();
-    characteristics_alloc_method2_test();
     characteristics_alloc_method_3_test();
     characteristics_alloc_method4_test();
     characteristics_alloc_method_general_NPC_test();

@@ -2,9 +2,6 @@
 #define FNF_CHARACTER_CHARACTERISTICS_H_INCLUDED
 
 
-#include <stddef.h>
-#include <stdint.h>
-
 #include <character/characteristic_flag.h>
 #include <character/characteristic_generation_method.h>
 

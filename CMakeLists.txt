@@ -78,6 +78,7 @@ add_library(character STATIC
         src/character/character.c
         src/character/characteristic_generation_method.c
         src/character/characteristic_rolls.c
+        src/character/characteristic_scores.c
         src/character/characteristics.c
         )
 target_include_directories(character PUBLIC src)
@@ -86,6 +87,7 @@ add_executable(character_tests
         src/character/character_tests.c
         src/character/characteristic_generation_method_test.c
         src/character/characteristic_rolls_test.c
+        src/character/characteristic_scores_test.c
         src/character/characteristics_test.c
         )
 target_include_directories(character_tests PUBLIC src)

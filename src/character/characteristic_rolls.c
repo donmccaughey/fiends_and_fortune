@@ -4,6 +4,7 @@
 
 
 #include "characteristics.h"
+#include "characteristic_scores.h"
 
 
 static void
@@ -92,22 +93,18 @@ general_NPC(struct characteristic_rolls *rolls, struct rnd *rnd)
 static void
 method_1(struct characteristic_rolls *rolls, struct rnd *rnd)
 {
-    int *scores = characteristics_alloc(rnd,
-                                        characteristic_generation_method_1,
-                                        characteristic_flag_none);
-    memcpy(rolls->scores, scores, 6 * sizeof(scores[0]));
-    characteristics_free(scores);
+    struct characteristic_scores *scores = characteristic_scores_alloc_method_1(rnd);
+    memcpy(rolls->scores, scores->values, sizeof rolls->scores);
+    characteristic_scores_free(scores);
 }
 
 
 static void
 method_2(struct characteristic_rolls *rolls, struct rnd *rnd)
 {
-    int *scores = characteristics_alloc(rnd,
-                                        characteristic_generation_method_2,
-                                        characteristic_flag_none);
-    memcpy(rolls->scores, scores, 6 * sizeof(scores[0]));
-    characteristics_free(scores);
+    struct characteristic_scores *scores = characteristic_scores_alloc_method_2(rnd);
+    memcpy(rolls->scores, scores->values, sizeof rolls->scores);
+    characteristic_scores_free(scores);
 }
 
 

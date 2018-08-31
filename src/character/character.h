@@ -5,6 +5,7 @@
 #include <character/characteristic_flag.h>
 #include <character/characteristic_generation_method.h>
 #include <character/characteristic_rolls.h>
+#include <character/characteristic_scores.h>
 #include <character/characteristics.h>
 
 
