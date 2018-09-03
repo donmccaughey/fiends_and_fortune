@@ -15,6 +15,9 @@ characteristic_scores_test(void);
 void
 characteristics_test(void);
 
+void
+characteristics_sets_test(void);
+
 
 int
 main(int argc, char *argv[])
@@ -23,6 +26,7 @@ main(int argc, char *argv[])
     characteristic_rolls_test();
     characteristic_scores_test();
     characteristics_test();
+    characteristics_sets_test();
     alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }

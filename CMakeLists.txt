@@ -80,6 +80,7 @@ add_library(character STATIC
         src/character/characteristic_rolls.c
         src/character/characteristic_scores.c
         src/character/characteristics.c
+        src/character/characteristics_sets.c
         )
 target_include_directories(character PUBLIC src)
 
@@ -89,6 +90,7 @@ add_executable(character_tests
         src/character/characteristic_rolls_test.c
         src/character/characteristic_scores_test.c
         src/character/characteristics_test.c
+        src/character/characteristics_sets_test.c
         )
 target_include_directories(character_tests PUBLIC src)
 target_link_libraries(character_tests character base mechanics)

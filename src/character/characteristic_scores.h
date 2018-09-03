@@ -21,4 +21,3 @@ characteristic_scores_free(struct characteristic_scores *scores);
 
 
 #endif
-

@@ -8,83 +8,10 @@
 #include <mechanics/mechanics.h>
 
 
-static size_t const characteristic_count = 6;
-static size_t const characteristic_size = sizeof(int);
-static int const method_3_roll_count = 6;
-static size_t const method_4_character_count = 12;
-static size_t const method_4_characteristic_count = characteristic_count
-                                                  * method_4_character_count;
-
-
-static int
-compare_characteristic_sets(void const *characteristic_set1,
-                            void const *characteristic_set2);
-
 static int
 special_NPC_roll(struct rnd *rnd,
                  enum characteristic_flag flags,
                  enum characteristic_flag flag);
-
-
-static int
-compare_characteristic_sets(void const *characteristic_set1,
-                            void const *characteristic_set2)
-{
-    int const *set1 = (int const *) characteristic_set1;
-    int const *set2 = (int const *) characteristic_set2;
-
-    int total1 = 0;
-    int total2 = 0;
-    for (int i = 0; i < characteristic_count; ++i) {
-        total1 += set1[i];
-        total2 += set2[i];
-    }
-    return total2 - total1;
-}
-
-
-int *
-characteristics_alloc(struct rnd *rnd,
-                      enum characteristic_generation_method method,
-                      enum characteristic_flag flags)
-{
-    int *characteristics = NULL;
-    switch (method) {
-        case characteristic_generation_method_invalid:
-            UNEXPECTED_CASE(characteristic_generation_method_invalid);
-            break;
-        case characteristic_generation_method_simple:
-            UNEXPECTED_CASE(characteristic_generation_method_simple);
-            break;
-        case characteristic_generation_method_1:
-            UNEXPECTED_CASE(characteristic_generation_method_1);
-            break;
-        case characteristic_generation_method_2:
-            UNEXPECTED_CASE(characteristic_generation_method_2);
-            break;
-        case characteristic_generation_method_3:
-            UNEXPECTED_CASE(characteristic_generation_method_3);
-            break;
-        case characteristic_generation_method_4:
-            characteristics = calloc_or_die(method_4_characteristic_count,
-                                            characteristic_size);
-            for (size_t i = 0; i < method_4_characteristic_count; ++i) {
-                characteristics[i] = roll("3d6", rnd);
-            }
-            qsort(characteristics,
-                  method_4_character_count,
-                  characteristic_size * characteristic_count,
-                  compare_characteristic_sets);
-            break;
-        case characteristic_generation_method_general_NPC:
-            UNEXPECTED_CASE(characteristic_generation_method_general_NPC);
-            break;
-        case characteristic_generation_method_special_NPC:
-            UNEXPECTED_CASE(characteristic_generation_method_special_NPC);
-            break;
-    }
-    return characteristics;
-}
 
 
 struct characteristics *
@@ -106,37 +33,37 @@ struct characteristics *
 characteristics_alloc_method_3(struct rnd *rnd)
 {
     struct characteristics *characteristics = calloc_or_die(1, sizeof(struct characteristics));
-    for (int i = 0; i < method_3_roll_count; ++i) {
+    for (int i = 0; i < 6; ++i) {
         int characteristic = roll("3d6", rnd);
         if (characteristic > characteristics->strength) {
             characteristics->strength = characteristic;
         }
     }
-    for (int i = 0; i < method_3_roll_count; ++i) {
+    for (int i = 0; i < 6; ++i) {
         int characteristic = roll("3d6", rnd);
         if (characteristic > characteristics->intelligence) {
             characteristics->intelligence = characteristic;
         }
     }
-    for (int i = 0; i < method_3_roll_count; ++i) {
+    for (int i = 0; i < 6; ++i) {
         int characteristic = roll("3d6", rnd);
         if (characteristic > characteristics->wisdom) {
             characteristics->wisdom = characteristic;
         }
     }
-    for (int i = 0; i < method_3_roll_count; ++i) {
+    for (int i = 0; i < 6; ++i) {
         int characteristic = roll("3d6", rnd);
         if (characteristic > characteristics->dexterity) {
             characteristics->dexterity = characteristic;
         }
     }
-    for (int i = 0; i < method_3_roll_count; ++i) {
+    for (int i = 0; i < 6; ++i) {
         int characteristic = roll("3d6", rnd);
         if (characteristic > characteristics->constitution) {
             characteristics->constitution = characteristic;
         }
     }
-    for (int i = 0; i < method_3_roll_count; ++i) {
+    for (int i = 0; i < 6; ++i) {
         int characteristic = roll("3d6", rnd);
         if (characteristic > characteristics->charisma) {
             characteristics->charisma = characteristic;
@@ -175,10 +102,12 @@ characteristics_alloc_special_NPC(struct rnd *rnd,
 }
 
 
-void
-characteristics_free(int *characteristics)
+int
+characteristics_compare(struct characteristics const *first,
+                        struct characteristics const *second)
 {
-    free_or_die(characteristics);
+    return characteristics_total(second)
+         - characteristics_total(first);
 }
 
 
@@ -186,6 +115,18 @@ void
 characteristics_struct_free(struct characteristics *characteristics)
 {
     free_or_die(characteristics);
+}
+
+
+int
+characteristics_total(struct characteristics const *characteristics)
+{
+    return characteristics->strength
+         + characteristics->intelligence
+         + characteristics->wisdom
+         + characteristics->dexterity
+         + characteristics->constitution
+         + characteristics->charisma;
 }
 
 

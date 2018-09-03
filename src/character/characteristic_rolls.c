@@ -2,9 +2,9 @@
 
 #include <base/base.h>
 
-
-#include "characteristics.h"
 #include "characteristic_scores.h"
+#include "characteristics.h"
+#include "characteristics_sets.h"
 
 
 static void
@@ -120,19 +120,9 @@ method_3(struct characteristic_rolls *rolls, struct rnd *rnd)
 static void
 method_4(struct characteristic_rolls *rolls, struct rnd *rnd)
 {
-    int *scores = characteristics_alloc(rnd,
-                                        characteristic_generation_method_4,
-                                        characteristic_flag_none);
-    for (int i = 0; i < 12; ++i) {
-        int j = 6 * i;
-        rolls->characteristics_sets[i].strength = scores[0 + j];
-        rolls->characteristics_sets[i].intelligence = scores[1 + j];
-        rolls->characteristics_sets[i].wisdom = scores[2 + j];
-        rolls->characteristics_sets[i].dexterity = scores[3 + j];
-        rolls->characteristics_sets[i].constitution = scores[4 + j];
-        rolls->characteristics_sets[i].charisma = scores[5 + j];
-    }
-    characteristics_free(scores);
+    struct characteristics_sets *sets = characteristics_sets_alloc_method_4(rnd);
+    memcpy(&rolls->characteristics_sets, sets->values, sizeof rolls->characteristics_sets);
+    characteristics_sets_free(sets);
 }
 
 

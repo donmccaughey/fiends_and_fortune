@@ -7,6 +7,7 @@
 #include <character/characteristic_rolls.h>
 #include <character/characteristic_scores.h>
 #include <character/characteristics.h>
+#include <character/characteristics_sets.h>
 
 
 struct character {

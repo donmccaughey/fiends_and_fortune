@@ -19,11 +19,6 @@ struct characteristics {
 };
 
 
-int *
-characteristics_alloc(struct rnd *rnd,
-                      enum characteristic_generation_method method,
-                      enum characteristic_flag flags);
-
 struct characteristics *
 characteristics_alloc_general_NPC(struct rnd *rnd);
 
@@ -37,11 +32,15 @@ struct characteristics *
 characteristics_alloc_special_NPC(struct rnd *rnd,
                                   enum characteristic_flag flags);
 
-void
-characteristics_free(int *characteristics);
+int
+characteristics_compare(struct characteristics const *first,
+                        struct characteristics const *second);
 
 void
 characteristics_struct_free(struct characteristics *characteristics);
+
+int
+characteristics_total(struct characteristics const *characteristics);
 
 
 #endif
