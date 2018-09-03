@@ -129,7 +129,7 @@ method_4(struct characteristic_rolls *rolls, struct rnd *rnd)
 static void
 simple_method(struct characteristic_rolls *rolls, struct rnd *rnd)
 {
-    struct abilities *characteristics = abilities_alloc_simple_method(rnd);
+    struct abilities *characteristics = abilities_alloc(rnd);
     memcpy(&rolls->characteristics, characteristics, sizeof rolls->characteristics);
     abilities_free(characteristics);
 }

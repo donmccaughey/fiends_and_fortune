@@ -8,10 +8,10 @@ abilities_test(void);
 
 
 static void
-abilities_alloc_simple_method_test(void)
+abilities_alloc_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    struct abilities *abilities = abilities_alloc_simple_method(rnd);
+    struct abilities *abilities = abilities_alloc(rnd);
 
     assert(6 == abilities->strength);
     assert(15 == abilities->intelligence);
@@ -190,7 +190,7 @@ abilities_total_test(void)
 void
 abilities_test(void)
 {
-    abilities_alloc_simple_method_test();
+    abilities_alloc_test();
     abilities_alloc_method_3_test();
     abilities_alloc_method_general_NPC_test();
     abilities_alloc_method_special_NPC_test();

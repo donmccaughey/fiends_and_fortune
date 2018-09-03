@@ -15,6 +15,20 @@ special_NPC_roll(struct rnd *rnd,
 
 
 struct abilities *
+abilities_alloc(struct rnd *rnd)
+{
+    struct abilities *abilities = calloc_or_die(1, sizeof(struct abilities));
+    abilities->strength = roll("3d6", rnd);
+    abilities->intelligence = roll("3d6", rnd);
+    abilities->wisdom = roll("3d6", rnd);
+    abilities->dexterity = roll("3d6", rnd);
+    abilities->constitution = roll("3d6", rnd);
+    abilities->charisma = roll("3d6", rnd);
+    return abilities;
+}
+
+
+struct abilities *
 abilities_alloc_general_NPC(struct rnd *rnd)
 {
     struct abilities *abilities = calloc_or_die(1, sizeof(struct abilities));
@@ -69,20 +83,6 @@ abilities_alloc_method_3(struct rnd *rnd)
             abilities->charisma = ability;
         }
     }
-    return abilities;
-}
-
-
-struct abilities *
-abilities_alloc_simple_method(struct rnd *rnd)
-{
-    struct abilities *abilities = calloc_or_die(1, sizeof(struct abilities));
-    abilities->strength = roll("3d6", rnd);
-    abilities->intelligence = roll("3d6", rnd);
-    abilities->wisdom = roll("3d6", rnd);
-    abilities->dexterity = roll("3d6", rnd);
-    abilities->constitution = roll("3d6", rnd);
-    abilities->charisma = roll("3d6", rnd);
     return abilities;
 }
 

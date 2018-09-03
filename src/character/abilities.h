@@ -19,13 +19,13 @@ struct abilities {
 
 
 struct abilities *
+abilities_alloc(struct rnd *rnd);
+
+struct abilities *
 abilities_alloc_general_NPC(struct rnd *rnd);
 
 struct abilities *
 abilities_alloc_method_3(struct rnd *rnd);
-
-struct abilities *
-abilities_alloc_simple_method(struct rnd *rnd);
 
 struct abilities *
 abilities_alloc_special_NPC(struct rnd *rnd,
