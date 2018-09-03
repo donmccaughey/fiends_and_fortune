@@ -11,6 +11,28 @@ find_library(menu REQUIRED)
 find_library(ncurses REQUIRED)
 
 
+# ----- fiends command -----
+
+add_executable(fiends
+        src/fiends/game.c
+        src/fiends/main.c
+        src/fiends/selection.c
+        )
+target_link_libraries(fiends
+        background
+        base
+        character
+        dungeon
+        magic
+        mechanics
+        treasure
+        # external dependencies
+        form
+        menu
+        ncurses
+        )
+
+
 # ----- fnf command -----
 
 add_executable(fnf
@@ -24,12 +46,7 @@ target_link_libraries(fnf
         dungeon
         magic
         mechanics
-        libfnf
         treasure
-        # external dependencies
-        form
-        menu
-        ncurses
         )
 
 
@@ -212,16 +229,6 @@ target_link_libraries(tui_example
         )
 
 
-# ----- fnf library -----
-
-add_library(libfnf STATIC
-        src/game/game.c
-        src/game/selection.c
-        )
-target_include_directories(libfnf PUBLIC src)
-set_target_properties(libfnf PROPERTIES OUTPUT_NAME "fnf")
-
-
 # ----- functional tests -----
 
 configure_file(tests/fnf_check.out fnf_check.out)
@@ -244,6 +251,7 @@ add_custom_target(check
         COMMAND ./fnf_check
         )
 add_dependencies(check
+        fiends
         fnf
         background_tests
         base_tests

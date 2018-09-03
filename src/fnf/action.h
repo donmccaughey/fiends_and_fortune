@@ -9,7 +9,6 @@ enum action {
     action_check,
     action_dungeon,
     action_each,
-    action_game,
     action_magic,
     action_map,
     action_table,
