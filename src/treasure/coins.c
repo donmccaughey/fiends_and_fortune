@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <base/base.h>
+#include <background/background.h>
 
 
 char *

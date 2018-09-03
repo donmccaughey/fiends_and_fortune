@@ -54,12 +54,14 @@ target_link_libraries(fnf
 
 add_library(background STATIC
         src/background/language.c
+        src/background/money.c
         )
 target_include_directories(background PUBLIC src)
 
 add_executable(background_tests
         src/background/background_tests.c
         src/background/language_test.c
+        src/background/money_test.c
         )
 target_include_directories(background_tests PUBLIC src)
 target_link_libraries(background_tests background base mechanics)

@@ -2,5 +2,6 @@
 #define FNF_BACKGROUND_BACKGROUND_H_INCLUDED
 
 #include <background/language.h>
+#include <background/money.h>
 
 #endif

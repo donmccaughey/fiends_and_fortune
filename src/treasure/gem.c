@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <base/base.h>
+#include <background/background.h>
 #include <mechanics/mechanics.h>
 
 #include "coins.h"
