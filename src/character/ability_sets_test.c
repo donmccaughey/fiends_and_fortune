@@ -4,14 +4,14 @@
 
 
 void
-characteristics_sets_test(void);
+ability_sets_test(void);
 
 
 static void
-characteristics_sets_alloc_method_4_test(void)
+ability_sets_alloc_method_4_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
-    struct characteristics_sets *sets = characteristics_sets_alloc_method_4(rnd);
+    struct ability_sets *sets = ability_sets_alloc_method_4(rnd);
 
     for (int i = 0; i < 12; ++i) {
         assert(6 == sets->values[i].strength);
@@ -22,16 +22,16 @@ characteristics_sets_alloc_method_4_test(void)
         assert(15 == sets->values[i].charisma);
     }
 
-    characteristics_sets_free(sets);
+    ability_sets_free(sets);
     rnd_free(rnd);
 }
 
 
 static void
-characteristics_sets_alloc_method_4_random_test(void)
+ability_sets_alloc_method_4_random_test(void)
 {
     struct rnd *rnd = rnd_alloc_jrand48((unsigned short[]){ 2, 3, 5 });
-    struct characteristics_sets *sets = characteristics_sets_alloc_method_4(rnd);
+    struct ability_sets *sets = ability_sets_alloc_method_4(rnd);
 
     assert(10 == sets->values[0].strength);
     assert(14 == sets->values[0].intelligence);
@@ -117,15 +117,15 @@ characteristics_sets_alloc_method_4_random_test(void)
     assert(8 == sets->values[11].constitution);
     assert(10 == sets->values[11].charisma);
 
-    characteristics_sets_free(sets);
+    ability_sets_free(sets);
     rnd_free(rnd);
 }
 
 
 static void
-characteristics_sets_sort_test(void)
+ability_sets_sort_test(void)
 {
-    struct characteristics_sets sets;
+    struct ability_sets sets;
     for (int i = 0; i < 12; ++i) {
         sets.values[i].strength = i;
         sets.values[i].intelligence = i;
@@ -135,7 +135,7 @@ characteristics_sets_sort_test(void)
         sets.values[i].charisma = i;
     }
 
-    characteristics_sets_sort(&sets);
+    ability_sets_sort(&sets);
 
     assert(11 == sets.values[0].strength);
     assert(11 == sets.values[0].intelligence);
@@ -224,9 +224,9 @@ characteristics_sets_sort_test(void)
 
 
 void
-characteristics_sets_test(void)
+ability_sets_test(void)
 {
-    characteristics_sets_alloc_method_4_test();
-    characteristics_sets_alloc_method_4_random_test();
-    characteristics_sets_sort_test();
+    ability_sets_alloc_method_4_test();
+    ability_sets_alloc_method_4_random_test();
+    ability_sets_sort_test();
 }

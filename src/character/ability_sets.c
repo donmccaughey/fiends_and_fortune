@@ -1,4 +1,4 @@
-#include "characteristics_sets.h"
+#include "ability_sets.h"
 
 #include <stdlib.h>
 #include <base/base.h>
@@ -9,10 +9,10 @@ typedef int
 (compare_fn)(void const *, void const *);
 
 
-struct characteristics_sets *
-characteristics_sets_alloc_method_4(struct rnd *rnd)
+struct ability_sets *
+ability_sets_alloc_method_4(struct rnd *rnd)
 {
-    struct characteristics_sets *sets = calloc_or_die(1, sizeof(struct characteristics_sets));
+    struct ability_sets *sets = calloc_or_die(1, sizeof(struct ability_sets));
     size_t count = sizeof sets->values / sizeof sets->values[0];
     for (size_t i = 0; i < count; ++i) {
         sets->values[i].strength = roll("3d6", rnd);
@@ -22,20 +22,20 @@ characteristics_sets_alloc_method_4(struct rnd *rnd)
         sets->values[i].constitution = roll("3d6", rnd);
         sets->values[i].charisma = roll("3d6", rnd);
     }
-    characteristics_sets_sort(sets);
+    ability_sets_sort(sets);
     return sets;
 }
 
 
 void
-characteristics_sets_free(struct characteristics_sets *sets)
+ability_sets_free(struct ability_sets *sets)
 {
     free_or_die(sets);
 }
 
 
 void
-characteristics_sets_sort(struct characteristics_sets *sets)
+ability_sets_sort(struct ability_sets *sets)
 {
     size_t size = sizeof sets->values[0];
     size_t count = sizeof sets->values / size;

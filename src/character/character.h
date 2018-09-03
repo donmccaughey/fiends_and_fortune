@@ -5,9 +5,9 @@
 #include <character/abilities.h>
 #include <character/ability_flag.h>
 #include <character/ability_scores.h>
+#include <character/ability_sets.h>
 #include <character/characteristic_generation_method.h>
 #include <character/characteristic_rolls.h>
-#include <character/characteristics_sets.h>
 
 
 struct character {

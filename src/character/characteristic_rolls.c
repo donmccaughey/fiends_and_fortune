@@ -4,7 +4,7 @@
 
 #include "abilities.h"
 #include "ability_scores.h"
-#include "characteristics_sets.h"
+#include "ability_sets.h"
 
 
 static void
@@ -120,9 +120,9 @@ method_3(struct characteristic_rolls *rolls, struct rnd *rnd)
 static void
 method_4(struct characteristic_rolls *rolls, struct rnd *rnd)
 {
-    struct characteristics_sets *sets = characteristics_sets_alloc_method_4(rnd);
+    struct ability_sets *sets = ability_sets_alloc_method_4(rnd);
     memcpy(&rolls->characteristics_sets, sets->values, sizeof rolls->characteristics_sets);
-    characteristics_sets_free(sets);
+    ability_sets_free(sets);
 }
 
 
