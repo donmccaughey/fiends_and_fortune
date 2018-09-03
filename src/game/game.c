@@ -10,13 +10,7 @@
 #include <dungeon/dungeon.h>
 #include <mechanics/mechanics.h>
 #include <sys/ioctl.h>
-
-#include "treasure/treasure.h"
-#include "treasure/gem.h"
-#include "treasure/jewelry.h"
-#include "treasure/magic_item.h"
-#include "treasure/treasure_map.h"
-#include "treasure/treasure_type.h"
+#include <treasure/treasure.h>
 
 #include "selection.h"
 

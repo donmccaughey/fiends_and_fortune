@@ -4,13 +4,9 @@
 #include <character/character.h>
 #include <dungeon/dungeon.h>
 #include <mechanics/mechanics.h>
+#include <treasure/treasure.h>
 
 #include "game/game.h"
-
-#include "treasure/gem.h"
-#include "treasure/jewelry.h"
-#include "treasure/treasure_map.h"
-#include "treasure/treasure_type.h"
 
 #include "tui/app.h"
 #include "tui/menu_view.h"
