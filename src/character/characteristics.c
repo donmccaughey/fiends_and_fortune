@@ -10,8 +10,8 @@
 
 static int
 special_NPC_roll(struct rnd *rnd,
-                 enum characteristic_flag flags,
-                 enum characteristic_flag flag);
+                 enum ability_flag flags,
+                 enum ability_flag flag);
 
 
 struct characteristics *
@@ -89,15 +89,15 @@ characteristics_alloc_simple_method(struct rnd *rnd)
 
 struct characteristics *
 characteristics_alloc_special_NPC(struct rnd *rnd,
-                                  enum characteristic_flag flags)
+                                  enum ability_flag flags)
 {
     struct characteristics *characteristics = calloc_or_die(1, sizeof(struct characteristics));
-    characteristics->strength = special_NPC_roll(rnd, flags, characteristic_flag_strength);
-    characteristics->intelligence = special_NPC_roll(rnd, flags, characteristic_flag_intelligence);
-    characteristics->wisdom = special_NPC_roll(rnd, flags, characteristic_flag_wisdom);
-    characteristics->dexterity = special_NPC_roll(rnd, flags, characteristic_flag_dexterity);
-    characteristics->constitution = special_NPC_roll(rnd, flags, characteristic_flag_constitution);
-    characteristics->charisma = special_NPC_roll(rnd, flags, characteristic_flag_charisma);
+    characteristics->strength = special_NPC_roll(rnd, flags, ability_flag_strength);
+    characteristics->intelligence = special_NPC_roll(rnd, flags, ability_flag_intelligence);
+    characteristics->wisdom = special_NPC_roll(rnd, flags, ability_flag_wisdom);
+    characteristics->dexterity = special_NPC_roll(rnd, flags, ability_flag_dexterity);
+    characteristics->constitution = special_NPC_roll(rnd, flags, ability_flag_constitution);
+    characteristics->charisma = special_NPC_roll(rnd, flags, ability_flag_charisma);
     return characteristics;
 }
 
@@ -132,8 +132,8 @@ characteristics_total(struct characteristics const *characteristics)
 
 static int
 special_NPC_roll(struct rnd *rnd,
-                 enum characteristic_flag flags,
-                 enum characteristic_flag flag)
+                 enum ability_flag flags,
+                 enum ability_flag flag)
 {
     struct dice threeD6 = dice_make(3, 6);
     return flag & flags ? dice_roll_and_adjust_upwards(threeD6, rnd)

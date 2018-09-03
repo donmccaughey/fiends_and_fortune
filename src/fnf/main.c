@@ -138,10 +138,10 @@ generate_character(struct rnd *rnd,
     char const *method_name = characteristic_generation_method_name(method);
     const char *method_description = characteristic_generation_method_description(method);
 
-    enum characteristic_flag special_characteristics = characteristic_flag_strength;
+    enum ability_flag special_abilities = ability_flag_strength;
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(rnd,
                                                                     method,
-                                                                    special_characteristics);
+                                                                    special_abilities);
     if (characteristic_rolls_type_six_scores == rolls->type)
     {
         fprintf(out, "Character (%s): -------------------------\n", method_name);

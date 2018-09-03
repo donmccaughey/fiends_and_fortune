@@ -2,7 +2,7 @@
 #define FNF_CHARACTER_CHARACTERISTICS_H_INCLUDED
 
 
-#include <character/characteristic_flag.h>
+#include <character/ability_flag.h>
 #include <character/characteristic_generation_method.h>
 
 
@@ -30,7 +30,7 @@ characteristics_alloc_simple_method(struct rnd *rnd);
 
 struct characteristics *
 characteristics_alloc_special_NPC(struct rnd *rnd,
-                                  enum characteristic_flag flags);
+                                  enum ability_flag flags);
 
 int
 characteristics_compare(struct characteristics const *first,

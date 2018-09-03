@@ -66,7 +66,7 @@ characteristics_alloc_method_special_NPC_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristics *characteristics = characteristics_alloc_special_NPC(rnd,
-                                                                                characteristic_flag_none);
+                                                                                ability_flag_none);
 
     assert(6 == characteristics->strength);
     assert(15 == characteristics->intelligence);
@@ -85,7 +85,7 @@ characteristics_alloc_method_special_NPC_with_strength_flag_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristics *characteristics = characteristics_alloc_special_NPC(rnd,
-                                                                                characteristic_flag_strength);
+                                                                                ability_flag_strength);
 
     assert(9 == characteristics->strength);
     assert(15 == characteristics->intelligence);
@@ -105,7 +105,7 @@ characteristics_alloc_method_special_NPC_with_dexterity_and_constitution_flags_t
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristics *characteristics = characteristics_alloc_special_NPC(rnd,
-                                                                                characteristic_flag_dexterity | characteristic_flag_constitution);
+                                                                                ability_flag_dexterity | ability_flag_constitution);
 
     assert(6 == characteristics->strength);
     assert(15 == characteristics->intelligence);

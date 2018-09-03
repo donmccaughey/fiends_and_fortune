@@ -152,7 +152,7 @@ create_character_using_simple_method(struct game *game)
 {
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
                                                                     characteristic_generation_method_simple,
-                                                                    characteristic_flag_none);
+                                                                    ability_flag_none);
     draw_character_sheet(game, characteristic_generation_method_simple, rolls);
     characteristic_rolls_free(rolls);
     getch();
@@ -166,7 +166,7 @@ create_character_using_method_1(struct game *game)
 {
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
                                                                     characteristic_generation_method_1,
-                                                                    characteristic_flag_none);
+                                                                    ability_flag_none);
     draw_character_sheet(game, characteristic_generation_method_1, rolls);
     // TODO: player assigns rolls
     characteristic_rolls_free(rolls);
@@ -181,7 +181,7 @@ create_character_using_method_2(struct game *game)
 {
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
                                                                     characteristic_generation_method_2,
-                                                                    characteristic_flag_none);
+                                                                    ability_flag_none);
     draw_character_sheet(game, characteristic_generation_method_2, rolls);
     // TODO: player assigns rolls
     characteristic_rolls_free(rolls);
@@ -196,7 +196,7 @@ create_character_using_method_3(struct game *game)
 {
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
                                                                     characteristic_generation_method_3,
-                                                                    characteristic_flag_none);
+                                                                    ability_flag_none);
     draw_character_sheet(game, characteristic_generation_method_3, rolls);
     characteristic_rolls_free(rolls);
     getch();
@@ -210,7 +210,7 @@ create_character_using_method_4(struct game *game)
 {
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
                                                                     characteristic_generation_method_4,
-                                                                    characteristic_flag_none);
+                                                                    ability_flag_none);
     // TODO: player chooses from 12 characters
     draw_character_sheet(game, characteristic_generation_method_4, rolls);
     characteristic_rolls_free(rolls);
@@ -225,7 +225,7 @@ create_character_using_method_general_NPC(struct game *game)
 {
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
                                                                     characteristic_generation_method_general_NPC,
-                                                                    characteristic_flag_none);
+                                                                    ability_flag_none);
     draw_character_sheet(game, characteristic_generation_method_general_NPC, rolls);
     characteristic_rolls_free(rolls);
     getch();
@@ -240,7 +240,7 @@ create_character_using_method_special_NPC(struct game *game)
     // TODO: choose profession and profession characteristics
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
                                                                     characteristic_generation_method_special_NPC,
-                                                                    characteristic_flag_none);
+                                                                    ability_flag_none);
     draw_character_sheet(game, characteristic_generation_method_special_NPC, rolls);
     characteristic_rolls_free(rolls);
     getch();

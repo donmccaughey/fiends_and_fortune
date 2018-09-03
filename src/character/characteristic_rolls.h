@@ -2,7 +2,7 @@
 #define FNF_CHARACTER_CHARACTERISTIC_ROLLS_H_INCLUDED
 
 
-#include <character/characteristic_flag.h>
+#include <character/ability_flag.h>
 #include <character/characteristic_generation_method.h>
 #include <character/characteristics.h>
 
@@ -31,7 +31,7 @@ struct characteristic_rolls {
 struct characteristic_rolls *
 characteristic_rolls_alloc(struct rnd *rnd,
                            enum characteristic_generation_method method,
-                           enum characteristic_flag flags);
+                           enum ability_flag flags);
 
 void
 characteristic_rolls_free(struct characteristic_rolls *rolls);

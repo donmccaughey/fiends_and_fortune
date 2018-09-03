@@ -2,7 +2,7 @@
 #define FNF_CHARACTER_CHARACTER_H_INCLUDED
 
 
-#include <character/characteristic_flag.h>
+#include <character/ability_flag.h>
 #include <character/characteristic_generation_method.h>
 #include <character/characteristic_rolls.h>
 #include <character/characteristic_scores.h>

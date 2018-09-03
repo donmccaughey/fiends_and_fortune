@@ -27,14 +27,14 @@ simple_method(struct characteristic_rolls *rolls, struct rnd *rnd);
 
 static void
 special_NPC(struct characteristic_rolls *rolls,
-            enum characteristic_flag flags,
+            enum ability_flag flags,
             struct rnd *rnd);
 
 
 struct characteristic_rolls *
 characteristic_rolls_alloc(struct rnd *rnd,
                            enum characteristic_generation_method method,
-                           enum characteristic_flag flags)
+                           enum ability_flag flags)
 {
     struct characteristic_rolls *rolls = calloc_or_die(1, sizeof(struct characteristic_rolls));
     switch (method) {
@@ -137,7 +137,7 @@ simple_method(struct characteristic_rolls *rolls, struct rnd *rnd)
 
 static void
 special_NPC(struct characteristic_rolls *rolls,
-            enum characteristic_flag flags,
+            enum ability_flag flags,
             struct rnd *rnd)
 {
     struct characteristics *characteristics = characteristics_alloc_special_NPC(rnd, flags);
