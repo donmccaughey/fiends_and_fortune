@@ -86,7 +86,7 @@ general_NPC(struct characteristic_rolls *rolls, struct rnd *rnd)
 {
     struct characteristics *characteristics = characteristics_alloc_general_NPC(rnd);
     memcpy(&rolls->characteristics, characteristics, sizeof rolls->characteristics);
-    characteristics_struct_free(characteristics);
+    characteristics_free(characteristics);
 }
 
 
@@ -113,7 +113,7 @@ method_3(struct characteristic_rolls *rolls, struct rnd *rnd)
 {
     struct characteristics *characteristics = characteristics_alloc_method_3(rnd);
     memcpy(&rolls->characteristics, characteristics, sizeof rolls->characteristics);
-    characteristics_struct_free(characteristics);
+    characteristics_free(characteristics);
 }
 
 
@@ -131,7 +131,7 @@ simple_method(struct characteristic_rolls *rolls, struct rnd *rnd)
 {
     struct characteristics *characteristics = characteristics_alloc_simple_method(rnd);
     memcpy(&rolls->characteristics, characteristics, sizeof rolls->characteristics);
-    characteristics_struct_free(characteristics);
+    characteristics_free(characteristics);
 }
 
 
@@ -142,5 +142,5 @@ special_NPC(struct characteristic_rolls *rolls,
 {
     struct characteristics *characteristics = characteristics_alloc_special_NPC(rnd, flags);
     memcpy(&rolls->characteristics, characteristics, sizeof rolls->characteristics);
-    characteristics_struct_free(characteristics);
+    characteristics_free(characteristics);
 }

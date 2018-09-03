@@ -37,7 +37,7 @@ characteristics_compare(struct characteristics const *first,
                         struct characteristics const *second);
 
 void
-characteristics_struct_free(struct characteristics *characteristics);
+characteristics_free(struct characteristics *characteristics);
 
 int
 characteristics_total(struct characteristics const *characteristics);

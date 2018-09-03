@@ -20,7 +20,7 @@ characteristics_alloc_simple_method_test(void)
     assert(6 == characteristics->constitution);
     assert(15 == characteristics->charisma);
 
-    characteristics_struct_free(characteristics);
+    characteristics_free(characteristics);
     rnd_free(rnd);
 }
 
@@ -38,7 +38,7 @@ characteristics_alloc_method_3_test(void)
     assert(15 == characteristics->constitution);
     assert(15 == characteristics->charisma);
 
-    characteristics_struct_free(characteristics);
+    characteristics_free(characteristics);
     rnd_free(rnd);
 }
 
@@ -56,7 +56,7 @@ characteristics_alloc_method_general_NPC_test(void)
     assert(8 == characteristics->constitution);
     assert(13 == characteristics->charisma);
 
-    characteristics_struct_free(characteristics);
+    characteristics_free(characteristics);
     rnd_free(rnd);
 }
 
@@ -75,7 +75,7 @@ characteristics_alloc_method_special_NPC_test(void)
     assert(6 == characteristics->constitution);
     assert(15 == characteristics->charisma);
 
-    characteristics_struct_free(characteristics);
+    characteristics_free(characteristics);
     rnd_free(rnd);
 }
 
@@ -94,7 +94,7 @@ characteristics_alloc_method_special_NPC_with_strength_flag_test(void)
     assert(6 == characteristics->constitution);
     assert(15 == characteristics->charisma);
 
-    characteristics_struct_free(characteristics);
+    characteristics_free(characteristics);
     rnd_free(rnd);
 }
 
@@ -114,7 +114,7 @@ characteristics_alloc_method_special_NPC_with_dexterity_and_constitution_flags_t
     assert(9 == characteristics->constitution);
     assert(15 == characteristics->charisma);
 
-    characteristics_struct_free(characteristics);
+    characteristics_free(characteristics);
     rnd_free(rnd);
 }
 

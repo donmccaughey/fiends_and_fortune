@@ -32,7 +32,7 @@ characteristics_sets_alloc_method_4_random_test(void)
 {
     struct rnd *rnd = rnd_alloc_jrand48((unsigned short[]){ 2, 3, 5 });
     struct characteristics_sets *sets = characteristics_sets_alloc_method_4(rnd);
-    
+
     assert(10 == sets->values[0].strength);
     assert(14 == sets->values[0].intelligence);
     assert(16 == sets->values[0].wisdom);

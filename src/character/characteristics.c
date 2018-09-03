@@ -112,7 +112,7 @@ characteristics_compare(struct characteristics const *first,
 
 
 void
-characteristics_struct_free(struct characteristics *characteristics)
+characteristics_free(struct characteristics *characteristics)
 {
     free_or_die(characteristics);
 }
