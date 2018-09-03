@@ -2,8 +2,8 @@
 
 #include <base/base.h>
 
+#include "abilities.h"
 #include "characteristic_scores.h"
-#include "characteristics.h"
 #include "characteristics_sets.h"
 
 
@@ -84,9 +84,9 @@ characteristic_rolls_free(struct characteristic_rolls *rolls)
 static void
 general_NPC(struct characteristic_rolls *rolls, struct rnd *rnd)
 {
-    struct characteristics *characteristics = characteristics_alloc_general_NPC(rnd);
+    struct abilities *characteristics = abilities_alloc_general_NPC(rnd);
     memcpy(&rolls->characteristics, characteristics, sizeof rolls->characteristics);
-    characteristics_free(characteristics);
+    abilities_free(characteristics);
 }
 
 
@@ -111,9 +111,9 @@ method_2(struct characteristic_rolls *rolls, struct rnd *rnd)
 static void
 method_3(struct characteristic_rolls *rolls, struct rnd *rnd)
 {
-    struct characteristics *characteristics = characteristics_alloc_method_3(rnd);
+    struct abilities *characteristics = abilities_alloc_method_3(rnd);
     memcpy(&rolls->characteristics, characteristics, sizeof rolls->characteristics);
-    characteristics_free(characteristics);
+    abilities_free(characteristics);
 }
 
 
@@ -129,9 +129,9 @@ method_4(struct characteristic_rolls *rolls, struct rnd *rnd)
 static void
 simple_method(struct characteristic_rolls *rolls, struct rnd *rnd)
 {
-    struct characteristics *characteristics = characteristics_alloc_simple_method(rnd);
+    struct abilities *characteristics = abilities_alloc_simple_method(rnd);
     memcpy(&rolls->characteristics, characteristics, sizeof rolls->characteristics);
-    characteristics_free(characteristics);
+    abilities_free(characteristics);
 }
 
 
@@ -140,7 +140,7 @@ special_NPC(struct characteristic_rolls *rolls,
             enum ability_flag flags,
             struct rnd *rnd)
 {
-    struct characteristics *characteristics = characteristics_alloc_special_NPC(rnd, flags);
+    struct abilities *characteristics = abilities_alloc_special_NPC(rnd, flags);
     memcpy(&rolls->characteristics, characteristics, sizeof rolls->characteristics);
-    characteristics_free(characteristics);
+    abilities_free(characteristics);
 }

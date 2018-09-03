@@ -7,7 +7,7 @@
     cross-platform
 
 - dice: method to roll dice `n` times and take the highest / lowest and refactor
-    characteristics_alloc_method_3() to use it
+    abilities_alloc_method_3() to use it
 
 - dungeon: when digging chimney two levels down, leave intermediate tile solid
     if not currently excavated; make sure that if the tile is later excavated,

@@ -237,7 +237,7 @@ create_character_using_method_general_NPC(struct game *game)
 static struct result
 create_character_using_method_special_NPC(struct game *game)
 {
-    // TODO: choose profession and profession characteristics
+    // TODO: choose profession and profession abilities
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
                                                                     characteristic_generation_method_special_NPC,
                                                                     ability_flag_none);

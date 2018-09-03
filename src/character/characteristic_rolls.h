@@ -2,9 +2,9 @@
 #define FNF_CHARACTER_CHARACTERISTIC_ROLLS_H_INCLUDED
 
 
+#include <character/abilities.h>
 #include <character/ability_flag.h>
 #include <character/characteristic_generation_method.h>
-#include <character/characteristics.h>
 
 
 enum characteristic_rolls_type {
@@ -21,8 +21,8 @@ struct rnd;
 struct characteristic_rolls {
     enum characteristic_rolls_type type;
     union {
-        struct characteristics characteristics;
-        struct characteristics characteristics_sets[12];
+        struct abilities characteristics;
+        struct abilities characteristics_sets[12];
         int scores[6];
     };
 };

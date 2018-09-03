@@ -27,9 +27,9 @@ characteristic_generation_method_description(enum characteristic_generation_meth
         case characteristic_generation_method_simple:
             return "roll 3d6 once per characteristic";
         case characteristic_generation_method_1:
-            return "roll 4d6 six times and drop the lowest die from each roll; player assigns rolls to characteristics";
+            return "roll 4d6 six times and drop the lowest die from each roll; player assigns rolls to abilities";
         case characteristic_generation_method_2:
-            return "roll 3d6 twelve times and drop the lowest six rolls; player assigns rolls to characteristics";
+            return "roll 3d6 twelve times and drop the lowest six rolls; player assigns rolls to abilities";
         case characteristic_generation_method_3:
             return "roll 3d6 six times per characteristic and keep the highest roll";
         case characteristic_generation_method_4:

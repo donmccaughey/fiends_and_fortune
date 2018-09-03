@@ -39,6 +39,6 @@ characteristics_sets_sort(struct characteristics_sets *sets)
 {
     size_t size = sizeof sets->values[0];
     size_t count = sizeof sets->values / size;
-    compare_fn *compare = (compare_fn *)characteristics_compare;
+    compare_fn *compare = (compare_fn *)abilities_compare;
     qsort(&sets->values, count, size, compare);
 }

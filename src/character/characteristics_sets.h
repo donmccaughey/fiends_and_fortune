@@ -2,14 +2,14 @@
 #define FNF_CHARACTER_CHARACTERISTICS_SETS_H_INCLUDED
 
 
-#include <character/characteristics.h>
+#include <character/abilities.h>
 
 
 struct rnd;
 
 
 struct characteristics_sets {
-    struct characteristics values[12];
+    struct abilities values[12];
 };
 
 
