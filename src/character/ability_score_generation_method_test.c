@@ -43,10 +43,42 @@ ability_score_generation_method_from_string_test(void)
 }
 
 
+static void
+ability_score_generation_method_type_test(void)
+{
+    enum ability_score_generation_type type;
+
+    type = ability_score_generation_method_type(ability_score_generation_method_invalid);
+    assert(ability_score_generation_type_abilities == type);
+
+    type = ability_score_generation_method_type(ability_score_generation_method_simple);
+    assert(ability_score_generation_type_abilities == type);
+
+    type = ability_score_generation_method_type(ability_score_generation_method_1);
+    assert(ability_score_generation_type_scores == type);
+
+    type = ability_score_generation_method_type(ability_score_generation_method_2);
+    assert(ability_score_generation_type_scores == type);
+
+    type = ability_score_generation_method_type(ability_score_generation_method_3);
+    assert(ability_score_generation_type_abilities == type);
+
+    type = ability_score_generation_method_type(ability_score_generation_method_4);
+    assert(ability_score_generation_type_twelve_ability_sets == type);
+
+    type = ability_score_generation_method_type(ability_score_generation_method_general_NPC);
+    assert(ability_score_generation_type_abilities == type);
+
+    type = ability_score_generation_method_type(ability_score_generation_method_special_NPC);
+    assert(ability_score_generation_type_abilities == type);
+}
+
+
 void
 ability_score_generation_method_test(void)
 {
     ability_score_generation_method_description_test();
     ability_score_generation_method_name_test();
     ability_score_generation_method_from_string_test();
+    ability_score_generation_method_type_test();
 }
