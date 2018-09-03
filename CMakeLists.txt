@@ -185,18 +185,38 @@ target_link_libraries(treasure_tests treasure background base magic mechanics)
 add_test(treasure_tests treasure_tests)
 
 
-# ----- fnf library -----
 
-add_library(libfnf STATIC
-        src/game/game.c
-        src/game/selection.c
+# ----- tui library -----
 
+add_library(tui STATIC
         src/tui/app.c
         src/tui/menu_view.c
         src/tui/rect.c
         src/tui/screen_view.c
         src/tui/view.c
         src/tui/window.c
+        )
+target_include_directories(tui PUBLIC src)
+
+add_executable(tui_example
+        src/tui/tui_example.c
+        )
+target_include_directories(tui_example PUBLIC src)
+target_link_libraries(tui_example
+        tui
+        base
+        # external dependencies
+        form
+        menu
+        ncurses
+        )
+
+
+# ----- fnf library -----
+
+add_library(libfnf STATIC
+        src/game/game.c
+        src/game/selection.c
         )
 target_include_directories(libfnf PUBLIC src)
 set_target_properties(libfnf PROPERTIES OUTPUT_NAME "fnf")
@@ -210,7 +230,7 @@ configure_file(tests/precheck precheck)
 add_test(fnf_check fnf_check)
 
 
-# ----- run all tests -----
+# ----- build all targets and run all tests -----
 
 add_custom_target(check
         COMMAND ./precheck
@@ -232,4 +252,5 @@ add_dependencies(check
         magic_tests
         mechanics_tests
         treasure_tests
+        tui_example
         )

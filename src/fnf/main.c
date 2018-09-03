@@ -8,9 +8,6 @@
 
 #include "game/game.h"
 
-#include "tui/app.h"
-#include "tui/menu_view.h"
-
 
 static void
 check(FILE *out, uint32_t constant);
@@ -69,9 +66,6 @@ print_character_ability_scores(struct ability_scores *ability_scores,
 
 static void
 print_dungeon(struct dungeon *dungeon, FILE *out);
-
-static void
-run_tui(void);
 
 
 static void
@@ -312,8 +306,6 @@ main(int argc, char *argv[])
     
     if (action_game == options->action) {
         play_game(options->rnd);
-    } else if (action_tui == options->action) {
-        run_tui();
     } else {
         fprintf(out, "Fiends and Fortune\n");
         switch (options->action) {
@@ -511,25 +503,4 @@ print_dungeon(struct dungeon *dungeon, FILE *out)
         fprintf(out, "Level %i Areas of Interest:\n", level);
         dungeon_print_areas_for_level(dungeon, level, out);
     }
-}
-
-
-static void
-run_tui(void)
-{
-    struct app *app = app_alloc();
-    
-    struct view *menu_view = menu_view_alloc("Select an Item");
-    menu_view_add_item(menu_view, "Try Item One");
-    menu_view_add_item(menu_view, "Item Two Is Better");
-    menu_view_add_item(menu_view, "You'll Love Item Three");
-    
-    app_add_view(app, menu_view);
-    
-    struct result result = app_run(app);
-    if (!result_is_success(result)) {
-        result_print_error(result);
-    }
-    
-    app_free(app);
 }
