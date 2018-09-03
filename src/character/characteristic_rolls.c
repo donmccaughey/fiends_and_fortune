@@ -3,7 +3,7 @@
 #include <base/base.h>
 
 #include "abilities.h"
-#include "characteristic_scores.h"
+#include "ability_scores.h"
 #include "characteristics_sets.h"
 
 
@@ -93,18 +93,18 @@ general_NPC(struct characteristic_rolls *rolls, struct rnd *rnd)
 static void
 method_1(struct characteristic_rolls *rolls, struct rnd *rnd)
 {
-    struct characteristic_scores *scores = characteristic_scores_alloc_method_1(rnd);
+    struct ability_scores *scores = ability_scores_alloc_method_1(rnd);
     memcpy(rolls->scores, scores->values, sizeof rolls->scores);
-    characteristic_scores_free(scores);
+    ability_scores_free(scores);
 }
 
 
 static void
 method_2(struct characteristic_rolls *rolls, struct rnd *rnd)
 {
-    struct characteristic_scores *scores = characteristic_scores_alloc_method_2(rnd);
+    struct ability_scores *scores = ability_scores_alloc_method_2(rnd);
     memcpy(rolls->scores, scores->values, sizeof rolls->scores);
-    characteristic_scores_free(scores);
+    ability_scores_free(scores);
 }
 
 

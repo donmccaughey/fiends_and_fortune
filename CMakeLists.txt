@@ -76,20 +76,20 @@ add_test(base_tests base_tests)
 # ----- character library -----
 add_library(character STATIC
         src/character/abilities.c
+        src/character/ability_scores.c
         src/character/character.c
         src/character/characteristic_generation_method.c
         src/character/characteristic_rolls.c
-        src/character/characteristic_scores.c
         src/character/characteristics_sets.c
         )
 target_include_directories(character PUBLIC src)
 
 add_executable(character_tests
         src/character/abilities_test.c
+        src/character/ability_scores_test.c
         src/character/character_tests.c
         src/character/characteristic_generation_method_test.c
         src/character/characteristic_rolls_test.c
-        src/character/characteristic_scores_test.c
         src/character/characteristics_sets_test.c
         )
 target_include_directories(character_tests PUBLIC src)
