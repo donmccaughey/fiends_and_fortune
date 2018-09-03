@@ -4,7 +4,7 @@
 
 #include <character/abilities.h>
 #include <character/ability_flag.h>
-#include <character/characteristic_generation_method.h>
+#include <character/ability_score_generation_method.h>
 
 
 enum characteristic_rolls_type {
@@ -30,7 +30,7 @@ struct characteristic_rolls {
 
 struct characteristic_rolls *
 characteristic_rolls_alloc(struct rnd *rnd,
-                           enum characteristic_generation_method method,
+                           enum ability_score_generation_method method,
                            enum ability_flag flags);
 
 void

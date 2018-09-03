@@ -96,8 +96,9 @@ get_action_modifiers(struct options *options,
     
     switch (options->action) {
         case action_character:
-            options->character_method = characteristic_generation_method_from_string(modifier_string);
-            if (characteristic_generation_method_invalid == options->character_method) {
+            options->character_method = ability_score_generation_method_from_string(
+                    modifier_string);
+            if (ability_score_generation_method_invalid == options->character_method) {
                 options->error = true;
                 fprintf(stderr, "%s: invalid character method - %s\n",
                         options->command_name, modifier_string);
@@ -258,7 +259,7 @@ set_action_modifier_defaults(struct options *options, char const *action_string)
 {
     switch (options->action) {
         case action_character:
-            options->character_method = characteristic_generation_method_simple;
+            options->character_method = ability_score_generation_method_simple;
             break;
         case action_check:
             options->check_constant = 0;

@@ -30,13 +30,13 @@
 
 static void
 draw_character_sheet(struct game *game,
-                     enum characteristic_generation_method method,
+                     enum ability_score_generation_method method,
                      struct characteristic_rolls *rolls)
 {
     int x = 2;
     int y = 1;
 
-    char const *method_name = characteristic_generation_method_name(method);
+    char const *method_name = ability_score_generation_method_name(method);
     mvwprintw(stdscr, y + 0, x, "(%s)", method_name);
 
     switch (rolls->type) {
@@ -151,9 +151,9 @@ static struct result
 create_character_using_simple_method(struct game *game)
 {
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
-                                                                    characteristic_generation_method_simple,
+                                                                    ability_score_generation_method_simple,
                                                                     ability_flag_none);
-    draw_character_sheet(game, characteristic_generation_method_simple, rolls);
+    draw_character_sheet(game, ability_score_generation_method_simple, rolls);
     characteristic_rolls_free(rolls);
     getch();
     
@@ -165,9 +165,9 @@ static struct result
 create_character_using_method_1(struct game *game)
 {
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
-                                                                    characteristic_generation_method_1,
+                                                                    ability_score_generation_method_1,
                                                                     ability_flag_none);
-    draw_character_sheet(game, characteristic_generation_method_1, rolls);
+    draw_character_sheet(game, ability_score_generation_method_1, rolls);
     // TODO: player assigns rolls
     characteristic_rolls_free(rolls);
     getch();
@@ -180,9 +180,9 @@ static struct result
 create_character_using_method_2(struct game *game)
 {
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
-                                                                    characteristic_generation_method_2,
+                                                                    ability_score_generation_method_2,
                                                                     ability_flag_none);
-    draw_character_sheet(game, characteristic_generation_method_2, rolls);
+    draw_character_sheet(game, ability_score_generation_method_2, rolls);
     // TODO: player assigns rolls
     characteristic_rolls_free(rolls);
     getch();
@@ -195,9 +195,9 @@ static struct result
 create_character_using_method_3(struct game *game)
 {
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
-                                                                    characteristic_generation_method_3,
+                                                                    ability_score_generation_method_3,
                                                                     ability_flag_none);
-    draw_character_sheet(game, characteristic_generation_method_3, rolls);
+    draw_character_sheet(game, ability_score_generation_method_3, rolls);
     characteristic_rolls_free(rolls);
     getch();
     
@@ -209,10 +209,10 @@ static struct result
 create_character_using_method_4(struct game *game)
 {
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
-                                                                    characteristic_generation_method_4,
+                                                                    ability_score_generation_method_4,
                                                                     ability_flag_none);
     // TODO: player chooses from 12 characters
-    draw_character_sheet(game, characteristic_generation_method_4, rolls);
+    draw_character_sheet(game, ability_score_generation_method_4, rolls);
     characteristic_rolls_free(rolls);
     getch();
     
@@ -224,9 +224,9 @@ static struct result
 create_character_using_method_general_NPC(struct game *game)
 {
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
-                                                                    characteristic_generation_method_general_NPC,
+                                                                    ability_score_generation_method_general_NPC,
                                                                     ability_flag_none);
-    draw_character_sheet(game, characteristic_generation_method_general_NPC, rolls);
+    draw_character_sheet(game, ability_score_generation_method_general_NPC, rolls);
     characteristic_rolls_free(rolls);
     getch();
     
@@ -239,9 +239,9 @@ create_character_using_method_special_NPC(struct game *game)
 {
     // TODO: choose profession and profession abilities
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
-                                                                    characteristic_generation_method_special_NPC,
+                                                                    ability_score_generation_method_special_NPC,
                                                                     ability_flag_none);
-    draw_character_sheet(game, characteristic_generation_method_special_NPC, rolls);
+    draw_character_sheet(game, ability_score_generation_method_special_NPC, rolls);
     characteristic_rolls_free(rolls);
     getch();
     

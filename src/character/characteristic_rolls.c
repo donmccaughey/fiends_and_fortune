@@ -33,36 +33,36 @@ special_NPC(struct characteristic_rolls *rolls,
 
 struct characteristic_rolls *
 characteristic_rolls_alloc(struct rnd *rnd,
-                           enum characteristic_generation_method method,
+                           enum ability_score_generation_method method,
                            enum ability_flag flags)
 {
     struct characteristic_rolls *rolls = calloc_or_die(1, sizeof(struct characteristic_rolls));
     switch (method) {
-        case characteristic_generation_method_simple:
+        case ability_score_generation_method_simple:
             rolls->type = characteristic_rolls_type_six_characteristics;
             simple_method(rolls, rnd);
             break;
-        case characteristic_generation_method_1:
+        case ability_score_generation_method_1:
             rolls->type = characteristic_rolls_type_six_scores;
             method_1(rolls, rnd);
             break;
-        case characteristic_generation_method_2:
+        case ability_score_generation_method_2:
             rolls->type = characteristic_rolls_type_six_scores;
             method_2(rolls, rnd);
             break;
-        case characteristic_generation_method_3:
+        case ability_score_generation_method_3:
             rolls->type = characteristic_rolls_type_six_characteristics;
             method_3(rolls, rnd);
             break;
-        case characteristic_generation_method_4:
+        case ability_score_generation_method_4:
             rolls->type = characteristic_rolls_type_twelve_sets_of_six_characteristics;
             method_4(rolls, rnd);
             break;
-        case characteristic_generation_method_general_NPC:
+        case ability_score_generation_method_general_NPC:
             rolls->type = characteristic_rolls_type_six_characteristics;
             general_NPC(rolls, rnd);
             break;
-        case characteristic_generation_method_special_NPC:
+        case ability_score_generation_method_special_NPC:
             rolls->type = characteristic_rolls_type_six_characteristics;
             special_NPC(rolls, flags, rnd);
             break;

@@ -12,7 +12,7 @@ characteristic_rolls_alloc_invalid_method_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(rnd,
-                                                                    characteristic_generation_method_invalid,
+                                                                    ability_score_generation_method_invalid,
                                                                     ability_flag_none);
 
     assert(characteristic_rolls_type_none == rolls->type);
@@ -33,7 +33,7 @@ characteristic_rolls_alloc_simple_method_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(rnd,
-                                                                    characteristic_generation_method_simple,
+                                                                    ability_score_generation_method_simple,
                                                                     ability_flag_none);
 
     assert(characteristic_rolls_type_six_characteristics == rolls->type);
@@ -54,7 +54,7 @@ characteristic_rolls_alloc_method_1_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(rnd,
-                                                                    characteristic_generation_method_1,
+                                                                    ability_score_generation_method_1,
                                                                     ability_flag_none);
 
     assert(characteristic_rolls_type_six_scores == rolls->type);
@@ -75,7 +75,7 @@ characteristic_rolls_alloc_method_2_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(rnd,
-                                                                    characteristic_generation_method_2,
+                                                                    ability_score_generation_method_2,
                                                                     ability_flag_none);
 
     assert(characteristic_rolls_type_six_scores == rolls->type);
@@ -96,7 +96,7 @@ characteristic_rolls_alloc_method_3_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(rnd,
-                                                                    characteristic_generation_method_3,
+                                                                    ability_score_generation_method_3,
                                                                     ability_flag_none);
 
     assert(characteristic_rolls_type_six_characteristics == rolls->type);
@@ -117,7 +117,7 @@ characteristic_rolls_alloc_method_4_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(rnd,
-                                                                    characteristic_generation_method_4,
+                                                                    ability_score_generation_method_4,
                                                                     ability_flag_none);
 
     assert(characteristic_rolls_type_twelve_sets_of_six_characteristics == rolls->type);
@@ -215,7 +215,7 @@ characteristic_rolls_alloc_general_NPC_method_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(rnd,
-                                                                    characteristic_generation_method_general_NPC,
+                                                                    ability_score_generation_method_general_NPC,
                                                                     ability_flag_none);
 
     assert(characteristic_rolls_type_six_characteristics == rolls->type);
@@ -236,7 +236,7 @@ characteristic_rolls_alloc_special_NPC_method_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(rnd,
-                                                                    characteristic_generation_method_special_NPC,
+                                                                    ability_score_generation_method_special_NPC,
                                                                     ability_flag_none);
 
     assert(characteristic_rolls_type_six_characteristics == rolls->type);
@@ -257,7 +257,7 @@ characteristic_rolls_alloc_special_NPC_method_strength_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(rnd,
-                                                                    characteristic_generation_method_special_NPC,
+                                                                    ability_score_generation_method_special_NPC,
                                                                     ability_flag_strength);
 
     assert(characteristic_rolls_type_six_characteristics == rolls->type);
@@ -278,7 +278,7 @@ characteristic_rolls_alloc_special_NPC_method_dexterity_constitution_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(0);
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(rnd,
-                                                                    characteristic_generation_method_special_NPC,
+                                                                    ability_score_generation_method_special_NPC,
                                                                     ability_flag_dexterity | ability_flag_constitution);
 
     assert(characteristic_rolls_type_six_characteristics == rolls->type);

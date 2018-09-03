@@ -27,7 +27,7 @@ enumerate_treasure_items(struct treasure *treasure, FILE *out);
 static void
 generate_character(struct rnd *rnd,
                    FILE *out,
-                   enum characteristic_generation_method method);
+                   enum ability_score_generation_method method);
 
 static void
 generate_each_treasure(struct rnd *rnd, FILE *out);
@@ -73,13 +73,13 @@ check(FILE *out, uint32_t constant)
     generate_each_treasure(fake_rnd, out);
     generate_sample_dungeon(fake_rnd, out);
     generate_random_dungeon(fake_rnd, dungeon_options, out);
-    generate_character(fake_rnd, out, characteristic_generation_method_simple);
-    generate_character(fake_rnd, out, characteristic_generation_method_1);
-    generate_character(fake_rnd, out, characteristic_generation_method_2);
-    generate_character(fake_rnd, out, characteristic_generation_method_3);
-    generate_character(fake_rnd, out, characteristic_generation_method_4);
-    generate_character(fake_rnd, out, characteristic_generation_method_general_NPC);
-    generate_character(fake_rnd, out, characteristic_generation_method_special_NPC);
+    generate_character(fake_rnd, out, ability_score_generation_method_simple);
+    generate_character(fake_rnd, out, ability_score_generation_method_1);
+    generate_character(fake_rnd, out, ability_score_generation_method_2);
+    generate_character(fake_rnd, out, ability_score_generation_method_3);
+    generate_character(fake_rnd, out, ability_score_generation_method_4);
+    generate_character(fake_rnd, out, ability_score_generation_method_general_NPC);
+    generate_character(fake_rnd, out, ability_score_generation_method_special_NPC);
     
     dungeon_options_free(dungeon_options);
     rnd_free(fake_rnd);
@@ -133,10 +133,11 @@ enumerate_treasure_items(struct treasure *treasure, FILE *out)
 static void
 generate_character(struct rnd *rnd,
                    FILE *out,
-                   enum characteristic_generation_method method)
+                   enum ability_score_generation_method method)
 {
-    char const *method_name = characteristic_generation_method_name(method);
-    const char *method_description = characteristic_generation_method_description(method);
+    char const *method_name = ability_score_generation_method_name(method);
+    const char *method_description = ability_score_generation_method_description(
+            method);
 
     enum ability_flag special_abilities = ability_flag_strength;
     struct characteristic_rolls *rolls = characteristic_rolls_alloc(rnd,

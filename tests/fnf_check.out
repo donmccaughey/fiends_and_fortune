@@ -433,7 +433,7 @@ Level 1 Areas of Interest:
 
   Chambers and Rooms:
 Character (simple): -------------------------
-(roll 3d6 once per characteristic)
+(roll 3d6 once per ability)
   Strength:      3
   Intelligence:  3
   Wisdom:        3
@@ -457,7 +457,7 @@ Character (method2): -------------------------
    5) 3
    6) 3
 Character (method3): -------------------------
-(roll 3d6 six times per characteristic and keep the highest roll)
+(roll 3d6 six times per ability and keep the highest roll)
   Strength:      3
   Intelligence:  3
   Wisdom:        3
@@ -465,7 +465,7 @@ Character (method3): -------------------------
   Constitution:  3
   Charisma:      3
 Possible Characters (method4): -------------------------
-(generate 12 characters using the simple method; player chooses one of the twelve)
+(generate 12 ability sets using the simple method; player chooses one of the twelve)
                   1    2    3    4    5    6    7    8    9   10   11   12
                  --   --   --   --   --   --   --   --   --   --   --   --
   Strength:       3    3    3    3    3    3    3    3    3    3    3    3
@@ -475,7 +475,7 @@ Possible Characters (method4): -------------------------
   Constitution:   3    3    3    3    3    3    3    3    3    3    3    3
   Charisma:       3    3    3    3    3    3    3    3    3    3    3    3
 Character (generalnpc): -------------------------
-(roll 3d6 once per characteristic; change any die of 1 to 3 or 6 to 4)
+(roll 3d6 once per ability; change any die of 1 to 3 or 6 to 4)
   Strength:      9
   Intelligence:  9
   Wisdom:        9
@@ -483,7 +483,7 @@ Character (generalnpc): -------------------------
   Constitution:  9
   Charisma:      9
 Character (specialnpc): -------------------------
-(roll 3d6 once per normal characteristic; for profession characteristic(s), add 1 to each die less than 6)
+(roll 3d6 once per normal ability; for profession abilities, add 1 to each die less than 6)
   Strength:      6
   Intelligence:  3
   Wisdom:        3

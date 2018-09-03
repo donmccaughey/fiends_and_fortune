@@ -17,7 +17,7 @@ struct rnd;
 struct options {
     enum action action;
     union {
-        enum characteristic_generation_method character_method;
+        enum ability_score_generation_method character_method;
         uint32_t check_constant;
         bool dungeon_type_small;
         int magic_count;
