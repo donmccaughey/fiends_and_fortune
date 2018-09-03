@@ -29,134 +29,149 @@
 
 
 static void
-draw_character_sheet(struct game *game,
-                     enum ability_score_generation_method method,
-                     struct characteristic_rolls *rolls)
+draw_character_abilities(struct game *game,
+                         struct abilities *abilities,
+                         char const *method_name)
 {
     int x = 2;
     int y = 1;
 
-    char const *method_name = ability_score_generation_method_name(method);
     mvwprintw(stdscr, y + 0, x, "(%s)", method_name);
 
-    switch (rolls->type) {
-        case characteristic_rolls_type_none:
-            break;
-        case characteristic_rolls_type_six_characteristics:
-            mvwprintw(stdscr, y + 2, x, "Strength:     %2i\n", rolls->characteristics.strength);
-            mvwprintw(stdscr, y + 3, x, "Intelligence: %2i\n", rolls->characteristics.intelligence);
-            mvwprintw(stdscr, y + 4, x, "Wisdom:       %2i\n", rolls->characteristics.wisdom);
-            mvwprintw(stdscr, y + 5, x, "Dexterity:    %2i\n", rolls->characteristics.dexterity);
-            mvwprintw(stdscr, y + 6, x, "Constitution: %2i\n", rolls->characteristics.constitution);
-            mvwprintw(stdscr, y + 7, x, "Charisma:     %2i\n", rolls->characteristics.charisma);
-            break;
-        case characteristic_rolls_type_six_scores:
-            mvwprintw(stdscr, y + 2, x, "%2i, %2i, %2i, %2i, %2i, %2i\n",
-                      rolls->scores[0], rolls->scores[1], rolls->scores[2],
-                      rolls->scores[3], rolls->scores[4], rolls->scores[5]);
-            break;
-        case characteristic_rolls_type_twelve_sets_of_six_characteristics:
-            mvwprintw(stdscr, y + 2, x, "Strength:     %2i\n", rolls->characteristics_sets[0].strength);
-            mvwprintw(stdscr, y + 3, x, "Intelligence: %2i\n", rolls->characteristics_sets[0].intelligence);
-            mvwprintw(stdscr, y + 4, x, "Wisdom:       %2i\n", rolls->characteristics_sets[0].wisdom);
-            mvwprintw(stdscr, y + 5, x, "Dexterity:    %2i\n", rolls->characteristics_sets[0].dexterity);
-            mvwprintw(stdscr, y + 6, x, "Constitution: %2i\n", rolls->characteristics_sets[0].constitution);
-            mvwprintw(stdscr, y + 7, x, "Charisma:     %2i\n", rolls->characteristics_sets[0].charisma);
-
-            mvwprintw(stdscr, y + 2, x + 20, "Strength:     %2i\n", rolls->characteristics_sets[1].strength);
-            mvwprintw(stdscr, y + 3, x + 20, "Intelligence: %2i\n", rolls->characteristics_sets[1].intelligence);
-            mvwprintw(stdscr, y + 4, x + 20, "Wisdom:       %2i\n", rolls->characteristics_sets[1].wisdom);
-            mvwprintw(stdscr, y + 5, x + 20, "Dexterity:    %2i\n", rolls->characteristics_sets[1].dexterity);
-            mvwprintw(stdscr, y + 6, x + 20, "Constitution: %2i\n", rolls->characteristics_sets[1].constitution);
-            mvwprintw(stdscr, y + 7, x + 20, "Charisma:     %2i\n", rolls->characteristics_sets[1].charisma);
-
-            mvwprintw(stdscr, y + 2, x + 40, "Strength:     %2i\n", rolls->characteristics_sets[2].strength);
-            mvwprintw(stdscr, y + 3, x + 40, "Intelligence: %2i\n", rolls->characteristics_sets[2].intelligence);
-            mvwprintw(stdscr, y + 4, x + 40, "Wisdom:       %2i\n", rolls->characteristics_sets[2].wisdom);
-            mvwprintw(stdscr, y + 5, x + 40, "Dexterity:    %2i\n", rolls->characteristics_sets[2].dexterity);
-            mvwprintw(stdscr, y + 6, x + 40, "Constitution: %2i\n", rolls->characteristics_sets[2].constitution);
-            mvwprintw(stdscr, y + 7, x + 40, "Charisma:     %2i\n", rolls->characteristics_sets[2].charisma);
-
-            mvwprintw(stdscr, y + 2, x + 60, "Strength:     %2i\n", rolls->characteristics_sets[3].strength);
-            mvwprintw(stdscr, y + 3, x + 60, "Intelligence: %2i\n", rolls->characteristics_sets[3].intelligence);
-            mvwprintw(stdscr, y + 4, x + 60, "Wisdom:       %2i\n", rolls->characteristics_sets[3].wisdom);
-            mvwprintw(stdscr, y + 5, x + 60, "Dexterity:    %2i\n", rolls->characteristics_sets[3].dexterity);
-            mvwprintw(stdscr, y + 6, x + 60, "Constitution: %2i\n", rolls->characteristics_sets[3].constitution);
-            mvwprintw(stdscr, y + 7, x + 60, "Charisma:     %2i\n", rolls->characteristics_sets[3].charisma);
+    mvwprintw(stdscr, y + 2, x, "Strength:     %2i\n", abilities->strength);
+    mvwprintw(stdscr, y + 3, x, "Intelligence: %2i\n", abilities->intelligence);
+    mvwprintw(stdscr, y + 4, x, "Wisdom:       %2i\n", abilities->wisdom);
+    mvwprintw(stdscr, y + 5, x, "Dexterity:    %2i\n", abilities->dexterity);
+    mvwprintw(stdscr, y + 6, x, "Constitution: %2i\n", abilities->constitution);
+    mvwprintw(stdscr, y + 7, x, "Charisma:     %2i\n", abilities->charisma);
+}
 
 
-            mvwprintw(stdscr, y +  9, x, "Strength:     %2i\n", rolls->characteristics_sets[4].strength);
-            mvwprintw(stdscr, y + 10, x, "Intelligence: %2i\n", rolls->characteristics_sets[4].intelligence);
-            mvwprintw(stdscr, y + 11, x, "Wisdom:       %2i\n", rolls->characteristics_sets[4].wisdom);
-            mvwprintw(stdscr, y + 12, x, "Dexterity:    %2i\n", rolls->characteristics_sets[4].dexterity);
-            mvwprintw(stdscr, y + 13, x, "Constitution: %2i\n", rolls->characteristics_sets[4].constitution);
-            mvwprintw(stdscr, y + 14, x, "Charisma:     %2i\n", rolls->characteristics_sets[4].charisma);
+static void
+draw_character_ability_scores(struct game *game,
+                              struct ability_scores *ability_scores,
+                              char const *method_name)
+{
+    int x = 2;
+    int y = 1;
 
-            mvwprintw(stdscr, y +  9, x + 20, "Strength:     %2i\n", rolls->characteristics_sets[5].strength);
-            mvwprintw(stdscr, y + 10, x + 20, "Intelligence: %2i\n", rolls->characteristics_sets[5].intelligence);
-            mvwprintw(stdscr, y + 11, x + 20, "Wisdom:       %2i\n", rolls->characteristics_sets[5].wisdom);
-            mvwprintw(stdscr, y + 12, x + 20, "Dexterity:    %2i\n", rolls->characteristics_sets[5].dexterity);
-            mvwprintw(stdscr, y + 13, x + 20, "Constitution: %2i\n", rolls->characteristics_sets[5].constitution);
-            mvwprintw(stdscr, y + 14, x + 20, "Charisma:     %2i\n", rolls->characteristics_sets[5].charisma);
+    mvwprintw(stdscr, y + 0, x, "(%s)", method_name);
 
-            mvwprintw(stdscr, y +  9, x + 40, "Strength:     %2i\n", rolls->characteristics_sets[6].strength);
-            mvwprintw(stdscr, y + 10, x + 40, "Intelligence: %2i\n", rolls->characteristics_sets[6].intelligence);
-            mvwprintw(stdscr, y + 11, x + 40, "Wisdom:       %2i\n", rolls->characteristics_sets[6].wisdom);
-            mvwprintw(stdscr, y + 12, x + 40, "Dexterity:    %2i\n", rolls->characteristics_sets[6].dexterity);
-            mvwprintw(stdscr, y + 13, x + 40, "Constitution: %2i\n", rolls->characteristics_sets[6].constitution);
-            mvwprintw(stdscr, y + 14, x + 40, "Charisma:     %2i\n", rolls->characteristics_sets[6].charisma);
-
-            mvwprintw(stdscr, y +  9, x + 60, "Strength:     %2i\n", rolls->characteristics_sets[7].strength);
-            mvwprintw(stdscr, y + 10, x + 60, "Intelligence: %2i\n", rolls->characteristics_sets[7].intelligence);
-            mvwprintw(stdscr, y + 11, x + 60, "Wisdom:       %2i\n", rolls->characteristics_sets[7].wisdom);
-            mvwprintw(stdscr, y + 12, x + 60, "Dexterity:    %2i\n", rolls->characteristics_sets[7].dexterity);
-            mvwprintw(stdscr, y + 13, x + 60, "Constitution: %2i\n", rolls->characteristics_sets[7].constitution);
-            mvwprintw(stdscr, y + 14, x + 60, "Charisma:     %2i\n", rolls->characteristics_sets[7].charisma);
+    mvwprintw(stdscr, y + 2, x, "%2i, %2i, %2i, %2i, %2i, %2i\n",
+              ability_scores->values[0], ability_scores->values[1],
+              ability_scores->values[2], ability_scores->values[3],
+              ability_scores->values[4], ability_scores->values[5]);
+}
 
 
-            mvwprintw(stdscr, y + 16, x, "Strength:     %2i\n", rolls->characteristics_sets[8].strength);
-            mvwprintw(stdscr, y + 17, x, "Intelligence: %2i\n", rolls->characteristics_sets[8].intelligence);
-            mvwprintw(stdscr, y + 18, x, "Wisdom:       %2i\n", rolls->characteristics_sets[8].wisdom);
-            mvwprintw(stdscr, y + 19, x, "Dexterity:    %2i\n", rolls->characteristics_sets[8].dexterity);
-            mvwprintw(stdscr, y + 20, x, "Constitution: %2i\n", rolls->characteristics_sets[8].constitution);
-            mvwprintw(stdscr, y + 21, x, "Charisma:     %2i\n", rolls->characteristics_sets[8].charisma);
+static void
+draw_character_ability_sets(struct game *game,
+                            struct ability_sets *ability_sets,
+                            char const *method_name)
+{
+    int x = 2;
+    int y = 1;
 
-            mvwprintw(stdscr, y + 16, x + 20, "Strength:     %2i\n", rolls->characteristics_sets[9].strength);
-            mvwprintw(stdscr, y + 17, x + 20, "Intelligence: %2i\n", rolls->characteristics_sets[9].intelligence);
-            mvwprintw(stdscr, y + 18, x + 20, "Wisdom:       %2i\n", rolls->characteristics_sets[9].wisdom);
-            mvwprintw(stdscr, y + 19, x + 20, "Dexterity:    %2i\n", rolls->characteristics_sets[9].dexterity);
-            mvwprintw(stdscr, y + 20, x + 20, "Constitution: %2i\n", rolls->characteristics_sets[9].constitution);
-            mvwprintw(stdscr, y + 21, x + 20, "Charisma:     %2i\n", rolls->characteristics_sets[9].charisma);
+    mvwprintw(stdscr, y + 0, x, "(%s)", method_name);
 
-            mvwprintw(stdscr, y + 16, x + 40, "Strength:     %2i\n", rolls->characteristics_sets[10].strength);
-            mvwprintw(stdscr, y + 17, x + 40, "Intelligence: %2i\n", rolls->characteristics_sets[10].intelligence);
-            mvwprintw(stdscr, y + 18, x + 40, "Wisdom:       %2i\n", rolls->characteristics_sets[10].wisdom);
-            mvwprintw(stdscr, y + 19, x + 40, "Dexterity:    %2i\n", rolls->characteristics_sets[10].dexterity);
-            mvwprintw(stdscr, y + 20, x + 40, "Constitution: %2i\n", rolls->characteristics_sets[10].constitution);
-            mvwprintw(stdscr, y + 21, x + 40, "Charisma:     %2i\n", rolls->characteristics_sets[10].charisma);
+    mvwprintw(stdscr, y + 2, x, "Strength:     %2i\n", ability_sets->values[0].strength);
+    mvwprintw(stdscr, y + 3, x, "Intelligence: %2i\n", ability_sets->values[0].intelligence);
+    mvwprintw(stdscr, y + 4, x, "Wisdom:       %2i\n", ability_sets->values[0].wisdom);
+    mvwprintw(stdscr, y + 5, x, "Dexterity:    %2i\n", ability_sets->values[0].dexterity);
+    mvwprintw(stdscr, y + 6, x, "Constitution: %2i\n", ability_sets->values[0].constitution);
+    mvwprintw(stdscr, y + 7, x, "Charisma:     %2i\n", ability_sets->values[0].charisma);
 
-            mvwprintw(stdscr, y + 16, x + 60, "Strength:     %2i\n", rolls->characteristics_sets[11].strength);
-            mvwprintw(stdscr, y + 17, x + 60, "Intelligence: %2i\n", rolls->characteristics_sets[11].intelligence);
-            mvwprintw(stdscr, y + 18, x + 60, "Wisdom:       %2i\n", rolls->characteristics_sets[11].wisdom);
-            mvwprintw(stdscr, y + 19, x + 60, "Dexterity:    %2i\n", rolls->characteristics_sets[11].dexterity);
-            mvwprintw(stdscr, y + 20, x + 60, "Constitution: %2i\n", rolls->characteristics_sets[11].constitution);
-            mvwprintw(stdscr, y + 21, x + 60, "Charisma:     %2i\n", rolls->characteristics_sets[11].charisma);
-            break;
-    }
+    mvwprintw(stdscr, y + 2, x + 20, "Strength:     %2i\n", ability_sets->values[1].strength);
+    mvwprintw(stdscr, y + 3, x + 20, "Intelligence: %2i\n", ability_sets->values[1].intelligence);
+    mvwprintw(stdscr, y + 4, x + 20, "Wisdom:       %2i\n", ability_sets->values[1].wisdom);
+    mvwprintw(stdscr, y + 5, x + 20, "Dexterity:    %2i\n", ability_sets->values[1].dexterity);
+    mvwprintw(stdscr, y + 6, x + 20, "Constitution: %2i\n", ability_sets->values[1].constitution);
+    mvwprintw(stdscr, y + 7, x + 20, "Charisma:     %2i\n", ability_sets->values[1].charisma);
 
+    mvwprintw(stdscr, y + 2, x + 40, "Strength:     %2i\n", ability_sets->values[2].strength);
+    mvwprintw(stdscr, y + 3, x + 40, "Intelligence: %2i\n", ability_sets->values[2].intelligence);
+    mvwprintw(stdscr, y + 4, x + 40, "Wisdom:       %2i\n", ability_sets->values[2].wisdom);
+    mvwprintw(stdscr, y + 5, x + 40, "Dexterity:    %2i\n", ability_sets->values[2].dexterity);
+    mvwprintw(stdscr, y + 6, x + 40, "Constitution: %2i\n", ability_sets->values[2].constitution);
+    mvwprintw(stdscr, y + 7, x + 40, "Charisma:     %2i\n", ability_sets->values[2].charisma);
+
+    mvwprintw(stdscr, y + 2, x + 60, "Strength:     %2i\n", ability_sets->values[3].strength);
+    mvwprintw(stdscr, y + 3, x + 60, "Intelligence: %2i\n", ability_sets->values[3].intelligence);
+    mvwprintw(stdscr, y + 4, x + 60, "Wisdom:       %2i\n", ability_sets->values[3].wisdom);
+    mvwprintw(stdscr, y + 5, x + 60, "Dexterity:    %2i\n", ability_sets->values[3].dexterity);
+    mvwprintw(stdscr, y + 6, x + 60, "Constitution: %2i\n", ability_sets->values[3].constitution);
+    mvwprintw(stdscr, y + 7, x + 60, "Charisma:     %2i\n", ability_sets->values[3].charisma);
+
+
+    mvwprintw(stdscr, y +  9, x, "Strength:     %2i\n", ability_sets->values[4].strength);
+    mvwprintw(stdscr, y + 10, x, "Intelligence: %2i\n", ability_sets->values[4].intelligence);
+    mvwprintw(stdscr, y + 11, x, "Wisdom:       %2i\n", ability_sets->values[4].wisdom);
+    mvwprintw(stdscr, y + 12, x, "Dexterity:    %2i\n", ability_sets->values[4].dexterity);
+    mvwprintw(stdscr, y + 13, x, "Constitution: %2i\n", ability_sets->values[4].constitution);
+    mvwprintw(stdscr, y + 14, x, "Charisma:     %2i\n", ability_sets->values[4].charisma);
+
+    mvwprintw(stdscr, y +  9, x + 20, "Strength:     %2i\n", ability_sets->values[5].strength);
+    mvwprintw(stdscr, y + 10, x + 20, "Intelligence: %2i\n", ability_sets->values[5].intelligence);
+    mvwprintw(stdscr, y + 11, x + 20, "Wisdom:       %2i\n", ability_sets->values[5].wisdom);
+    mvwprintw(stdscr, y + 12, x + 20, "Dexterity:    %2i\n", ability_sets->values[5].dexterity);
+    mvwprintw(stdscr, y + 13, x + 20, "Constitution: %2i\n", ability_sets->values[5].constitution);
+    mvwprintw(stdscr, y + 14, x + 20, "Charisma:     %2i\n", ability_sets->values[5].charisma);
+
+    mvwprintw(stdscr, y +  9, x + 40, "Strength:     %2i\n", ability_sets->values[6].strength);
+    mvwprintw(stdscr, y + 10, x + 40, "Intelligence: %2i\n", ability_sets->values[6].intelligence);
+    mvwprintw(stdscr, y + 11, x + 40, "Wisdom:       %2i\n", ability_sets->values[6].wisdom);
+    mvwprintw(stdscr, y + 12, x + 40, "Dexterity:    %2i\n", ability_sets->values[6].dexterity);
+    mvwprintw(stdscr, y + 13, x + 40, "Constitution: %2i\n", ability_sets->values[6].constitution);
+    mvwprintw(stdscr, y + 14, x + 40, "Charisma:     %2i\n", ability_sets->values[6].charisma);
+
+    mvwprintw(stdscr, y +  9, x + 60, "Strength:     %2i\n", ability_sets->values[7].strength);
+    mvwprintw(stdscr, y + 10, x + 60, "Intelligence: %2i\n", ability_sets->values[7].intelligence);
+    mvwprintw(stdscr, y + 11, x + 60, "Wisdom:       %2i\n", ability_sets->values[7].wisdom);
+    mvwprintw(stdscr, y + 12, x + 60, "Dexterity:    %2i\n", ability_sets->values[7].dexterity);
+    mvwprintw(stdscr, y + 13, x + 60, "Constitution: %2i\n", ability_sets->values[7].constitution);
+    mvwprintw(stdscr, y + 14, x + 60, "Charisma:     %2i\n", ability_sets->values[7].charisma);
+
+
+    mvwprintw(stdscr, y + 16, x, "Strength:     %2i\n", ability_sets->values[8].strength);
+    mvwprintw(stdscr, y + 17, x, "Intelligence: %2i\n", ability_sets->values[8].intelligence);
+    mvwprintw(stdscr, y + 18, x, "Wisdom:       %2i\n", ability_sets->values[8].wisdom);
+    mvwprintw(stdscr, y + 19, x, "Dexterity:    %2i\n", ability_sets->values[8].dexterity);
+    mvwprintw(stdscr, y + 20, x, "Constitution: %2i\n", ability_sets->values[8].constitution);
+    mvwprintw(stdscr, y + 21, x, "Charisma:     %2i\n", ability_sets->values[8].charisma);
+
+    mvwprintw(stdscr, y + 16, x + 20, "Strength:     %2i\n", ability_sets->values[9].strength);
+    mvwprintw(stdscr, y + 17, x + 20, "Intelligence: %2i\n", ability_sets->values[9].intelligence);
+    mvwprintw(stdscr, y + 18, x + 20, "Wisdom:       %2i\n", ability_sets->values[9].wisdom);
+    mvwprintw(stdscr, y + 19, x + 20, "Dexterity:    %2i\n", ability_sets->values[9].dexterity);
+    mvwprintw(stdscr, y + 20, x + 20, "Constitution: %2i\n", ability_sets->values[9].constitution);
+    mvwprintw(stdscr, y + 21, x + 20, "Charisma:     %2i\n", ability_sets->values[9].charisma);
+
+    mvwprintw(stdscr, y + 16, x + 40, "Strength:     %2i\n", ability_sets->values[10].strength);
+    mvwprintw(stdscr, y + 17, x + 40, "Intelligence: %2i\n", ability_sets->values[10].intelligence);
+    mvwprintw(stdscr, y + 18, x + 40, "Wisdom:       %2i\n", ability_sets->values[10].wisdom);
+    mvwprintw(stdscr, y + 19, x + 40, "Dexterity:    %2i\n", ability_sets->values[10].dexterity);
+    mvwprintw(stdscr, y + 20, x + 40, "Constitution: %2i\n", ability_sets->values[10].constitution);
+    mvwprintw(stdscr, y + 21, x + 40, "Charisma:     %2i\n", ability_sets->values[10].charisma);
+
+    mvwprintw(stdscr, y + 16, x + 60, "Strength:     %2i\n", ability_sets->values[11].strength);
+    mvwprintw(stdscr, y + 17, x + 60, "Intelligence: %2i\n", ability_sets->values[11].intelligence);
+    mvwprintw(stdscr, y + 18, x + 60, "Wisdom:       %2i\n", ability_sets->values[11].wisdom);
+    mvwprintw(stdscr, y + 19, x + 60, "Dexterity:    %2i\n", ability_sets->values[11].dexterity);
+    mvwprintw(stdscr, y + 20, x + 60, "Constitution: %2i\n", ability_sets->values[11].constitution);
+    mvwprintw(stdscr, y + 21, x + 60, "Charisma:     %2i\n", ability_sets->values[11].charisma);
 }
 
 
 static struct result
 create_character_using_simple_method(struct game *game)
 {
-    struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
-                                                                    ability_score_generation_method_simple,
-                                                                    ability_flag_none);
-    draw_character_sheet(game, ability_score_generation_method_simple, rolls);
-    characteristic_rolls_free(rolls);
+    struct abilities *abilities = abilities_alloc(game->rnd);
+    char const *method_name = ability_score_generation_method_name(ability_score_generation_method_simple);
+    draw_character_abilities(game, abilities, method_name);
+
     getch();
-    
+
+    abilities_free(abilities);
     return result_success();
 }
 
@@ -164,14 +179,14 @@ create_character_using_simple_method(struct game *game)
 static struct result
 create_character_using_method_1(struct game *game)
 {
-    struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
-                                                                    ability_score_generation_method_1,
-                                                                    ability_flag_none);
-    draw_character_sheet(game, ability_score_generation_method_1, rolls);
+    struct ability_scores *scores = ability_scores_alloc_method_1(game->rnd);
+    char const *method_name = ability_score_generation_method_name(ability_score_generation_method_1);
+    draw_character_ability_scores(game, scores, method_name);
+
     // TODO: player assigns rolls
-    characteristic_rolls_free(rolls);
     getch();
-    
+
+    ability_scores_free(scores);
     return result_success();
 }
 
@@ -179,14 +194,14 @@ create_character_using_method_1(struct game *game)
 static struct result
 create_character_using_method_2(struct game *game)
 {
-    struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
-                                                                    ability_score_generation_method_2,
-                                                                    ability_flag_none);
-    draw_character_sheet(game, ability_score_generation_method_2, rolls);
+    struct ability_scores *scores = ability_scores_alloc_method_2(game->rnd);
+    char const *method_name = ability_score_generation_method_name(ability_score_generation_method_2);
+    draw_character_ability_scores(game, scores, method_name);
+
     // TODO: player assigns rolls
-    characteristic_rolls_free(rolls);
     getch();
-    
+
+    ability_scores_free(scores);
     return result_success();
 }
 
@@ -194,13 +209,13 @@ create_character_using_method_2(struct game *game)
 static struct result
 create_character_using_method_3(struct game *game)
 {
-    struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
-                                                                    ability_score_generation_method_3,
-                                                                    ability_flag_none);
-    draw_character_sheet(game, ability_score_generation_method_3, rolls);
-    characteristic_rolls_free(rolls);
+    struct abilities *abilities = abilities_alloc_method_3(game->rnd);
+    char const *method_name = ability_score_generation_method_name(ability_score_generation_method_3);
+    draw_character_abilities(game, abilities, method_name);
+
     getch();
-    
+
+    abilities_free(abilities);
     return result_success();
 }
 
@@ -208,14 +223,14 @@ create_character_using_method_3(struct game *game)
 static struct result
 create_character_using_method_4(struct game *game)
 {
-    struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
-                                                                    ability_score_generation_method_4,
-                                                                    ability_flag_none);
+    struct ability_sets *sets = ability_sets_alloc_method_4(game->rnd);
+    char const *method_name = ability_score_generation_method_name(ability_score_generation_method_4);
+    draw_character_ability_sets(game, sets, method_name);
+
     // TODO: player chooses from 12 characters
-    draw_character_sheet(game, ability_score_generation_method_4, rolls);
-    characteristic_rolls_free(rolls);
     getch();
-    
+
+    ability_sets_free(sets);
     return result_success();
 }
 
@@ -223,13 +238,13 @@ create_character_using_method_4(struct game *game)
 static struct result
 create_character_using_method_general_NPC(struct game *game)
 {
-    struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
-                                                                    ability_score_generation_method_general_NPC,
-                                                                    ability_flag_none);
-    draw_character_sheet(game, ability_score_generation_method_general_NPC, rolls);
-    characteristic_rolls_free(rolls);
+    struct abilities *abilities = abilities_alloc_general_NPC(game->rnd);
+    char const *method_name = ability_score_generation_method_name(ability_score_generation_method_general_NPC);
+    draw_character_abilities(game, abilities, method_name);
+
     getch();
-    
+
+    abilities_free(abilities);
     return result_success();
 }
 
@@ -237,14 +252,16 @@ create_character_using_method_general_NPC(struct game *game)
 static struct result
 create_character_using_method_special_NPC(struct game *game)
 {
+    enum ability_flag flags = ability_flag_strength;
     // TODO: choose profession and profession abilities
-    struct characteristic_rolls *rolls = characteristic_rolls_alloc(game->rnd,
-                                                                    ability_score_generation_method_special_NPC,
-                                                                    ability_flag_none);
-    draw_character_sheet(game, ability_score_generation_method_special_NPC, rolls);
-    characteristic_rolls_free(rolls);
+
+    struct abilities *abilities = abilities_alloc_special_NPC(game->rnd, flags);
+    char const *method_name = ability_score_generation_method_name(ability_score_generation_method_special_NPC);
+    draw_character_abilities(game, abilities, method_name);
+
     getch();
-    
+
+    abilities_free(abilities);
     return result_success();
 }
 

@@ -8,7 +8,6 @@
 #include <character/ability_score_generation_type.h>
 #include <character/ability_scores.h>
 #include <character/ability_sets.h>
-#include <character/characteristic_rolls.h>
 
 
 struct character {
