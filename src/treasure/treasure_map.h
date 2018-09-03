@@ -4,7 +4,7 @@
 
 #include <stdbool.h>
 
-#include "treasure.h"
+#include <treasure/treasure_struct.h>
 
 
 struct rnd;

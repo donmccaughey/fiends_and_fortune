@@ -9,6 +9,7 @@
 #include "gem.h"
 #include "jewelry.h"
 #include "treasure_map.h"
+#include "treasure_struct.h"
 #include "treasure_type.h"
 
 

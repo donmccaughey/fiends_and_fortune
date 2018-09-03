@@ -5,8 +5,6 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-#include "treasure.h"
-
 
 struct rnd;
 struct treasure;

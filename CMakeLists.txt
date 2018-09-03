@@ -25,6 +25,7 @@ target_link_libraries(fnf
         magic
         mechanics
         libfnf
+        treasure
         # external dependencies
         form
         menu
@@ -162,12 +163,9 @@ target_link_libraries(mechanics_tests mechanics base)
 add_test(mechanics_tests mechanics_tests)
 
 
-# ----- fnf library -----
+# ----- treasure library -----
 
-add_library(libfnf STATIC
-        src/game/game.c
-        src/game/selection.c
-
+add_library(treasure STATIC
         src/treasure/coins.c
         src/treasure/gem.c
         src/treasure/jewelry.c
@@ -175,6 +173,23 @@ add_library(libfnf STATIC
         src/treasure/treasure.c
         src/treasure/treasure_map.c
         src/treasure/treasure_type.c
+        )
+target_include_directories(treasure PUBLIC src)
+
+add_executable(treasure_tests
+        src/treasure/coins_test.c
+        src/treasure/treasure_tests.c
+        )
+target_include_directories(treasure_tests PUBLIC src)
+target_link_libraries(treasure_tests treasure background base magic mechanics)
+add_test(treasure_tests treasure_tests)
+
+
+# ----- fnf library -----
+
+add_library(libfnf STATIC
+        src/game/game.c
+        src/game/selection.c
 
         src/tui/app.c
         src/tui/menu_view.c
@@ -205,6 +220,7 @@ add_custom_target(check
         COMMAND dungeon_tests
         COMMAND magic_tests
         COMMAND mechanics_tests
+        COMMAND treasure_tests
         COMMAND ./fnf_check
         )
 add_dependencies(check
@@ -215,4 +231,5 @@ add_dependencies(check
         dungeon_tests
         magic_tests
         mechanics_tests
+        treasure_tests
         )
