@@ -4,8 +4,8 @@
 
 #include <stdbool.h>
 
-#include "point.h"
-#include "size.h"
+#include <dungeon/point.h>
+#include <dungeon/size.h>
 
 
 struct box {

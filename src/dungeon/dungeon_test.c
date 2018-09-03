@@ -1,9 +1,7 @@
 #include <assert.h>
 
 #include <base/base.h>
-
-#include "dungeon/dungeon.h"
-#include "dungeon/tile.h"
+#include <dungeon/dungeon.h>
 
 
 void

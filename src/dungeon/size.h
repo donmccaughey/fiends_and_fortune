@@ -4,7 +4,7 @@
 
 #include <stdbool.h>
 
-#include "point.h"
+#include <dungeon/point.h>
 
 
 struct size {

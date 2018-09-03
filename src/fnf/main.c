@@ -2,10 +2,8 @@
 
 #include <base/base.h>
 #include <character/character.h>
+#include <dungeon/dungeon.h>
 #include <mechanics/mechanics.h>
-
-#include "dungeon/dungeon.h"
-#include "dungeon/dungeon_options.h"
 
 #include "game/game.h"
 

@@ -4,8 +4,25 @@
 
 #include <stdio.h>
 
-#include "box.h"
-#include "tile_type.h"
+#include <dungeon/area.h>
+#include <dungeon/area_features.h>
+#include <dungeon/area_type.h>
+#include <dungeon/box.h>
+#include <dungeon/digger.h>
+#include <dungeon/direction.h>
+#include <dungeon/dungeon_options.h>
+#include <dungeon/exit.h>
+#include <dungeon/generator.h>
+#include <dungeon/level_map.h>
+#include <dungeon/orientation.h>
+#include <dungeon/periodic_check.h>
+#include <dungeon/point.h>
+#include <dungeon/size.h>
+#include <dungeon/text_rectangle.h>
+#include <dungeon/tile.h>
+#include <dungeon/tile_features.h>
+#include <dungeon/tile_type.h>
+#include <dungeon/wall_type.h>
 
 
 struct area;

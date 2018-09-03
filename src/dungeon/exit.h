@@ -2,10 +2,10 @@
 #define FNF_DUNGEON_EXIT_H_INCLUDED
 
 
-#include "box.h"
-#include "direction.h"
-#include "point.h"
-#include "wall_type.h"
+#include <dungeon/box.h>
+#include <dungeon/direction.h>
+#include <dungeon/point.h>
+#include <dungeon/wall_type.h>
 
 
 struct generator;

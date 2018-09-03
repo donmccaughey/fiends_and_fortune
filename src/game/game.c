@@ -7,16 +7,9 @@
 #include <time.h>
 #include <base/base.h>
 #include <character/character.h>
+#include <dungeon/dungeon.h>
 #include <mechanics/mechanics.h>
 #include <sys/ioctl.h>
-
-#include "dungeon/area.h"
-#include "dungeon/dungeon.h"
-#include "dungeon/dungeon_options.h"
-#include "dungeon/generator.h"
-#include "dungeon/level_map.h"
-#include "dungeon/size.h"
-#include "dungeon/text_rectangle.h"
 
 #include "treasure/treasure.h"
 #include "treasure/gem.h"

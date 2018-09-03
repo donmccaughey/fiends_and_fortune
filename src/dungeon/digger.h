@@ -2,9 +2,9 @@
 #define FNF_DUNGEON_DIGGER_H_INCLUDED
 
 
-#include "area_type.h"
-#include "point.h"
-#include "wall_type.h"
+#include <dungeon/area_type.h>
+#include <dungeon/point.h>
+#include <dungeon/wall_type.h>
 
 
 struct area;

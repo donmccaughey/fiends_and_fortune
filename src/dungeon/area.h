@@ -4,10 +4,10 @@
 
 #include <stdbool.h>
 
-#include "area_features.h"
-#include "area_type.h"
-#include "box.h"
-#include "tile_type.h"
+#include <dungeon/area_features.h>
+#include <dungeon/area_type.h>
+#include <dungeon/box.h>
+#include <dungeon/tile_type.h>
 
 
 struct tile;

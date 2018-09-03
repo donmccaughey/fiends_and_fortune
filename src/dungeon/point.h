@@ -4,7 +4,7 @@
 
 #include <stdbool.h>
 
-#include "direction.h"
+#include <dungeon/direction.h>
 
 
 struct point {

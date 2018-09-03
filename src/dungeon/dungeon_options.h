@@ -2,7 +2,7 @@
 #define FNF_DUNGEON_DUNGEON_OPTIONS_H_INCLUDED
 
 
-#include "size.h"
+#include <dungeon/size.h>
 
 
 struct dungeon_options {

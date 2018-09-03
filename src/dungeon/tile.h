@@ -4,11 +4,11 @@
 
 #include <stdbool.h>
 
-#include "direction.h"
-#include "point.h"
-#include "tile_features.h"
-#include "tile_type.h"
-#include "wall_type.h"
+#include <dungeon/direction.h>
+#include <dungeon/point.h>
+#include <dungeon/tile_features.h>
+#include <dungeon/tile_type.h>
+#include <dungeon/wall_type.h>
 
 
 struct tile {

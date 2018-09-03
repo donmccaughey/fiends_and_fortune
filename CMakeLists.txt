@@ -21,6 +21,7 @@ target_link_libraries(fnf
         background
         base
         character
+        dungeon
         magic
         mechanics
         libfnf
@@ -74,6 +75,7 @@ add_test(base_tests base_tests)
 
 
 # ----- character library -----
+
 add_library(character STATIC
         src/character/abilities.c
         src/character/ability_score_generation_method.c
@@ -93,6 +95,39 @@ add_executable(character_tests
 target_include_directories(character_tests PUBLIC src)
 target_link_libraries(character_tests character base mechanics)
 add_test(character_tests character_tests)
+
+
+# ----- dungeon library -----
+
+add_library(dungeon STATIC
+        src/dungeon/area.c
+        src/dungeon/box.c
+        src/dungeon/digger.c
+        src/dungeon/direction.c
+        src/dungeon/dungeon.c
+        src/dungeon/dungeon_options.c
+        src/dungeon/exit.c
+        src/dungeon/generator.c
+        src/dungeon/level_map.c
+        src/dungeon/orientation.c
+        src/dungeon/periodic_check.c
+        src/dungeon/point.c
+        src/dungeon/size.c
+        src/dungeon/text_rectangle.c
+        src/dungeon/tile.c
+        )
+target_include_directories(dungeon PUBLIC src)
+
+add_executable(dungeon_tests
+        src/dungeon/box_test.c
+        src/dungeon/dungeon_test.c
+        src/dungeon/dungeon_tests.c
+        src/dungeon/generator_test.c
+        src/dungeon/point_test.c
+        )
+target_include_directories(dungeon_tests PUBLIC src)
+target_link_libraries(dungeon_tests dungeon base mechanics)
+add_test(dungeon_tests dungeon_tests)
 
 
 # ----- magic library -----
@@ -130,22 +165,6 @@ add_test(mechanics_tests mechanics_tests)
 # ----- fnf library -----
 
 add_library(libfnf STATIC
-        src/dungeon/area.c
-        src/dungeon/box.c
-        src/dungeon/digger.c
-        src/dungeon/direction.c
-        src/dungeon/dungeon.c
-        src/dungeon/dungeon_options.c
-        src/dungeon/exit.c
-        src/dungeon/generator.c
-        src/dungeon/level_map.c
-        src/dungeon/orientation.c
-        src/dungeon/periodic_check.c
-        src/dungeon/point.c
-        src/dungeon/size.c
-        src/dungeon/text_rectangle.c
-        src/dungeon/tile.c
-
         src/game/game.c
         src/game/selection.c
 
@@ -168,21 +187,6 @@ target_include_directories(libfnf PUBLIC src)
 set_target_properties(libfnf PROPERTIES OUTPUT_NAME "fnf")
 
 
-# ----- unit tests -----
-
-add_executable(unit_tests
-        tests/unit_tests/dungeon/box_test.c
-        tests/unit_tests/dungeon/dungeon_test.c
-        tests/unit_tests/dungeon/generator_test.c
-        tests/unit_tests/dungeon/point_test.c
-
-        tests/unit_tests/main.c
-        )
-target_include_directories(unit_tests PUBLIC src/dungeon)
-target_link_libraries(unit_tests base mechanics libfnf)
-add_test(unit_tests unit_tests)
-
-
 # ----- functional tests -----
 
 configure_file(tests/fnf_check.out fnf_check.out)
@@ -198,9 +202,17 @@ add_custom_target(check
         COMMAND background_tests
         COMMAND base_tests
         COMMAND character_tests
+        COMMAND dungeon_tests
         COMMAND magic_tests
         COMMAND mechanics_tests
-        COMMAND unit_tests
         COMMAND ./fnf_check
         )
-add_dependencies(check fnf unit_tests)
+add_dependencies(check
+        fnf
+        background_tests
+        base_tests
+        character_tests
+        dungeon_tests
+        magic_tests
+        mechanics_tests
+        )

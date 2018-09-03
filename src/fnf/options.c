@@ -4,8 +4,7 @@
 #include <getopt.h>
 #include <libgen.h>
 #include <base/base.h>
-
-#include "dungeon/dungeon_options.h"
+#include <dungeon/dungeon.h>
 
 
 static struct option long_options[] = {

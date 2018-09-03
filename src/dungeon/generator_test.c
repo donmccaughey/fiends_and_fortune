@@ -1,11 +1,7 @@
 #include <assert.h>
 #include <stddef.h>
 #include <base/base.h>
-
-#include "dungeon/digger.h"
-#include "dungeon/dungeon.h"
-#include "dungeon/dungeon_options.h"
-#include "dungeon/generator.h"
+#include <dungeon/dungeon.h>
 
 
 void

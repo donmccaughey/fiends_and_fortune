@@ -2,7 +2,7 @@
 #define FNF_DUNGEON_LEVEL_MAP_H_INCLUDED
 
 
-#include "box.h"
+#include <dungeon/box.h>
 
 
 struct dungeon;
