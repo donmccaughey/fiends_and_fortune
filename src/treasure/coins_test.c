@@ -10,13 +10,7 @@ coins_test(void);
 static void
 coins_alloc_description_test(void)
 {
-    struct coins coins = {
-            .pp=0,
-            .gp=0,
-            .ep=0,
-            .sp=0,
-            .cp=0,
-    };
+    struct coins coins = coins_make_zero();
     char *description;
 
     description = coins_alloc_description(coins);
@@ -84,13 +78,7 @@ coins_alloc_gp_cp_description_test(void)
 static void
 coins_is_zero_test(void)
 {
-    struct coins coins = {
-            .pp=0,
-            .gp=0,
-            .ep=0,
-            .sp=0,
-            .cp=0,
-    };
+    struct coins coins = coins_make_zero();
 
     assert(coins_is_zero(coins));
 
@@ -224,6 +212,292 @@ coins_make_zero_test(void)
 }
 
 
+static void
+coins_normalize_test(void)
+{
+    struct coins coins = coins_make_zero();
+    struct coins normalized = coins_normalize(coins);
+    assert(coins_is_zero(normalized));
+
+    coins = coins_make(1, 5, 2, 10, 11);
+    normalized = coins_normalize(coins);
+    assert(2 == normalized.pp);
+    assert(1 == normalized.gp);
+    assert(1 == normalized.ep);
+    assert(1 == normalized.sp);
+    assert(1 == normalized.cp);
+
+    coins = coins_make(0, 4, 1, 9, 10);
+    normalized = coins_normalize(coins);
+    assert(1 == normalized.pp);
+    assert(0 == normalized.gp);
+    assert(0 == normalized.ep);
+    assert(0 == normalized.sp);
+    assert(0 == normalized.cp);
+}
+
+
+static void
+coins_normalize_to_gp_cp_test(void)
+{
+    struct coins coins = coins_make_zero();
+    struct coins normalized = coins_normalize_to_gp_cp(coins);
+    assert(coins_is_zero(normalized));
+
+    coins = coins_make(1, 5, 2, 10, 11);
+    normalized = coins_normalize_to_gp_cp(coins);
+    assert(0 == normalized.pp);
+    assert(11 == normalized.gp);
+    assert(0 == normalized.ep);
+    assert(0 == normalized.sp);
+    assert(111 == normalized.cp);
+
+    coins = coins_make(0, 4, 1, 9, 10);
+    normalized = coins_normalize_to_gp_cp(coins);
+    assert(0 == normalized.pp);
+    assert(5 == normalized.gp);
+    assert(0 == normalized.ep);
+    assert(0 == normalized.sp);
+    assert(0 == normalized.cp);
+
+    coins = coins_make(0, 4, 2, 9, 10);
+    normalized = coins_normalize_to_gp_cp(coins);
+    assert(0 == normalized.pp);
+    assert(5 == normalized.gp);
+    assert(0 == normalized.ep);
+    assert(0 == normalized.sp);
+    assert(100 == normalized.cp);
+}
+
+
+// ----- upward conversions -----
+
+static void
+coins_cp_to_sp_test(void)
+{
+    struct coins coins;
+    struct coins converted;
+
+    coins = coins_make_zero();
+    converted = coins_cp_to_sp(coins);
+    assert(0 == converted.pp);
+    assert(0 == converted.gp);
+    assert(0 == converted.ep);
+    assert(0 == converted.sp);
+    assert(0 == converted.cp);
+
+    coins = coins_make(1, 2, 3, 4, 5);
+    converted = coins_cp_to_sp(coins);
+    assert(1 == converted.pp);
+    assert(2 == converted.gp);
+    assert(3 == converted.ep);
+    assert(4 == converted.sp);
+    assert(5 == converted.cp);
+
+    coins = coins_make(1, 2, 3, 4, 11);
+    converted = coins_cp_to_sp(coins);
+    assert(1 == converted.pp);
+    assert(2 == converted.gp);
+    assert(3 == converted.ep);
+    assert(5 == converted.sp);
+    assert(1 == converted.cp);
+}
+
+
+static void
+coins_sp_to_ep_test(void)
+{
+    struct coins coins;
+    struct coins converted;
+
+    coins = coins_make_zero();
+    converted = coins_sp_to_ep(coins);
+    assert(0 == converted.pp);
+    assert(0 == converted.gp);
+    assert(0 == converted.ep);
+    assert(0 == converted.sp);
+    assert(0 == converted.cp);
+
+    coins = coins_make(1, 2, 3, 4, 5);
+    converted = coins_sp_to_ep(coins);
+    assert(1 == converted.pp);
+    assert(2 == converted.gp);
+    assert(3 == converted.ep);
+    assert(4 == converted.sp);
+    assert(5 == converted.cp);
+
+    coins = coins_make(1, 2, 3, 11, 5);
+    converted = coins_sp_to_ep(coins);
+    assert(1 == converted.pp);
+    assert(2 == converted.gp);
+    assert(4 == converted.ep);
+    assert(1 == converted.sp);
+    assert(5 == converted.cp);
+}
+
+
+static void
+coins_ep_to_gp_test(void)
+{
+    struct coins coins;
+    struct coins converted;
+
+    coins = coins_make_zero();
+    converted = coins_ep_to_gp(coins);
+    assert(0 == converted.pp);
+    assert(0 == converted.gp);
+    assert(0 == converted.ep);
+    assert(0 == converted.sp);
+    assert(0 == converted.cp);
+
+    coins = coins_make(1, 2, 1, 4, 5);
+    converted = coins_ep_to_gp(coins);
+    assert(1 == converted.pp);
+    assert(2 == converted.gp);
+    assert(1 == converted.ep);
+    assert(4 == converted.sp);
+    assert(5 == converted.cp);
+
+    coins = coins_make(1, 2, 3, 4, 5);
+    converted = coins_ep_to_gp(coins);
+    assert(1 == converted.pp);
+    assert(3 == converted.gp);
+    assert(1 == converted.ep);
+    assert(4 == converted.sp);
+    assert(5 == converted.cp);
+}
+
+
+static void
+coins_gp_to_pp_test(void)
+{
+    struct coins coins;
+    struct coins converted;
+
+    coins = coins_make_zero();
+    converted = coins_gp_to_pp(coins);
+    assert(0 == converted.pp);
+    assert(0 == converted.gp);
+    assert(0 == converted.ep);
+    assert(0 == converted.sp);
+    assert(0 == converted.cp);
+
+    coins = coins_make(1, 2, 3, 4, 5);
+    converted = coins_gp_to_pp(coins);
+    assert(1 == converted.pp);
+    assert(2 == converted.gp);
+    assert(3 == converted.ep);
+    assert(4 == converted.sp);
+    assert(5 == converted.cp);
+
+    coins = coins_make(1, 6, 3, 4, 5);
+    converted = coins_gp_to_pp(coins);
+    assert(2 == converted.pp);
+    assert(1 == converted.gp);
+    assert(3 == converted.ep);
+    assert(4 == converted.sp);
+    assert(5 == converted.cp);
+}
+
+
+// ----- downward conversions -----
+
+static void
+coins_pp_to_gp_test(void)
+{
+    struct coins coins;
+    struct coins converted;
+
+    coins = coins_make_zero();
+    converted = coins_pp_to_gp(coins);
+    assert(0 == converted.pp);
+    assert(0 == converted.gp);
+    assert(0 == converted.ep);
+    assert(0 == converted.sp);
+    assert(0 == converted.cp);
+
+    coins = coins_make(1, 2, 3, 4, 5);
+    converted = coins_pp_to_gp(coins);
+    assert(0 == converted.pp);
+    assert(7 == converted.gp);
+    assert(3 == converted.ep);
+    assert(4 == converted.sp);
+    assert(5 == converted.cp);
+}
+
+
+static void
+coins_gp_to_ep_test(void)
+{
+    struct coins coins;
+    struct coins converted;
+
+    coins = coins_make_zero();
+    converted = coins_gp_to_ep(coins);
+    assert(0 == converted.pp);
+    assert(0 == converted.gp);
+    assert(0 == converted.ep);
+    assert(0 == converted.sp);
+    assert(0 == converted.cp);
+
+    coins = coins_make(1, 2, 3, 4, 5);
+    converted = coins_gp_to_ep(coins);
+    assert(1 == converted.pp);
+    assert(0 == converted.gp);
+    assert(7 == converted.ep);
+    assert(4 == converted.sp);
+    assert(5 == converted.cp);
+}
+
+
+static void
+coins_ep_to_sp_test(void)
+{
+    struct coins coins;
+    struct coins converted;
+
+    coins = coins_make_zero();
+    converted = coins_ep_to_sp(coins);
+    assert(0 == converted.pp);
+    assert(0 == converted.gp);
+    assert(0 == converted.ep);
+    assert(0 == converted.sp);
+    assert(0 == converted.cp);
+
+    coins = coins_make(1, 2, 3, 4, 5);
+    converted = coins_ep_to_sp(coins);
+    assert(1 == converted.pp);
+    assert(2 == converted.gp);
+    assert(0 == converted.ep);
+    assert(34 == converted.sp);
+    assert(5 == converted.cp);
+}
+
+
+static void
+coins_sp_to_cp_test(void)
+{
+    struct coins coins;
+    struct coins converted;
+
+    coins = coins_make_zero();
+    converted = coins_sp_to_cp(coins);
+    assert(0 == converted.pp);
+    assert(0 == converted.gp);
+    assert(0 == converted.ep);
+    assert(0 == converted.sp);
+    assert(0 == converted.cp);
+
+    coins = coins_make(1, 2, 3, 4, 5);
+    converted = coins_sp_to_cp(coins);
+    assert(1 == converted.pp);
+    assert(2 == converted.gp);
+    assert(3 == converted.ep);
+    assert(0 == converted.sp);
+    assert(45 == converted.cp);
+}
+
+
 void
 coins_test(void)
 {
@@ -233,4 +507,14 @@ coins_test(void)
     coins_make_test();
     coins_make_from_cp_test();
     coins_make_zero_test();
+    coins_normalize_test();
+    coins_normalize_to_gp_cp_test();
+    coins_cp_to_sp_test();
+    coins_sp_to_ep_test();
+    coins_ep_to_gp_test();
+    coins_gp_to_pp_test();
+    coins_pp_to_gp_test();
+    coins_gp_to_ep_test();
+    coins_ep_to_sp_test();
+    coins_sp_to_cp_test();
 }

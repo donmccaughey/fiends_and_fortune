@@ -50,7 +50,7 @@ coins_to_cp(struct coins coins);
 struct coins
 coins_cp_to_sp(struct coins coins);
 
-inline struct coins
+struct coins
 coins_sp_to_ep(struct coins coins);
 
 struct coins
@@ -65,7 +65,7 @@ coins_gp_to_pp(struct coins coins);
 struct coins
 coins_pp_to_gp(struct coins coins);
 
-inline struct coins
+struct coins
 coins_gp_to_ep(struct coins coins);
 
 struct coins
