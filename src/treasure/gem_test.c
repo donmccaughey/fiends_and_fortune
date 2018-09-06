@@ -283,6 +283,72 @@ gem_generate_with_fake_median_test(void)
 }
 
 
+static void
+gem_generate_for_double_value_test(void)
+{
+    struct rnd *rnd = rnd_alloc_fake_fixed(1);
+    struct gem gem;
+    gem_initialize(&gem);
+    gem_generate(&gem, rnd);
+
+    assert(gem_size_very_small == gem.size);
+    assert(gem_type_ornamental_stone == gem.type);
+    assert(gem_kind_banded_agate == gem.kind);
+    assert(str_eq("striped blue", gem.colors));
+    assert(200 == gem.value_percent_modifier);
+    assert(0 == gem.value_rank_modifier);
+    assert(str_eq("very small banded agate (ornamental, +100%: 2 gp)", gem.true_description));
+    assert(str_eq("very small translucent striped blue stone", gem.visible_description));
+
+    gem_finalize(&gem);
+    rnd_free(rnd);
+}
+
+
+static void
+gem_generate_for_increased_value_test(void)
+{
+    struct rnd *rnd = rnd_alloc_fake_fixed(2);
+    struct gem gem;
+    gem_initialize(&gem);
+    gem_generate(&gem, rnd);
+
+    assert(gem_size_very_small == gem.size);
+    assert(gem_type_ornamental_stone == gem.type);
+    assert(gem_kind_blue_quartz == gem.kind);
+    assert(str_eq("pale blue", gem.colors));
+    assert(130 == gem.value_percent_modifier);
+    assert(0 == gem.value_rank_modifier);
+    assert(str_eq("very small blue quartz (ornamental, +30%: 1 gp, 60 cp)", gem.true_description));
+    assert(str_eq("very small transparent pale blue stone", gem.visible_description));
+
+    gem_finalize(&gem);
+    rnd_free(rnd);
+}
+
+
+static void
+gem_generate_for_decreased_value_test(void)
+{
+    struct rnd *rnd = rnd_alloc_fake_fixed(8);
+    struct gem gem;
+    gem_initialize(&gem);
+    gem_generate(&gem, rnd);
+
+    assert(gem_size_very_small == gem.size);
+    assert(gem_type_ornamental_stone == gem.type);
+    assert(gem_kind_obsidian == gem.kind);
+    assert(str_eq("black", gem.colors));
+    assert(90 == gem.value_percent_modifier);
+    assert(0 == gem.value_rank_modifier);
+    assert(str_eq("very small obsidian (ornamental, -10%: 180 cp)", gem.true_description));
+    assert(str_eq("very small opaque black stone", gem.visible_description));
+
+    gem_finalize(&gem);
+    rnd_free(rnd);
+}
+
+
 void
 gem_test(void)
 {
@@ -296,4 +362,7 @@ gem_test(void)
     gem_generate_with_fake_min_test();
     gem_generate_with_fake_max_test();
     gem_generate_with_fake_median_test();
+    gem_generate_for_double_value_test();
+    gem_generate_for_increased_value_test();
+    gem_generate_for_decreased_value_test();
 }
