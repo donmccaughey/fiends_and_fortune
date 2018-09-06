@@ -101,7 +101,7 @@ struct gem {
     enum gem_size size;
     enum gem_type type;
     enum gem_kind kind;
-    char *colors;
+    char const *colors;
     int value_percent_modifier;
     int value_rank_modifier;
     char *true_description;

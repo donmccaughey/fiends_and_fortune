@@ -141,253 +141,254 @@ static char const *
 gem_type_name(struct gem *gem);
 
 
-static char *
-alloc_random_string(struct rnd *rnd, char const **strings, int count)
+static char const *
+select_random_string(struct rnd *rnd, char const **strings, int count)
 {
     int index = rnd_next_uniform_value(rnd, count);
-    return strdup_or_die(strings[index]);
+    return strings[index];
 }
 
 
-static char *
-gem_alloc_colors(struct gem *gem, struct rnd *rnd)
+static char const *
+gem_generate_colors(struct gem *gem, struct rnd *rnd)
 {
     switch (gem->kind) {
         case gem_kind_unknown:
-            return strdup_or_die("gray");
+            return "gray";
         /* ornamental */
         case gem_kind_azurite:
-            return strdup_or_die("mottled deep blue");
+            return "mottled deep blue";
         case gem_kind_banded_agate:
             // striped brown and blue and white and reddish
-            return alloc_random_string(rnd,
-                                       (char const *[]){
-                                           "striped brown",
-                                           "striped blue",
-                                           "striped white",
-                                           "striped reddish",
-                                       },
-                                       4);
+            return select_random_string(rnd,
+                                        (char const *[]){
+                                                "striped brown",
+                                                "striped blue",
+                                                "striped white",
+                                                "striped reddish",
+                                        },
+                                        4);
         case gem_kind_blue_quartz:
-            return strdup_or_die("pale blue");
+            return "pale blue";
         case gem_kind_eye_agate:
             // circles of gray, white, brown, blue and/or green
-            return alloc_random_string(rnd,
-                                       (char const *[]){
-                                           "circles of gray",
-                                           "circles of white",
-                                           "circles of brown",
-                                           "circles of blue",
-                                           "circles of green"
-                                       },
-                                       5);
+            return select_random_string(rnd,
+                                        (char const *[]){
+                                                "circles of gray",
+                                                "circles of white",
+                                                "circles of brown",
+                                                "circles of blue",
+                                                "circles of green"
+                                        },
+                                        5);
         case gem_kind_hematite:
-            return strdup_or_die("gray-black");
+            return "gray-black";
         case gem_kind_lapis_lazuli:
-            return strdup_or_die("light and dark blue with yellow flecks");
+            return "light and dark blue with yellow flecks";
         case gem_kind_malachite:
-            return strdup_or_die("striated light and dark green");
+            return "striated light and dark green";
         case gem_kind_moss_agate:
             // pink or yellow-white with grayish or greenish 'moss markings'
-            return alloc_random_string(rnd,
-                                       (char const *[]){
-                                           "pink",
-                                           "yellow-white with grayish markings",
-                                           "yellow-white with greenish markings"
-                                       },
-                                       3);
+            return select_random_string(rnd,
+                                        (char const *[]){
+                                                "pink",
+                                                "yellow-white with grayish markings",
+                                                "yellow-white with greenish markings"
+                                        },
+                                        3);
         case gem_kind_obsidian:
-            return strdup_or_die("black");
+            return "black";
         case gem_kind_rhodochrosite:
-            return strdup_or_die("light pink");
+            return "light pink";
         case gem_kind_tiger_eye:
-            return strdup_or_die("rich brown with golden center under-hue");
+            return "rich brown with golden center under-hue";
         case gem_kind_turquoise:
-            return strdup_or_die("light blue-green");
+            return "light blue-green";
         /* semi-precious */
         case gem_kind_bloodstone:
-            return strdup_or_die("dark gray with red flecks");
+            return "dark gray with red flecks";
         case gem_kind_carnelian:
             // orange to reddish brown
-            return alloc_random_string(rnd,
-                                       (char const *[]){ "orange", "reddish brown" },
-                                       2);
+            return select_random_string(rnd,
+                                        (char const *[]){ "orange", "reddish brown" },
+                                        2);
         case gem_kind_chalcedony:
-            return strdup_or_die("white");
+            return "white";
         case gem_kind_chrysoprase:
             // apple green to emerald green
-            return alloc_random_string(rnd,
-                                       (char const *[]){ "apple green", "emerald green" },
-                                       2);
+            return select_random_string(rnd,
+                                        (char const *[]){ "apple green", "emerald green" },
+                                        2);
         case gem_kind_citrine:
-            return strdup_or_die("pale yellow brown");
+            return "pale yellow brown";
         case gem_kind_jasper:
             // blue, black to brown
-            return alloc_random_string(rnd,
-                                       (char const *[]){ "blue", "black", "brown" },
-                                       3);
+            return select_random_string(rnd,
+                                        (char const *[]){ "blue", "black", "brown" },
+                                        3);
         case gem_kind_moonstone:
-            return strdup_or_die("white with pale blue glow");
+            return "white with pale blue glow";
         case gem_kind_onyx:
             // bands of black and white or pure black or white
-            return alloc_random_string(rnd,
-                                       (char const *[]){
-                                           "bands of black and white",
-                                           "black",
-                                           "white"
-                                       },
-                                       3);
+            return select_random_string(rnd,
+                                        (char const *[]){
+                                                "bands of black and white",
+                                                "black",
+                                                "white"
+                                        },
+                                        3);
         case gem_kind_rock_crystal:
-            return strdup_or_die("clear");
+            return "clear";
         case gem_kind_sardonyx:
             // bands of sard (red) and onyx (white) or sard
-            return alloc_random_string(rnd,
-                                       (char const *[]){ "bands of red and white", "red" },
-                                       2);
+            return select_random_string(rnd,
+                                        (char const *[]){ "bands of red and white", "red" },
+                                        2);
         case gem_kind_smoky_quartz:
             // gray, yellow, or blue (Cairngorm), all light
-            return alloc_random_string(rnd,
-                                       (char const *[]){
-                                           "light gray",
-                                           "light yellow",
-                                           "light blue"
-                                       },
-                                       3);
+            return select_random_string(rnd,
+                                        (char const *[]){
+                                                "light gray",
+                                                "light yellow",
+                                                "light blue"
+                                        },
+                                        3);
         case gem_kind_star_rose_quartz:
-            return strdup_or_die("rosy stone with white 'star' center");
+            return "rosy stone with white 'star' center";
         case gem_kind_zircon:
-            return strdup_or_die("clear pale blue-green");
+            return "clear pale blue-green";
         /* fancy */
         case gem_kind_amber:
             // watery gold to rich gold
-            return alloc_random_string(rnd,
-                                       (char const *[]){ "watery gold", "rich gold" },
-                                       2);
+            return select_random_string(rnd,
+                                        (char const *[]){ "watery gold", "rich gold" },
+                                        2);
         case gem_kind_alexandrite:
-            return strdup_or_die("dark green");
+            return "dark green";
         case gem_kind_amethyst:
-            return strdup_or_die("deep purple");
+            return "deep purple";
         case gem_kind_chrysoberyl:
             // yellow green to green
-            return alloc_random_string(rnd,
-                                       (char const *[]){ "yellow green", "green" },
-                                       2);
+            return select_random_string(rnd,
+                                        (char const *[]){ "yellow green", "green" },
+                                        2);
         case gem_kind_coral:
-            return strdup_or_die("crimson");
+            return "crimson";
         case gem_kind_jade:
             // light green, deep green, green and white, white
-            return alloc_random_string(rnd,
-                                       (char const *[]){
-                                           "light green",
-                                           "deep green",
-                                           "green and white",
-                                           "white"
-                                       },
-                                       4);
+            return select_random_string(rnd,
+                                        (char const *[]){
+                                                "light green",
+                                                "deep green",
+                                                "green and white",
+                                                "white"
+                                        },
+                                        4);
         case gem_kind_jet:
-            return strdup_or_die("deep black");
+            return "deep black";
         case gem_kind_tourmaline:
             // green pale, blue pale, brown pale, or reddish pale
-            return alloc_random_string(rnd,
-                                       (char const *[]){
-                                           "green pale",
-                                           "blue pale",
-                                           "brown pale",
-                                           "reddish pale"
-                                       },
-                                       4);
+            return select_random_string(rnd,
+                                        (char const *[]){
+                                                "green pale",
+                                                "blue pale",
+                                                "brown pale",
+                                                "reddish pale"
+                                        },
+                                        4);
         /* fancy or precious */
         case gem_kind_garnet:
             // red, brown-green, or violet (the most prized)
-            return alloc_random_string(rnd,
-                                       (char const *[]){
-                                           "red",
-                                           "brown-green",
-                                           "violet"
-                                       },
-                                       3);
+            return select_random_string(rnd,
+                                        (char const *[]){
+                                                "red",
+                                                "brown-green",
+                                                "violet"
+                                        },
+                                        3);
         case gem_kind_pearl:
             // lustrous white, yellowish, pinkish, etc. to pure black (the most prized)
-            return alloc_random_string(rnd,
-                                       (char const *[]){
-                                           "lustrous white",
-                                           "yellowish",
-                                           "pinkish",
-                                           "black"
-                                       },
-                                       4);
+            return select_random_string(rnd,
+                                        (char const *[]){
+                                                "lustrous white",
+                                                "yellowish",
+                                                "pinkish",
+                                                "black"
+                                        },
+                                        4);
         case gem_kind_spinel:
             // red, red-brown, deep green, or very deep blue (the most prized)
-            return alloc_random_string(rnd,
-                                       (char const *[]){
-                                           "red",
-                                           "red-brown",
-                                           "pinkdeep greenish",
-                                           "very deep blue"
-                                       },
-                                       4);
+            return select_random_string(rnd,
+                                        (char const *[]){
+                                                "red",
+                                                "red-brown",
+                                                "pinkdeep greenish",
+                                                "very deep blue"
+                                        },
+                                        4);
         /* precious */
         case gem_kind_aquamarine:
-            return strdup_or_die("pale blue-green");
+            return "pale blue-green";
         case gem_kind_peridot:
-            return strdup_or_die("rich olive green");
+            return "rich olive green";
         case gem_kind_topaz:
-            return strdup_or_die("golden yellow");
+            return "golden yellow";
         /* gem */
         case gem_kind_black_opal:
-            return strdup_or_die("dark green with black mottling and golden flecks");
+            return "dark green with black mottling and golden flecks";
         case gem_kind_emerald:
-            return strdup_or_die("deep bright green");
+            return "deep bright green";
         case gem_kind_fire_opal:
-            return strdup_or_die("fiery red");
+            return "fiery red";
         case gem_kind_opal:
-            return strdup_or_die("pale blue with green and golden mottling");
+            return "pale blue with green and golden mottling";
         case gem_kind_oriental_amethyst:
-            return strdup_or_die("rich purple");
+            return "rich purple";
         case gem_kind_oriental_topaz:
-            return strdup_or_die("fiery yellow");
+            return "fiery yellow";
         case gem_kind_sapphire:
             // clear to medium blue
-            return alloc_random_string(rnd,
-                                       (char const *[]){ "clear blue", "medium blue" },
-                                       2);
+            return select_random_string(rnd,
+                                        (char const *[]){ "clear blue", "medium blue" },
+                                        2);
         case gem_kind_star_ruby:
             // translucent ruby with white 'star' center
-            return alloc_random_string(rnd,
-                                       (char const *[]){
-                                           "clear red with white 'star' center",
-                                           "deep crimson with white 'star' center"
-                                       },
-                                       2);
+            return select_random_string(rnd,
+                                        (char const *[]){
+                                                "clear red with white 'star' center",
+                                                "deep crimson with white 'star' center"
+                                        },
+                                        2);
         case gem_kind_star_sapphire:
             // translucent sapphire with white 'star' center
-            return alloc_random_string(rnd,
-                                       (char const *[]){
-                                           "clear blue with white 'star' center",
-                                           "medium blue with white 'star' center"
-                                       },
-                                       2);
+            return select_random_string(rnd,
+                                        (char const *[]){
+                                                "clear blue with white 'star' center",
+                                                "medium blue with white 'star' center"
+                                        },
+                                        2);
         /* jewel */
         case gem_kind_black_sapphire:
-            return strdup_or_die("lustrous black with glowing highlights");
+            return "lustrous black with glowing highlights";
         case gem_kind_diamond:
             // clear blue-white with lesser stones clear white or pale tints
-            return alloc_random_string(rnd,
-                                       (char const *[]){
-                                           "clear blue-white",
-                                           "clear white",
-                                       },
-                                       2);
+            return select_random_string(rnd,
+                                        (char const *[]){
+                                                "clear blue-white",
+                                                "clear white",
+                                        },
+                                        2);
         case gem_kind_jacinth:
-            return strdup_or_die("fiery orange");
+            return "fiery orange";
         case gem_kind_oriental_emerald:
-            return strdup_or_die("clear bright green");
+            return "clear bright green";
         case gem_kind_ruby:
             // clear red to deep crimson
-            return alloc_random_string(rnd,
-                                       (char const *[]){ "clear red", "deep crimson" },
-                                       2);
+            return select_random_string(rnd,
+                                        (char const *[]){ "clear red", "deep crimson" },
+                                        2);
     }
+    return "gray";
 }
 
 
@@ -427,7 +428,6 @@ gem_alloc_visible_description(struct gem *gem)
 void
 gem_finalize(struct gem *gem)
 {
-    free_or_die(gem->colors);
     free_or_die(gem->true_description);
     free_or_die(gem->visible_description);
 }
@@ -530,7 +530,7 @@ gem_generate(struct gem *gem, struct rnd *rnd)
              && gem->value_rank_modifier > -5
              && gem->value_rank_modifier < 7);
     
-    gem->colors = gem_alloc_colors(gem, rnd);
+    gem->colors = gem_generate_colors(gem, rnd);
     
     char *true_description = gem_alloc_true_description(gem);
     char *true_modifiers = gem_alloc_true_description_modifiers(gem);
