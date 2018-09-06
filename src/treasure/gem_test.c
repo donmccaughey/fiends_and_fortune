@@ -36,6 +36,8 @@ gem_value_in_cp_for_default_test(void)
     gem.size = gem_size_average;
 
     assert(0 == gem_value_in_cp(&gem));
+
+    gem_finalize(&gem);
 }
 
 
@@ -62,6 +64,8 @@ gem_value_in_cp_for_each_type_test(void)
 
     gem.type = gem_type_jewel_stone;
     assert(gp_to_cp(5000) == gem_value_in_cp(&gem));
+
+    gem_finalize(&gem);
 }
 
 
@@ -112,6 +116,8 @@ gem_value_in_cp_for_each_size_test(void)
 
     gem.size = gem_size_huge;
     assert(gp_to_cp(50000) == gem_value_in_cp(&gem));
+
+    gem_finalize(&gem);
 }
 
 
@@ -142,6 +148,8 @@ gem_value_in_cp_for_low_value_rank_test(void)
 
     gem.value_rank_modifier = -5;
     assert(sp_to_cp(1) == gem_value_in_cp(&gem));
+
+    gem_finalize(&gem);
 }
 
 
@@ -178,6 +186,8 @@ gem_value_in_cp_for_high_value_rank_test(void)
 
     gem.value_rank_modifier = 7;
     assert(gp_to_cp(1000000) == gem_value_in_cp(&gem));
+
+    gem_finalize(&gem);
 }
 
 
@@ -202,6 +212,74 @@ gem_value_in_cp_for_value_percent_modifier(void)
 
     gem.value_percent_modifier = 60;
     assert(gp_to_cp(600) == gem_value_in_cp(&gem));
+
+    gem_finalize(&gem);
+}
+
+
+static void
+gem_generate_with_fake_min_test(void)
+{
+    struct rnd *rnd = rnd_alloc_fake_min();
+    struct gem gem;
+    gem_initialize(&gem);
+    gem_generate(&gem, rnd);
+
+    assert(gem_size_very_small == gem.size);
+    assert(gem_type_ornamental_stone == gem.type);
+    assert(gem_kind_azurite == gem.kind);
+    assert(str_eq("mottled deep blue", gem.colors));
+    assert(0 == gem.value_percent_modifier);
+    assert(7 == gem.value_rank_modifier);
+    assert(str_eq("very small azurite (ornamental, rank +7: 5000 gp)", gem.true_description));
+    assert(str_eq("very small opaque mottled deep blue stone", gem.visible_description));
+
+    gem_finalize(&gem);
+    rnd_free(rnd);
+}
+
+
+static void
+gem_generate_with_fake_max_test(void)
+{
+    struct rnd *rnd = rnd_alloc_fake_max();
+    struct gem gem;
+    gem_initialize(&gem);
+    gem_generate(&gem, rnd);
+
+    assert(gem_size_huge == gem.size);
+    assert(gem_type_jewel_stone == gem.type);
+    assert(gem_kind_ruby == gem.kind);
+    assert(str_eq("deep crimson", gem.colors));
+    assert(0 == gem.value_percent_modifier);
+    assert(-5 == gem.value_rank_modifier);
+    assert(str_eq("huge ruby (jewel, rank -5: 500 gp)", gem.true_description));
+    assert(str_eq("huge transparent deep crimson stone", gem.visible_description));
+
+    gem_finalize(&gem);
+    rnd_free(rnd);
+}
+
+
+static void
+gem_generate_with_fake_median_test(void)
+{
+    struct rnd *rnd = rnd_alloc_fake_median();
+    struct gem gem;
+    gem_initialize(&gem);
+    gem_generate(&gem, rnd);
+
+    assert(gem_size_average == gem.size);
+    assert(gem_type_fancy_stone == gem.type);
+    assert(gem_kind_jade == gem.kind);
+    assert(str_eq("green and white", gem.colors));
+    assert(0 == gem.value_percent_modifier);
+    assert(0 == gem.value_rank_modifier);
+    assert(str_eq("average jade (fancy: 100 gp)", gem.true_description));
+    assert(str_eq("average translucent green and white stone", gem.visible_description));
+
+    gem_finalize(&gem);
+    rnd_free(rnd);
 }
 
 
@@ -215,4 +293,7 @@ gem_test(void)
     gem_value_in_cp_for_low_value_rank_test();
     gem_value_in_cp_for_high_value_rank_test();
     gem_value_in_cp_for_value_percent_modifier();
+    gem_generate_with_fake_min_test();
+    gem_generate_with_fake_max_test();
+    gem_generate_with_fake_median_test();
 }
