@@ -106,12 +106,12 @@ static int const gem_values_by_rank_in_cp[] = {
     sp_to_cp(10),
     gp_to_cp(1),
     gp_to_cp(5),
-    gp_to_cp(10),
-    gp_to_cp(50),
-    gp_to_cp(100),
-    gp_to_cp(500),
-    gp_to_cp(1000),
-    gp_to_cp(5000),
+    gp_to_cp(10),   // ornamental
+    gp_to_cp(50),   // semi-precious
+    gp_to_cp(100),  // fancy
+    gp_to_cp(500),  // precious
+    gp_to_cp(1000), // gem
+    gp_to_cp(5000), // jewel
     gp_to_cp(10000),
     gp_to_cp(25000),
     gp_to_cp(50000),
@@ -436,7 +436,10 @@ gem_finalize(struct gem *gem)
 int
 gem_value_in_cp(struct gem *gem)
 {
-    int rank = gem->type + gem->size + gem->value_rank_modifier;
+    if (gem_type_unknown == gem->type) return 0;
+
+    int const base_value_index = 5;
+    int rank = base_value_index + gem->type + gem->size + gem->value_rank_modifier;
     if (rank < 1) {
         rank = 1;
     } else if (rank >= gem_values_by_rank_in_cp_count) {

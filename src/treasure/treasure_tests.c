@@ -7,11 +7,15 @@
 void
 coins_test(void);
 
+void
+gem_test(void);
+
 
 int
 main(int argc, char *argv[])
 {
     coins_test();
+    gem_test();
     alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }

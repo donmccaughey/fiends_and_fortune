@@ -7,11 +7,11 @@ struct rnd;
 
 enum gem_size {
     gem_size_very_small = -2,
-    gem_size_small,
-    gem_size_average,
-    gem_size_large,
-    gem_size_very_large,
-    gem_size_huge,
+    gem_size_small      = -1,
+    gem_size_average    =  0,
+    gem_size_large      =  1,
+    gem_size_very_large =  2,
+    gem_size_huge       =  3,
 };
 
 
