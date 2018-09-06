@@ -89,6 +89,48 @@ jewelry_generate_with_fake_median_test(void)
 }
 
 
+static void
+jewelry_generate_for_exceptional_stone_bonus_test(void)
+{
+    struct rnd *rnd = rnd_alloc_fake_fixed(64);
+    struct jewelry jewelry;
+    jewelry_initialize(&jewelry);
+    jewelry_generate(&jewelry, rnd);
+
+    assert(true == jewelry.has_gems);
+    assert(jewelry_form_medallion == jewelry.form);
+    assert(jewelry_material_silver_with_gems == jewelry.material);
+    assert(0 == jewelry.workmanship_bonus);
+    assert(1 == jewelry.exceptional_stone_bonus);
+    assert(gp_to_cp(10000) == jewelry.value_in_cp);
+    assert(str_eq("silver medallion with gems (exceptional stone +1: 10000 gp)", jewelry.true_description));
+
+    jewelry_finalize(&jewelry);
+    rnd_free(rnd);
+}
+
+
+static void
+jewelry_generate_for_exceptional_stone_bonus_multiple_test(void)
+{
+    struct rnd *rnd = rnd_alloc_fake_fixed(72);
+    struct jewelry jewelry;
+    jewelry_initialize(&jewelry);
+    jewelry_generate(&jewelry, rnd);
+
+    assert(true == jewelry.has_gems);
+    assert(jewelry_form_necklace == jewelry.form);
+    assert(jewelry_material_gold_with_gems == jewelry.material);
+    assert(0 == jewelry.workmanship_bonus);
+    assert(128 == jewelry.exceptional_stone_bonus);
+    assert(gp_to_cp(642000) == jewelry.value_in_cp);
+    assert(str_eq("gold necklace with gems (exceptional stone +128: 642000 gp)", jewelry.true_description));
+
+    jewelry_finalize(&jewelry);
+    rnd_free(rnd);
+}
+
+
 void
 jewelry_test(void)
 {
@@ -96,4 +138,6 @@ jewelry_test(void)
     jewelry_generate_with_fake_min_test();
     jewelry_generate_with_fake_max_test();
     jewelry_generate_with_fake_median_test();
+    jewelry_generate_for_exceptional_stone_bonus_test();
+    jewelry_generate_for_exceptional_stone_bonus_multiple_test();
 }
