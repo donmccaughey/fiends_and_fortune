@@ -199,6 +199,7 @@ add_executable(treasure_tests
         src/treasure/coins_test.c
         src/treasure/gem_test.c
         src/treasure/jewelry_test.c
+        src/treasure/magic_item_test.c
         src/treasure/treasure_tests.c
         )
 target_include_directories(treasure_tests PUBLIC src)
