@@ -16,6 +16,9 @@ jewelry_test(void);
 void
 magic_item_test(void);
 
+void
+treasure_test(void);
+
 
 int
 main(int argc, char *argv[])
@@ -24,6 +27,7 @@ main(int argc, char *argv[])
     gem_test();
     jewelry_test();
     magic_item_test();
+    treasure_test();
     alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }
