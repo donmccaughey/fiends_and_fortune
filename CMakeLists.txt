@@ -203,6 +203,7 @@ add_executable(treasure_tests
         src/treasure/treasure_map_test.c
         src/treasure/treasure_test.c
         src/treasure/treasure_tests.c
+        src/treasure/treasure_type_test.c
         )
 target_include_directories(treasure_tests PUBLIC src)
 target_link_libraries(treasure_tests treasure background base magic mechanics)

@@ -22,6 +22,9 @@ treasure_test(void);
 void
 treasure_map_test(void);
 
+void
+treasure_type_test(void);
+
 
 int
 main(int argc, char *argv[])
@@ -32,6 +35,7 @@ main(int argc, char *argv[])
     magic_item_test();
     treasure_test();
     treasure_map_test();
+    treasure_type_test();
     alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }
