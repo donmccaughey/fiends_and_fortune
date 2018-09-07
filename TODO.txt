@@ -15,6 +15,9 @@
 - dungeon: fix printing problem where an empty level is sometimes printed
 - dungeon: when a chute down is generated, make sure there is a way back up?
 
+- treasure: generate description of treasure for false treasure map
+- treasure: for combined hoard treasure map, generate maps to other treasures
+
 - remove points?
 - split magic_item.c up
 - on various magic item table structs, change sale_value_in_gp to cp

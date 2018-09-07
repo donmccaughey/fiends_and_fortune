@@ -200,6 +200,7 @@ add_executable(treasure_tests
         src/treasure/gem_test.c
         src/treasure/jewelry_test.c
         src/treasure/magic_item_test.c
+        src/treasure/treasure_map_test.c
         src/treasure/treasure_test.c
         src/treasure/treasure_tests.c
         )
