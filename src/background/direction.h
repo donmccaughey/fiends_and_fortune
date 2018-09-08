@@ -3,8 +3,7 @@
 
 
 enum direction {
-    direction_unknown=0,
-    direction_north,
+    direction_north = 0,
     direction_south,
     direction_east,
     direction_west,
