@@ -1,6 +1,7 @@
 #include "direction.h"
 
 #include <assert.h>
+#include <base/base.h>
 
 
 enum direction
@@ -43,4 +44,11 @@ direction_opposite(enum direction direction)
     assert(direction >= 0 && direction <= 360);
 
     return (direction + 180) % 360;
+}
+
+
+enum direction
+direction_random(struct rnd *rnd)
+{
+    return rnd_next_uniform_value(rnd, 8) * 45;
 }

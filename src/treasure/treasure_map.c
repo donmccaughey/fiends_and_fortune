@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <background/background.h>
 #include <base/base.h>
 #include <mechanics/mechanics.h>
 
@@ -22,18 +23,6 @@ static char const *treasure_map_types[] = {
     "monetary treasure",
     "magic treasure",
     "combined hoard"
-};
-
-
-static char const *compass_directions[] = {
-    "north",
-    "northeast",
-    "east",
-    "southeast",
-    "south",
-    "southwest",
-    "west",
-    "northwest"
 };
 
 
@@ -397,7 +386,7 @@ treasure_map_generate(struct treasure_map *treasure_map, struct rnd *rnd)
         miles = roll("1d10", rnd) * 50;
     }
     
-    int compass_direction = roll("1d8-1", rnd);
+    enum direction direction = direction_random(rnd);
     if (miles) {
         char const *disposition;
         score = roll("1d100", rnd);
@@ -421,7 +410,7 @@ treasure_map_generate(struct treasure_map *treasure_map, struct rnd *rnd)
                                                              treasure_map_types[treasure_map_type],
                                                              description,
                                                              miles,
-                                                             compass_directions[compass_direction],
+                                                             direction_name(direction),
                                                              disposition);
         free_or_die(description);
     } else {
@@ -430,7 +419,7 @@ treasure_map_generate(struct treasure_map *treasure_map, struct rnd *rnd)
                                                              (treasure_map->is_false ? "false " : ""),
                                                              treasure_map_types[treasure_map_type],
                                                              description,
-                                                             compass_directions[compass_direction]);
+                                                             direction_name(direction));
         free_or_die(description);
     }
 }
