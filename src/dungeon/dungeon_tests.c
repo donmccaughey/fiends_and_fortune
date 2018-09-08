@@ -6,6 +6,9 @@ void
 box_test(void);
 
 void
+direction_test(void);
+
+void
 dungeon_test(void);
 
 void
@@ -19,6 +22,7 @@ int
 main(int argc, char *argv[])
 {
     box_test();
+    direction_test();
     dungeon_test();
     generator_test();
     point_test();

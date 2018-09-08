@@ -140,6 +140,7 @@ target_include_directories(dungeon PUBLIC src)
 
 add_executable(dungeon_tests
         src/dungeon/box_test.c
+        src/dungeon/direction_test.c
         src/dungeon/dungeon_test.c
         src/dungeon/dungeon_tests.c
         src/dungeon/generator_test.c
