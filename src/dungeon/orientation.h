@@ -2,7 +2,7 @@
 #define FNF_DUNGEON_ORIENTATION_H_INCLUDED
 
 
-#include <dungeon/direction.h>
+#include <background/background.h>
 
 
 enum orientation {

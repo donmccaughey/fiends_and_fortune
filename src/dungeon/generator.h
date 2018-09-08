@@ -3,10 +3,10 @@
 
 
 #include <stdbool.h>
+#include <background/background.h>
 
 #include <dungeon/area_type.h>
 #include <dungeon/box.h>
-#include <dungeon/direction.h>
 #include <dungeon/tile_type.h>
 #include <dungeon/wall_type.h>
 

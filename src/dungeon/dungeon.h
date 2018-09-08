@@ -9,7 +9,6 @@
 #include <dungeon/area_type.h>
 #include <dungeon/box.h>
 #include <dungeon/digger.h>
-#include <dungeon/direction.h>
 #include <dungeon/dungeon_options.h>
 #include <dungeon/exit.h>
 #include <dungeon/generator.h>

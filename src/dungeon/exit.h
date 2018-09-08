@@ -2,8 +2,9 @@
 #define FNF_DUNGEON_EXIT_H_INCLUDED
 
 
+#include <background/background.h>
+
 #include <dungeon/box.h>
-#include <dungeon/direction.h>
 #include <dungeon/point.h>
 #include <dungeon/wall_type.h>
 

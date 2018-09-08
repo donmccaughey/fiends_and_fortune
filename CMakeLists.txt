@@ -53,6 +53,7 @@ target_link_libraries(fnf
 # ----- background library -----
 
 add_library(background STATIC
+        src/background/direction.c
         src/background/language.c
         src/background/money.c
         )
@@ -60,6 +61,7 @@ target_include_directories(background PUBLIC src)
 
 add_executable(background_tests
         src/background/background_tests.c
+        src/background/direction_test.c
         src/background/language_test.c
         src/background/money_test.c
         )
@@ -123,7 +125,6 @@ add_library(dungeon STATIC
         src/dungeon/area.c
         src/dungeon/box.c
         src/dungeon/digger.c
-        src/dungeon/direction.c
         src/dungeon/dungeon.c
         src/dungeon/dungeon_options.c
         src/dungeon/exit.c
@@ -140,14 +141,13 @@ target_include_directories(dungeon PUBLIC src)
 
 add_executable(dungeon_tests
         src/dungeon/box_test.c
-        src/dungeon/direction_test.c
         src/dungeon/dungeon_test.c
         src/dungeon/dungeon_tests.c
         src/dungeon/generator_test.c
         src/dungeon/point_test.c
         )
 target_include_directories(dungeon_tests PUBLIC src)
-target_link_libraries(dungeon_tests dungeon base mechanics)
+target_link_libraries(dungeon_tests dungeon background base mechanics)
 add_test(dungeon_tests dungeon_tests)
 
 

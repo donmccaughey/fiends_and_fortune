@@ -3,8 +3,8 @@
 
 
 #include <stdbool.h>
+#include <background/background.h>
 
-#include <dungeon/direction.h>
 #include <dungeon/point.h>
 #include <dungeon/tile_features.h>
 #include <dungeon/tile_type.h>

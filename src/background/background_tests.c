@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #include <base/base.h>
-#include <background/background.h>
 
+
+void
+direction_test(void);
 
 void
 language_test(void);
@@ -14,6 +16,7 @@ money_test(void);
 int
 main(int argc, char *argv[])
 {
+    direction_test();
     language_test();
     money_test();
     alloc_count_is_zero_or_die();

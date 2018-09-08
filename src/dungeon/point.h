@@ -3,8 +3,7 @@
 
 
 #include <stdbool.h>
-
-#include <dungeon/direction.h>
+#include <background/background.h>
 
 
 struct point {

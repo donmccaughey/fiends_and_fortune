@@ -3,6 +3,7 @@
 
 
 #include <stdbool.h>
+#include <background/background.h>
 
 #include <dungeon/area_features.h>
 #include <dungeon/area_type.h>

@@ -1,6 +1,6 @@
 #include <assert.h>
+#include <background/background.h>
 #include <base/base.h>
-#include <dungeon/dungeon.h>
 
 
 void
