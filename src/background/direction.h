@@ -3,10 +3,14 @@
 
 
 enum direction {
-    direction_north =   0,
-    direction_east  =  90,
-    direction_south = 180,
-    direction_west  = 270,
+    direction_north     =   0,
+    direction_northeast =  45,
+    direction_east      =  90,
+    direction_southeast = 135,
+    direction_south     = 180,
+    direction_southwest = 225,
+    direction_west      = 270,
+    direction_northwest = 315,
 };
 
 
