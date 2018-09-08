@@ -29,10 +29,10 @@ char const *
 direction_name(enum direction direction)
 {
     switch (direction) {
-        case direction_north: return "North";
-        case direction_south: return "South";
-        case direction_east: return "East";
-        case direction_west: return "West";
+        case direction_north: return "north";
+        case direction_south: return "south";
+        case direction_east: return "east";
+        case direction_west: return "west";
     }
 }
 

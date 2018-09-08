@@ -69,10 +69,10 @@ direction_opposite_test(void)
 static void
 direction_name_test(void)
 {
-    assert(str_eq("North", direction_name(direction_north)));
-    assert(str_eq("South", direction_name(direction_south)));
-    assert(str_eq("East", direction_name(direction_east)));
-    assert(str_eq("West", direction_name(direction_west)));
+    assert(str_eq("north", direction_name(direction_north)));
+    assert(str_eq("south", direction_name(direction_south)));
+    assert(str_eq("east", direction_name(direction_east)));
+    assert(str_eq("west", direction_name(direction_west)));
 }
 
 
