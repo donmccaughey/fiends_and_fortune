@@ -78,6 +78,25 @@ direction_90_degrees_right_test(void)
 
 
 static void
+direction_is_valid_test(void)
+{
+    assert(direction_is_valid(direction_north));
+    assert(direction_is_valid(direction_northeast));
+    assert(direction_is_valid(direction_east));
+    assert(direction_is_valid(direction_southeast));
+    assert(direction_is_valid(direction_south));
+    assert(direction_is_valid(direction_southwest));
+    assert(direction_is_valid(direction_west));
+    assert(direction_is_valid(direction_northwest));
+
+    assert( ! direction_is_valid(1));
+    assert( ! direction_is_valid(15));
+    assert( ! direction_is_valid(235));
+    assert( ! direction_is_valid(360));
+}
+
+
+static void
 direction_name_test(void)
 {
     assert(str_eq("north", direction_name(direction_north)));
@@ -156,6 +175,7 @@ direction_test(void)
 {
     direction_90_degrees_left_test();
     direction_90_degrees_right_test();
+    direction_is_valid_test();
     direction_name_test();
     direction_opposite_test();
     direction_random_test();

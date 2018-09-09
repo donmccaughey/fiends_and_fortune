@@ -2,6 +2,9 @@
 #define FNF_BACKGROUND_DIRECTION_H_INCLUDED
 
 
+#include <stdbool.h>
+
+
 struct rnd;
 
 
@@ -22,6 +25,12 @@ direction_90_degrees_left(enum direction direction);
 
 enum direction
 direction_90_degrees_right(enum direction direction);
+
+inline bool
+direction_is_valid(unsigned direction)
+{
+    return direction < 360 && 0 == direction % 45;
+}
 
 char const *
 direction_name(enum direction direction);

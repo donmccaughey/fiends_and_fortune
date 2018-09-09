@@ -7,8 +7,7 @@
 enum direction
 direction_90_degrees_left(enum direction direction)
 {
-    assert(direction >= 0 && direction <= 360);
-
+    assert(direction_is_valid(direction));
     return (direction + 270) % 360;
 }
 
@@ -16,15 +15,19 @@ direction_90_degrees_left(enum direction direction)
 enum direction
 direction_90_degrees_right(enum direction direction)
 {
-    assert(direction >= 0 && direction <= 360);
-
+    assert(direction_is_valid(direction));
     return (direction + 90) % 360;
 }
+
+
+extern inline bool
+direction_is_valid(unsigned direction);
 
 
 char const *
 direction_name(enum direction direction)
 {
+    assert(direction_is_valid(direction));
     switch (direction) {
         case direction_north: return "north";
         case direction_northeast: return "northeast";
@@ -41,8 +44,7 @@ direction_name(enum direction direction)
 enum direction
 direction_opposite(enum direction direction)
 {
-    assert(direction >= 0 && direction <= 360);
-
+    assert(direction_is_valid(direction));
     return (direction + 180) % 360;
 }
 
