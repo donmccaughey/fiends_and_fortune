@@ -13,7 +13,6 @@
 #include <dungeon/exit.h>
 #include <dungeon/generator.h>
 #include <dungeon/level_map.h>
-#include <dungeon/orientation.h>
 #include <dungeon/periodic_check.h>
 #include <dungeon/point.h>
 #include <dungeon/size.h>

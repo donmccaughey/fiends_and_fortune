@@ -1,10 +1,10 @@
 #include "level_map.h"
 
 #include <assert.h>
+#include <background/background.h>
 #include <base/base.h>
 
 #include "dungeon.h"
-#include "orientation.h"
 #include "text_rectangle.h"
 #include "tile.h"
 #include "tile_type.h"

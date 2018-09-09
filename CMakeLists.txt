@@ -56,6 +56,7 @@ add_library(background STATIC
         src/background/direction.c
         src/background/language.c
         src/background/money.c
+        src/background/orientation.c
         )
 target_include_directories(background PUBLIC src)
 
@@ -64,6 +65,7 @@ add_executable(background_tests
         src/background/direction_test.c
         src/background/language_test.c
         src/background/money_test.c
+        src/background/orientation_test.c
         )
 target_include_directories(background_tests PUBLIC src)
 target_link_libraries(background_tests background base mechanics)
@@ -130,7 +132,6 @@ add_library(dungeon STATIC
         src/dungeon/exit.c
         src/dungeon/generator.c
         src/dungeon/level_map.c
-        src/dungeon/orientation.c
         src/dungeon/periodic_check.c
         src/dungeon/point.c
         src/dungeon/size.c
@@ -144,7 +145,6 @@ add_executable(dungeon_tests
         src/dungeon/dungeon_test.c
         src/dungeon/dungeon_tests.c
         src/dungeon/generator_test.c
-        src/dungeon/orientation_test.c
         src/dungeon/point_test.c
         )
 target_include_directories(dungeon_tests PUBLIC src)

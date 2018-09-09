@@ -1,8 +1,8 @@
-#ifndef FNF_DUNGEON_ORIENTATION_H_INCLUDED
-#define FNF_DUNGEON_ORIENTATION_H_INCLUDED
+#ifndef FNF_BACKGROUND_ORIENTATION_H_INCLUDED
+#define FNF_BACKGROUND_ORIENTATION_H_INCLUDED
 
 
-#include <background/background.h>
+#include <background/direction.h>
 
 
 enum orientation {

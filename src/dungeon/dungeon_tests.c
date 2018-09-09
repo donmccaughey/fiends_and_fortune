@@ -12,9 +12,6 @@ void
 generator_test(void);
 
 void
-orientation_test(void);
-
-void
 point_test(void);
 
 
@@ -24,7 +21,6 @@ main(int argc, char *argv[])
     box_test();
     dungeon_test();
     generator_test();
-    orientation_test();
     point_test();
     alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
