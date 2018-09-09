@@ -9,8 +9,8 @@ enum orientation {
     orientation_none=0,
     orientation_north_to_south,
     orientation_east_to_west,
-    orientation_north_east_to_south_west,
-    orientation_south_east_to_north_west,
+    orientation_northeast_to_southwest,
+    orientation_southeast_to_northwest,
 };
 
 
