@@ -62,20 +62,25 @@ point_make(int x, int y, int z)
 struct point
 point_move(struct point start, int distance, enum direction direction)
 {
+    assert(direction_is_valid(direction));
     switch (direction) {
         case direction_north:
             return point_make(start.x, start.y + distance, start.z);
-        case direction_south:
-            return point_make(start.x, start.y - distance, start.z);
+        case direction_northeast:
+            return point_make(start.x + distance, start.y + distance, start.z);
         case direction_east:
             return point_make(start.x + distance, start.y, start.z);
+        case direction_southeast:
+            return point_make(start.x + distance, start.y - distance, start.z);
+        case direction_south:
+            return point_make(start.x, start.y - distance, start.z);
+        case direction_southwest:
+            return point_make(start.x - distance, start.y - distance, start.z);
         case direction_west:
             return point_make(start.x - distance, start.y, start.z);
-        default:
-            fail("Unrecognized direction %i", direction);
-            break;
+        case direction_northwest:
+            return point_make(start.x - distance, start.y + distance, start.z);
     }
-    return start;
 }
 
 
@@ -88,7 +93,7 @@ point_north(struct point point)
 
 
 struct point
-point_north_east(struct point point)
+point_northeast(struct point point)
 {
     assert(point.x < INT_MAX);
     assert(point.y < INT_MAX);
@@ -97,7 +102,7 @@ point_north_east(struct point point)
 
 
 struct point
-point_north_west(struct point point)
+point_northwest(struct point point)
 {
     assert(point.x > INT_MIN);
     assert(point.y < INT_MAX);
@@ -152,7 +157,7 @@ point_south(struct point point)
 
 
 struct point
-point_south_east(struct point point)
+point_southeast(struct point point)
 {
     assert(point.x < INT_MAX);
     assert(point.y > INT_MIN);
@@ -161,7 +166,7 @@ point_south_east(struct point point)
 
 
 struct point
-point_south_west(struct point point)
+point_southwest(struct point point)
 {
     assert(point.x > INT_MIN);
     assert(point.y > INT_MIN);

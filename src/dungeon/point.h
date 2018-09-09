@@ -44,16 +44,16 @@ struct point
 point_west(struct point point);
 
 struct point
-point_north_east(struct point point);
+point_northeast(struct point point);
 
 struct point
-point_north_west(struct point point);
+point_northwest(struct point point);
 
 struct point
-point_south_east(struct point point);
+point_southeast(struct point point);
 
 struct point
-point_south_west(struct point point);
+point_southwest(struct point point);
 
 struct point
 point_rotate_90_degrees_left(struct point point, enum direction direction);
