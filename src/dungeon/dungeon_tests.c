@@ -14,6 +14,9 @@ generator_test(void);
 void
 point_test(void);
 
+void
+size_test(void);
+
 
 int
 main(int argc, char *argv[])
@@ -22,6 +25,7 @@ main(int argc, char *argv[])
     dungeon_test();
     generator_test();
     point_test();
+    size_test();
     alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }
