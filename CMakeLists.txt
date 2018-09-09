@@ -144,6 +144,7 @@ add_executable(dungeon_tests
         src/dungeon/dungeon_test.c
         src/dungeon/dungeon_tests.c
         src/dungeon/generator_test.c
+        src/dungeon/orientation_test.c
         src/dungeon/point_test.c
         )
 target_include_directories(dungeon_tests PUBLIC src)
