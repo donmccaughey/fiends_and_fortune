@@ -113,18 +113,36 @@ point_northwest(struct point point)
 struct point
 point_rotate_90_degrees_left(struct point point, enum direction direction)
 {
+    assert(direction_is_valid(direction));
     switch (direction) {
         case direction_north:
+            assert(point.x > INT_MIN);
+            assert(point.y > INT_MIN);
             return point_make(point.x - 1, point.y - 1, point.z);
-        case direction_south:
-            return point_make(point.x + 1, point.y + 1, point.z);
+        case direction_northeast:
+            assert(point.x > INT_MIN + 1);
+            return point_make(point.x - 2, point.y, point.z);
         case direction_east:
+            assert(point.x > INT_MIN);
+            assert(point.y < INT_MAX);
             return point_make(point.x - 1, point.y + 1, point.z);
+        case direction_southeast:
+            assert(point.y < INT_MAX - 1);
+            return point_make(point.x, point.y + 2, point.z);
+        case direction_south:
+            assert(point.x < INT_MAX);
+            assert(point.y < INT_MAX);
+            return point_make(point.x + 1, point.y + 1, point.z);
+        case direction_southwest:
+            assert(point.x < INT_MAX - 1);
+            return point_make(point.x + 2, point.y, point.z);
         case direction_west:
+            assert(point.x < INT_MAX);
+            assert(point.y > INT_MIN);
             return point_make(point.x + 1, point.y - 1, point.z);
-        default:
-            fail("Unrecognized direction %i", direction);
-            return point;
+        case direction_northwest:
+            assert(point.y > INT_MIN + 1);
+            return point_make(point.x, point.y - 2, point.z);
     }
 }
 
@@ -132,18 +150,36 @@ point_rotate_90_degrees_left(struct point point, enum direction direction)
 struct point
 point_rotate_90_degrees_right(struct point point, enum direction direction)
 {
+    assert(direction_is_valid(direction));
     switch (direction) {
         case direction_north:
+            assert(point.x < INT_MAX);
+            assert(point.y > INT_MIN);
             return point_make(point.x + 1, point.y - 1, point.z);
-        case direction_south:
-            return point_make(point.x - 1, point.y + 1, point.z);
+        case direction_northeast:
+            assert(point.y > INT_MIN + 1);
+            return point_make(point.x, point.y - 2, point.z);
         case direction_east:
+            assert(point.x > INT_MIN);
+            assert(point.y > INT_MIN);
             return point_make(point.x - 1, point.y - 1, point.z);
+        case direction_southeast:
+            assert(point.x > INT_MIN + 1);
+            return point_make(point.x - 2, point.y, point.z);
+        case direction_south:
+            assert(point.x > INT_MIN);
+            assert(point.y < INT_MAX);
+            return point_make(point.x - 1, point.y + 1, point.z);
+        case direction_southwest:
+            assert(point.y < INT_MAX - 1);
+            return point_make(point.x, point.y + 2, point.z);
         case direction_west:
+            assert(point.x < INT_MAX);
+            assert(point.y < INT_MAX);
             return point_make(point.x + 1, point.y + 1, point.z);
-        default:
-            fail("Unrecognized direction %i", direction);
-            return point;
+        case direction_northwest:
+            assert(point.x < INT_MAX - 1);
+            return point_make(point.x + 2, point.y, point.z);
     }
 }
 

@@ -14,6 +14,7 @@
     the chimney is preserved
 - dungeon: fix printing problem where an empty level is sometimes printed
 - dungeon: when a chute down is generated, make sure there is a way back up?
+- dungeon: add asserts for int overflow to point_move()
 
 - treasure: generate description of treasure for false treasure map
 - treasure: for combined hoard treasure map, generate maps to other treasures

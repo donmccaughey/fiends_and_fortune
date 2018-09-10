@@ -233,28 +233,40 @@ point_southwest_test(void)
 static void
 point_rotate_90_degrees_left_cardinal_directions_test(void)
 {
-    // 3  .  .  .
-    // 2  .  x  .
-    // 1  .  .  .
-    //    1  2  3
     struct point start = point_make(2, 2, 2);
     struct point end;
 
+    // 3  .  .  .
+    // 2  .  a  .
+    // 1  b  *  .
+    //    1  2  3
     end = point_rotate_90_degrees_left(start, direction_north);
     assert(1 == end.x);
     assert(1 == end.y);
     assert(2 == end.z);
 
+    // 3  b  .  .
+    // 2  *  a  .
+    // 1  .  .  .
+    //    1  2  3
     end = point_rotate_90_degrees_left(start, direction_east);
     assert(1 == end.x);
     assert(3 == end.y);
     assert(2 == end.z);
 
+    // 3  .  *  b
+    // 2  .  a  .
+    // 1  .  .  .
+    //    1  2  3
     end = point_rotate_90_degrees_left(start, direction_south);
     assert(3 == end.x);
     assert(3 == end.y);
     assert(2 == end.z);
 
+    // 3  .  .  .
+    // 2  .  a  *
+    // 1  .  .  b
+    //    1  2  3
     end = point_rotate_90_degrees_left(start, direction_west);
     assert(3 == end.x);
     assert(1 == end.y);
@@ -263,33 +275,149 @@ point_rotate_90_degrees_left_cardinal_directions_test(void)
 
 
 static void
-point_rotate_90_degrees_right_cardinal_directions_test(void)
+point_rotate_90_degrees_left_intercardinal_directions_test(void)
 {
-    // 3  .  .  .
-    // 2  .  x  .
-    // 1  .  .  .
-    //    1  2  3
     struct point start = point_make(2, 2, 2);
     struct point end;
 
+    // 4  .  .  .  .  .
+    // 3  .  .  .  .  .
+    // 2  b  .  a  .  .
+    // 1  .  *  .  .  .
+    // 0  .  .  .  .  .
+    //    0  1  2  3  4
+    end = point_rotate_90_degrees_left(start, direction_northeast);
+    assert(0 == end.x);
+    assert(2 == end.y);
+    assert(2 == end.z);
+
+    // 4  .  .  b  .  .
+    // 3  .  *  .  .  .
+    // 2  .  .  a  .  .
+    // 1  .  .  .  .  .
+    // 0  .  .  .  .  .
+    //    0  1  2  3  4
+    end = point_rotate_90_degrees_left(start, direction_southeast);
+    assert(2 == end.x);
+    assert(4 == end.y);
+    assert(2 == end.z);
+
+    // 4  .  .  .  .  .
+    // 3  .  .  .  *  .
+    // 2  .  .  a  .  b
+    // 1  .  .  .  .  .
+    // 0  .  .  .  .  .
+    //    0  1  2  3  4
+    end = point_rotate_90_degrees_left(start, direction_southwest);
+    assert(4 == end.x);
+    assert(2 == end.y);
+    assert(2 == end.z);
+
+    // 4  .  .  .  .  .
+    // 3  .  .  .  .  .
+    // 2  .  .  a  .  .
+    // 1  .  .  .  *  .
+    // 0  .  .  b  .  .
+    //    0  1  2  3  4
+    end = point_rotate_90_degrees_left(start, direction_northwest);
+    assert(2 == end.x);
+    assert(0 == end.y);
+    assert(2 == end.z);
+}
+
+
+static void
+point_rotate_90_degrees_right_cardinal_directions_test(void)
+{
+    struct point start = point_make(2, 2, 2);
+    struct point end;
+
+    // 3  .  .  .
+    // 2  .  a  .
+    // 1  .  *  b
+    //    1  2  3
     end = point_rotate_90_degrees_right(start, direction_north);
     assert(3 == end.x);
     assert(1 == end.y);
     assert(2 == end.z);
 
+    // 3  .  .  .
+    // 2  *  a  .
+    // 1  b  .  .
+    //    1  2  3
     end = point_rotate_90_degrees_right(start, direction_east);
     assert(1 == end.x);
     assert(1 == end.y);
     assert(2 == end.z);
 
+    // 3  b  *  .
+    // 2  .  a  .
+    // 1  .  .  .
+    //    1  2  3
     end = point_rotate_90_degrees_right(start, direction_south);
     assert(1 == end.x);
     assert(3 == end.y);
     assert(2 == end.z);
 
+    // 3  .  .  b
+    // 2  .  a  *
+    // 1  .  .  .
+    //    1  2  3
     end = point_rotate_90_degrees_right(start, direction_west);
     assert(3 == end.x);
     assert(3 == end.y);
+    assert(2 == end.z);
+}
+
+
+static void
+point_rotate_90_degrees_right_intercardinal_directions_test(void)
+{
+    struct point start = point_make(2, 2, 2);
+    struct point end;
+
+    // 4  .  .  .  .  .
+    // 3  .  .  .  .  .
+    // 2  .  .  a  .  .
+    // 1  .  *  .  .  .
+    // 0  .  .  b  .  .
+    //    0  1  2  3  4
+    end = point_rotate_90_degrees_right(start, direction_northeast);
+    assert(2 == end.x);
+    assert(0 == end.y);
+    assert(2 == end.z);
+
+    // 4  .  .  .  .  .
+    // 3  .  *  .  .  .
+    // 2  b  .  a  .  .
+    // 1  .  .  .  .  .
+    // 0  .  .  .  .  .
+    //    0  1  2  3  4
+    end = point_rotate_90_degrees_right(start, direction_southeast);
+    assert(0 == end.x);
+    assert(2 == end.y);
+    assert(2 == end.z);
+
+    // 4  .  .  b  .  .
+    // 3  .  .  .  *  .
+    // 2  .  .  a  .  .
+    // 1  .  .  .  .  .
+    // 0  .  .  .  .  .
+    //    0  1  2  3  4
+    end = point_rotate_90_degrees_right(start, direction_southwest);
+    assert(2 == end.x);
+    assert(4 == end.y);
+    assert(2 == end.z);
+
+    // 4  .  .  .  .  .
+    // 3  .  .  .  .  .
+    // 2  .  .  a  .  b
+    // 1  .  .  .  *  .
+    // 0  .  .  .  .  .
+    //    0  1  2  3  4
+    end = point_rotate_90_degrees_right(start, direction_northwest);
+    assert(4 == end.x);
+    assert(2 == end.y);
     assert(2 == end.z);
 }
 
@@ -320,6 +448,8 @@ void point_test(void)
     point_southeast_test();
     point_southwest_test();
     point_rotate_90_degrees_left_cardinal_directions_test();
+    point_rotate_90_degrees_left_intercardinal_directions_test();
     point_rotate_90_degrees_right_cardinal_directions_test();
+    point_rotate_90_degrees_right_intercardinal_directions_test();
     point_alloc_xy_test();
 }
