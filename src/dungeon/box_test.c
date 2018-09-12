@@ -234,6 +234,40 @@ box_contains_point_test(void)
 
 
 static void
+box_end_point_test(void)
+{
+    struct box box = box_make(point_make(1, 1, 1), size_make(2, 3, 4));
+    assert(point_equals(point_make(3, 4, 5), box_end_point(box)));
+}
+
+
+static void
+box_area_test(void)
+{
+    struct box empty = box_make_empty(point_make(1, 2, 3));
+    struct box unit = box_make_unit(point_make(1, 2, 3));
+    struct box box = box_make(point_make(1, 2, 3), size_make(2, 3, 4));
+
+    assert(0 == box_area(empty));
+    assert(1 == box_area(unit));
+    assert(6 == box_area(box));
+}
+
+
+static void
+box_volume_test(void)
+{
+    struct box empty = box_make_empty(point_make(1, 2, 3));
+    struct box unit = box_make_unit(point_make(1, 2, 3));
+    struct box box = box_make(point_make(1, 2, 3), size_make(2, 3, 4));
+
+    assert(0 == box_volume(empty));
+    assert(1 == box_volume(unit));
+    assert(24 == box_volume(box));
+}
+
+
+static void
 box_normalize_test(void)
 {
     struct box box1 = box_make(point_make(0, 0, 0), size_make(1, 1, 1));
@@ -365,6 +399,9 @@ void box_test(void)
     box_equals_test();
     box_contains_box_test();
     box_contains_point_test();
+    box_end_point_test();
+    box_volume_test();
+    box_area_test();
     box_normalize_test();
     box_expand_test();
     box_extend_to_include_point_test();
