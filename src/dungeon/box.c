@@ -51,7 +51,15 @@ box_area(struct box box)
 bool
 box_contains_box(struct box box, struct box other)
 {
-    return false;
+    struct point box_end = box_end_point(box);
+    struct point other_end = box_end_point(other);
+
+    return other.origin.x >= box.origin.x
+        && other_end.x <= box_end.x
+        && other.origin.y >= box.origin.y
+        && other_end.y <= box_end.y
+        && other.origin.z >= box.origin.z
+        && other_end.z <= box_end.z;
 }
 
 

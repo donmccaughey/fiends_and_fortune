@@ -21,6 +21,32 @@ box_make_test(void)
 
 
 static void
+box_make_empty_test(void)
+{
+    struct box box = box_make_empty(point_make(1, 2, 3));
+    assert(1 == box.origin.x);
+    assert(2 == box.origin.y);
+    assert(3 == box.origin.z);
+    assert(0 == box.size.width);
+    assert(0 == box.size.length);
+    assert(0 == box.size.height);
+}
+
+
+static void
+box_make_unit_test(void)
+{
+    struct box box = box_make_unit(point_make(1, 2, 3));
+    assert(1 == box.origin.x);
+    assert(2 == box.origin.y);
+    assert(3 == box.origin.z);
+    assert(1 == box.size.width);
+    assert(1 == box.size.length);
+    assert(1 == box.size.height);
+}
+
+
+static void
 box_make_from_boxes_test(void)
 {
     struct box box1 = box_make(point_make(0, 0, 0), size_make(1, 1, 1));
@@ -100,6 +126,110 @@ box_make_from_points_test(void)
     assert(-5 == box.size.width);
     assert(-6 == box.size.length);
     assert(-7 == box.size.height);
+}
+
+
+static void
+box_equals_test(void)
+{
+    struct box box = box_make(point_make(1, 2, 3), size_make(4, 5, 6));
+    struct box identical = box_make(point_make(1, 2, 3), size_make(4, 5, 6));
+    struct box different_point = box_make(point_make(2, 2, 3), size_make(4, 5, 6));
+    struct box different_size = box_make(point_make(1, 2, 3), size_make(4, 5, 7));
+
+    assert(box_equals(box, identical));
+    assert(box_equals(identical, box));
+
+    assert( ! box_equals(box, different_point));
+    assert( ! box_equals(different_point, box));
+
+    assert( ! box_equals(box, different_size));
+    assert( ! box_equals(different_size, box));
+}
+
+
+static void
+box_contains_box_test(void)
+{
+    struct box box = box_make(point_make(1, 1, 1), size_make(4, 4, 4));
+    struct box identical = box_make(point_make(1, 1, 1), size_make(4, 4, 4));
+
+    assert(box_contains_box(box, identical));
+    assert(box_contains_box(identical, box));
+
+    struct box taller = box_make(point_make(1, 1, 1), size_make(4, 4, 5));
+    struct box longer = box_make(point_make(1, 1, 1), size_make(4, 5, 4));
+    struct box wider = box_make(point_make(1, 1, 1), size_make(5, 4, 4));
+
+    assert( ! box_contains_box(box, taller));
+    assert(box_contains_box(taller, box));
+
+    assert( ! box_contains_box(box, longer));
+    assert(box_contains_box(longer, box));
+
+    assert( ! box_contains_box(box, wider));
+    assert(box_contains_box(wider, box));
+
+    struct box shorter = box_make(point_make(1, 1, 1), size_make(4, 4, 3));
+    struct box less_long = box_make(point_make(1, 1, 1), size_make(4, 3, 4));
+    struct box less_wide = box_make(point_make(1, 1, 1), size_make(3, 4, 4));
+
+    assert(box_contains_box(box, shorter));
+    assert( ! box_contains_box(shorter, box));
+
+    assert(box_contains_box(box, less_long));
+    assert( ! box_contains_box(less_long, box));
+
+    assert(box_contains_box(box, less_wide));
+    assert( ! box_contains_box(less_wide, box));
+
+    struct box shifted_x = box_make(point_make(0, 1, 1), size_make(4, 4, 4));
+    struct box shifted_y = box_make(point_make(1, 0, 1), size_make(4, 4, 4));
+    struct box shifted_z = box_make(point_make(1, 1, 0), size_make(4, 4, 4));
+
+    assert( ! box_contains_box(box, shifted_x));
+    assert( ! box_contains_box(shifted_x, box));
+
+    assert( ! box_contains_box(box, shifted_y));
+    assert( ! box_contains_box(shifted_y, box));
+
+    assert( ! box_contains_box(box, shifted_z));
+    assert( ! box_contains_box(shifted_z, box));
+}
+
+
+static void
+box_contains_point_test(void)
+{
+    struct box box = box_make(point_make(1, 1, 1), size_make(4, 4, 4));
+
+    assert(box_contains_point(box, point_make(1, 1, 1)));
+
+    assert(box_contains_point(box, point_make(2, 1, 1)));
+    assert(box_contains_point(box, point_make(1, 2, 1)));
+    assert(box_contains_point(box, point_make(1, 1, 2)));
+
+    assert(box_contains_point(box, point_make(4, 1, 1)));
+    assert(box_contains_point(box, point_make(1, 4, 1)));
+    assert(box_contains_point(box, point_make(1, 1, 4)));
+
+    assert(box_contains_point(box, point_make(4, 4, 1)));
+    assert(box_contains_point(box, point_make(4, 1, 4)));
+    assert(box_contains_point(box, point_make(1, 4, 4)));
+
+    assert(box_contains_point(box, point_make(3, 4, 4)));
+    assert(box_contains_point(box, point_make(4, 3, 4)));
+    assert(box_contains_point(box, point_make(4, 4, 3)));
+
+    assert(box_contains_point(box, point_make(4, 4, 4)));
+
+    assert( ! box_contains_point(box, point_make(0, 1, 1)));
+    assert( ! box_contains_point(box, point_make(1, 0, 1)));
+    assert( ! box_contains_point(box, point_make(1, 1, 0)));
+
+    assert( ! box_contains_point(box, point_make(5, 4, 4)));
+    assert( ! box_contains_point(box, point_make(4, 5, 4)));
+    assert( ! box_contains_point(box, point_make(4, 4, 5)));
 }
 
 
@@ -228,8 +358,13 @@ box_intersects_test(void)
 void box_test(void)
 {
     box_make_test();
+    box_make_empty_test();
+    box_make_unit_test();
     box_make_from_boxes_test();
     box_make_from_points_test();
+    box_equals_test();
+    box_contains_box_test();
+    box_contains_point_test();
     box_normalize_test();
     box_expand_test();
     box_extend_to_include_point_test();
