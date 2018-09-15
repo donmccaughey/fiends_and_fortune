@@ -58,8 +58,12 @@ tile_alloc_copy(struct tile *tile)
 bool
 tile_equals(struct tile const *tile, struct tile const *other)
 {
-    return point_equals(tile->point, other->point)
-        && tile->type == other->type;
+    return tile->direction == other->direction
+        && tile->features == other->features
+        && point_equals(tile->point, other->point)
+        && tile->type == other->type
+        && tile->walls.south == other->walls.south
+        && tile->walls.west == other->walls.west;
 }
 
 
