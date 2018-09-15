@@ -171,6 +171,195 @@ tile_is_unescavated_test(void)
 }
 
 
+static void
+tile_has_south_exit_test(void)
+{
+    struct point point = point_make(1, 2, 3);
+    struct tile *tile = tile_alloc(point, tile_type_empty);
+    tile->walls.south = wall_type_solid;
+
+    assert( ! tile_has_south_exit(tile));
+
+    tile->walls.south = wall_type_secret_door;
+
+    assert(tile_has_south_exit(tile));
+
+    tile->walls.south = wall_type_door;
+
+    assert(tile_has_south_exit(tile));
+
+    tile->walls.south = wall_type_none;
+
+    assert(tile_has_south_exit(tile));
+
+    tile_free(tile);
+}
+
+
+static void
+tile_has_south_wall_test(void)
+{
+    struct point point = point_make(1, 2, 3);
+    struct tile *tile = tile_alloc(point, tile_type_empty);
+    tile->walls.south = wall_type_solid;
+
+    assert(tile_has_south_wall(tile));
+
+    tile->walls.south = wall_type_secret_door;
+
+    assert(tile_has_south_wall(tile));
+
+    tile->walls.south = wall_type_door;
+
+    assert(tile_has_south_wall(tile));
+
+    tile->walls.south = wall_type_none;
+
+    assert( ! tile_has_south_wall(tile));
+
+    tile_free(tile);
+}
+
+
+static void
+tile_has_west_exit_test(void)
+{
+    struct point point = point_make(1, 2, 3);
+    struct tile *tile = tile_alloc(point, tile_type_empty);
+    tile->walls.west = wall_type_solid;
+
+    assert( ! tile_has_west_exit(tile));
+
+    tile->walls.west = wall_type_secret_door;
+
+    assert(tile_has_west_exit(tile));
+
+    tile->walls.west = wall_type_door;
+
+    assert(tile_has_west_exit(tile));
+
+    tile->walls.west = wall_type_none;
+
+    assert(tile_has_west_exit(tile));
+
+    tile_free(tile);
+}
+
+
+static void
+tile_has_west_wall_test(void)
+{
+    struct point point = point_make(1, 2, 3);
+    struct tile *tile = tile_alloc(point, tile_type_empty);
+    tile->walls.west = wall_type_solid;
+
+    assert(tile_has_west_wall(tile));
+
+    tile->walls.west = wall_type_secret_door;
+
+    assert(tile_has_west_wall(tile));
+
+    tile->walls.west = wall_type_door;
+
+    assert(tile_has_west_wall(tile));
+
+    tile->walls.west = wall_type_none;
+
+    assert( ! tile_has_west_wall(tile));
+
+    tile_free(tile);
+}
+
+
+static void
+tile_add_to_array_sorted_by_point_test(void)
+{
+    struct tile **tiles = NULL;
+    int count = 0;
+
+    struct tile *tile1 = tile_alloc(point_make(1, 1, 1), tile_type_empty);
+    tiles = tile_add_to_array_sorted_by_point(tiles, &count, tile1);
+
+    assert(1 == count);
+    assert(tiles);
+    assert(tile1 == tiles[0]);
+
+    struct tile *tile0 = tile_alloc(point_make(0, 1, 1), tile_type_empty);
+    tiles = tile_add_to_array_sorted_by_point(tiles, &count, tile0);
+
+    assert(2 == count);
+    assert(tiles);
+    assert(tile0 == tiles[0]);
+    assert(tile1 == tiles[1]);
+
+    struct tile *tile2 = tile_alloc(point_make(2, 1, 1), tile_type_empty);
+    tiles = tile_add_to_array_sorted_by_point(tiles, &count, tile2);
+
+    assert(3 == count);
+    assert(tiles);
+    assert(tile0 == tiles[0]);
+    assert(tile1 == tiles[1]);
+    assert(tile2 == tiles[2]);
+
+    free_or_die(tiles);
+    tile_free(tile0);
+    tile_free(tile1);
+    tile_free(tile2);
+}
+
+
+static void
+tile_find_in_array_sorted_by_point_test(void)
+{
+    struct tile **tiles = NULL;
+    int count = 0;
+    struct tile **found = NULL;
+
+    found = tile_find_in_array_sorted_by_point(tiles, count, point_make(1, 1, 1));
+    assert( ! found);
+
+    struct tile *tile0 = tile_alloc(point_make(0, 1, 1), tile_type_empty);
+    struct tile *tile1 = tile_alloc(point_make(1, 1, 1), tile_type_empty);
+    struct tile *tile2 = tile_alloc(point_make(2, 1, 1), tile_type_empty);
+    tiles = tile_add_to_array_sorted_by_point(tiles, &count, tile0);
+    tiles = tile_add_to_array_sorted_by_point(tiles, &count, tile1);
+    tiles = tile_add_to_array_sorted_by_point(tiles, &count, tile2);
+
+    found = tile_find_in_array_sorted_by_point(tiles, count, point_make(1, 1, 1));
+    assert(found);
+    assert(tile1 == *found);
+
+    found = tile_find_in_array_sorted_by_point(tiles, count, point_make(3, 1, 1));
+    assert( ! found);
+
+    free_or_die(tiles);
+    tile_free(tile0);
+    tile_free(tile1);
+    tile_free(tile2);
+}
+
+
+static void
+tile_sort_array_by_point_test(void)
+{
+    struct tile *tile0 = tile_alloc(point_make(0, 1, 1), tile_type_empty);
+    struct tile *tile1 = tile_alloc(point_make(1, 1, 1), tile_type_empty);
+    struct tile *tile2 = tile_alloc(point_make(2, 1, 1), tile_type_empty);
+    struct tile *tiles[] = { tile2, tile0, tile1 };
+    int count = (int)(sizeof tiles / sizeof tiles[0]);
+
+    tile_sort_array_by_point(tiles, count);
+
+    assert(tile0 == tiles[0]);
+    assert(tile1 == tiles[1]);
+    assert(tile2 == tiles[2]);
+
+    tile_free(tile0);
+    tile_free(tile1);
+    tile_free(tile2);
+}
+
+
 void
 tile_test(void)
 {
@@ -180,4 +369,11 @@ tile_test(void)
     tile_is_blank_test();
     tile_is_escavated_test();
     tile_is_unescavated_test();
+    tile_has_south_exit_test();
+    tile_has_south_wall_test();
+    tile_has_west_exit_test();
+    tile_has_west_wall_test();
+    tile_add_to_array_sorted_by_point_test();
+    tile_find_in_array_sorted_by_point_test();
+    tile_sort_array_by_point_test();
 }
