@@ -15,9 +15,13 @@ The code is modern C99.
 ## License
 
 _Fiends And Fortune_ is available under a BSD-style license.  See the
-[`LICENSE`][21] file for details.
+[`LICENSE`][21] file for details.  The [_cJSON_ library][22] is available under 
+an [MIT license][23].
+
 
 [21]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/LICENSE
+[22]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/libs/cJSON
+[23]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/libs/cJSON/LICENSE
 
 ## Building From Source
 
@@ -32,8 +36,11 @@ a C toolchain, [CMake][31] and the [`ncurses`][32] library installed.
     cmake -G "Unix Makefiles" ..
     make all test
 
+This repository contains a copy of the [cJSON 1.7.7][33] source.
+
 [31]: https://cmake.org
 [32]: https://invisible-island.net/ncurses/
+[33]: https://github.com/DaveGamble/cJSON
 
 ## Motivation
 

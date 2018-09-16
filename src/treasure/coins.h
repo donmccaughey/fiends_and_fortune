@@ -5,6 +5,9 @@
 #include <stdbool.h>
 
 
+struct cJSON;
+
+
 struct coins {
     int pp;
     int gp;
@@ -20,6 +23,9 @@ coins_alloc_description(struct coins coins);
 char *
 coins_alloc_gp_cp_description(int cp);
 
+struct cJSON *
+coins_create_json_object(struct coins *coins);
+
 bool
 coins_is_zero(struct coins coins);
 
@@ -31,6 +37,9 @@ coins_make_from_cp(int cp);
 
 struct coins
 coins_make_from_gp_cp(int gp, int cp);
+
+struct coins
+coins_make_from_json_object(struct cJSON *json);
 
 struct coins
 coins_make_zero(void);

@@ -22,6 +22,7 @@ target_link_libraries(fiends
         background
         base
         character
+        cjson
         dungeon
         magic
         mechanics
@@ -43,6 +44,7 @@ target_link_libraries(fnf
         background
         base
         character
+        cjson
         dungeon
         magic
         mechanics
@@ -119,6 +121,13 @@ add_executable(character_tests
 target_include_directories(character_tests PUBLIC src)
 target_link_libraries(character_tests character base mechanics)
 add_test(character_tests character_tests)
+
+
+# ----- cJSON library -----
+
+add_library(cjson STATIC
+        libs/cJSON/cJSON.c
+        )
 
 
 # ----- dungeon library -----
@@ -198,6 +207,7 @@ add_library(treasure STATIC
         src/treasure/treasure_type.c
         )
 target_include_directories(treasure PUBLIC src)
+target_include_directories(treasure PUBLIC libs)
 
 add_executable(treasure_tests
         src/treasure/coins_test.c
@@ -210,9 +220,15 @@ add_executable(treasure_tests
         src/treasure/treasure_type_test.c
         )
 target_include_directories(treasure_tests PUBLIC src)
-target_link_libraries(treasure_tests treasure background base magic mechanics)
+target_include_directories(treasure_tests PUBLIC libs)
+target_link_libraries(treasure_tests
+        treasure
+        background
+        base
+        cjson
+        magic
+        mechanics)
 add_test(treasure_tests treasure_tests)
-
 
 
 # ----- tui library -----

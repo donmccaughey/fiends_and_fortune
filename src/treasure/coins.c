@@ -1,8 +1,17 @@
 #include "coins.h"
 
+#include <limits.h>
 #include <stdio.h>
 #include <base/base.h>
 #include <background/background.h>
+#include <cJSON/cJSON.h>
+
+
+static int
+get_json_int_value(struct cJSON *json, char const *name, int default_value);
+
+static bool
+has_json_struct_member(struct cJSON *json, char const *struct_name);
 
 
 char *
@@ -45,6 +54,21 @@ coins_alloc_gp_cp_description(int cp)
     } else {
         return str_alloc_formatted("%i cp", coins.cp);
     }
+}
+
+
+struct cJSON *
+coins_create_json_object(struct coins *coins)
+{
+    struct cJSON *json = cJSON_CreateObject();
+    cJSON_AddStringToObject(json, "struct", "coins");
+    cJSON_AddNumberToObject(json, "rev", 0);
+    cJSON_AddNumberToObject(json, "pp", coins->pp);
+    cJSON_AddNumberToObject(json, "gp", coins->gp);
+    cJSON_AddNumberToObject(json, "ep", coins->ep);
+    cJSON_AddNumberToObject(json, "sp", coins->sp);
+    cJSON_AddNumberToObject(json, "cp", coins->cp);
+    return json;
 }
 
 
@@ -135,6 +159,21 @@ coins_make_from_gp_cp(int gp, int cp)
 
 
 struct coins
+coins_make_from_json_object(struct cJSON *json)
+{
+    if ( ! has_json_struct_member(json, "coins")) return coins_make_zero();
+
+    struct coins coins = coins_make_zero();
+    coins.pp = get_json_int_value(json, "pp", 0);
+    coins.gp = get_json_int_value(json, "gp", 0);
+    coins.ep = get_json_int_value(json, "ep", 0);
+    coins.sp = get_json_int_value(json, "sp", 0);
+    coins.cp = get_json_int_value(json, "cp", 0);
+    return coins;
+}
+
+
+struct coins
 coins_make_zero(void)
 {
     return coins_make(0, 0, 0, 0, 0);
@@ -205,4 +244,24 @@ coins_to_cp(struct coins coins)
     coins = coins_ep_to_sp(coins);
     coins = coins_sp_to_cp(coins);
     return coins.cp;
+}
+
+
+static int
+get_json_int_value(struct cJSON *json, char const *name, int default_value)
+{
+    struct cJSON *item = cJSON_GetObjectItemCaseSensitive(json, name);
+    if ( ! cJSON_IsNumber(item)) return default_value;
+    if (item->valuedouble > (double)INT_MAX) return INT_MAX;
+    if (item->valuedouble < (double)INT_MIN) return INT_MIN;
+    return (int)item->valuedouble;
+}
+
+
+static bool
+has_json_struct_member(struct cJSON *json, char const *struct_name)
+{
+    struct cJSON *struct_member = cJSON_GetObjectItem(json, "struct");
+    char const *string_value = cJSON_GetStringValue(struct_member);
+    return string_value && str_eq(struct_name, string_value);
 }

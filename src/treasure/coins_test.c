@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <base/base.h>
+#include <cJSON/cJSON.h>
 #include <treasure/treasure.h>
 
 
@@ -72,6 +73,56 @@ coins_alloc_gp_cp_description_test(void)
     description = coins_alloc_gp_cp_description(400);
     assert(str_eq("2 gp", description));
     free_or_die(description);
+}
+
+
+static void
+coins_create_json_object_test(void)
+{
+    struct coins coins = coins_make(1, 2, 3, 4, 5);
+    struct cJSON *json = coins_create_json_object(&coins);
+
+    assert(cJSON_IsObject(json));
+
+    char *json_string = cJSON_PrintUnformatted(json);
+    char const *expected = "{"
+                           "\"struct\":\"coins\","
+                           "\"rev\":0,"
+                           "\"pp\":1,"
+                           "\"gp\":2,"
+                           "\"ep\":3,"
+                           "\"sp\":4,"
+                           "\"cp\":5"
+                           "}";
+    assert(str_eq(expected, json_string));
+
+    free(json_string);
+    cJSON_Delete(json);
+}
+
+
+static void
+coins_create_json_object_for_zero_test(void)
+{
+    struct coins coins = coins_make_zero();
+    struct cJSON *json = coins_create_json_object(&coins);
+
+    assert(cJSON_IsObject(json));
+
+    char *json_string = cJSON_PrintUnformatted(json);
+    char const *expected = "{"
+                           "\"struct\":\"coins\","
+                           "\"rev\":0,"
+                           "\"pp\":0,"
+                           "\"gp\":0,"
+                           "\"ep\":0,"
+                           "\"sp\":0,"
+                           "\"cp\":0"
+                           "}";
+    assert(str_eq(expected, json_string));
+
+    free(json_string);
+    cJSON_Delete(json);
 }
 
 
@@ -201,6 +252,106 @@ coins_make_from_cp_test(void)
     assert(1 == coins.ep);
     assert(9 == coins.sp);
     assert(9 == coins.cp);
+}
+
+
+static void
+coins_make_from_gp_cp_test(void)
+{
+    struct coins coins = coins_make_from_gp_cp(0, 0);
+    assert(coins_is_zero(coins));
+
+    coins = coins_make_from_gp_cp(1, 2);
+    assert(0 == coins.pp);
+    assert(1 == coins.gp);
+    assert(0 == coins.ep);
+    assert(0 == coins.sp);
+    assert(2 == coins.cp);
+
+    coins = coins_make_from_gp_cp(1, 200);
+    assert(0 == coins.pp);
+    assert(2 == coins.gp);
+    assert(0 == coins.ep);
+    assert(0 == coins.sp);
+    assert(0 == coins.cp);
+
+    coins = coins_make_from_gp_cp(1, 203);
+    assert(0 == coins.pp);
+    assert(2 == coins.gp);
+    assert(0 == coins.ep);
+    assert(0 == coins.sp);
+    assert(3 == coins.cp);
+}
+
+
+static void
+coins_make_from_json_object_for_empty_object_test(void)
+{
+    char const *json_string = "{}";
+    struct cJSON *json = cJSON_Parse(json_string);
+    struct coins coins = coins_make_from_json_object(json);
+
+    assert(coins_is_zero(coins));
+
+    cJSON_Delete(json);
+}
+
+
+static void
+coins_make_from_json_object_for_empty_array_test(void)
+{
+    char const *json_string = "[]";
+    struct cJSON *json = cJSON_Parse(json_string);
+    struct coins coins = coins_make_from_json_object(json);
+
+    assert(coins_is_zero(coins));
+
+    cJSON_Delete(json);
+}
+
+
+static void
+coins_make_from_json_object_for_complete_object_test(void)
+{
+    char const *json_string = "{\n"
+                              "  \"struct\": \"coins\",\n"
+                              "  \"rev\": 0,\n"
+                              "  \"pp\": 5,\n"
+                              "  \"gp\": 10,\n"
+                              "  \"ep\": 50,\n"
+                              "  \"sp\": 100,\n"
+                              "  \"cp\": 200\n"
+                              "}";
+    struct cJSON *json = cJSON_Parse(json_string);
+    struct coins coins = coins_make_from_json_object(json);
+    
+    assert(5 == coins.pp);
+    assert(10 == coins.gp);
+    assert(50 == coins.ep);
+    assert(100 == coins.sp);
+    assert(200 == coins.cp);
+
+    cJSON_Delete(json);
+}
+
+
+static void
+coins_make_from_json_object_for_missing_struct_key_test(void)
+{
+    char const *json_string = "{\n"
+                              "  \"rev\": 0,\n"
+                              "  \"pp\": 5,\n"
+                              "  \"gp\": 10,\n"
+                              "  \"ep\": 50,\n"
+                              "  \"sp\": 100,\n"
+                              "  \"cp\": 200\n"
+                              "}";
+    struct cJSON *json = cJSON_Parse(json_string);
+    struct coins coins = coins_make_from_json_object(json);
+
+    assert(coins_is_zero(coins));
+
+    cJSON_Delete(json);
 }
 
 
@@ -503,9 +654,16 @@ coins_test(void)
 {
     coins_alloc_description_test();
     coins_alloc_gp_cp_description_test();
+    coins_create_json_object_test();
+    coins_create_json_object_for_zero_test();
     coins_is_zero_test();
     coins_make_test();
     coins_make_from_cp_test();
+    coins_make_from_gp_cp_test();
+    coins_make_from_json_object_for_empty_object_test();
+    coins_make_from_json_object_for_empty_array_test();
+    coins_make_from_json_object_for_complete_object_test();
+    coins_make_from_json_object_for_missing_struct_key_test();
     coins_make_zero_test();
     coins_normalize_test();
     coins_normalize_to_gp_cp_test();
