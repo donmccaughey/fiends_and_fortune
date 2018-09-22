@@ -124,6 +124,11 @@ static int const gem_values_by_rank_in_cp[] = {
 static size_t const gem_values_by_rank_in_cp_count = sizeof gem_values_by_rank_in_cp
                                                    / sizeof(gem_values_by_rank_in_cp[0]);
 
+static char *
+gem_alloc_true_description_modifiers(struct gem *gem);
+
+static char *
+gem_alloc_true_description_prefix(struct gem *gem);
 
 static char const *
 gem_kind_name(struct gem *gem);
@@ -395,6 +400,27 @@ gem_generate_colors(struct gem *gem, struct rnd *rnd)
 static char *
 gem_alloc_true_description(struct gem *gem)
 {
+    char *prefix = gem_alloc_true_description_prefix(gem);
+    char *modifiers = gem_alloc_true_description_modifiers(gem);
+    int value_in_cp = gem_value_in_cp(gem);
+    char *value = coins_alloc_gp_cp_description(value_in_cp);
+
+    char const *separator = str_not_empty(modifiers) ? ": " : "";
+    char *true_description = str_alloc_formatted("%s (%s%s%s)",
+                                                 prefix, modifiers,
+                                                 separator, value);
+
+    free_or_die(value);
+    free_or_die(modifiers);
+    free_or_die(prefix);
+
+    return true_description;
+}
+
+
+static char *
+gem_alloc_true_description_prefix(struct gem *gem)
+{
     return str_alloc_formatted("%s %s", gem_size_name(gem), gem_kind_name(gem));
 }
 
@@ -531,21 +557,7 @@ gem_generate(struct gem *gem, struct rnd *rnd)
              && gem->value_rank_modifier < 7);
     
     gem->colors = gem_generate_colors(gem, rnd);
-    
-    char *true_description = gem_alloc_true_description(gem);
-    char *true_modifiers = gem_alloc_true_description_modifiers(gem);
-    int value_in_cp = gem_value_in_cp(gem);
-    char *value_description = coins_alloc_gp_cp_description(value_in_cp);
-    
-    char const *separator = str_not_empty(true_modifiers) ? ": " : "";
-    gem->true_description = str_alloc_formatted("%s (%s%s%s)",
-                                                true_description, true_modifiers,
-                                                separator, value_description);
-    
-    free_or_die(value_description);
-    free_or_die(true_modifiers);
-    free_or_die(true_description);
-    
+    gem->true_description = gem_alloc_true_description(gem);
     gem->visible_description = gem_alloc_visible_description(gem);
 }
 
