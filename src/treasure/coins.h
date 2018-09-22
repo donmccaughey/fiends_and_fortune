@@ -39,7 +39,7 @@ struct coins
 coins_make_from_gp_cp(int gp, int cp);
 
 struct coins
-coins_make_from_json_object(struct cJSON *json);
+coins_make_from_json_object(struct cJSON *json_object);
 
 struct coins
 coins_make_zero(void);

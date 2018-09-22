@@ -1,17 +1,9 @@
 #include "coins.h"
 
-#include <limits.h>
 #include <stdio.h>
 #include <base/base.h>
 #include <background/background.h>
-#include <cJSON/cJSON.h>
-
-
-static int
-get_json_int_value(struct cJSON *json, char const *name, int default_value);
-
-static bool
-has_json_struct_member(struct cJSON *json, char const *struct_name);
+#include <json/json.h>
 
 
 char *
@@ -159,16 +151,18 @@ coins_make_from_gp_cp(int gp, int cp)
 
 
 struct coins
-coins_make_from_json_object(struct cJSON *json)
+coins_make_from_json_object(struct cJSON *json_object)
 {
-    if ( ! has_json_struct_member(json, "coins")) return coins_make_zero();
-
     struct coins coins = coins_make_zero();
-    coins.pp = get_json_int_value(json, "pp", 0);
-    coins.gp = get_json_int_value(json, "gp", 0);
-    coins.ep = get_json_int_value(json, "ep", 0);
-    coins.sp = get_json_int_value(json, "sp", 0);
-    coins.cp = get_json_int_value(json, "cp", 0);
+
+    if ( ! cJSON_IsObject(json_object)) return coins;
+    if ( !json_object_has_struct_member(json_object, "coins")) return coins;
+
+    coins.pp = json_object_get_int_value(json_object, "pp", 0);
+    coins.gp = json_object_get_int_value(json_object, "gp", 0);
+    coins.ep = json_object_get_int_value(json_object, "ep", 0);
+    coins.sp = json_object_get_int_value(json_object, "sp", 0);
+    coins.cp = json_object_get_int_value(json_object, "cp", 0);
     return coins;
 }
 
@@ -244,24 +238,4 @@ coins_to_cp(struct coins coins)
     coins = coins_ep_to_sp(coins);
     coins = coins_sp_to_cp(coins);
     return coins.cp;
-}
-
-
-static int
-get_json_int_value(struct cJSON *json, char const *name, int default_value)
-{
-    struct cJSON *item = cJSON_GetObjectItemCaseSensitive(json, name);
-    if ( ! cJSON_IsNumber(item)) return default_value;
-    if (item->valuedouble > (double)INT_MAX) return INT_MAX;
-    if (item->valuedouble < (double)INT_MIN) return INT_MIN;
-    return (int)item->valuedouble;
-}
-
-
-static bool
-has_json_struct_member(struct cJSON *json, char const *struct_name)
-{
-    struct cJSON *struct_member = cJSON_GetObjectItem(json, "struct");
-    char const *string_value = cJSON_GetStringValue(struct_member);
-    return string_value && str_eq(struct_name, string_value);
 }

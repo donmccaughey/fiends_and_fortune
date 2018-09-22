@@ -24,6 +24,7 @@ target_link_libraries(fiends
         character
         cjson
         dungeon
+        json
         magic
         mechanics
         treasure
@@ -46,6 +47,7 @@ target_link_libraries(fnf
         character
         cjson
         dungeon
+        json
         magic
         mechanics
         treasure
@@ -163,6 +165,23 @@ target_link_libraries(dungeon_tests dungeon background base mechanics)
 add_test(dungeon_tests dungeon_tests)
 
 
+# ----- json library -----
+
+add_library(json STATIC
+        src/json/json.c
+        )
+target_include_directories(json PUBLIC src)
+target_include_directories(json PUBLIC libs)
+
+add_executable(json_tests
+        src/json/json_tests.c
+        )
+target_include_directories(json_tests PUBLIC src)
+target_include_directories(json_tests PUBLIC libs)
+target_link_libraries(json_tests json base cjson)
+add_test(json_tests json_tests)
+
+
 # ----- magic library -----
 
 add_library(magic STATIC
@@ -226,6 +245,7 @@ target_link_libraries(treasure_tests
         background
         base
         cjson
+        json
         magic
         mechanics)
 add_test(treasure_tests treasure_tests)
@@ -273,6 +293,7 @@ add_custom_target(check
         COMMAND base_tests
         COMMAND character_tests
         COMMAND dungeon_tests
+        COMMAND json_tests
         COMMAND magic_tests
         COMMAND mechanics_tests
         COMMAND treasure_tests
@@ -285,6 +306,7 @@ add_dependencies(check
         base_tests
         character_tests
         dungeon_tests
+        json_tests
         magic_tests
         mechanics_tests
         treasure_tests
