@@ -462,8 +462,7 @@ spell_determine(struct rnd *rnd,
         { spell_type_illusionist, 7, "prismatic wall" },
         { spell_type_illusionist, 7, "vision" }
     };
-    size_t const spells_table_count = sizeof spells_table
-                                    / sizeof spells_table[0];
+    size_t const spells_table_count = ARRAY_COUNT(spells_table);
     
     int total = 0;
     for (int i = 0; i < spells_table_count; ++i) {

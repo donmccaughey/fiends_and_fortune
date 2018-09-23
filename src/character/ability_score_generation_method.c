@@ -1,6 +1,7 @@
 #include "ability_score_generation_method.h"
 
 #include <string.h>
+#include <base/base.h>
 
 
 static struct {
@@ -58,8 +59,7 @@ static struct {
                 .description="roll 3d6 once per normal ability; for profession abilities, add 1 to each die less than 6",
         },
 };
-static int generation_method_count = sizeof generation_method
-                                   / sizeof generation_method[0];
+static int generation_method_count = ARRAY_COUNT(generation_method);
 
 
 char const *

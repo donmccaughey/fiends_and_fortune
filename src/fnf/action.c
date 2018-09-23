@@ -1,6 +1,7 @@
 #include "action.h"
 
 #include <string.h>
+#include <base/base.h>
 
 
 static struct {
@@ -15,8 +16,7 @@ static struct {
     { action_map, "map" },
     { action_table, "table" },
 };
-static int action_strings_count = sizeof action_strings
-                                / sizeof action_strings[0];
+static int action_strings_count = ARRAY_COUNT(action_strings);
 
 
 enum action

@@ -186,8 +186,7 @@ generate_armor_or_shield(struct magic_item *magic_item, struct rnd *rnd)
         {  97 - 96, "shield, large, +1, +4 vs missiles", false, 400, 4000 },
         { 100 - 97, "shield -1, missile attractor", false, 0, 750 }
     };
-    static size_t const armor_and_shield_table_count = sizeof armor_and_shield_table
-                                                     / sizeof armor_and_shield_table[0];
+    static size_t const armor_and_shield_table_count = ARRAY_COUNT(armor_and_shield_table);
     
     int score = roll("1d100", rnd);
     int range = 0;
@@ -265,8 +264,7 @@ generate_artifact_or_relic(struct magic_item *magic_item, struct rnd *rnd)
         {  99 - 98, "throne of the gods", 0 },
         { 100 - 99, "wand of Orcus", 10000 }
     };
-    size_t const artifacts_and_relics_table_count = sizeof artifacts_and_relics_table
-                                                  / sizeof artifacts_and_relics_table[0];
+    size_t const artifacts_and_relics_table_count = ARRAY_COUNT(artifacts_and_relics_table);
     
     int score = roll("1d100", rnd);
     int range = 0;
@@ -642,8 +640,7 @@ void magic_item_generate(struct magic_item *magic_item,
         {  86 - 75, SWORD, magic_item_type_sword, generate_sword },
         { 100 - 86, MISC_WEAPON, magic_item_type_misc_weapon, generate_misc_weapon }
     };
-    size_t const magic_items_table_count = sizeof magic_items_table
-                                         / sizeof magic_items_table[0];
+    size_t const magic_items_table_count = ARRAY_COUNT(magic_items_table);
     
     int total = 0;
     for (int i = 0; i < magic_items_table_count; ++i) {
@@ -735,8 +732,7 @@ generate_misc_magic_item_table1(struct magic_item *magic_item, struct rnd *rnd)
         {  98 - 93, "broom of flying", 2000, 10000 },
         { 100 - 98, "Bucknards everfull purse", 1500, 15000, NO_CLASS_RESTRICTIONS, generate_bucknards_everfull_purse }
     };
-    size_t const misc_magic_items_table_count = sizeof misc_magic_items_table
-                                              / sizeof misc_magic_items_table[0];
+    size_t const misc_magic_items_table_count = ARRAY_COUNT(misc_magic_items_table);
     
     int score = roll("1d100", rnd);
     int range = 0;
@@ -796,8 +792,7 @@ generate_misc_magic_item_table2(struct magic_item *magic_item, struct rnd *rnd)
         {  99 - 97, "eyes of minute seeing", 2000, 12500 },
         { 100 - 99, "eyes of petrification", 0, 0, NO_CLASS_RESTRICTIONS, generate_eyes_of_petrification }
     };
-    size_t const misc_magic_items_table_count = sizeof misc_magic_items_table
-                                              / sizeof misc_magic_items_table[0];
+    size_t const misc_magic_items_table_count = ARRAY_COUNT(misc_magic_items_table);
     
     int score = roll("1d100", rnd);
     int range = 0;
@@ -860,8 +855,7 @@ generate_misc_magic_item_table3(struct magic_item *magic_item, struct rnd *rnd)
         {  92 - 91, "jewel of flawlessness", 0, 1000, NO_CLASS_RESTRICTIONS, generate_jewel_of_flawlessness },
         { 100 - 92, "Keoghtom's ointment", 500, 10000 }
     };
-    size_t const misc_magic_items_table_count = sizeof misc_magic_items_table
-                                              / sizeof misc_magic_items_table[0];
+    size_t const misc_magic_items_table_count = ARRAY_COUNT(misc_magic_items_table);
     
     int score = roll("1d100", rnd);
     int range = 0;
@@ -927,8 +921,7 @@ generate_misc_magic_item_table4(struct magic_item *magic_item, struct rnd *rnd)
         {  85 - 84, "portable hole", 5000, 50000 },
         { 100 - 85, "Quaal's feather token", 500, 2000, NO_CLASS_RESTRICTIONS, generate_quaals_feather_token },
     };
-    size_t const misc_magic_items_table_count = sizeof misc_magic_items_table
-                                              / sizeof misc_magic_items_table[0];
+    size_t const misc_magic_items_table_count = ARRAY_COUNT(misc_magic_items_table);
     
     int score = roll("1d100", rnd);
     int range = 0;
@@ -993,8 +986,7 @@ generate_misc_magic_item_table5(struct magic_item *magic_item, struct rnd *rnd)
         {  90 - 87, "well of many worlds", 6000, 12000 },
         { 100 - 90, "wings of flying", 750, 7500 }
     };
-    size_t const misc_magic_items_table_count = sizeof misc_magic_items_table
-                                              / sizeof misc_magic_items_table[0];
+    size_t const misc_magic_items_table_count = ARRAY_COUNT(misc_magic_items_table);
     
     int score = roll("1d100", rnd);
     int range = 0;
@@ -1067,8 +1059,7 @@ generate_misc_weapon(struct magic_item *magic_item, struct rnd *rnd)
         {  99 - 97, "spear, cursed backbiter", "1", 0, 1000 },
         { 100 - 99, "trident (military fork) +3", "1", 1500, 12500 }
     };
-    size_t const misc_weapons_table_count = sizeof misc_weapons_table
-                                          / sizeof misc_weapons_table[0];
+    size_t const misc_weapons_table_count = ARRAY_COUNT(misc_weapons_table);
     
     int score = roll("1d100", rnd);
     int range = 0;
@@ -1310,8 +1301,7 @@ generate_potion(struct magic_item *magic_item, struct rnd *rnd)
         {  97 - 96, "undead control", 700, 2500 },
         { 100 - 97, "water breathing", 400, 900 }
     };
-    size_t const potions_table_count = sizeof potions_table
-                                     / sizeof potions_table[0];
+    size_t const potions_table_count = ARRAY_COUNT(potions_table);
     
     int score = roll("1d100", rnd);
     int range = 0;
@@ -1541,7 +1531,7 @@ generate_ring(struct magic_item *magic_item, struct rnd *rnd)
         {  99 - 98, "wizardry", true, 4000, 50000, MAGIC_USERS },
         { 100 - 99, "x-ray vision", false, 4000, 35000 }
     };
-    size_t const rings_table_count = sizeof rings_table / sizeof rings_table[0];
+    size_t const rings_table_count = ARRAY_COUNT(rings_table);
     
     int score = roll("1d100", rnd);
     int range = 0;
@@ -1642,8 +1632,7 @@ generate_rod_staff_or_wand(struct magic_item *magic_item, struct rnd *rnd)
         {  94 - 92, "wand of secret door & trap location", 5000, 40000 },
         { 100 - 94, "wand of wonder", 6000, 10000 }
     };
-    size_t const rods_staves_and_wands_table_count = sizeof rods_staves_and_wands_table
-                                                   / sizeof rods_staves_and_wands_table[0];
+    size_t const rods_staves_and_wands_table_count = ARRAY_COUNT(rods_staves_and_wands_table);
     
     int score = roll("1d100", rnd);
     int range = 0;
@@ -1702,8 +1691,7 @@ generate_scroll(struct magic_item *magic_item, struct rnd *rnd)
         {  97 - 92, "protection from undead", false, 1, "0", "0", 1500, 1500 * 5 },
         { 100 - 97, "cursed", false, 1, "0", "0" }
     };
-    size_t const scrolls_table_count = sizeof scrolls_table
-                                     / sizeof scrolls_table[0];
+    size_t const scrolls_table_count = ARRAY_COUNT(scrolls_table);
     
     int score = roll("1d100", rnd);
     int range = 0;
@@ -1817,8 +1805,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
         {  95 - 90, "%s -2, cursed", {}, 2, 600, 0 },
         { 100 - 95, "%s, cursed berserking", {}, 4, 900, 0 }
     };
-    size_t const swords_table_count = sizeof swords_table
-                                    / sizeof swords_table[0];
+    size_t const swords_table_count = ARRAY_COUNT(swords_table);
     
     int score = roll("1d100", rnd);
     int range = 0;

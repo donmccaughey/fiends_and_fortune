@@ -79,9 +79,8 @@ language_determine(struct rnd *rnd,
         { 84 - 83, "Troll" },
         { 85 - 84, "Xorn" }
     };
-    size_t const language_table_count = sizeof language_table
-                                      / sizeof language_table[0];
-    
+    size_t const language_table_count = ARRAY_COUNT(language_table);
+
     int total = 0;
     for (int i = 0; i < language_table_count; ++i) {
         if (!contains(exclude, exclude_count, language_table[i].language)) {

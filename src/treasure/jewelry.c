@@ -65,8 +65,7 @@ static struct jewelry_form_table jewelry_form_table[] = {
     { 99, jewelry_form_statuette, "statuette" },
     { 100, jewelry_form_tiara, "tiara" }
 };
-static size_t jewelry_form_table_count = sizeof jewelry_form_table
-                                       / sizeof jewelry_form_table[0];
+static size_t jewelry_form_table_count = ARRAY_COUNT(jewelry_form_table);
 
 
 static char const *const jewelry_material_formats[] = {
@@ -159,8 +158,7 @@ static struct jewelry_rank const jewelry_ranks[] = {
         .materials_count=1
     }
 };
-static size_t const jewelry_rank_count = sizeof jewelry_ranks
-                                       / sizeof jewelry_ranks[0];
+static size_t const jewelry_rank_count = ARRAY_COUNT(jewelry_ranks);
 
 static int const jewelry_min_rank = 1;
 static int const jewelry_max_rank = (int)(jewelry_rank_count - 1);
