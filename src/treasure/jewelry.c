@@ -159,13 +159,42 @@ static struct jewelry_rank const jewelry_ranks[] = {
     }
 };
 static size_t const jewelry_rank_count = ARRAY_COUNT(jewelry_ranks);
-
 static int const jewelry_min_rank = 1;
 static int const jewelry_max_rank = (int)(jewelry_rank_count - 1);
 
 
 static char *
-jewelry_alloc_description(struct jewelry *jewelry)
+jewelry_alloc_true_description_prefix(struct jewelry *jewelry);
+
+static char *
+jewelry_alloc_true_description_modifiers(struct jewelry *jewelry);
+
+
+static char *
+jewelry_alloc_true_description(struct jewelry *jewelry)
+{
+    char *prefix = jewelry_alloc_true_description_prefix(jewelry);
+    char *modifiers = jewelry_alloc_true_description_modifiers(jewelry);
+    int value_in_cp = jewelry_value_in_cp(jewelry);
+    char *value_description = coins_alloc_gp_cp_description(value_in_cp);
+
+    char const *separator = str_not_empty(modifiers) ? ": " : "";
+    char *true_description = str_alloc_formatted("%s (%s%s%s)",
+                                                 prefix,
+                                                 modifiers,
+                                                 separator,
+                                                 value_description);
+
+    free_or_die(modifiers);
+    free_or_die(value_description);
+    free_or_die(prefix);
+
+    return true_description;
+}
+
+
+static char *
+jewelry_alloc_true_description_prefix(struct jewelry *jewelry)
 {
     char const *format = jewelry_material_formats[jewelry->material];
     char const *name = jewelry_form_table[jewelry->form].name;
@@ -174,7 +203,7 @@ jewelry_alloc_description(struct jewelry *jewelry)
 
 
 static char *
-jewelry_alloc_modifiers_description(struct jewelry *jewelry)
+jewelry_alloc_true_description_modifiers(struct jewelry *jewelry)
 {
     char *description = str_alloc_empty();
     if (jewelry->workmanship_bonus) {
@@ -275,22 +304,8 @@ jewelry_generate(struct jewelry *jewelry, struct rnd *rnd)
         }
         jewelry->value_in_cp += gp_to_cp(jewelry->exceptional_stone_bonus * 5000);
     }
-    
-    char *description = jewelry_alloc_description(jewelry);
-    char *modifiers = jewelry_alloc_modifiers_description(jewelry);
-    int value_in_cp = jewelry_value_in_cp(jewelry);
-    char *value_description = coins_alloc_gp_cp_description(value_in_cp);
-    
-    char const *separator = str_not_empty(modifiers) ? ": " : "";
-    jewelry->true_description = str_alloc_formatted("%s (%s%s%s)",
-                                                    description,
-                                                    modifiers,
-                                                    separator,
-                                                    value_description);
-    
-    free_or_die(modifiers);
-    free_or_die(value_description);
-    free_or_die(description);
+
+    jewelry->true_description = jewelry_alloc_true_description(jewelry);
 }
 
 
