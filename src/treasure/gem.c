@@ -5,6 +5,7 @@
 #include <string.h>
 #include <base/base.h>
 #include <background/background.h>
+#include <json/json.h>
 #include <mechanics/mechanics.h>
 
 #include "coins.h"
@@ -24,6 +25,7 @@ static char const *const gem_size_names[] = {
     "very large",
     "huge"
 };
+static size_t gem_size_names_count = ARRAY_COUNT(gem_size_names);
 
 static char const *const gem_type_names[] = {
     "unknown",
@@ -34,6 +36,7 @@ static char const *const gem_type_names[] = {
     "gem",
     "jewel"
 };
+static size_t gem_type_names_count = ARRAY_COUNT(gem_type_names);
 
 static char const *const gem_kind_names[] = {
     "unknown",
@@ -98,6 +101,7 @@ static char const *const gem_kind_names[] = {
     "oriental emerald",
     "ruby",
 };
+static size_t gem_kind_names_count = ARRAY_COUNT(gem_kind_names);
 
 static int const gem_values_by_rank_in_cp[] = {
     0,
@@ -123,6 +127,7 @@ static int const gem_values_by_rank_in_cp[] = {
 
 static size_t const gem_values_by_rank_in_cp_count = ARRAY_COUNT(gem_values_by_rank_in_cp);
 
+// colors constants in sorted ASCII order
 static char const *const colors_apple_green = "apple green";
 static char const *const colors_bands_of_black_and_white = "bands of black and white";
 static char const *const colors_bands_of_red_and_white = "bands of red and white";
@@ -130,8 +135,8 @@ static char const *const colors_black = "black";
 static char const *const colors_blue = "blue";
 static char const *const colors_blue_pale = "blue pale";
 static char const *const colors_brown = "brown";
-static char const *const colors_brown_green = "brown-green";
 static char const *const colors_brown_pale = "brown pale";
+static char const *const colors_brown_green = "brown-green";
 static char const *const colors_circles_of_blue = "circles of blue";
 static char const *const colors_circles_of_brown = "circles of brown";
 static char const *const colors_circles_of_gray = "circles of gray";
@@ -139,8 +144,8 @@ static char const *const colors_circles_of_green = "circles of green";
 static char const *const colors_circles_of_white = "circles of white";
 static char const *const colors_clear = "clear";
 static char const *const colors_clear_blue = "clear blue";
-static char const *const colors_clear_blue_white = "clear blue-white";
 static char const *const colors_clear_blue_with_white_star_center = "clear blue with white 'star' center";
+static char const *const colors_clear_blue_white = "clear blue-white";
 static char const *const colors_clear_bright_green = "clear bright green";
 static char const *const colors_clear_pale_blue_green = "clear pale blue-green";
 static char const *const colors_clear_red = "clear red";
@@ -180,8 +185,8 @@ static char const *const colors_medium_blue_with_white_star_center = "medium blu
 static char const *const colors_mottled_deep_blue = "mottled deep blue";
 static char const *const colors_orange = "orange";
 static char const *const colors_pale_blue = "pale blue";
-static char const *const colors_pale_blue_green = "pale blue-green";
 static char const *const colors_pale_blue_with_green_and_golden_mottling = "pale blue with green and golden mottling";
+static char const *const colors_pale_blue_green = "pale blue-green";
 static char const *const colors_pale_yellow_brown = "pale yellow brown";
 static char const *const colors_pink = "pink";
 static char const *const colors_pinkdeep_greenish = "pinkdeep greenish";
@@ -210,6 +215,7 @@ static char const *const colors_yellow_white_with_grayish_markings = "yellow-whi
 static char const *const colors_yellow_white_with_greenish_markings = "yellow-white with greenish markings";
 static char const *const colors_yellowish = "yellowish";
 
+// colors in sorted ASCII order
 static char const *const colors[] = {
     colors_apple_green,
     colors_bands_of_black_and_white,
@@ -218,8 +224,8 @@ static char const *const colors[] = {
     colors_blue,
     colors_blue_pale,
     colors_brown,
-    colors_brown_green,
     colors_brown_pale,
+    colors_brown_green,
     colors_circles_of_blue,
     colors_circles_of_brown,
     colors_circles_of_gray,
@@ -227,8 +233,8 @@ static char const *const colors[] = {
     colors_circles_of_white,
     colors_clear,
     colors_clear_blue,
-    colors_clear_blue_white,
     colors_clear_blue_with_white_star_center,
+    colors_clear_blue_white,
     colors_clear_bright_green,
     colors_clear_pale_blue_green,
     colors_clear_red,
@@ -268,8 +274,8 @@ static char const *const colors[] = {
     colors_mottled_deep_blue,
     colors_orange,
     colors_pale_blue,
-    colors_pale_blue_green,
     colors_pale_blue_with_green_and_golden_mottling,
+    colors_pale_blue_green,
     colors_pale_yellow_brown,
     colors_pink,
     colors_pinkdeep_greenish,
@@ -307,6 +313,9 @@ gem_alloc_true_description_modifiers(struct gem *gem);
 static char *
 gem_alloc_true_description_prefix(struct gem *gem);
 
+static int
+gem_kind_for_name(char const *name, int default_value);
+
 static char const *
 gem_kind_name(struct gem *gem);
 
@@ -316,11 +325,26 @@ gem_opacity(struct gem *gem);
 static char const *
 gem_opacity_name(struct gem *gem);
 
+static int
+gem_size_for_name(char const *name, int default_value);
+
 static char const *
 gem_size_name(struct gem *gem);
 
+static int
+gem_type_for_name(char const *name, int default_value);
+
 static char const *
 gem_type_name(struct gem *gem);
+
+
+static int
+compare_colors(void const *first, void const *second)
+{
+    char *const *first_color = first;
+    char *const *second_color = second;
+    return strcmp(*first_color, *second_color);
+}
 
 
 static char const *
@@ -629,6 +653,22 @@ gem_alloc_visible_description(struct gem *gem)
 }
 
 
+struct cJSON *
+gem_create_json_object(struct gem *gem)
+{
+    struct cJSON *json = cJSON_CreateObject();
+    cJSON_AddStringToObject(json, "struct", "gem");
+    cJSON_AddNumberToObject(json, "rev", 0);
+    cJSON_AddStringToObject(json, "size", gem_size_name(gem));
+    cJSON_AddStringToObject(json, "type", gem_type_name(gem));
+    cJSON_AddStringToObject(json, "kind", gem_kind_name(gem));
+    cJSON_AddStringToObject(json, "colors", gem->colors);
+    cJSON_AddNumberToObject(json, "value_percent_modifier", gem->value_percent_modifier);
+    cJSON_AddNumberToObject(json, "value_rank_modifier", gem->value_rank_modifier);
+    return json;
+}
+
+
 void
 gem_finalize(struct gem *gem)
 {
@@ -747,6 +787,45 @@ gem_initialize(struct gem *gem)
 }
 
 
+void
+gem_initialize_from_json_object(struct gem *gem, struct cJSON *json_object)
+{
+    gem_initialize(gem);
+
+    if ( ! cJSON_IsObject(json_object)) return;
+    if ( ! json_object_has_struct_member(json_object, "gem")) return;
+
+    gem->size = json_object_get_string_enum_value(json_object, "size", gem_size_for_name, gem_size_average);
+    gem->type = json_object_get_string_enum_value(json_object, "type", gem_type_for_name, gem_type_unknown);
+    gem->kind = json_object_get_string_enum_value(json_object, "kind", gem_kind_for_name, gem_kind_unknown);
+
+    char const *json_colors = json_object_get_string_value(json_object, "colors", colors_gray);
+    char *const *colors_value = bsearch(&json_colors, colors, colors_count, sizeof colors[0], compare_colors);
+    gem->colors = colors_value ? *colors_value : colors_gray;
+
+    gem->value_percent_modifier = json_object_get_int_value(json_object,
+                                                            "value_percent_modifier",
+                                                            0);
+    gem->value_rank_modifier = json_object_get_int_value(json_object,
+                                                         "value_rank_modifier",
+                                                         0);
+    gem->true_description = gem_alloc_true_description(gem);
+    gem->visible_description = gem_alloc_visible_description(gem);
+}
+
+
+static int
+gem_kind_for_name(char const *name, int default_value)
+{
+    if (name) {
+        for (size_t i = 0; i < gem_kind_names_count; ++i) {
+            if (str_eq(name, gem_kind_names[i])) return gem_kind_unknown + i;
+        }
+    }
+    return default_value;
+}
+
+
 static char const *
 gem_kind_name(struct gem *gem)
 {
@@ -838,11 +917,35 @@ gem_opacity_name(struct gem *gem)
 }
 
 
+static int
+gem_size_for_name(char const *name, int default_value)
+{
+    if (name) {
+        for (size_t i = 0; i < gem_size_names_count; ++i) {
+            if (str_eq(name, gem_size_names[i])) return gem_size_very_small + i;
+        }
+    }
+    return default_value;
+}
+
+
 static char const *
 gem_size_name(struct gem *gem)
 {
     int index = gem->size - gem_size_very_small;
     return gem_size_names[index];
+}
+
+
+static int
+gem_type_for_name(char const *name, int default_value)
+{
+    if (name) {
+        for (size_t i = 0; i < gem_type_names_count; ++i) {
+            if (str_eq(name, gem_type_names[i])) return gem_type_unknown + i;
+        }
+    }
+    return default_value;
 }
 
 

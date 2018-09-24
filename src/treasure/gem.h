@@ -2,6 +2,7 @@
 #define FNF_TREASURE_GEM_H_INCLUDED
 
 
+struct cJSON;
 struct rnd;
 
 
@@ -109,6 +110,9 @@ struct gem {
 };
 
 
+struct cJSON *
+gem_create_json_object(struct gem *gem);
+
 void
 gem_finalize(struct gem *gem);
 
@@ -120,6 +124,9 @@ gem_generate(struct gem *gem, struct rnd *rnd);
 
 void
 gem_initialize(struct gem *gem);
+
+void
+gem_initialize_from_json_object(struct gem *gem, struct cJSON *json_object);
 
 
 #endif

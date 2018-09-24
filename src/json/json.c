@@ -20,6 +20,35 @@ json_object_get_int_value(struct cJSON *json_object,
 }
 
 
+int
+json_object_get_string_enum_value(struct cJSON *json_object,
+                                  char const *name,
+                                  json_string_enum_lookup_fn lookup_fn,
+                                  int default_value)
+{
+    assert(cJSON_IsObject(json_object));
+
+    struct cJSON *item = cJSON_GetObjectItemCaseSensitive(json_object, name);
+    if (cJSON_IsString(item)) {
+        return lookup_fn(item->valuestring, default_value);
+    } else {
+        return default_value;
+    }
+}
+
+
+char const *
+json_object_get_string_value(struct cJSON *json_object,
+                             char const *name,
+                             char const *default_value)
+{
+    assert(cJSON_IsObject(json_object));
+
+    struct cJSON *item = cJSON_GetObjectItemCaseSensitive(json_object, name);
+    return cJSON_IsString(item) ? item->valuestring : default_value;
+}
+
+
 bool
 json_object_has_struct_member(struct cJSON *json_object,
                               char const *struct_name)

@@ -1,11 +1,44 @@
 #include <assert.h>
 #include <background/background.h>
 #include <base/base.h>
+#include <cJSON/cJSON.h>
 #include <treasure/treasure.h>
 
 
 void
 gem_test(void);
+
+
+static void
+gem_create_json_object_test(void)
+{
+    struct rnd *rnd = rnd_alloc_fake_median();
+    struct gem gem;
+    gem_initialize(&gem);
+    gem_generate(&gem, rnd);
+    struct cJSON *json_object = gem_create_json_object(&gem);
+
+    assert(cJSON_IsObject(json_object));
+
+    char *json_string = cJSON_PrintUnformatted(json_object);
+    char const *expected = "{"
+                           "\"struct\":\"gem\","
+                           "\"rev\":0,"
+                           "\"size\":\"average\","
+                           "\"type\":\"fancy\","
+                           "\"kind\":\"jade\","
+                           "\"colors\":\"green and white\","
+                           "\"value_percent_modifier\":0,"
+                           "\"value_rank_modifier\":0"
+                           "}";
+    assert(str_eq(expected, json_string));
+
+    free(json_string);
+    cJSON_Delete(json_object);
+
+    gem_finalize(&gem);
+    rnd_free(rnd);
+}
 
 
 static void
@@ -24,6 +57,79 @@ gem_initialize_test(void)
     assert(NULL == gem.visible_description);
 
     gem_finalize(&gem);
+}
+
+
+static void
+gem_initialize_from_json_object_for_empty_object_test(void)
+{
+    char const *json_string = "{}";
+    struct cJSON *json_object = cJSON_Parse(json_string);
+    struct gem gem;
+    gem_initialize_from_json_object(&gem, json_object);
+
+    assert(gem_size_average == gem.size);
+    assert(gem_type_unknown == gem.type);
+    assert(gem_kind_unknown == gem.kind);
+    assert(NULL == gem.colors);
+    assert(0 == gem.value_percent_modifier);
+    assert(0 == gem.value_rank_modifier);
+    assert(NULL == gem.true_description);
+    assert(NULL == gem.visible_description);
+
+    gem_finalize(&gem);
+}
+
+
+static void
+gem_initialize_from_json_object_for_empty_array_test(void)
+{
+    char const *json_string = "[]";
+    struct cJSON *json_object = cJSON_Parse(json_string);
+    struct gem gem;
+    gem_initialize_from_json_object(&gem, json_object);
+
+    assert(gem_size_average == gem.size);
+    assert(gem_type_unknown == gem.type);
+    assert(gem_kind_unknown == gem.kind);
+    assert(NULL == gem.colors);
+    assert(0 == gem.value_percent_modifier);
+    assert(0 == gem.value_rank_modifier);
+    assert(NULL == gem.true_description);
+    assert(NULL == gem.visible_description);
+
+    gem_finalize(&gem);
+}
+
+
+static void
+gem_initialize_from_json_object_for_complete_object_test(void)
+{
+    char const *json_string = "{\n"
+                              "  \"struct\": \"gem\",\n"
+                              "  \"rev\": 0,\n"
+                              "  \"size\": \"large\",\n"
+                              "  \"type\": \"precious\",\n"
+                              "  \"kind\": \"moonstone\",\n"
+                              "  \"colors\": \"white with pale blue glow\",\n"
+                              "  \"value_percent_modifier\": 90,\n"
+                              "  \"value_rank_modifier\": 2\n"
+                              "}";
+    struct cJSON *json_object = cJSON_Parse(json_string);
+    struct gem gem;
+    gem_initialize_from_json_object(&gem, json_object);
+
+    assert(gem_size_large == gem.size);
+    assert(gem_type_precious_stone == gem.type);
+    assert(gem_kind_moonstone == gem.kind);
+    assert(str_eq("white with pale blue glow", gem.colors));
+    assert(90 == gem.value_percent_modifier);
+    assert(2 == gem.value_rank_modifier);
+    assert(str_eq("large moonstone (precious, rank +2, -10%: 9000 gp)", gem.true_description));
+    assert(str_eq("large translucent white with pale blue glow stone", gem.visible_description));
+
+    gem_finalize(&gem);
+    cJSON_Delete(json_object);
 }
 
 
@@ -352,7 +458,11 @@ gem_generate_for_decreased_value_test(void)
 void
 gem_test(void)
 {
+    gem_create_json_object_test();
     gem_initialize_test();
+    gem_initialize_from_json_object_for_empty_object_test();
+    gem_initialize_from_json_object_for_empty_array_test();
+    gem_initialize_from_json_object_for_complete_object_test();
     gem_value_in_cp_for_default_test();
     gem_value_in_cp_for_each_type_test();
     gem_value_in_cp_for_each_size_test();
