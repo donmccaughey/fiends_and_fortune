@@ -6,6 +6,34 @@
 
 
 static void
+json_object_get_bool_value_when_missing_test(void)
+{
+    char const *json_string = "{}";
+    struct cJSON *json_object = cJSON_Parse(json_string);
+
+    int value = json_object_get_bool_value(json_object, "missing", true);
+    assert(true == value);
+
+    cJSON_Delete(json_object);
+}
+
+
+static void
+json_object_get_bool_value_when_present_test(void)
+{
+    char const *json_string = "{"
+                              "  \"foo\": true"
+                              "}";
+    struct cJSON *json_object = cJSON_Parse(json_string);
+
+    int value = json_object_get_bool_value(json_object, "foo", false);
+    assert(true == value);
+
+    cJSON_Delete(json_object);
+}
+
+
+static void
 json_object_get_int_value_when_missing_test(void)
 {
     char const *json_string = "{}";
@@ -135,6 +163,8 @@ json_object_has_struct_member_test(void)
 int
 main(int argc, char *argv[])
 {
+    json_object_get_bool_value_when_missing_test();
+    json_object_get_bool_value_when_present_test();
     json_object_get_int_value_when_missing_test();
     json_object_get_int_value_when_present_test();
     json_object_get_int_value_when_too_big_test();

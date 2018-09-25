@@ -5,6 +5,24 @@
 #include <base/base.h>
 
 
+bool
+json_object_get_bool_value(struct cJSON *json_object,
+                           char const *name,
+                           bool default_value)
+{
+    assert(cJSON_IsObject(json_object));
+
+    struct cJSON *item = cJSON_GetObjectItemCaseSensitive(json_object, name);
+    if (cJSON_IsTrue(item)) {
+        return true;
+    } else if (cJSON_IsFalse(item)) {
+        return false;
+    } else {
+        return default_value;
+    }
+}
+
+
 int
 json_object_get_int_value(struct cJSON *json_object,
                           char const *name,

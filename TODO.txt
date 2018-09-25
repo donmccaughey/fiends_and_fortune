@@ -18,6 +18,8 @@
 
 - treasure: generate description of treasure for false treasure map
 - treasure: for combined hoard treasure map, generate maps to other treasures
+- treasure: in gem_initialize_from_json_object(), constrain colors to to those
+    available for the given gem_kind.
 
 - remove points?
 - split magic_item.c up

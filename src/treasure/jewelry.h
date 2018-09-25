@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 
+struct cJSON;
 struct rnd;
 
 
@@ -73,6 +74,9 @@ struct jewelry {
 };
 
 
+struct cJSON *
+jewelry_create_json_object(struct jewelry *jewelry);
+
 void
 jewelry_finalize(struct jewelry *jewelry);
 
@@ -81,6 +85,10 @@ jewelry_generate(struct jewelry *jewelry, struct rnd *rnd);
 
 void
 jewelry_initialize(struct jewelry *jewelry);
+
+void
+jewelry_initialize_from_json_object(struct jewelry *jewelry,
+                                    struct cJSON *json_object);
 
 int
 jewelry_value_in_cp(struct jewelry *jewelry);

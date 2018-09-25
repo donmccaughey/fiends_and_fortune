@@ -656,16 +656,16 @@ gem_alloc_visible_description(struct gem *gem)
 struct cJSON *
 gem_create_json_object(struct gem *gem)
 {
-    struct cJSON *json = cJSON_CreateObject();
-    cJSON_AddStringToObject(json, "struct", "gem");
-    cJSON_AddNumberToObject(json, "rev", 0);
-    cJSON_AddStringToObject(json, "size", gem_size_name(gem));
-    cJSON_AddStringToObject(json, "type", gem_type_name(gem));
-    cJSON_AddStringToObject(json, "kind", gem_kind_name(gem));
-    cJSON_AddStringToObject(json, "colors", gem->colors);
-    cJSON_AddNumberToObject(json, "value_percent_modifier", gem->value_percent_modifier);
-    cJSON_AddNumberToObject(json, "value_rank_modifier", gem->value_rank_modifier);
-    return json;
+    struct cJSON *json_object = cJSON_CreateObject();
+    cJSON_AddStringToObject(json_object, "struct", "gem");
+    cJSON_AddNumberToObject(json_object, "rev", 0);
+    cJSON_AddStringToObject(json_object, "size", gem_size_name(gem));
+    cJSON_AddStringToObject(json_object, "type", gem_type_name(gem));
+    cJSON_AddStringToObject(json_object, "kind", gem_kind_name(gem));
+    cJSON_AddStringToObject(json_object, "colors", gem->colors);
+    cJSON_AddNumberToObject(json_object, "value_percent_modifier", gem->value_percent_modifier);
+    cJSON_AddNumberToObject(json_object, "value_rank_modifier", gem->value_rank_modifier);
+    return json_object;
 }
 
 

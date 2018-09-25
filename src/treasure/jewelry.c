@@ -7,6 +7,7 @@
 #include <string.h>
 #include <base/base.h>
 #include <background/background.h>
+#include <json/json.h>
 #include <mechanics/mechanics.h>
 
 #include "coins.h"
@@ -66,6 +67,22 @@ static struct jewelry_form_table jewelry_form_table[] = {
     { 100, jewelry_form_tiara, "tiara" }
 };
 static size_t jewelry_form_table_count = ARRAY_COUNT(jewelry_form_table);
+
+
+static char const *const jewelry_material_names[] = {
+    "fake",
+    "ivory",
+    "silver",
+    "silver and gold",
+    "gold",
+    "jade",
+    "coral",
+    "platinum",
+    "silver with gems",
+    "gold with gems",
+    "platinum with gems",
+};
+static size_t const jewelry_material_names_count = ARRAY_COUNT(jewelry_material_names);
 
 
 static char const *const jewelry_material_formats[] = {
@@ -169,6 +186,15 @@ jewelry_alloc_true_description_prefix(struct jewelry *jewelry);
 static char *
 jewelry_alloc_true_description_modifiers(struct jewelry *jewelry);
 
+static char const *
+jewelry_form_name(struct jewelry *jewelry);
+
+static int
+jewelry_material_for_name(char const *name, int default_value);
+
+static char const *
+jewelry_material_name(struct jewelry *jewelry);
+
 
 static char *
 jewelry_alloc_true_description(struct jewelry *jewelry)
@@ -221,10 +247,48 @@ jewelry_alloc_true_description_modifiers(struct jewelry *jewelry)
 }
 
 
+struct cJSON *
+jewelry_create_json_object(struct jewelry *jewelry)
+{
+    struct cJSON *json_object = cJSON_CreateObject();
+    cJSON_AddStringToObject(json_object, "struct", "jewelry");
+    cJSON_AddNumberToObject(json_object, "rev", 0);
+    cJSON_AddBoolToObject(json_object, "has_gems", jewelry->has_gems);
+    cJSON_AddStringToObject(json_object, "form", jewelry_form_name(jewelry));
+    cJSON_AddStringToObject(json_object, "material", jewelry_material_name(jewelry));
+    cJSON_AddNumberToObject(json_object, "workmanship_bonus", jewelry->workmanship_bonus);
+    cJSON_AddNumberToObject(json_object, "exceptional_stone_bonus", jewelry->exceptional_stone_bonus);
+    cJSON_AddNumberToObject(json_object, "value_in_cp", jewelry->value_in_cp);
+    return json_object;
+}
+
+
 void
 jewelry_finalize(struct jewelry *jewelry)
 {
     free_or_die(jewelry->true_description);
+}
+
+
+static int
+jewelry_form_for_name(char const *name, int default_value)
+{
+    if (name) {
+        for (size_t i = 0; i < jewelry_form_table_count; ++i) {
+            if (str_eq(name, jewelry_form_table[i].name)) return jewelry_form_anklet + i;
+        }
+    }
+    return default_value;
+}
+
+
+static char const *
+jewelry_form_name(struct jewelry *jewelry)
+{
+    assert(jewelry->form >= jewelry_form_anklet);
+    assert(jewelry->form <= jewelry_form_tiara);
+    int index = jewelry->form - jewelry_form_anklet;
+    return jewelry_form_table[index].name;
 }
 
 
@@ -313,6 +377,47 @@ void
 jewelry_initialize(struct jewelry *jewelry)
 {
     memset(jewelry, 0, sizeof(struct jewelry));
+}
+
+
+void
+jewelry_initialize_from_json_object(struct jewelry *jewelry,
+                                    struct cJSON *json_object)
+{
+    jewelry_initialize(jewelry);
+
+    if ( ! cJSON_IsObject(json_object)) return;
+    if ( ! json_object_has_struct_member(json_object, "jewelry")) return;
+
+    jewelry->has_gems = json_object_get_bool_value(json_object, "has_gems", false);
+    jewelry->form = json_object_get_string_enum_value(json_object, "form", jewelry_form_for_name, jewelry_form_anklet);
+    jewelry->material = json_object_get_string_enum_value(json_object, "material", jewelry_material_for_name, jewelry_material_fake);
+    jewelry->workmanship_bonus = json_object_get_int_value(json_object, "workmanship_bonus", 0);
+    jewelry->exceptional_stone_bonus = json_object_get_int_value(json_object, "exceptional_stone_bonus", 0);
+    jewelry->value_in_cp = json_object_get_int_value(json_object, "value_in_cp", 0);
+    jewelry->true_description = jewelry_alloc_true_description(jewelry);
+}
+
+
+static int
+jewelry_material_for_name(char const *name, int default_value)
+{
+    if (name) {
+        for (size_t i = 0; i < jewelry_material_names_count; ++i) {
+            if (str_eq(name, jewelry_material_names[i])) return jewelry_material_fake + i;
+        }
+    }
+    return default_value;
+}
+
+
+static char const *
+jewelry_material_name(struct jewelry *jewelry)
+{
+    assert(jewelry->material >= jewelry_material_fake);
+    assert(jewelry->material <= jewelry_material_platinum_with_gems);
+    int index = jewelry->material - jewelry_material_fake;
+    return jewelry_material_names[index];
 }
 
 
