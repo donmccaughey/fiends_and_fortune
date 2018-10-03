@@ -10,6 +10,21 @@ typedef int
 (json_string_enum_lookup_fn)(char const *value, int default_value);
 
 
+char *
+json_array_alloc_string_value(struct cJSON *json_array,
+                              int index,
+                              char const *default_value);
+
+char const *
+json_array_get_string_value(struct cJSON *json_array,
+                            int index,
+                            char const *default_value);
+
+char *
+json_object_alloc_string_value(struct cJSON *json_object,
+                               char const *name,
+                               char const *default_value);
+
 bool
 json_object_get_bool_value(struct cJSON *json_object,
                            char const *name,

@@ -6,6 +6,200 @@
 
 
 static void
+json_array_alloc_string_value_when_missing_test(void)
+{
+    char const *json_string = "[]";
+    struct cJSON *json_array = cJSON_Parse(json_string);
+
+    char const missing[] = "(missing)";
+    char *value = json_array_alloc_string_value(json_array, 0, missing);
+
+    assert(str_eq(missing, value));
+    assert(missing != value);
+
+    free_or_die(value);
+    cJSON_Delete(json_array);
+}
+
+
+static void
+json_array_alloc_string_value_when_present_test(void)
+{
+    char const *json_string = "[ \"present\" ]";
+    struct cJSON *json_array = cJSON_Parse(json_string);
+
+    char const missing[] = "(missing)";
+    char *value = json_array_alloc_string_value(json_array, 0, missing);
+
+    assert(str_eq("present", value));
+
+    free_or_die(value);
+    cJSON_Delete(json_array);
+}
+
+
+static void
+json_array_alloc_string_value_when_bad_value_test(void)
+{
+    char const *json_string = "[ true ]";
+    struct cJSON *json_array = cJSON_Parse(json_string);
+
+    char const missing[] = "(missing)";
+    char *value = json_array_alloc_string_value(json_array, 0, missing);
+
+    assert(str_eq(missing, value));
+    assert(missing != value);
+
+    free_or_die(value);
+    cJSON_Delete(json_array);
+}
+
+
+static void
+json_array_alloc_string_value_when_default_is_null_test(void)
+{
+    char const *json_string = "[]";
+    struct cJSON *json_array = cJSON_Parse(json_string);
+
+    char *value = json_array_alloc_string_value(json_array, 0, NULL);
+
+    assert(NULL == value);
+
+    free_or_die(value);
+    cJSON_Delete(json_array);
+}
+
+
+static void
+json_array_get_string_value_when_missing_test(void)
+{
+    char const *json_string = "[]";
+    struct cJSON *json_array = cJSON_Parse(json_string);
+
+    char const missing[] = "(missing)";
+    char const *value = json_array_get_string_value(json_array, 0, missing);
+
+    assert(str_eq(missing, value));
+    assert(missing == value);
+
+    cJSON_Delete(json_array);
+}
+
+
+static void
+json_array_get_string_value_when_present_test(void)
+{
+    char const *json_string = "[ \"present\" ]";
+    struct cJSON *json_array = cJSON_Parse(json_string);
+
+    char const missing[] = "(missing)";
+    char const *value = json_array_get_string_value(json_array, 0, missing);
+
+    assert(str_eq("present", value));
+
+    cJSON_Delete(json_array);
+}
+
+
+static void
+json_array_get_string_value_when_bad_value_test(void)
+{
+    char const *json_string = "[ false ]";
+    struct cJSON *json_array = cJSON_Parse(json_string);
+
+    char const missing[] = "(missing)";
+    char const *value = json_array_get_string_value(json_array, 0, missing);
+
+    assert(str_eq(missing, value));
+    assert(missing == value);
+
+    cJSON_Delete(json_array);
+}
+
+
+static void
+json_array_get_string_value_when_default_is_null_test(void)
+{
+    char const *json_string = "[]";
+    struct cJSON *json_array = cJSON_Parse(json_string);
+
+    char const *value = json_array_get_string_value(json_array, 0, NULL);
+
+    assert(NULL == value);
+
+    cJSON_Delete(json_array);
+}
+
+
+static void
+json_object_alloc_string_value_when_missing_test(void)
+{
+    char const *json_string = "{}";
+    struct cJSON *json_object = cJSON_Parse(json_string);
+
+    char const missing[] = "(missing)";
+    char *value = json_object_alloc_string_value(json_object, "foo", missing);
+
+    assert(str_eq(missing, value));
+    assert(missing != value);
+
+    free_or_die(value);
+    cJSON_Delete(json_object);
+}
+
+
+static void
+json_object_alloc_string_value_when_present_test(void)
+{
+    char const *json_string = "{"
+                              "  \"foo\": \"bar\""
+                              "}";
+    struct cJSON *json_object = cJSON_Parse(json_string);
+
+    char const missing[] = "(missing)";
+    char *value = json_object_alloc_string_value(json_object, "foo", missing);
+
+    assert(str_eq("bar", value));
+
+    free_or_die(value);
+    cJSON_Delete(json_object);
+}
+
+
+static void
+json_object_alloc_string_value_when_bad_value_test(void)
+{
+    char const *json_string = "{"
+                              "  \"foo\": 42"
+                              "}";
+    struct cJSON *json_object = cJSON_Parse(json_string);
+
+    char const missing[] = "(missing)";
+    char *value = json_object_alloc_string_value(json_object, "foo", missing);
+
+    assert(str_eq(missing, value));
+    assert(missing != value);
+
+    free_or_die(value);
+    cJSON_Delete(json_object);
+}
+
+
+static void
+json_object_alloc_string_value_when_default_is_null_test(void)
+{
+    char const *json_string = "{}";
+    struct cJSON *json_object = cJSON_Parse(json_string);
+
+    char *value = json_object_alloc_string_value(json_object, "foo", NULL);
+
+    assert(NULL == value);
+
+    cJSON_Delete(json_object);
+}
+
+
+static void
 json_object_get_bool_value_when_missing_test(void)
 {
     char const *json_string = "{}";
@@ -107,6 +301,69 @@ json_object_get_int_value_when_float_test(void)
 
 
 static void
+json_object_get_string_value_when_missing_test(void)
+{
+    char const *json_string = "{}";
+    struct cJSON *json_object = cJSON_Parse(json_string);
+
+    char const missing[] = "(missing)";
+    char const *value = json_object_get_string_value(json_object, "foo", missing);
+
+    assert(missing == value);
+
+    cJSON_Delete(json_object);
+}
+
+
+static void
+json_object_get_string_value_when_present_test(void)
+{
+    char const *json_string = "{"
+                              "  \"foo\": \"bar\""
+                              "}";
+    struct cJSON *json_object = cJSON_Parse(json_string);
+
+    char const missing[] = "(missing)";
+    char const *value = json_object_get_string_value(json_object, "foo", missing);
+
+    assert(str_eq("bar", value));
+
+    cJSON_Delete(json_object);
+}
+
+
+static void
+json_object_get_string_value_when_bad_value_test(void)
+{
+    char const *json_string = "{"
+                              "  \"foo\": 42"
+                              "}";
+    struct cJSON *json_object = cJSON_Parse(json_string);
+
+    char const missing[] = "(missing)";
+    char const *value = json_object_get_string_value(json_object, "foo", missing);
+
+    assert(missing == value);
+
+    cJSON_Delete(json_object);
+}
+
+
+static void
+json_object_get_string_value_when_default_is_null_test(void)
+{
+    char const *json_string = "{}";
+    struct cJSON *json_object = cJSON_Parse(json_string);
+
+    char const *value = json_object_get_string_value(json_object, "foo", NULL);
+
+    assert(NULL == value);
+
+    cJSON_Delete(json_object);
+}
+
+
+static void
 json_object_has_struct_member_when_no_key_test(void)
 {
     char const *json_string = "{}";
@@ -163,17 +420,40 @@ json_object_has_struct_member_test(void)
 int
 main(int argc, char *argv[])
 {
+    json_array_alloc_string_value_when_missing_test();
+    json_array_alloc_string_value_when_present_test();
+    json_array_alloc_string_value_when_bad_value_test();
+    json_array_alloc_string_value_when_default_is_null_test();
+
+    json_array_get_string_value_when_missing_test();
+    json_array_get_string_value_when_present_test();
+    json_array_get_string_value_when_bad_value_test();
+    json_array_get_string_value_when_default_is_null_test();
+
+    json_object_alloc_string_value_when_missing_test();
+    json_object_alloc_string_value_when_present_test();
+    json_object_alloc_string_value_when_bad_value_test();
+    json_object_alloc_string_value_when_default_is_null_test();
+
     json_object_get_bool_value_when_missing_test();
     json_object_get_bool_value_when_present_test();
+
     json_object_get_int_value_when_missing_test();
     json_object_get_int_value_when_present_test();
     json_object_get_int_value_when_too_big_test();
     json_object_get_int_value_when_too_small_test();
     json_object_get_int_value_when_float_test();
+
+    json_object_get_string_value_when_missing_test();
+    json_object_get_string_value_when_present_test();
+    json_object_get_string_value_when_bad_value_test();
+    json_object_get_string_value_when_default_is_null_test();
+
     json_object_has_struct_member_when_no_key_test();
     json_object_has_struct_member_when_bad_value_test();
     json_object_has_struct_member_when_wrong_value_test();
     json_object_has_struct_member_test();
+
     alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }

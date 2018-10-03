@@ -36,6 +36,7 @@ typedef uint32_t class_restrictions_t;
 typedef uint32_t possible_magic_items_t;
 
 
+struct cJSON;
 struct rnd;
 
 
@@ -61,6 +62,9 @@ struct magic_item {
 };
 
 
+struct cJSON *
+magic_item_create_json_object(struct magic_item *magic_item);
+
 void
 magic_item_finalize(struct magic_item *magic_item);
 
@@ -71,6 +75,10 @@ magic_item_generate(struct magic_item *magic_item,
 
 void
 magic_item_initialize(struct magic_item *magic_item);
+
+void
+magic_item_initialize_from_json_object(struct magic_item *magic_item,
+                                       struct cJSON *json_object);
 
 
 #endif

@@ -6,6 +6,7 @@
 #include <string.h>
 #include <background/background.h>
 #include <base/base.h>
+#include <json/json.h>
 #include <magic/magic.h>
 #include <mechanics/mechanics.h>
 
@@ -132,6 +133,50 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd);
 
 static void
 generate_teeth_of_dahlver_nar(struct magic_item *magic_item, struct rnd *rnd);
+
+static int
+magic_item_type_for_name(char const *name, int default_value);
+
+static char const *
+magic_item_type_name(struct magic_item *magic_item);
+
+
+static char const *const magic_item_type_names[] = {
+    "unknown",
+    "potion",
+    "scroll",
+    "ring",
+    "rod, staff or wand",
+    "miscellaneous",
+    "armor",
+    "sword",
+    "miscellaneous weapon",
+};
+static size_t magic_item_type_names_count = ARRAY_COUNT(magic_item_type_names);
+
+
+struct cJSON *
+magic_item_create_json_object(struct magic_item *magic_item)
+{
+    struct cJSON *json_object = cJSON_CreateObject();
+    cJSON_AddStringToObject(json_object, "struct", "magic_item");
+    cJSON_AddNumberToObject(json_object, "rev", 0);
+    cJSON_AddNumberToObject(json_object, "experience_points", magic_item->experience_points);
+    cJSON_AddStringToObject(json_object, "true_description", magic_item->true_description);
+
+    struct cJSON *true_details = cJSON_CreateArray();
+    cJSON_AddItemToObject(json_object, "true_details", true_details);
+    if (magic_item->true_details) {
+        for (int i = 0; magic_item->true_details[i]; ++i) {
+            struct cJSON *true_detail = cJSON_CreateString(magic_item->true_details[i]);
+            cJSON_AddItemToArray(true_details, true_detail);
+        }
+    }
+
+    cJSON_AddNumberToObject(json_object, "true_value_in_cp", magic_item->true_value_in_cp);
+    cJSON_AddStringToObject(json_object, "type", magic_item_type_name(magic_item));
+    return json_object;
+}
 
 
 void
@@ -2374,4 +2419,52 @@ void
 magic_item_initialize(struct magic_item *magic_item)
 {
     memset(magic_item, 0, sizeof(struct magic_item));
+}
+
+
+void
+magic_item_initialize_from_json_object(struct magic_item *magic_item,
+                                       struct cJSON *json_object)
+{
+    magic_item_initialize(magic_item);
+
+    if ( ! cJSON_IsObject(json_object)) return;
+    if ( ! json_object_has_struct_member(json_object, "magic_item")) return;
+
+    magic_item->experience_points = json_object_get_int_value(json_object, "experience_points", 0);
+    magic_item->true_description = json_object_alloc_string_value(json_object, "true_description", NULL);
+
+    struct cJSON *true_details = cJSON_GetObjectItem(json_object, "true_details");
+    if (cJSON_IsArray(true_details)) {
+        int count = cJSON_GetArraySize(true_details);
+        if (count) {
+            magic_item->true_details = calloc_or_die(count + 1, sizeof(char *));
+            for (int i = 0; i < count; ++i) {
+                magic_item->true_details[i] = json_array_alloc_string_value(true_details, i, NULL);
+            }
+        }
+    }
+
+    magic_item->true_value_in_cp = json_object_get_int_value(json_object, "true_value_in_cp", 0);
+    magic_item->type = json_object_get_string_enum_value(json_object, "type", magic_item_type_for_name, magic_item_type_unknown);
+}
+
+
+static int
+magic_item_type_for_name(char const *name, int default_value)
+{
+    if (name) {
+        for (size_t i = 0; i < magic_item_type_names_count; ++i) {
+            if (str_eq(name, magic_item_type_names[i])) return magic_item_type_unknown + i;
+        }
+    }
+    return default_value;
+}
+
+
+static char const *
+magic_item_type_name(struct magic_item *magic_item)
+{
+    int index = magic_item->type - magic_item_type_unknown;
+    return magic_item_type_names[index];
 }

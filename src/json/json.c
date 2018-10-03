@@ -5,6 +5,38 @@
 #include <base/base.h>
 
 
+char *
+json_array_alloc_string_value(struct cJSON *json_array,
+                              int index,
+                              char const *default_value)
+{
+    char const *string_value = json_array_get_string_value(json_array, index, default_value);
+    return string_value ? strdup_or_die(string_value) : NULL;
+}
+
+
+char const *
+json_array_get_string_value(struct cJSON *json_array,
+                            int index,
+                            char const *default_value)
+{
+    assert(cJSON_IsArray(json_array));
+
+    struct cJSON *item = cJSON_GetArrayItem(json_array, index);
+    return cJSON_IsString(item) ? item->valuestring : default_value;
+}
+
+
+char *
+json_object_alloc_string_value(struct cJSON *json_object,
+                               char const *name,
+                               char const *default_value)
+{
+    char const *string_value = json_object_get_string_value(json_object, name, default_value);
+    return string_value ? strdup_or_die(string_value) : NULL;
+}
+
+
 bool
 json_object_get_bool_value(struct cJSON *json_object,
                            char const *name,
