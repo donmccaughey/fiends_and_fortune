@@ -4,6 +4,7 @@
 #include <string.h>
 #include <background/background.h>
 #include <base/base.h>
+#include <json/json.h>
 #include <mechanics/mechanics.h>
 
 #include "gem.h"
@@ -354,6 +355,23 @@ generate_monetary_treasure_16_to_17_jewelry(struct treasure *treasure,
 }
 
 
+struct cJSON *
+treasure_map_create_json_object(struct treasure_map *treasure_map)
+{
+    struct cJSON *json_object = cJSON_CreateObject();
+    cJSON_AddStringToObject(json_object, "struct", "treasure_map");
+    cJSON_AddNumberToObject(json_object, "rev", 0);
+    cJSON_AddBoolToObject(json_object, "is_false", treasure_map->is_false);
+    
+    struct cJSON *treasure = cJSON_CreateObject();
+    cJSON_AddItemToObject(json_object, "treasure", treasure);
+    
+    cJSON_AddStringToObject(json_object, "true_description", treasure_map->true_description);
+
+    return json_object;
+}
+
+
 void
 treasure_map_generate(struct treasure_map *treasure_map, struct rnd *rnd)
 {
@@ -429,4 +447,23 @@ void
 treasure_map_initialize(struct treasure_map *treasure_map)
 {
     memset(treasure_map, 0, sizeof(struct treasure_map));
+}
+
+
+void
+treasure_map_initialize_from_json_object(struct treasure_map *treasure_map,
+                                         struct cJSON *json_object)
+{
+    treasure_map_initialize(treasure_map);
+
+    if ( ! cJSON_IsObject(json_object)) return;
+    if ( ! json_object_has_struct_member(json_object, "treasure_map")) return;
+
+    treasure_map->is_false = json_object_get_bool_value(json_object, "is_false", false);
+
+    struct cJSON *treasure = cJSON_GetObjectItemCaseSensitive(json_object, "treasure");
+    // TODO: initialize treasure
+    // treasure_initialize_from_json_object(&treasure_map.treasure, treasure);
+
+    treasure_map->true_description = json_object_alloc_string_value(json_object, "true_description", NULL);
 }
