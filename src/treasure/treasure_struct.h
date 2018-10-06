@@ -6,6 +6,7 @@
 #include <treasure/magic_item.h>
 
 
+struct cJSON;
 struct gem;
 struct jewelry;
 struct magic_item;
@@ -35,6 +36,9 @@ treasure_alloc_description(struct treasure *treasure);
 struct ptr_array *
 treasure_alloc_details(struct treasure *treasure);
 
+struct cJSON *
+treasure_create_json_object(struct treasure *treasure);
+
 void
 treasure_finalize(struct treasure *treasure);
 
@@ -49,6 +53,10 @@ treasure_generate_maps(struct treasure *treasure, struct rnd *rnd, int count);
 
 void
 treasure_initialize(struct treasure *treasure);
+
+void
+treasure_initialize_from_json_object(struct treasure *treasure,
+                                     struct cJSON *json_object);
 
 int
 treasure_value_in_cp(struct treasure *treasure);

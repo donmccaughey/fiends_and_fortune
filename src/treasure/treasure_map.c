@@ -362,10 +362,10 @@ treasure_map_create_json_object(struct treasure_map *treasure_map)
     cJSON_AddStringToObject(json_object, "struct", "treasure_map");
     cJSON_AddNumberToObject(json_object, "rev", 0);
     cJSON_AddBoolToObject(json_object, "is_false", treasure_map->is_false);
-    
-    struct cJSON *treasure = cJSON_CreateObject();
+
+    struct cJSON *treasure = treasure_create_json_object(&treasure_map->treasure);
     cJSON_AddItemToObject(json_object, "treasure", treasure);
-    
+
     cJSON_AddStringToObject(json_object, "true_description", treasure_map->true_description);
 
     return json_object;
@@ -462,8 +462,7 @@ treasure_map_initialize_from_json_object(struct treasure_map *treasure_map,
     treasure_map->is_false = json_object_get_bool_value(json_object, "is_false", false);
 
     struct cJSON *treasure = cJSON_GetObjectItemCaseSensitive(json_object, "treasure");
-    // TODO: initialize treasure
-    // treasure_initialize_from_json_object(&treasure_map.treasure, treasure);
+    treasure_initialize_from_json_object(&treasure_map->treasure, treasure);
 
     treasure_map->true_description = json_object_alloc_string_value(json_object, "true_description", NULL);
 }
