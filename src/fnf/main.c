@@ -3,6 +3,7 @@
 #include <base/base.h>
 #include <character/character.h>
 #include <dungeon/dungeon.h>
+#include <json/json.h>
 #include <mechanics/mechanics.h>
 #include <treasure/treasure.h>
 
@@ -36,7 +37,10 @@ static void
 generate_sample_dungeon(struct rnd *rnd, FILE *out);
 
 static void
-generate_treasure_type(struct rnd *rnd, FILE *out, char letter);
+generate_treasure_type(struct rnd *rnd,
+                       FILE *out,
+                       enum output_format output_format,
+                       char letter);
 
 static void
 generate_treasure_type_table(FILE *out);
@@ -61,6 +65,12 @@ print_character_ability_scores(struct ability_scores *ability_scores,
 
 static void
 print_dungeon(struct dungeon *dungeon, FILE *out);
+
+static void
+print_treasure_as_json(struct treasure *treasure, FILE *out);
+
+static void
+print_treasure_as_text(struct treasure *treasure, FILE *out);
 
 
 static void
@@ -194,7 +204,7 @@ static void
 generate_each_treasure(struct rnd *rnd, FILE *out)
 {
     for (char letter = 'A'; letter <= 'Z'; ++letter) {
-        generate_treasure_type(rnd, out, letter);
+        generate_treasure_type(rnd, out, output_format_text, letter);
     }
 }
 
@@ -257,22 +267,25 @@ generate_sample_dungeon(struct rnd *rnd, FILE *out)
 
 
 static void
-generate_treasure_type(struct rnd *rnd, FILE *out, char letter)
+generate_treasure_type(struct rnd *rnd,
+                       FILE *out,
+                       enum output_format output_format,
+                       char letter)
 {
     struct treasure treasure;
     treasure_initialize(&treasure);
     treasure_type_generate(treasure_type_by_letter(letter), rnd, &treasure);
-    
-    struct ptr_array *lines = treasure_alloc_details(&treasure);
-    
-    treasure_finalize(&treasure);
-    
-    for (int i = 0; i < lines->count; ++i) {
-        fprintf(out, "%s\n", lines->elements[i]);
+
+    switch (output_format) {
+        case output_format_text:
+            print_treasure_as_text(&treasure, out);
+            break;
+        case output_format_json:
+            print_treasure_as_json(&treasure, out);
+            break;
     }
-    
-    ptr_array_clear(lines, free_or_die);
-    ptr_array_free(lines);
+
+    treasure_finalize(&treasure);
 }
 
 
@@ -298,8 +311,10 @@ main(int argc, char *argv[])
         options_print_usage(options);
         return options->error? EXIT_FAILURE : EXIT_SUCCESS;
     }
-    
-    fprintf(out, "Fiends and Fortune\n");
+
+    if (output_format_text == options->output_format) {
+        fprintf(out, "Fiends and Fortune\n");
+    }
     switch (options->action) {
         case action_character:
             generate_character(options->rnd, out, options->character_method);
@@ -329,7 +344,10 @@ main(int argc, char *argv[])
             generate_treasure_type_table(out);
             break;
         case action_treasure:
-            generate_treasure_type(options->rnd, out, options->treasure_type);
+            generate_treasure_type(options->rnd,
+                                   out,
+                                   options->output_format,
+                                   options->treasure_type);
             break;
         default:
             fprintf(stderr, "%s: unrecognized option\n", options->command_name);
@@ -482,4 +500,27 @@ print_dungeon(struct dungeon *dungeon, FILE *out)
         fprintf(out, "Level %i Areas of Interest:\n", level);
         dungeon_print_areas_for_level(dungeon, level, out);
     }
+}
+
+
+static void
+print_treasure_as_json(struct treasure *treasure, FILE *out)
+{
+    struct cJSON *json_object = treasure_create_json_object(treasure);
+    char *json_string = cJSON_Print(json_object);
+    fprintf(out, "%s\n", json_string);
+    free(json_string);
+    cJSON_Delete(json_object);
+}
+
+
+static void
+print_treasure_as_text(struct treasure *treasure, FILE *out)
+{
+    struct ptr_array *lines = treasure_alloc_details(treasure);
+    for (int i = 0; i < lines->count; ++i) {
+        fprintf(out, "%s\n", lines->elements[i]);
+    }
+    ptr_array_clear(lines, free_or_die);
+    ptr_array_free(lines);
 }

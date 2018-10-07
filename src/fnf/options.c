@@ -12,35 +12,47 @@ static struct option long_options[] = {
         .name="debug",
         .has_arg=no_argument,
         .flag=NULL,
-        .val='d'
+        .val=option_value_debug
+    },
+    {
+        .name="format",
+        .has_arg=required_argument,
+        .flag=NULL,
+        .val=option_value_format
     },
     {
         .name="help",
         .has_arg=no_argument,
         .flag=NULL,
-        .val='h'
+        .val=option_value_help
     },
     {
         .name="jrand48",
         .has_arg=required_argument,
         .flag=NULL,
-        .val='j'
+        .val=option_value_jrand48
     },
     {
         .name="verbose",
         .has_arg=no_argument,
         .flag=NULL,
-        .val='v'
+        .val=option_value_verbose
     },
     {
         .name=NULL,
         .has_arg=no_argument,
         .flag=NULL,
-        .val=0
+        .val=option_value_none
     }
 };
 
 static char const short_options[] = "dhj:v";
+
+static char const *output_formats[] = {
+        "text",
+        "json",
+};
+static size_t const output_formats_count = ARRAY_COUNT(output_formats);
 
 
 static void
@@ -146,6 +158,20 @@ get_action_modifiers(struct options *options,
 
 
 static void
+get_format(struct options *options, char const *arg)
+{
+    for (size_t i = 0; i < output_formats_count; ++i) {
+        if (0 == strcasecmp(arg, output_formats[i])) {
+            options->output_format = i;
+            return;
+        }
+    }
+    options->error = true;
+    fprintf(stderr, "%s: invalid format - %s\n", options->command_name, optarg);
+}
+
+
+static void
 get_jrand48(struct options *options, char const *arg)
 {
     unsigned long const max_seed = 0x0000ffffffffffff;
@@ -173,16 +199,19 @@ get_options(struct options *options, int argc, char *argv[])
     int long_option_index;
     while (-1 != (ch = getopt_long(argc, argv, short_options, long_options, &long_option_index))) {
         switch (ch) {
-            case 'd':
+            case option_value_debug:
                 options->debug = true;
                 break;
-            case 'h':
+            case option_value_format:
+                get_format(options, optarg);
+                break;
+            case option_value_help:
                 options->help = true;
                 return optind;
-            case 'j':
+            case option_value_jrand48:
                 get_jrand48(options, optarg);
                 break;
-            case 'v':
+            case option_value_verbose:
                 options->verbose = true;
                 break;
             default:
@@ -232,7 +261,9 @@ options_print_usage(struct options const *options)
     fprintf(out, "  -d, --debug         print debugging information\n");
     fprintf(out, "  -h, --help          display this help message and exit\n");
     fprintf(out, "  -j, --jrand48=SEED  use the jrand48 random number generator\n");
-    fprintf(out, "                        with the given 48-bit seed\n");
+    fprintf(out, "                        with the given 48-bit SEED\n");
+    fprintf(out, "  ---format=FORMAT    output format where FORMAT is\n");
+    fprintf(out, "                        `text' or `json' (default `text'\n");
     fprintf(out, "  -v, --verbose       print more details\n");
     fprintf(out, "\n");
     fprintf(out, "Available actions:\n");

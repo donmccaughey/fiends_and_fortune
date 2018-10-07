@@ -53,6 +53,27 @@ target_link_libraries(fnf
         treasure
         )
 
+add_executable(fnf_tests
+        src/fnf/action.c
+        src/fnf/action_test.c
+        src/fnf/fnf_tests.c
+        src/fnf/options.c
+        src/fnf/options_test.c
+        )
+target_include_directories(fnf_tests PUBLIC src)
+target_link_libraries(fnf_tests
+        background
+        base
+        character
+        cjson
+        dungeon
+        json
+        magic
+        mechanics
+        treasure
+        )
+add_test(fnf_tests fnf_tests)
+
 
 # ----- background library -----
 
@@ -293,6 +314,7 @@ add_custom_target(check
         COMMAND base_tests
         COMMAND character_tests
         COMMAND dungeon_tests
+        COMMAND fnf_tests
         COMMAND json_tests
         COMMAND magic_tests
         COMMAND mechanics_tests
@@ -306,6 +328,7 @@ add_dependencies(check
         base_tests
         character_tests
         dungeon_tests
+        fnf_tests
         json_tests
         magic_tests
         mechanics_tests
