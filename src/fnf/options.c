@@ -192,9 +192,18 @@ get_jrand48(struct options *options, char const *arg)
 }
 
 
+static void
+getopt_reset(void)
+{
+    optreset = 1;
+    optind = 1;
+}
+
+
 static int
 get_options(struct options *options, int argc, char *argv[])
 {
+    getopt_reset();
     int ch;
     int long_option_index;
     while (-1 != (ch = getopt_long(argc, argv, short_options, long_options, &long_option_index))) {

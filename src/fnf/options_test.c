@@ -6,17 +6,8 @@
 
 
 static void
-reset_getopt(void)
-{
-    optreset = 1;
-    optind = 1;
-}
-
-
-static void
 options_alloc_with_no_args_test(void)
 {
-    reset_getopt();
     char *argv[] = {
         "/usr/local/bin/fnf",
     };
@@ -40,7 +31,6 @@ options_alloc_with_no_args_test(void)
 static void
 options_alloc_with_no_action_test(void)
 {
-    reset_getopt();
     char *argv[] = {
         "/usr/local/bin/fnf",
         "-d",
@@ -68,7 +58,6 @@ options_alloc_with_no_action_test(void)
 static void
 options_alloc_with_character_action_test(void)
 {
-    reset_getopt();
     char *argv[] = {
         "/usr/local/bin/fnf",
         "character",
@@ -95,7 +84,6 @@ options_alloc_with_character_action_test(void)
 static void
 options_alloc_with_check_action_test(void)
 {
-    reset_getopt();
     char *argv[] = {
         "/usr/local/bin/fnf",
         "check",
@@ -122,7 +110,6 @@ options_alloc_with_check_action_test(void)
 static void
 options_alloc_with_dungeon_action_test(void)
 {
-    reset_getopt();
     char *argv[] = {
         "/usr/local/bin/fnf",
         "dungeon",
@@ -149,7 +136,6 @@ options_alloc_with_dungeon_action_test(void)
 static void
 options_alloc_with_each_action_test(void)
 {
-    reset_getopt();
     char *argv[] = {
         "/usr/local/bin/fnf",
         "each",
@@ -175,7 +161,6 @@ options_alloc_with_each_action_test(void)
 static void
 options_alloc_with_magic_action_test(void)
 {
-    reset_getopt();
     char *argv[] = {
         "/usr/local/bin/fnf",
         "magic",
@@ -202,7 +187,6 @@ options_alloc_with_magic_action_test(void)
 static void
 options_alloc_with_map_action_test(void)
 {
-    reset_getopt();
     char *argv[] = {
         "/usr/local/bin/fnf",
         "map",
@@ -228,7 +212,6 @@ options_alloc_with_map_action_test(void)
 static void
 options_alloc_with_table_action_test(void)
 {
-    reset_getopt();
     char *argv[] = {
         "/usr/local/bin/fnf",
         "table",
@@ -254,7 +237,6 @@ options_alloc_with_table_action_test(void)
 static void
 options_alloc_with_treasure_type_action_test(void)
 {
-    reset_getopt();
     char *argv[] = {
         "/usr/local/bin/fnf",
         "u",
@@ -290,4 +272,5 @@ options_test(void)
     options_alloc_with_magic_action_test();
     options_alloc_with_map_action_test();
     options_alloc_with_table_action_test();
+    options_alloc_with_treasure_type_action_test();
 }
