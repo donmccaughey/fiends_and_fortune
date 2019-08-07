@@ -190,7 +190,7 @@ void
 dungeon_print_map_for_level(struct dungeon *dungeon, int level, FILE *out)
 {
     struct level_map *level_map = level_map_alloc(dungeon, level);
-    struct text_rectangle *text_rectangle = level_map_alloc_text_graph(level_map);
+    struct text_rectangle *text_rectangle = level_map_alloc_text_graph(level_map, true);
     fprintf(out, "%s", text_rectangle->chars);
     text_rectangle_free(text_rectangle);
     level_map_free(level_map);
