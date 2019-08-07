@@ -183,6 +183,7 @@ add_executable(dungeon_tests
         src/dungeon/generator_test.c
         src/dungeon/point_test.c
         src/dungeon/size_test.c
+        src/dungeon/text_rectangle_test.c
         src/dungeon/tile_test.c
         )
 target_include_directories(dungeon_tests PUBLIC src)

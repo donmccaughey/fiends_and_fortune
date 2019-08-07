@@ -18,6 +18,9 @@ void
 size_test(void);
 
 void
+text_rectangle_test(void);
+
+void
 tile_test(void);
 
 
@@ -29,6 +32,7 @@ main(int argc, char *argv[])
     generator_test();
     point_test();
     size_test();
+    text_rectangle_test();
     tile_test();
     alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
