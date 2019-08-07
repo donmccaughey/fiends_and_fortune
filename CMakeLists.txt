@@ -6,6 +6,10 @@ enable_testing()
 add_compile_options(--coverage -g -O0)
 set (CMAKE_EXE_LINKER_FLAGS --coverage)
 
+# requires `brew install ncurses`
+include_directories(/usr/local/opt/ncurses/include)
+link_directories(/usr/local/opt/ncurses/lib)
+
 find_library(form REQUIRED)
 find_library(menu REQUIRED)
 find_library(ncurses REQUIRED)

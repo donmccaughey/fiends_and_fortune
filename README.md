@@ -36,11 +36,19 @@ a C toolchain, [CMake][31] and the [`ncurses`][32] library installed.
     cmake -G "Unix Makefiles" ..
     make all test
 
-This repository contains a copy of the [cJSON 1.7.7][33] source.
+Note that on MacOS 10.14 Mojave with Xcode 10.3, linking to `ncurses` `libmenu` 
+fails with "Undefined symbols for architecture x86_64" errors.  You can 
+[work around this][33] by installing `ncurses` using [Homebrew][34].
+
+    brew install ncurses
+
+This repository contains a copy of the [cJSON 1.7.7][35] source.
 
 [31]: https://cmake.org
 [32]: https://invisible-island.net/ncurses/
-[33]: https://github.com/DaveGamble/cJSON
+[33]: https://stackoverflow.com/questions/56622042/clang-on-macos-fails-linking-lmenu-from-ncurses
+[34]: https://brew.sh
+[35]: https://github.com/DaveGamble/cJSON
 
 ## Motivation
 

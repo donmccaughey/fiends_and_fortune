@@ -3,8 +3,14 @@ language: c
 os:
     - osx
 
+osx_image: xcode10.2
+
 compiler:
     - clang
+
+addons:
+    homebrew:
+        packages: ncurses
 
 install:
     - cmake -G "Unix Makefiles" .
