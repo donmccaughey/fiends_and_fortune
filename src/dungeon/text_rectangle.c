@@ -93,13 +93,15 @@ text_rectangle_print_format(struct text_rectangle *text_rectangle,
                             char const *format,
                             ...)
 {
+    int chars_available = text_rectangle->column_count - text_rectangle->caret.column_index;
+    if (chars_available <= 0) return;
+
     char *buffer;
     va_list arguments;
     va_start(arguments, format);
     int chars_printed = vasprintf_or_die(&buffer, format, arguments);
     va_end(arguments);
     
-    int chars_available = text_rectangle->column_count - text_rectangle->caret.column_index;
     int chars_to_copy = chars_printed > chars_available ? chars_available : chars_printed;
     char *chars = text_rectangle_row_at(text_rectangle, text_rectangle->caret.row_index)
                 + text_rectangle->caret.column_index;
