@@ -3,8 +3,6 @@ language: c
 os:
     - osx
 
-osx_image: xcode10.2
-
 compiler:
     - clang
 
@@ -19,4 +17,4 @@ script:
     - make all test
 
 after_success:
-    - bash <(curl -s https://codecov.io/bash) -s ./CMakeFiles
+    - bash <(curl -s https://codecov.io/bash)
