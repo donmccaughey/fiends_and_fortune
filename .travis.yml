@@ -3,6 +3,8 @@ language: c
 os:
     - osx
 
+osx_image: xcode10.2
+
 compiler:
     - clang
 
@@ -11,9 +13,12 @@ addons:
         packages: ncurses
 
 install:
-    - cmake -G "Unix Makefiles" .
+    - mkdir tmp
+    - cd tmp
+    - cmake -G "Unix Makefiles" ..
 
 script:
+    - cd tmp
     - make all test
 
 after_success:

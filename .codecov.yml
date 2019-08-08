@@ -1,2 +1,2 @@
-fixes:
-  - "src/::CMakeFiles/*/src/"
+ignore:
+  - "libs"
