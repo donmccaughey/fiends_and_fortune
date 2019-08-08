@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <string.h>
 
+
 void
 text_rectangle_test(void);
 

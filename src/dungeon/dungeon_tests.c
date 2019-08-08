@@ -3,6 +3,9 @@
 
 
 void
+area_test(void);
+
+void
 box_test(void);
 
 void
@@ -27,6 +30,7 @@ tile_test(void);
 int
 main(int argc, char *argv[])
 {
+    area_test();
     box_test();
     dungeon_test();
     generator_test();

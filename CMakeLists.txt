@@ -177,6 +177,7 @@ add_library(dungeon STATIC
 target_include_directories(dungeon PUBLIC src)
 
 add_executable(dungeon_tests
+        src/dungeon/area_test.c
         src/dungeon/box_test.c
         src/dungeon/dungeon_test.c
         src/dungeon/dungeon_tests.c
