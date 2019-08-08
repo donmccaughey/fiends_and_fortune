@@ -1,2 +1,2 @@
 fixes:
-  - "CMakeFiles/*/src/::src/"
+  - "src/::CMakeFiles/*/src/"
