@@ -162,9 +162,106 @@ area_alloc_description_test(void)
 }
 
 
+static void
+area_is_chamber_or_room_test(void)
+{
+    struct box box = box_make(point_make(5, 6, 7), size_make(3, 4, 1));
+    struct area *area = area_alloc(area_type_chamber, direction_north, box, tile_type_empty);
+
+    assert(area_is_chamber_or_room(area));
+
+    area->type = area_type_room;
+    assert(area_is_chamber_or_room(area));
+
+    area->type = area_type_passage;
+    assert( ! area_is_chamber_or_room(area));
+
+    area_free(area);
+}
+
+
+static void
+area_is_interesting_test(void)
+{
+    struct box box = box_make(point_make(5, 6, 7), size_make(3, 4, 1));
+    struct area *area = area_alloc(area_type_chamber, direction_north, box, tile_type_empty);
+
+    assert(area_is_interesting(area));
+
+    area->type = area_type_room;
+    assert(area_is_interesting(area));
+
+    area->type = area_type_stairs_down;
+    assert(area_is_interesting(area));
+
+    area->type = area_type_stairs_up;
+    assert(area_is_interesting(area));
+
+    area->type = area_type_passage;
+    assert( ! area_is_chamber_or_room(area));
+
+    area->features = area_features_chimney_up;
+    assert(area_is_interesting(area));
+
+    area_free(area);
+}
+
+
+static void
+area_is_level_transition_test(void)
+{
+    struct box box = box_make(point_make(5, 6, 7), size_make(3, 4, 1));
+    struct area *area = area_alloc(area_type_stairs_down, direction_north, box, tile_type_empty);
+
+    assert(area_is_level_transition(area));
+
+    area->type = area_type_stairs_up;
+    assert(area_is_level_transition(area));
+
+    area->type = area_type_chamber;
+    assert( ! area_is_level_transition(area));
+
+    area->features = area_features_chimney_up;
+    assert(area_is_level_transition(area));
+
+    area_free(area);
+}
+
+
+static void
+area_center_point_test(void)
+{
+    struct box box = box_make(point_make(10, 20, 30), size_make(5, 5, 1));
+    struct area *area = area_alloc(area_type_chamber, direction_north, box, tile_type_empty);
+
+    assert(point_equals(point_make(12, 22, 30), area_center_point(area)));
+
+    area->box.size.width = 4;
+    area->box.size.length = 6;
+    area->box.size.height = 2;
+    assert(point_equals(point_make(11, 22, 30), area_center_point(area)));
+
+    area->box.size.width = 3;
+    area->box.size.length = 7;
+    area->box.size.height = 3;
+    assert(point_equals(point_make(11, 23, 31), area_center_point(area)));
+
+    area->box.origin.x = 20;
+    area->box.origin.y = 30;
+    area->box.origin.z = 40;
+    assert(point_equals(point_make(21, 33, 41), area_center_point(area)));
+
+    area_free(area);
+}
+
+
 void
 area_test(void)
 {
     area_alloc_test();
     area_alloc_description_test();
+    area_is_chamber_or_room_test();
+    area_is_interesting_test();
+    area_is_level_transition_test();
+    area_center_point_test();
 }
