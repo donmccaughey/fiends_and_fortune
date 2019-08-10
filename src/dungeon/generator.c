@@ -38,12 +38,12 @@ generator_add_area(struct generator *generator,
                    struct box box,
                    enum tile_type tile_type)
 {
-    struct area *area = area_alloc(area_type, direction, box, tile_type);    
+    struct area *area = area_alloc(area_type, direction, box);
     int index = generator->areas_count;
     ++generator->areas_count;
     generator->areas = reallocarray_or_die(generator->areas,
-                                         generator->areas_count,
-                                         sizeof(struct area *));
+                                           generator->areas_count,
+                                           sizeof(struct area *));
     generator->areas[index] = area;
     generator_fill_box(generator, box, direction, tile_type);
     generator_set_walls(generator, box, wall_type_solid);

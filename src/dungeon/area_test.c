@@ -13,7 +13,7 @@ static void
 area_alloc_test(void)
 {
     struct box box = box_make(point_make(1, 2, 3), size_make(4, 5, 1));
-    struct area *area = area_alloc(area_type_room, direction_north, box, tile_type_empty);
+    struct area *area = area_alloc(area_type_room, direction_north, box);
 
     assert(1 == area->box.origin.x);
     assert(2 == area->box.origin.y);
@@ -35,7 +35,7 @@ static void
 area_alloc_description_test(void)
 {
     struct box box = box_make(point_make(5, 6, 7), size_make(3, 4, 1));
-    struct area *area = area_alloc(area_type_chamber, direction_north, box, tile_type_empty);
+    struct area *area = area_alloc(area_type_chamber, direction_north, box);
     char *description;
 
     // chamber
@@ -166,7 +166,7 @@ static void
 area_is_chamber_or_room_test(void)
 {
     struct box box = box_make(point_make(5, 6, 7), size_make(3, 4, 1));
-    struct area *area = area_alloc(area_type_chamber, direction_north, box, tile_type_empty);
+    struct area *area = area_alloc(area_type_chamber, direction_north, box);
 
     assert(area_is_chamber_or_room(area));
 
@@ -184,7 +184,7 @@ static void
 area_is_interesting_test(void)
 {
     struct box box = box_make(point_make(5, 6, 7), size_make(3, 4, 1));
-    struct area *area = area_alloc(area_type_chamber, direction_north, box, tile_type_empty);
+    struct area *area = area_alloc(area_type_chamber, direction_north, box);
 
     assert(area_is_interesting(area));
 
@@ -211,7 +211,7 @@ static void
 area_is_level_transition_test(void)
 {
     struct box box = box_make(point_make(5, 6, 7), size_make(3, 4, 1));
-    struct area *area = area_alloc(area_type_stairs_down, direction_north, box, tile_type_empty);
+    struct area *area = area_alloc(area_type_stairs_down, direction_north, box);
 
     assert(area_is_level_transition(area));
 
@@ -232,7 +232,7 @@ static void
 area_center_point_test(void)
 {
     struct box box = box_make(point_make(10, 20, 30), size_make(5, 5, 1));
-    struct area *area = area_alloc(area_type_chamber, direction_north, box, tile_type_empty);
+    struct area *area = area_alloc(area_type_chamber, direction_north, box);
 
     assert(point_equals(point_make(12, 22, 30), area_center_point(area)));
 

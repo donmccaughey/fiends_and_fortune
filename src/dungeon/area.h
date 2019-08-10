@@ -25,8 +25,7 @@ struct area {
 struct area *
 area_alloc(enum area_type area_type,
            enum direction direction,
-           struct box box,
-           enum tile_type tile_type);
+           struct box box);
 
 void
 area_free(struct area *area);
