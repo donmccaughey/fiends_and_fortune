@@ -46,8 +46,8 @@ location_of_door(struct rnd *rnd, bool *left, bool *right, bool *ahead);
 static void
 number_of_exits(struct rnd *rnd,
                 struct area *chamber_or_room,
-                int *doors,
-                int *passages,
+                int *door_count,
+                int *passage_count,
                 bool *check_for_secret_doors);
 
 static bool
