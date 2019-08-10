@@ -13,13 +13,11 @@ addons:
         packages: ncurses
 
 install:
-    - mkdir tmp
-    - cd tmp
-    - cmake -G "Unix Makefiles" ..
+    - cmake -G "Unix Makefiles" .
 
 script:
-    - cd tmp
     - make all test
 
 after_success:
-    - bash <(curl -s https://codecov.io/bash)
+#    - bash <(curl -s https://codecov.io/bash)
+    - bash <(curl -s https://raw.githubusercontent.com/codecov/codecov-bash/8b76995ad4a95a61cecd4b049a448a402d91d197/codecov)

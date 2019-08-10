@@ -12,16 +12,17 @@ The code is modern C99.
 [13]: https://codecov.io/gh/donmccaughey/fiends_and_fortune/branch/master/graph/badge.svg
 [14]: https://codecov.io/gh/donmccaughey/fiends_and_fortune
 
+
 ## License
 
 _Fiends And Fortune_ is available under a BSD-style license.  See the
 [`LICENSE`][21] file for details.  The [_cJSON_ library][22] is available under 
 an [MIT license][23].
 
-
 [21]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/LICENSE
 [22]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/libs/cJSON
 [23]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/libs/cJSON/LICENSE
+
 
 ## Building From Source
 
@@ -49,6 +50,23 @@ This repository contains a copy of the [cJSON 1.7.7][35] source.
 [33]: https://stackoverflow.com/questions/56622042/clang-on-macos-fails-linking-lmenu-from-ncurses
 [34]: https://brew.sh
 [35]: https://github.com/DaveGamble/cJSON
+
+
+## Build System
+
+_Fiends And Fortune_ uses [Cmake][41] as a build system, [Travis CI][42] for
+continuous integration, and [Codecov.io][43] for code coverage reporting.
+
+Currently, the [Codecov bash script][44] is pinned at [commit 8b76995][45] from 
+8-Feb-2018, since the following commit [breaks uploading for Cmake projects][46].
+
+[41]: https://cmake.org
+[42]: https://travis-ci.org/donmccaughey/fiends_and_fortune
+[43]: https://codecov.io/gh/donmccaughey/fiends_and_fortune
+[44]: https://github.com/codecov/codecov-bash
+[45]: https://github.com/codecov/codecov-bash/commit/8b76995ad4a95a61cecd4b049a448a402d91d197
+[46]: https://github.com/codecov/codecov-bash/issues/162
+
 
 ## Motivation
 
