@@ -2,6 +2,7 @@
 
 #include <base/base.h>
 #include <dungeon/dungeon.h>
+#include "tile.h"
 
 
 void
@@ -170,6 +171,135 @@ dungeon_box_for_level_test(void)
 }
 
 
+static void
+dungeon_add_area_test(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct box box;
+    struct area *area;
+
+    assert(0 == dungeon->areas_count);
+
+    box = box_make(point_make(0, 0, 1), size_make(3, 4, 1));
+    area = area_alloc(area_type_chamber, direction_north, box);
+    dungeon_add_area(dungeon, area);
+
+    assert(1 == dungeon->areas_count);
+    assert(area == dungeon->areas[0]);
+
+    box = box_make(point_make(10, 10, 1), size_make(1, 6, 1));
+    area = area_alloc(area_type_passage, direction_north, box);
+    dungeon_add_area(dungeon, area);
+
+    assert(2 == dungeon->areas_count);
+    assert(area == dungeon->areas[1]);
+    assert(area_type_chamber == dungeon->areas[0]->type);
+
+    dungeon_free(dungeon);
+}
+
+
+static void
+dungeon_is_box_excavated_test(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct box box;
+    struct tile *tile;
+
+    box = box_make(point_make(0, 0, 1), size_make(3, 4, 1));
+    assert(!dungeon_is_box_excavated(dungeon, box));
+
+    tile = dungeon_tile_at(dungeon, point_make(3, 0, 1));
+    tile->type = tile_type_empty;
+    assert(!dungeon_is_box_excavated(dungeon, box));
+
+    tile = dungeon_tile_at(dungeon, point_make(2, 0, 1));
+    tile->type = tile_type_empty;
+    assert(dungeon_is_box_excavated(dungeon, box));
+
+    tile->type = tile_type_filled;
+    assert(!dungeon_is_box_excavated(dungeon, box));
+
+    tile = dungeon_tile_at(dungeon, point_make(1, 1, 1));
+    tile->type = tile_type_stairs_down;
+    assert(dungeon_is_box_excavated(dungeon, box));
+
+    tile->type = tile_type_stairs_up;
+    assert(dungeon_is_box_excavated(dungeon, box));
+
+    tile->type = tile_type_filled;
+    assert(!dungeon_is_box_excavated(dungeon, box));
+
+    dungeon_free(dungeon);
+}
+
+
+static void
+dungeon_alloc_tiles_for_box_test(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct box box;
+    struct tile **tiles;
+
+    box = box_make(point_make(0, 0, 1), size_make(2, 3, 1));
+    tiles = dungeon_alloc_tiles_for_box(dungeon, box);
+
+    assert(tiles);
+    assert(point_equals(point_make(0, 0, 1), tiles[0]->point));
+    assert(point_equals(point_make(1, 0, 1), tiles[1]->point));
+    assert(point_equals(point_make(0, 1, 1), tiles[2]->point));
+    assert(point_equals(point_make(1, 1, 1), tiles[3]->point));
+    assert(point_equals(point_make(0, 2, 1), tiles[4]->point));
+    assert(point_equals(point_make(1, 2, 1), tiles[5]->point));
+    free_or_die(tiles);
+
+    box = box_make(point_make(0, 0, 1), size_make(2, 1, 3));
+    tiles = dungeon_alloc_tiles_for_box(dungeon, box);
+
+    assert(tiles);
+    assert(point_equals(point_make(0, 0, 1), tiles[0]->point));
+    assert(point_equals(point_make(1, 0, 1), tiles[1]->point));
+    assert(point_equals(point_make(0, 0, 2), tiles[2]->point));
+    assert(point_equals(point_make(1, 0, 2), tiles[3]->point));
+    assert(point_equals(point_make(0, 0, 3), tiles[4]->point));
+    assert(point_equals(point_make(1, 0, 3), tiles[5]->point));
+    free_or_die(tiles);
+
+    dungeon_free(dungeon);
+}
+
+
+static void
+dungeon_tile_at_test(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct tile *tile;
+
+    tile = dungeon_tile_at(dungeon, point_make(0, 0, 1));
+    assert(tile);
+    assert(tile_type_filled == tile->type);
+    assert(tile_features_none == tile->features);
+    assert(direction_north == tile->direction);
+    assert(wall_type_none == tile->walls.south);
+    assert(wall_type_none == tile->walls.west);
+    assert(point_equals(point_make(0, 0, 1), tile->point));
+    tile->type = tile_type_empty;
+    tile->walls.south = wall_type_solid;
+    tile->walls.west = wall_type_solid;
+
+    tile = dungeon_tile_at(dungeon, point_make(0, 0, 1));
+    assert(tile);
+    assert(tile_type_empty == tile->type);
+    assert(tile_features_none == tile->features);
+    assert(direction_north == tile->direction);
+    assert(wall_type_solid == tile->walls.south);
+    assert(wall_type_solid == tile->walls.west);
+    assert(point_equals(point_make(0, 0, 1), tile->point));
+
+    dungeon_free(dungeon);
+}
+
+
 void dungeon_test(void)
 {
     dungeon_alloc_test();
@@ -178,4 +308,8 @@ void dungeon_test(void)
     dungeon_starting_level_test();
     dungeon_ending_level_test();
     dungeon_box_for_level_test();
+    dungeon_add_area_test();
+    dungeon_is_box_excavated_test();
+    dungeon_alloc_tiles_for_box_test();
+    dungeon_tile_at_test();
 }
