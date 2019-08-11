@@ -289,7 +289,7 @@ static WINDOW *
 pad_for_dungeon_level(struct dungeon *dungeon, int level)
 {
     struct level_map *level_map = level_map_alloc(dungeon, level);
-    struct text_rectangle *text_rectangle = level_map_alloc_text_graph(level_map, false);
+    struct text_rectangle *text_rectangle = level_map_alloc_text_rectangle(level_map, false);
     
     int pad_width = text_rectangle->column_count;
     int pad_height = text_rectangle->row_count;

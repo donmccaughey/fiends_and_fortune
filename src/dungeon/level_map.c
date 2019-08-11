@@ -79,7 +79,7 @@ level_map_alloc(struct dungeon *dungeon, int level)
 
 
 struct text_rectangle *
-level_map_alloc_text_graph(struct level_map *level_map, bool show_scale)
+level_map_alloc_text_rectangle(struct level_map *level_map, bool show_scale)
 {
     int const top_scale_length = show_scale ? 1 : 0;
     int const top_border_length = 1;
