@@ -154,35 +154,76 @@ dungeon_level_count(struct dungeon const *dungeon)
 }
 
 
-void
-dungeon_print_areas_for_level(struct dungeon *dungeon, int level, FILE *out)
+struct ptr_array *
+dungeon_alloc_descriptions_of_entrances_and_exits_for_level(struct dungeon *dungeon, int level)
 {
-    fprintf(out, "  Entrances and Exits:\n");
+    struct ptr_array *descriptions = ptr_array_alloc();
     for (int i = 0; i < dungeon->areas_count; ++i) {
         struct area *area = dungeon->areas[i];
         if (level != area->box.origin.z) continue;
         if (area_is_level_transition(area)) {
             char *location = point_alloc_xy(area_center_point(area));
-            char *description = area_alloc_description(area);
-            fprintf(out, "    %-12s %s\n", location, description);
+            char *area_description = area_alloc_description(area);
+            char *description = str_alloc_formatted("%-12s %s", location, area_description);
+            ptr_array_add(descriptions, description);
             free_or_die(location);
-            free_or_die(description);
+            free_or_die(area_description);
         }
     }
-    
-    fprintf(out, "\n");
-    fprintf(out, "  Chambers and Rooms:\n");
+    return descriptions;
+}
+
+
+struct ptr_array *
+dungeon_alloc_descriptions_of_chambers_and_rooms_for_level(struct dungeon *dungeon, int level)
+{
+    struct ptr_array *descriptions = ptr_array_alloc();
     for (int i = 0; i < dungeon->areas_count; ++i) {
         struct area *area = dungeon->areas[i];
         if (level != area->box.origin.z) continue;
         if (area_is_chamber_or_room(area)) {
             char *location = point_alloc_xy(area_center_point(area));
-            char *description = area_alloc_description(area);
-            fprintf(out, "    %-12s %s\n", location, description);
+            char *area_description = area_alloc_description(area);
+            char *description = str_alloc_formatted("%-12s %s", location, area_description);
+            ptr_array_add(descriptions, description);
             free_or_die(location);
-            free_or_die(description);
+            free_or_die(area_description);
         }
     }
+    return descriptions;
+}
+
+
+void
+dungeon_print_areas_for_level(struct dungeon *dungeon, int level, FILE *out)
+{
+    fprintf(out, "  Entrances and Exits:\n");
+    struct ptr_array *descriptions = dungeon_alloc_descriptions_of_entrances_and_exits_for_level(dungeon, level);
+    for (int i = 0; i < descriptions->count; ++i) {
+        fprintf(out, "    %s\n", descriptions->elements[i]);
+    }
+    ptr_array_clear(descriptions, free_or_die);
+    ptr_array_free(descriptions);
+    
+    fprintf(out, "\n");
+    fprintf(out, "  Chambers and Rooms:\n");
+    descriptions = dungeon_alloc_descriptions_of_chambers_and_rooms_for_level(dungeon, level);
+    for (int i = 0; i < descriptions->count; ++i) {
+        fprintf(out, "    %s\n", descriptions->elements[i]);
+    }
+    ptr_array_clear(descriptions, free_or_die);
+    ptr_array_free(descriptions);
+}
+
+
+struct text_rectangle *
+dungeon_alloc_text_rectangle_for_level(struct dungeon *dungeon, int level)
+{
+    struct level_map *level_map = level_map_alloc(dungeon, level);
+    struct text_rectangle *text_rectangle = level_map_alloc_text_rectangle(level_map, true);
+    level_map_free(level_map);
+
+    return text_rectangle;
 }
 
 

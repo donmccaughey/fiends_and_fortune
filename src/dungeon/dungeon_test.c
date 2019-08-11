@@ -300,6 +300,134 @@ dungeon_tile_at_test(void)
 }
 
 
+static void
+dungeon_alloc_text_rectangle_for_level_test(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct tile *tile = dungeon_tile_at(dungeon, point_make(0, 0, 1));
+    tile->type = tile_type_empty;
+
+    struct text_rectangle *text_rectangle = dungeon_alloc_text_rectangle_for_level(dungeon, 1);
+    assert(text_rectangle);
+    assert(9 == text_rectangle->row_count);
+    assert(21 == text_rectangle->column_count);
+    char const *expected =
+        "     -1   0   1      \n"
+        "    +---+---+---+    \n"
+        "  1 |:::::::::::| 1  \n"
+        "    +:::::::::::+    \n"
+        "  0 |:::    ::::| 0  \n"
+        "    +:::.   ::::+    \n"
+        " -1 |:::::::::::| -1 \n"
+        "    +---+---+---+    \n"
+        "     -1   0   1      \n";
+    assert(str_eq(expected, text_rectangle->chars));
+
+    text_rectangle_free(text_rectangle);
+    dungeon_free(dungeon);
+}
+
+
+static void
+dungeon_alloc_descriptions_of_entrances_and_exits_for_level_test(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct box box;
+    struct area *area;
+    struct ptr_array *descriptions;
+
+    descriptions = dungeon_alloc_descriptions_of_entrances_and_exits_for_level(dungeon, 1);
+    assert(descriptions);
+    assert(0 == descriptions->count);
+    ptr_array_free(descriptions);
+
+    box = box_make(point_make(4, 4, 1), size_make(2, 2, 1));
+    area = area_alloc(area_type_chamber, direction_north, box);
+    dungeon_add_area(dungeon, area);
+
+    descriptions = dungeon_alloc_descriptions_of_entrances_and_exits_for_level(dungeon, 1);
+    assert(descriptions);
+    assert(0 == descriptions->count);
+    ptr_array_free(descriptions);
+
+    box = box_make(point_make(0, 0, 1), size_make(1, 2, 1));
+    area = area_alloc(area_type_stairs_down, direction_north, box);
+    dungeon_add_area(dungeon, area);
+
+    descriptions = dungeon_alloc_descriptions_of_entrances_and_exits_for_level(dungeon, 1);
+    assert(descriptions);
+    assert(1 == descriptions->count);
+    assert(str_eq("(0, 0)       stairs down to level 2", descriptions->elements[0]));
+    ptr_array_clear(descriptions, free_or_die);
+    ptr_array_free(descriptions);
+
+    box = box_make(point_make(10, 10, 1), size_make(3, 3, 1));
+    area = area_alloc(area_type_room, direction_north, box);
+    area->features = area_features_chimney_up;
+    dungeon_add_area(dungeon, area);
+
+    descriptions = dungeon_alloc_descriptions_of_entrances_and_exits_for_level(dungeon, 1);
+    assert(descriptions);
+    assert(2 == descriptions->count);
+    assert(str_eq("(0, 0)       stairs down to level 2", descriptions->elements[0]));
+    assert(str_eq("(11, 11)     30' x 30' room, chimney up to surface", descriptions->elements[1]));
+    ptr_array_clear(descriptions, free_or_die);
+    ptr_array_free(descriptions);
+
+    dungeon_free(dungeon);
+}
+
+
+static void
+dungeon_alloc_descriptions_of_chambers_and_rooms_for_level_test(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct box box;
+    struct area *area;
+    struct ptr_array *descriptions;
+
+    descriptions = dungeon_alloc_descriptions_of_chambers_and_rooms_for_level(dungeon, 1);
+    assert(descriptions);
+    assert(0 == descriptions->count);
+    ptr_array_free(descriptions);
+
+    box = box_make(point_make(0, 0, 1), size_make(1, 2, 1));
+    area = area_alloc(area_type_stairs_down, direction_north, box);
+    dungeon_add_area(dungeon, area);
+
+    descriptions = dungeon_alloc_descriptions_of_chambers_and_rooms_for_level(dungeon, 1);
+    assert(descriptions);
+    assert(0 == descriptions->count);
+    ptr_array_free(descriptions);
+
+    box = box_make(point_make(4, 4, 1), size_make(2, 2, 1));
+    area = area_alloc(area_type_chamber, direction_north, box);
+    dungeon_add_area(dungeon, area);
+
+    descriptions = dungeon_alloc_descriptions_of_chambers_and_rooms_for_level(dungeon, 1);
+    assert(descriptions);
+    assert(1 == descriptions->count);
+    assert(str_eq("(4, 4)       20' x 20' chamber", descriptions->elements[0]));
+    ptr_array_clear(descriptions, free_or_die);
+    ptr_array_free(descriptions);
+
+    box = box_make(point_make(10, 10, 1), size_make(3, 3, 1));
+    area = area_alloc(area_type_room, direction_north, box);
+    area->features = area_features_chimney_up;
+    dungeon_add_area(dungeon, area);
+
+    descriptions = dungeon_alloc_descriptions_of_chambers_and_rooms_for_level(dungeon, 1);
+    assert(descriptions);
+    assert(2 == descriptions->count);
+    assert(str_eq("(4, 4)       20' x 20' chamber", descriptions->elements[0]));
+    assert(str_eq("(11, 11)     30' x 30' room, chimney up to surface", descriptions->elements[1]));
+    ptr_array_clear(descriptions, free_or_die);
+    ptr_array_free(descriptions);
+
+    dungeon_free(dungeon);
+}
+
+
 void dungeon_test(void)
 {
     dungeon_alloc_test();
@@ -312,4 +440,7 @@ void dungeon_test(void)
     dungeon_is_box_excavated_test();
     dungeon_alloc_tiles_for_box_test();
     dungeon_tile_at_test();
+    dungeon_alloc_text_rectangle_for_level_test();
+    dungeon_alloc_descriptions_of_entrances_and_exits_for_level_test();
+    dungeon_alloc_descriptions_of_chambers_and_rooms_for_level_test();
 }

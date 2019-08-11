@@ -26,7 +26,9 @@
 struct area;
 struct dungeon_options;
 struct generator;
+struct ptr_array;
 struct rnd;
+struct text_rectangle;
 struct tile;
 
 
@@ -66,8 +68,17 @@ dungeon_starting_level(struct dungeon const *dungeon);
 int
 dungeon_ending_level(struct dungeon const *dungeon);
 
+struct text_rectangle *
+dungeon_alloc_text_rectangle_for_level(struct dungeon *dungeon, int level);
+
 void
 dungeon_print_map_for_level(struct dungeon *dungeon, int level, FILE *out);
+
+struct ptr_array *
+dungeon_alloc_descriptions_of_entrances_and_exits_for_level(struct dungeon *dungeon, int level);
+
+struct ptr_array *
+dungeon_alloc_descriptions_of_chambers_and_rooms_for_level(struct dungeon *dungeon, int level);
 
 void
 dungeon_print_areas_for_level(struct dungeon *dungeon, int level, FILE *out);
