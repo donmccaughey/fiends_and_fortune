@@ -80,9 +80,149 @@ digger_move_test(void)
 }
 
 
+static void
+digger_move_forward_test(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
+    struct generator *generator = generator_alloc(dungeon, global_rnd, dungeon_options, NULL, NULL);
+
+    struct digger *digger = digger_alloc(generator, point_make(0, 0, 1), direction_west);
+
+    digger_move_forward(digger, 3);
+    assert(point_equals(point_make(-3, 0, 1), digger->point));
+    assert(direction_west == digger->direction);
+
+    digger_move_forward(digger, 1);
+    assert(point_equals(point_make(-4, 0, 1), digger->point));
+    assert(direction_west == digger->direction);
+
+    digger->direction = direction_north;
+    digger_move_forward(digger, 2);
+    assert(point_equals(point_make(-4, 2, 1), digger->point));
+    assert(direction_north == digger->direction);
+
+    digger->direction = direction_northeast;
+    digger_move_forward(digger, 1);
+    assert(point_equals(point_make(-3, 3, 1), digger->point));
+    assert(direction_northeast == digger->direction);
+
+    digger_free(digger);
+    generator_free(generator);
+    dungeon_options_free(dungeon_options);
+    dungeon_free(dungeon);
+}
+
+
+static void
+digger_move_backward_test(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
+    struct generator *generator = generator_alloc(dungeon, global_rnd, dungeon_options, NULL, NULL);
+
+    struct digger *digger = digger_alloc(generator, point_make(0, 0, 1), direction_west);
+
+    digger_move_backward(digger, 3);
+    assert(point_equals(point_make(3, 0, 1), digger->point));
+    assert(direction_west == digger->direction);
+
+    digger_move_backward(digger, 1);
+    assert(point_equals(point_make(4, 0, 1), digger->point));
+    assert(direction_west == digger->direction);
+
+    digger->direction = direction_north;
+    digger_move_backward(digger, 2);
+    assert(point_equals(point_make(4, -2, 1), digger->point));
+    assert(direction_north == digger->direction);
+
+    digger->direction = direction_northeast;
+    digger_move_backward(digger, 1);
+    assert(point_equals(point_make(3, -3, 1), digger->point));
+    assert(direction_northeast == digger->direction);
+
+    digger_free(digger);
+    generator_free(generator);
+    dungeon_options_free(dungeon_options);
+    dungeon_free(dungeon);
+}
+
+
+static void
+digger_move_left_test(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
+    struct generator *generator = generator_alloc(dungeon, global_rnd, dungeon_options, NULL, NULL);
+
+    struct digger *digger = digger_alloc(generator, point_make(0, 0, 1), direction_west);
+
+    digger_move_left(digger, 3);
+    assert(point_equals(point_make(0, -3, 1), digger->point));
+    assert(direction_west == digger->direction);
+
+    digger_move_left(digger, 1);
+    assert(point_equals(point_make(0, -4, 1), digger->point));
+    assert(direction_west == digger->direction);
+
+    digger->direction = direction_north;
+    digger_move_left(digger, 2);
+    assert(point_equals(point_make(-2, -4, 1), digger->point));
+    assert(direction_north == digger->direction);
+
+    digger->direction = direction_northeast;
+    digger_move_left(digger, 1);
+    assert(point_equals(point_make(-3, -3, 1), digger->point));
+    assert(direction_northeast == digger->direction);
+
+    digger_free(digger);
+    generator_free(generator);
+    dungeon_options_free(dungeon_options);
+    dungeon_free(dungeon);
+}
+
+
+static void
+digger_move_right_test(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
+    struct generator *generator = generator_alloc(dungeon, global_rnd, dungeon_options, NULL, NULL);
+
+    struct digger *digger = digger_alloc(generator, point_make(0, 0, 1), direction_west);
+
+    digger_move_right(digger, 3);
+    assert(point_equals(point_make(0, 3, 1), digger->point));
+    assert(direction_west == digger->direction);
+
+    digger_move_right(digger, 1);
+    assert(point_equals(point_make(0, 4, 1), digger->point));
+    assert(direction_west == digger->direction);
+
+    digger->direction = direction_north;
+    digger_move_right(digger, 2);
+    assert(point_equals(point_make(2, 4, 1), digger->point));
+    assert(direction_north == digger->direction);
+
+    digger->direction = direction_northeast;
+    digger_move_right(digger, 1);
+    assert(point_equals(point_make(3, 3, 1), digger->point));
+    assert(direction_northeast == digger->direction);
+
+    digger_free(digger);
+    generator_free(generator);
+    dungeon_options_free(dungeon_options);
+    dungeon_free(dungeon);
+}
+
+
 void
 digger_test(void)
 {
     digger_alloc_test();
     digger_move_test();
+    digger_move_forward_test();
+    digger_move_backward_test();
+    digger_move_left_test();
+    digger_move_right_test();
 }
