@@ -389,7 +389,8 @@ box_intersects_test(void)
 }
 
 
-void box_test(void)
+void
+box_test(void)
 {
     box_make_test();
     box_make_empty_test();

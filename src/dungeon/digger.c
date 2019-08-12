@@ -52,6 +52,19 @@ box_for_area(struct digger *digger,
 }
 
 
+struct digger *
+digger_alloc(struct generator *generator,
+             struct point point,
+             enum direction direction)
+{
+    struct digger *digger = calloc_or_die(1, sizeof(struct digger));
+    digger->generator = generator;
+    digger->point = point;
+    digger->direction = direction;
+    return digger;
+}
+
+
 void
 digger_ascend(struct digger *digger, int levels)
 {
@@ -301,6 +314,13 @@ digger_dig_stairs_up(struct digger *digger,
                                              area_type_stairs_up);
     digger_move_forward(digger, length);
     return stairs_up;
+}
+
+
+void
+digger_free(struct digger *digger)
+{
+    free_or_die(digger);
 }
 
 

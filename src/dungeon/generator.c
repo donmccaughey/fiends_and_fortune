@@ -11,26 +11,6 @@
 #include "tile.h"
 
 
-static struct digger *
-digger_alloc(struct generator *generator,
-             struct point point,
-             enum direction direction)
-{
-    struct digger *digger = calloc_or_die(1, sizeof(struct digger));
-    digger->generator = generator;
-    digger->point = point;
-    digger->direction = direction;
-    return digger;
-}
-
-
-static void
-digger_free(struct digger *digger)
-{
-    free_or_die(digger);
-}
-
-
 struct area *
 generator_add_area(struct generator *generator,
                    enum area_type area_type,

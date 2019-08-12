@@ -9,6 +9,9 @@ void
 box_test(void);
 
 void
+digger_test(void);
+
+void
 dungeon_test(void);
 
 void
@@ -32,6 +35,7 @@ main(int argc, char *argv[])
 {
     area_test();
     box_test();
+    digger_test();
     dungeon_test();
     generator_test();
     point_test();

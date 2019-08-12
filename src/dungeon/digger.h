@@ -2,6 +2,7 @@
 #define FNF_DUNGEON_DIGGER_H_INCLUDED
 
 
+#include <background/background.h>
 #include <dungeon/area_type.h>
 #include <dungeon/point.h>
 #include <dungeon/wall_type.h>
@@ -17,6 +18,14 @@ struct digger {
     enum direction direction;
 };
 
+
+struct digger *
+digger_alloc(struct generator *generator,
+             struct point point,
+             enum direction direction);
+
+void
+digger_free(struct digger *digger);
 
 void
 digger_move(struct digger *digger, int steps, enum direction direction);
