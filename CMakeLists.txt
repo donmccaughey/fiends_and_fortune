@@ -187,6 +187,8 @@ add_executable(dungeon_tests
         src/dungeon/size_test.c
         src/dungeon/text_rectangle_test.c
         src/dungeon/tile_test.c
+        src/dungeon/tiles_thumbnail.c
+        src/dungeon/tiles_thumbnail_test.c
         )
 target_include_directories(dungeon_tests PUBLIC src)
 target_link_libraries(dungeon_tests dungeon background base mechanics)

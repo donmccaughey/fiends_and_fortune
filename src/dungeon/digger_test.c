@@ -5,6 +5,7 @@
 #include "dungeon.h"
 #include "generator.h"
 #include "tile.h"
+#include "tiles_thumbnail.h"
 
 
 void
@@ -417,11 +418,16 @@ digger_dig_starting_stairs_test(void)
     struct box expected_box = box_make(point_make(-1, 0, 1), size_make(2, 1, 1));
     assert(box_equals(expected_box, generator->areas[0]->box));
 
-    // 1  f  f  f  f  .
-    // 0  f  u  u  f  .
-    //-1  .  f  f  f  .
-    //   -2 -1  0  1  2
     assert(11 == generator->tiles_count);
+
+    char const *expected_types =
+            "   -2 -1  0  1 \n"
+            " 1  :  :  :  : \n"
+            " 0  :  ^  ^  : \n"
+            "-1     :  :  : \n";
+    char *thumbnail = tiles_thumbnail_types_alloc(generator->tiles, generator->tiles_count);
+    assert(str_eq(expected_types, thumbnail));
+    free_or_die(thumbnail);
 
     assert(point_equals(point_make(-1, -1, 1), generator->tiles[0]->point));
     assert(tile_type_filled == generator->tiles[0]->type);
@@ -509,11 +515,16 @@ digger_dig_area_test(void)
     struct box expected_box = box_make(point_make(0, 0, 1), size_make(1, 1, 1));
     assert(box_equals(expected_box, generator->areas[0]->box));
 
-    // 1  f  f  f
-    // 0  f  e  f
-    //-1  .  f  f
-    //   -1  0  1
     assert(8 == generator->tiles_count);
+
+    char const *expected_types =
+            "   -1  0  1 \n"
+            " 1  :  :  : \n"
+            " 0  :  .  : \n"
+            "-1     :  : \n";
+    char *thumbnail = tiles_thumbnail_types_alloc(generator->tiles, generator->tiles_count);
+    assert(str_eq(expected_types, thumbnail));
+    free_or_die(thumbnail);
 
     assert(point_equals(point_make(0, -1, 1), generator->tiles[0]->point));
     assert(tile_type_filled == generator->tiles[0]->type);

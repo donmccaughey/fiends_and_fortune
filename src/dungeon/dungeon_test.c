@@ -428,7 +428,8 @@ dungeon_alloc_descriptions_of_chambers_and_rooms_for_level_test(void)
 }
 
 
-void dungeon_test(void)
+void
+dungeon_test(void)
 {
     dungeon_alloc_test();
     dungeon_generate_small_test();

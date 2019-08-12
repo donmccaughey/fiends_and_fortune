@@ -29,6 +29,9 @@ text_rectangle_test(void);
 void
 tile_test(void);
 
+void
+tiles_thumbnail_test(void);
+
 
 int
 main(int argc, char *argv[])
@@ -42,6 +45,7 @@ main(int argc, char *argv[])
     size_test();
     text_rectangle_test();
     tile_test();
+    tiles_thumbnail_test();
     alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }
