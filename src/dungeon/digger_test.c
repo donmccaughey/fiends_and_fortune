@@ -418,7 +418,7 @@ digger_dig_starting_stairs_test(void)
     assert(box_equals(expected_box, generator->areas[0]->box));
 
     // 1  f  f  f  f  .
-    // 0  f  s  s  f  .
+    // 0  f  u  u  f  .
     //-1  .  f  f  f  .
     //   -2 -1  0  1  2
     assert(11 == generator->tiles_count);
@@ -446,11 +446,13 @@ digger_dig_starting_stairs_test(void)
 
     assert(point_equals(point_make(-1, 0, 1), generator->tiles[4]->point));
     assert(tile_type_stairs_up == generator->tiles[4]->type);
+    assert(direction_east == generator->tiles[4]->direction);
     assert(wall_type_solid == generator->tiles[4]->walls.south);
     assert(wall_type_none == generator->tiles[4]->walls.west);
 
     assert(point_equals(point_make(0, 0, 1), generator->tiles[5]->point));
     assert(tile_type_stairs_up == generator->tiles[5]->type);
+    assert(direction_east == generator->tiles[5]->direction);
     assert(wall_type_solid == generator->tiles[5]->walls.south);
     assert(wall_type_none == generator->tiles[5]->walls.west);
 
@@ -487,6 +489,81 @@ digger_dig_starting_stairs_test(void)
 }
 
 
+static void
+digger_dig_area_test(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
+    struct generator *generator = generator_alloc(dungeon, global_rnd, dungeon_options, NULL, NULL);
+    struct digger *digger = digger_alloc(generator, point_make(0, 0, 1), direction_west);
+
+    assert(0 == generator->areas_count);
+    assert(0 == generator->tiles_count);
+
+    digger_dig_area(digger, 1, 1, 0, wall_type_door, area_type_chamber);
+
+    assert(1 == generator->areas_count);
+    assert(area_type_chamber == generator->areas[0]->type);
+    assert(area_features_none == generator->areas[0]->features);
+    assert(direction_west == generator->areas[0]->direction);
+    struct box expected_box = box_make(point_make(0, 0, 1), size_make(1, 1, 1));
+    assert(box_equals(expected_box, generator->areas[0]->box));
+
+    // 1  f  f  f
+    // 0  f  e  f
+    //-1  .  f  f
+    //   -1  0  1
+    assert(8 == generator->tiles_count);
+
+    assert(point_equals(point_make(0, -1, 1), generator->tiles[0]->point));
+    assert(tile_type_filled == generator->tiles[0]->type);
+    assert(wall_type_none == generator->tiles[0]->walls.south);
+    assert(wall_type_none == generator->tiles[0]->walls.west);
+
+    assert(point_equals(point_make(1, -1, 1), generator->tiles[1]->point));
+    assert(tile_type_filled == generator->tiles[1]->type);
+    assert(wall_type_none == generator->tiles[1]->walls.south);
+    assert(wall_type_none == generator->tiles[1]->walls.west);
+
+
+    assert(point_equals(point_make(-1, 0, 1), generator->tiles[2]->point));
+    assert(tile_type_filled == generator->tiles[2]->type);
+    assert(wall_type_none == generator->tiles[2]->walls.south);
+    assert(wall_type_none == generator->tiles[2]->walls.west);
+
+    assert(point_equals(point_make(0, 0, 1), generator->tiles[3]->point));
+    assert(tile_type_empty == generator->tiles[3]->type);
+    assert(wall_type_solid == generator->tiles[3]->walls.south);
+    assert(wall_type_solid == generator->tiles[3]->walls.west);
+
+    assert(point_equals(point_make(1, 0, 1), generator->tiles[4]->point));
+    assert(tile_type_filled == generator->tiles[4]->type);
+    assert(wall_type_none == generator->tiles[4]->walls.south);
+    assert(wall_type_door == generator->tiles[4]->walls.west);
+
+
+    assert(point_equals(point_make(-1, 1, 1), generator->tiles[5]->point));
+    assert(tile_type_filled == generator->tiles[5]->type);
+    assert(wall_type_none == generator->tiles[5]->walls.south);
+    assert(wall_type_none == generator->tiles[5]->walls.west);
+
+    assert(point_equals(point_make(0, 1, 1), generator->tiles[6]->point));
+    assert(tile_type_filled == generator->tiles[6]->type);
+    assert(wall_type_solid == generator->tiles[6]->walls.south);
+    assert(wall_type_none == generator->tiles[6]->walls.west);
+
+    assert(point_equals(point_make(1, 1, 1), generator->tiles[7]->point));
+    assert(tile_type_filled == generator->tiles[7]->type);
+    assert(wall_type_none == generator->tiles[7]->walls.south);
+    assert(wall_type_none == generator->tiles[7]->walls.west);
+
+    digger_free(digger);
+    generator_free(generator);
+    dungeon_options_free(dungeon_options);
+    dungeon_free(dungeon);
+}
+
+
 void
 digger_test(void)
 {
@@ -504,4 +581,5 @@ digger_test(void)
     digger_turn_90_degrees_left_test();
     digger_turn_90_degrees_right_test();
     digger_dig_starting_stairs_test();
+    digger_dig_area_test();
 }
