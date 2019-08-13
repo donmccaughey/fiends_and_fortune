@@ -6,8 +6,49 @@
 #include "tile.h"
 
 
-char *
-tiles_thumbnail_types_alloc(struct tile **tiles, int tiles_count)
+typedef void print_tile_fn(struct text_rectangle *, struct tile *);
+
+
+static void
+print_tile_type(struct text_rectangle *text_rectangle, struct tile *tile)
+{
+    char type;
+    switch (tile->type) {
+        case tile_type_filled:      type = ':'; break;
+        case tile_type_empty:       type = '.'; break;
+        case tile_type_stairs_down: type = 'v'; break;
+        case tile_type_stairs_up:   type = '^'; break;
+        default:                    type = ' '; break;
+    }
+    text_rectangle_print_format(text_rectangle, " %c ", type);
+}
+
+
+static void
+print_tile_walls(struct text_rectangle *text_rectangle, struct tile *tile)
+{
+    char south_wall;
+    switch (tile->walls.south) {
+        case wall_type_none:        south_wall = '.'; break;
+        case wall_type_solid:       south_wall = '_'; break;
+        case wall_type_door:        south_wall = '='; break;
+        case wall_type_secret_door: south_wall = '~'; break;
+        default:                    south_wall = ' '; break;
+    }
+    char west_wall;
+    switch (tile->walls.west) {
+        case wall_type_none:        west_wall = '.'; break;
+        case wall_type_solid:       west_wall = '|'; break;
+        case wall_type_door:        west_wall = ']'; break;
+        case wall_type_secret_door: west_wall = '$'; break;
+        default:                    west_wall = ' '; break;
+    }
+    text_rectangle_print_format(text_rectangle, "%c%c ", west_wall, south_wall);
+}
+
+
+static char *
+tiles_thumbnail_alloc(struct tile **tiles, int tiles_count, print_tile_fn print_tile)
 {
     if (!tiles_count) return str_alloc_empty();
 
@@ -41,18 +82,24 @@ tiles_thumbnail_types_alloc(struct tile **tiles, int tiles_count)
         int column_index = 3 * (1 + tile->point.x - box.origin.x);
         int row_index = 1 + (box.size.length - 1) - (tile->point.y - box.origin.y);
         text_rectangle_move_to(text_rectangle, column_index, row_index);
-        char type;
-        switch (tile->type) {
-            case tile_type_filled:      type = ':'; break;
-            case tile_type_empty:       type = '.'; break;
-            case tile_type_stairs_down: type = 'v'; break;
-            case tile_type_stairs_up:   type = '^'; break;
-            default:                    type = ' '; break;
-        }
-        text_rectangle_print_format(text_rectangle, " %c ", type);
+        print_tile(text_rectangle, tile);
     }
 
     char *thumbnail = strdup_or_die(text_rectangle->chars);
     text_rectangle_free(text_rectangle);
     return thumbnail;
+}
+
+
+char *
+tiles_thumbnail_types_alloc(struct tile **tiles, int tiles_count)
+{
+    return tiles_thumbnail_alloc(tiles, tiles_count, print_tile_type);
+}
+
+
+char *
+tiles_thumbnail_walls_alloc(struct tile **tiles, int tiles_count)
+{
+    return tiles_thumbnail_alloc(tiles, tiles_count, print_tile_walls);
 }
