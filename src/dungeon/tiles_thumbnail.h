@@ -6,6 +6,9 @@ struct tile;
 
 
 char *
+tiles_thumbnail_directions_alloc(struct tile **tiles, int tiles_count);
+
+char *
 tiles_thumbnail_types_alloc(struct tile **tiles, int tiles_count);
 
 char *

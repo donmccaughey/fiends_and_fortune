@@ -10,6 +10,25 @@ typedef void print_tile_fn(struct text_rectangle *, struct tile *);
 
 
 static void
+print_tile_direction(struct text_rectangle *text_rectangle, struct tile *tile)
+{
+    char const *direction;
+    switch (tile->direction) {
+        case direction_north:     direction = " n"; break;
+        case direction_northeast: direction = "ne"; break;
+        case direction_east:      direction = " e"; break;
+        case direction_southeast: direction = "se"; break;
+        case direction_south:     direction = " s"; break;
+        case direction_southwest: direction = "sw"; break;
+        case direction_west:      direction = " w"; break;
+        case direction_northwest: direction = "nw"; break;
+        default:                  direction = ""; break;
+    }
+    text_rectangle_print_format(text_rectangle, "%-2s ", direction);
+}
+
+
+static void
 print_tile_type(struct text_rectangle *text_rectangle, struct tile *tile)
 {
     char type;
@@ -88,6 +107,13 @@ tiles_thumbnail_alloc(struct tile **tiles, int tiles_count, print_tile_fn print_
     char *thumbnail = strdup_or_die(text_rectangle->chars);
     text_rectangle_free(text_rectangle);
     return thumbnail;
+}
+
+
+char *
+tiles_thumbnail_directions_alloc(struct tile **tiles, int tiles_count)
+{
+    return tiles_thumbnail_alloc(tiles, tiles_count, print_tile_direction);
 }
 
 
