@@ -29,6 +29,13 @@ print_tile_direction(struct text_rectangle *text_rectangle, struct tile *tile)
 
 
 static void
+print_tile_features(struct text_rectangle *text_rectangle, struct tile *tile)
+{
+    text_rectangle_print_format(text_rectangle, " %x ", tile->features);
+}
+
+
+static void
 print_tile_type(struct text_rectangle *text_rectangle, struct tile *tile)
 {
     char type;
@@ -114,6 +121,13 @@ char *
 tiles_thumbnail_directions_alloc(struct tile **tiles, int tiles_count)
 {
     return tiles_thumbnail_alloc(tiles, tiles_count, print_tile_direction);
+}
+
+
+char *
+tiles_thumbnail_features_alloc(struct tile **tiles, int tiles_count)
+{
+    return tiles_thumbnail_alloc(tiles, tiles_count, print_tile_features);
 }
 
 
