@@ -4,7 +4,6 @@
 #include <base/base.h>
 #include "dungeon.h"
 #include "generator.h"
-#include "tile.h"
 #include "tiles_thumbnail.h"
 
 
@@ -414,9 +413,7 @@ digger_dig_starting_stairs_test(void)
     assert(direction_east == generator->areas[0]->direction);
     struct box expected_box = box_make(point_make(-1, 0, 1), size_make(2, 1, 1));
     assert(box_equals(expected_box, generator->areas[0]->box));
-    assert(-2 == digger->point.x);
-    assert(0 == digger->point.y);
-    assert(1 == digger->point.z);
+    assert(point_equals(point_make(-2, 0, 1), digger->point));
 
     assert(11 == generator->tiles_count);
     char *thumbnail;
@@ -482,6 +479,7 @@ digger_dig_area_test_for_10x10_chamber_north(void)
     assert(direction_north == area->direction);
     struct box expected_box = box_make(point_make(0, 0, 1), size_make(1, 1, 1));
     assert(box_equals(expected_box, area->box));
+    assert(point_equals(point_make(0, 0, 1), digger->point));
 
     assert(8 == generator->tiles_count);
     char *thumbnail;
@@ -547,6 +545,7 @@ digger_dig_area_test_for_10x10_chamber_south(void)
     assert(direction_south == area->direction);
     struct box expected_box = box_make(point_make(0, 0, 1), size_make(1, 1, 1));
     assert(box_equals(expected_box, area->box));
+    assert(point_equals(point_make(0, 0, 1), digger->point));
 
     assert(8 == generator->tiles_count);
     char *thumbnail;
@@ -612,6 +611,7 @@ digger_dig_area_test_for_10x10_chamber_east(void)
     assert(direction_east == area->direction);
     struct box expected_box = box_make(point_make(0, 0, 1), size_make(1, 1, 1));
     assert(box_equals(expected_box, area->box));
+    assert(point_equals(point_make(0, 0, 1), digger->point));
 
     assert(8 == generator->tiles_count);
     char *thumbnail;
@@ -677,6 +677,7 @@ digger_dig_area_test_for_10x10_chamber_west(void)
     assert(direction_west == area->direction);
     struct box expected_box = box_make(point_make(0, 0, 1), size_make(1, 1, 1));
     assert(box_equals(expected_box, area->box));
+    assert(point_equals(point_make(0, 0, 1), digger->point));
 
     assert(8 == generator->tiles_count);
     char *thumbnail;
@@ -742,6 +743,7 @@ digger_dig_area_test_for_30x20_room(void)
     assert(direction_south == area->direction);
     struct box expected_box = box_make(point_make(-2, -1, 1), size_make(3, 2, 1));
     assert(box_equals(expected_box, area->box));
+    assert(point_equals(point_make(0, 0, 1), digger->point));
 
     assert(19 == generator->tiles_count);
     char *thumbnail;
@@ -811,6 +813,7 @@ digger_dig_area_test_for_30x20_room_with_left_offset(void)
     assert(direction_north == area->direction);
     struct box expected_box = box_make(point_make(-2, 0, 1), size_make(3, 2, 1));
     assert(box_equals(expected_box, area->box));
+    assert(point_equals(point_make(0, 0, 1), digger->point));
 
     assert(19 == generator->tiles_count);
     char *thumbnail;
@@ -850,6 +853,7 @@ digger_dig_area_test_for_60_passage(void)
     assert(direction_east == area->direction);
     struct box expected_box = box_make(point_make(-3, 0, 1), size_make(6, 1, 1));
     assert(box_equals(expected_box, area->box));
+    assert(point_equals(point_make(-3, 0, 1), digger->point));
 
     assert(23 == generator->tiles_count);
     char *thumbnail;
@@ -915,6 +919,7 @@ digger_dig_area_test_for_stairs_up(void)
     assert(direction_east == area->direction);
     struct box expected_box = box_make(point_make(0, 0, 1), size_make(2, 1, 1));
     assert(box_equals(expected_box, area->box));
+    assert(point_equals(point_make(0, 0, 1), digger->point));
 
     assert(11 == generator->tiles_count);
     char *thumbnail;
@@ -980,6 +985,7 @@ digger_dig_area_test_for_stairs_down(void)
     assert(direction_east == area->direction);
     struct box expected_box = box_make(point_make(0, 0, 1), size_make(2, 1, 1));
     assert(box_equals(expected_box, area->box));
+    assert(point_equals(point_make(0, 0, 1), digger->point));
 
     assert(11 == generator->tiles_count);
     char *thumbnail;
@@ -1147,6 +1153,7 @@ digger_dig_chamber_test(void)
     assert(direction_north == chamber->direction);
     struct box expected_box = box_make(point_make(0, 0, 1), size_make(2, 2, 1));
     assert(box_equals(expected_box, chamber->box));
+    assert(point_equals(point_make(0, 0, 1), digger->point));
 
     char const *expected_walls =
             "   -1  0  1  2 \n"
@@ -1166,41 +1173,7 @@ digger_dig_chamber_test(void)
 
 
 static void
-digger_dig_chamber_test_for_adjacent_areas_with_padding_zero(void)
-{
-    struct dungeon *dungeon = dungeon_alloc();
-    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
-    dungeon_options->padding = 0;
-    struct generator *generator = generator_alloc(dungeon, global_rnd, dungeon_options, NULL, NULL);
-    struct digger *digger = digger_alloc(generator, point_make(0, 0, 1), direction_north);
-
-    struct area *chamber1 = digger_dig_chamber(digger, 2, 2, 0, wall_type_none);
-    digger_move(digger, 2, direction_east);
-    struct area *chamber2 = digger_dig_chamber(digger, 2, 2, 0, wall_type_none);
-
-    assert(chamber1);
-    assert(chamber2);
-    assert(2 == generator->areas_count);
-
-    char const *expected_walls =
-            "   -1  0  1  2  3  4 \n"
-            " 2 .. ._ ._ ._ ._ .. \n"
-            " 1 .. |. .. |. .. |. \n"
-            " 0 .. |. ._ |. ._ |. \n"
-            "-1    .. .. .. .. .. \n";
-    char *thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
-    assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
-
-    digger_free(digger);
-    generator_free(generator);
-    dungeon_options_free(dungeon_options);
-    dungeon_free(dungeon);
-}
-
-
-static void
-digger_dig_chamber_test_for_adjacent_areas_with_padding_one(void)
+digger_dig_chamber_test_for_overlapping_areas(void)
 {
     struct dungeon *dungeon = dungeon_alloc();
     struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
@@ -1208,26 +1181,12 @@ digger_dig_chamber_test_for_adjacent_areas_with_padding_one(void)
     struct generator *generator = generator_alloc(dungeon, global_rnd, dungeon_options, NULL, NULL);
     struct digger *digger = digger_alloc(generator, point_make(0, 0, 1), direction_north);
 
-    struct area *chamber1 = digger_dig_chamber(digger, 2, 2, 0, wall_type_none);
-    digger_move(digger, 2, direction_east);
-    struct area *chamber2 = digger_dig_chamber(digger, 2, 2, 0, wall_type_none);
-    digger_move(digger, 1, direction_east);
-    struct area *chamber3 = digger_dig_chamber(digger, 2, 2, 0, wall_type_none);
+    struct area *room = digger_dig_room(digger, 2, 2, 0, wall_type_solid);
+    digger_move_right(digger, 2);
+    struct area *chamber = digger_dig_chamber(digger, 2, 2, 0, wall_type_none);
 
-    assert(chamber1);
-    assert(!chamber2);
-    assert(chamber3);
-    assert(2 == generator->areas_count);
-
-    char const *expected_walls =
-            "   -1  0  1  2  3  4  5 \n"
-            " 2 .. ._ ._ .. ._ ._ .. \n"
-            " 1 .. |. .. |. |. .. |. \n"
-            " 0 .. |. ._ |. |. ._ |. \n"
-            "-1    .. .. .. .. .. .. \n";
-    char *thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
-    assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    assert(room);
+    assert(!chamber);
 
     digger_free(digger);
     generator_free(generator);
@@ -1254,9 +1213,7 @@ digger_dig_intersection_test(void)
     assert(area_features_none == intersection->features);
     struct box expected_box = box_make(point_make(0, 0, 1), size_make(1, 1, 1));
     assert(box_equals(expected_box, intersection->box));
-    assert(0 == digger->point.x);
-    assert(1 == digger->point.y);
-    assert(1 == digger->point.z);
+    assert(point_equals(point_make(0, 1, 1), digger->point));
     char *thumbnail;
 
     char const *expected_types =
@@ -1306,6 +1263,140 @@ digger_dig_intersection_test_for_overlapping_areas(void)
 }
 
 
+static void
+digger_dig_passage_test(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
+    dungeon_options->padding = 0;
+    struct generator *generator = generator_alloc(dungeon, global_rnd, dungeon_options, NULL, NULL);
+    struct digger *digger = digger_alloc(generator, point_make(0, 0, 1), direction_north);
+
+    struct area *passage = digger_dig_passage(digger, 3, wall_type_door);
+
+    assert(passage);
+    assert(1 == generator->areas_count);
+    assert(passage == generator->areas[0]);
+    assert(area_type_passage == passage->type);
+    assert(area_features_none == passage->features);
+    struct box expected_box = box_make(point_make(0, 0, 1), size_make(1, 3, 1));
+    assert(box_equals(expected_box, passage->box));
+    assert(point_equals(point_make(0, 3, 1), digger->point));
+    char *thumbnail;
+
+    char const *expected_types =
+            "   -1  0  1 \n"
+            " 3  :  :  : \n"
+            " 2  :  .  : \n"
+            " 1  :  .  : \n"
+            " 0  :  .  : \n"
+            "-1     :  : \n";
+    thumbnail = tiles_thumbnail_types_alloc(generator->tiles, generator->tiles_count);
+    assert(str_eq(expected_types, thumbnail));
+    free_or_die(thumbnail);
+
+    char const *expected_walls =
+            "   -1  0  1 \n"
+            " 3 .. ._ .. \n"
+            " 2 .. |. |. \n"
+            " 1 .. |. |. \n"
+            " 0 .. |= |. \n"
+            "-1    .. .. \n";
+    thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
+    assert(str_eq(expected_walls, thumbnail));
+    free_or_die(thumbnail);
+
+    digger_free(digger);
+    generator_free(generator);
+    dungeon_options_free(dungeon_options);
+    dungeon_free(dungeon);
+}
+
+
+static void
+digger_dig_passage_test_for_overlapping_areas(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
+    dungeon_options->padding = 1;
+    struct generator *generator = generator_alloc(dungeon, global_rnd, dungeon_options, NULL, NULL);
+    struct digger *digger = digger_alloc(generator, point_make(0, 0, 1), direction_north);
+
+    struct area *room = digger_dig_room(digger, 2, 2, 0, wall_type_solid);
+    digger_move_right(digger, 2);
+    struct area *passage = digger_dig_passage(digger, 3, wall_type_door);
+
+    assert(room);
+    assert(!passage);
+
+    digger_free(digger);
+    generator_free(generator);
+    dungeon_options_free(dungeon_options);
+    dungeon_free(dungeon);
+}
+
+
+static void
+digger_dig_room_test(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
+    dungeon_options->padding = 0;
+    struct generator *generator = generator_alloc(dungeon, global_rnd, dungeon_options, NULL, NULL);
+    struct digger *digger = digger_alloc(generator, point_make(0, 0, 1), direction_north);
+
+    struct area *room = digger_dig_room(digger, 2, 2, 0, wall_type_secret_door);
+
+    assert(room);
+    assert(1 == generator->areas_count);
+    assert(room == generator->areas[0]);
+    assert(area_type_room == room->type);
+    assert(area_features_none == room->features);
+    assert(direction_north == room->direction);
+    struct box expected_box = box_make(point_make(0, 0, 1), size_make(2, 2, 1));
+    assert(box_equals(expected_box, room->box));
+    assert(point_equals(point_make(0, 0, 1), digger->point));
+
+    char const *expected_walls =
+            "   -1  0  1  2 \n"
+            " 2 .. ._ ._ .. \n"
+            " 1 .. |. .. |. \n"
+            " 0 .. |~ ._ |. \n"
+            "-1    .. .. .. \n";
+    char *thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
+    assert(str_eq(expected_walls, thumbnail));
+    free_or_die(thumbnail);
+
+    digger_free(digger);
+    generator_free(generator);
+    dungeon_options_free(dungeon_options);
+    dungeon_free(dungeon);
+}
+
+
+static void
+digger_dig_room_test_for_overlapping_areas(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
+    dungeon_options->padding = 1;
+    struct generator *generator = generator_alloc(dungeon, global_rnd, dungeon_options, NULL, NULL);
+    struct digger *digger = digger_alloc(generator, point_make(0, 0, 1), direction_north);
+
+    struct area *chamber = digger_dig_chamber(digger, 2, 2, 0, wall_type_solid);
+    digger_move_right(digger, 2);
+    struct area *room = digger_dig_room(digger, 2, 2, 0, wall_type_secret_door);
+
+    assert(chamber);
+    assert(!room);
+
+    digger_free(digger);
+    generator_free(generator);
+    dungeon_options_free(dungeon_options);
+    dungeon_free(dungeon);
+}
+
+
 void
 digger_test(void)
 {
@@ -1337,8 +1428,11 @@ digger_test(void)
     digger_dig_area_test_when_outside_dungeon_max_height();
     digger_dig_area_test_when_bigger_than_dungeon_max();
     digger_dig_chamber_test();
-    digger_dig_chamber_test_for_adjacent_areas_with_padding_zero();
-    digger_dig_chamber_test_for_adjacent_areas_with_padding_one();
+    digger_dig_chamber_test_for_overlapping_areas();
     digger_dig_intersection_test();
     digger_dig_intersection_test_for_overlapping_areas();
+    digger_dig_passage_test();
+    digger_dig_passage_test_for_overlapping_areas();
+    digger_dig_room_test();
+    digger_dig_room_test_for_overlapping_areas();
 }
