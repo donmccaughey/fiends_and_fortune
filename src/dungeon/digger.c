@@ -99,16 +99,14 @@ digger_dig_area(struct digger *digger,
     
     struct box box_for_level = generator_box_for_level(digger->generator,
                                                        digger->point.z);
-    if (box_for_level.size.width && box_for_level.size.height) {
-        struct box new_box_for_level = box_for_level = box_make_from_boxes(box_for_level,
-                                                                           box_to_dig);
-        if (   new_box_for_level.size.width > digger->generator->max_size.width
-            || new_box_for_level.size.length > digger->generator->max_size.length)
-        {
-            return NULL;
-        }
+    struct box new_box_for_level = box_make_from_boxes(box_for_level,
+                                                       box_to_dig);
+    if (   new_box_for_level.size.width > digger->generator->max_size.width
+        || new_box_for_level.size.length > digger->generator->max_size.length)
+    {
+        return NULL;
     }
-    
+
     enum tile_type tile_type;
     switch (area_type) {
         case area_type_stairs_up: tile_type = tile_type_stairs_up; break;
