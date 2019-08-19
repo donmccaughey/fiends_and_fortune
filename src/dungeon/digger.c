@@ -7,7 +7,7 @@
 #include "tile.h"
 
 
-static struct box
+struct box
 box_for_area(struct digger *digger,
              int length,
              int width,

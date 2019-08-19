@@ -12,6 +12,108 @@ digger_test(void);
 
 
 static void
+box_for_area_test_north(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
+    struct generator *generator = generator_alloc(dungeon, global_rnd, dungeon_options, NULL, NULL);
+
+    struct digger *digger = digger_alloc(generator, point_make(2, 2, 2), direction_north);
+    struct box box = box_for_area(digger, 3, 3, 0, 1);
+
+    // 5  :  :  :  :  :
+    // 4  :  .  .  .  :
+    // 3  :  .  .  .  :
+    // 2  :  *  .  .  :
+    //    1  2  3  4  5
+    assert(point_equals(point_make(1, 2, 2), box.origin));
+    assert(size_equals(size_make(5, 4, 1), box.size));
+
+    digger_free(digger);
+    generator_free(generator);
+    dungeon_options_free(dungeon_options);
+    dungeon_free(dungeon);
+}
+
+
+static void
+box_for_area_test_south(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
+    struct generator *generator = generator_alloc(dungeon, global_rnd, dungeon_options, NULL, NULL);
+
+    struct digger *digger = digger_alloc(generator, point_make(2, 2, 2), direction_south);
+    struct box box = box_for_area(digger, 3, 3, 0, 1);
+
+    // 2  :  .  .  *  :
+    // 1  :  .  .  .  :
+    // 0  :  .  .  .  :
+    //-1  :  :  :  :  :
+    //   -1  0  1  2  3
+    assert(point_equals(point_make(-1, -1, 2), box.origin));
+    assert(size_equals(size_make(5, 4, 1), box.size));
+
+    digger_free(digger);
+    generator_free(generator);
+    dungeon_options_free(dungeon_options);
+    dungeon_free(dungeon);
+}
+
+
+static void
+box_for_area_test_east(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
+    struct generator *generator = generator_alloc(dungeon, global_rnd, dungeon_options, NULL, NULL);
+
+    struct digger *digger = digger_alloc(generator, point_make(2, 2, 2), direction_east);
+    struct box box = box_for_area(digger, 3, 3, 0, 1);
+
+    // 3  :  :  :  :
+    // 2  *  .  .  :
+    // 1  .  .  .  :
+    // 0  .  .  .  :
+    //-1  :  :  :  :
+    //    2  3  4  5
+    assert(point_equals(point_make(2, -1, 2), box.origin));
+    assert(size_equals(size_make(4, 5, 1), box.size));
+
+    digger_free(digger);
+    generator_free(generator);
+    dungeon_options_free(dungeon_options);
+    dungeon_free(dungeon);
+}
+
+
+static void
+box_for_area_test_west(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+    struct dungeon_options *dungeon_options = dungeon_options_alloc_default();
+    struct generator *generator = generator_alloc(dungeon, global_rnd, dungeon_options, NULL, NULL);
+
+    struct digger *digger = digger_alloc(generator, point_make(2, 2, 2), direction_west);
+    struct box box = box_for_area(digger, 3, 3, 0, 1);
+
+    // 5  :  :  :  :
+    // 4  :  .  .  .
+    // 3  :  .  .  .
+    // 2  :  .  .  *
+    // 1  :  :  :  :
+    //   -1  0  1  2
+    assert(point_equals(point_make(-1, 1, 2), box.origin));
+    assert(size_equals(size_make(4, 5, 1), box.size));
+
+    digger_free(digger);
+    generator_free(generator);
+    dungeon_options_free(dungeon_options);
+    dungeon_free(dungeon);
+}
+
+
+static void
 digger_alloc_test(void)
 {
     struct dungeon *dungeon = dungeon_alloc();
@@ -1542,6 +1644,10 @@ digger_dig_stairs_up_test_for_overlapping_areas(void)
 void
 digger_test(void)
 {
+    box_for_area_test_north();
+    box_for_area_test_south();
+    box_for_area_test_east();
+    box_for_area_test_west();
     digger_alloc_test();
     digger_move_test();
     digger_move_forward_test();
