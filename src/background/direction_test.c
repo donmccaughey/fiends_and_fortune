@@ -89,6 +89,8 @@ direction_is_valid_test(void)
     assert(direction_is_valid(direction_west));
     assert(direction_is_valid(direction_northwest));
 
+    assert( ! direction_is_valid(-90));
+    assert( ! direction_is_valid(-45));
     assert( ! direction_is_valid(1));
     assert( ! direction_is_valid(15));
     assert( ! direction_is_valid(235));
