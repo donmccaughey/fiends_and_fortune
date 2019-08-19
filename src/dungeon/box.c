@@ -118,6 +118,49 @@ box_extend_to_include_point(struct box box, struct point point)
 }
 
 
+struct box
+box_for_area(struct point origin,
+             enum direction direction,
+             int length,
+             int width,
+             int left_offset,
+             int padding)
+{
+    assert(left_offset < width);
+    struct box box = box_make_empty(point_make(0, 0, 0));
+    switch (direction) {
+        case direction_north:
+            box.origin = point_make(origin.x - left_offset - padding,
+                                    origin.y,
+                                    origin.z);
+            box.size = size_make(width + (2 * padding), length + padding, 1);
+            break;
+        case direction_south:
+            box.origin = point_make(origin.x + left_offset + padding,
+                                    origin.y,
+                                    origin.z);
+            box.size = size_make(-width - (2 * padding), -length - padding, 1);
+            break;
+        case direction_east:
+            box.origin = point_make(origin.x,
+                                    origin.y + left_offset + padding,
+                                    origin.z);
+            box.size = size_make(length + padding, -width - (2 * padding), 1);
+            break;
+        case direction_west:
+            box.origin = point_make(origin.x,
+                                    origin.y - left_offset - padding,
+                                    origin.z);
+            box.size = size_make(-length - padding, width + (2 * padding), 1);
+            break;
+        default:
+            fail("Unrecognized direction %i", direction);
+            break;
+    }
+    return box_normalize(box);
+}
+
+
 int
 box_index_for_point(struct box box, struct point point)
 {

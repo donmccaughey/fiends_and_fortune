@@ -60,6 +60,14 @@ struct box
 box_extend_to_include_point(struct box box, struct point point);
 
 struct box
+box_for_area(struct point origin,
+             enum direction direction,
+             int length,
+             int width,
+             int left_offset,
+             int padding);
+
+struct box
 box_intersection(struct box box, struct box other);
 
 int

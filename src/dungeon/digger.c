@@ -1,55 +1,9 @@
 #include "digger.h"
 
-#include <assert.h>
 #include <base/base.h>
 
 #include "generator.h"
 #include "tile.h"
-
-
-struct box
-box_for_area(struct digger *digger,
-             int length,
-             int width,
-             int left_offset,
-             int padding)
-{
-    assert(left_offset < width);
-    struct point origin;
-    struct size size;
-    switch (digger->direction) {
-        case direction_north:
-            origin = point_make(digger->point.x - left_offset - padding,
-                                digger->point.y,
-                                digger->point.z);
-            size = size_make(width + (2 * padding), length + padding, 1);
-            break;
-        case direction_south:
-            origin = point_make(digger->point.x + left_offset + padding,
-                                digger->point.y,
-                                digger->point.z);
-            size = size_make(-width - (2 * padding), -length - padding, 1);
-            break;
-        case direction_east:
-            origin = point_make(digger->point.x,
-                                digger->point.y + left_offset + padding,
-                                digger->point.z);
-            size = size_make(length + padding, -width - (2 * padding), 1);
-            break;
-        case direction_west:
-            origin = point_make(digger->point.x,
-                                digger->point.y - left_offset - padding,
-                                digger->point.z);
-            size = size_make(-length - padding, width + (2 * padding), 1);
-            break;
-        default:
-            fail("Unrecognized direction %i", digger->direction);
-            origin = point_make(0, 0, 0);
-            size = size_make(0, 0, 0);
-            break;
-    }
-    return box_normalize(box_make(origin, size));
-}
 
 
 struct digger *
@@ -88,7 +42,8 @@ digger_dig_area(struct digger *digger,
                 enum area_type area_type)
 {
     int const padding = 0;
-    struct box box_to_dig = box_for_area(digger,
+    struct box box_to_dig = box_for_area(digger->point,
+                                         digger->direction,
                                          length,
                                          width,
                                          left_offset,
@@ -155,7 +110,8 @@ digger_dig_chamber(struct digger *digger,
                    int left_offset,
                    enum wall_type entrance_type)
 {
-    struct box padded_box = box_for_area(digger,
+    struct box padded_box = box_for_area(digger->point,
+                                         digger->direction,
                                          length,
                                          width,
                                          left_offset,
@@ -179,7 +135,8 @@ digger_dig_intersection(struct digger *digger)
     int const length = 1;
     int const width = 1;
     int const left_offset = 0;
-    struct box padded_box = box_for_area(digger,
+    struct box padded_box = box_for_area(digger->point,
+                                         digger->direction,
                                          length,
                                          width,
                                          left_offset,
@@ -206,7 +163,8 @@ digger_dig_passage(struct digger *digger,
     int const length = distance;
     int const width = 1;
     int const left_offset = 0;
-    struct box padded_box = box_for_area(digger,
+    struct box padded_box = box_for_area(digger->point,
+                                         digger->direction,
                                          length,
                                          width,
                                          left_offset,
@@ -232,7 +190,8 @@ digger_dig_room(struct digger *digger,
                 int left_offset,
                 enum wall_type entrance_type)
 {
-    struct box padded_box = box_for_area(digger,
+    struct box padded_box = box_for_area(digger->point,
+                                         digger->direction,
                                          length,
                                          width,
                                          left_offset,
@@ -269,7 +228,8 @@ digger_dig_stairs_down(struct digger *digger,
     int const length = distance;
     int const width = 1;
     int const left_offset = 0;
-    struct box padded_box = box_for_area(digger,
+    struct box padded_box = box_for_area(digger->point,
+                                         digger->direction,
                                          length,
                                          width,
                                          left_offset,
@@ -296,7 +256,8 @@ digger_dig_stairs_up(struct digger *digger,
     int const length = distance;
     int const width = 1;
     int const left_offset = 0;
-    struct box padded_box = box_for_area(digger,
+    struct box padded_box = box_for_area(digger->point,
+                                         digger->direction,
                                          length,
                                          width,
                                          left_offset,

@@ -389,6 +389,186 @@ box_intersects_test(void)
 }
 
 
+static void
+box_for_area_test_north(void)
+{
+    struct box box = box_for_area(point_make(2, 2, 2), direction_north, 3, 3, 0, 1);
+
+    // 5  :  :  :  :  :
+    // 4  :  .  .  .  :
+    // 3  :  .  .  .  :
+    // 2  :  *  .  .  :
+    //    1  2  3  4  5
+    assert(point_equals(point_make(1, 2, 2), box.origin));
+    assert(size_equals(size_make(5, 4, 1), box.size));
+}
+
+
+static void
+box_for_area_test_north_with_left_offset(void)
+{
+    struct box box = box_for_area(point_make(2, 2, 2), direction_north, 3, 3, 1, 1);
+
+    // 5  :  :  :  :  :
+    // 4  :  .  .  .  :
+    // 3  :  .  .  .  :
+    // 2  :  .  *  .  :
+    //    0  1  2  3  4
+    assert(point_equals(point_make(0, 2, 2), box.origin));
+    assert(size_equals(size_make(5, 4, 1), box.size));
+}
+
+
+static void
+box_for_area_test_north_with_left_offset_and_no_padding(void)
+{
+    struct box box = box_for_area(point_make(2, 2, 2), direction_north, 3, 3, 2, 0);
+
+    // 4  .  .  .
+    // 3  .  .  .
+    // 2  .  .  *
+    //    0  1  2
+    assert(point_equals(point_make(0, 2, 2), box.origin));
+    assert(size_equals(size_make(3, 3, 1), box.size));
+}
+
+
+static void
+box_for_area_test_south(void)
+{
+    struct box box = box_for_area(point_make(2, 2, 2), direction_south, 3, 3, 0, 1);
+
+    // 2  :  .  .  *  :
+    // 1  :  .  .  .  :
+    // 0  :  .  .  .  :
+    //-1  :  :  :  :  :
+    //   -1  0  1  2  3
+    assert(point_equals(point_make(-1, -1, 2), box.origin));
+    assert(size_equals(size_make(5, 4, 1), box.size));
+}
+
+
+static void
+box_for_area_test_south_with_left_offset(void)
+{
+    struct box box = box_for_area(point_make(2, 2, 2), direction_south, 3, 3, 1, 1);
+
+    // 2  :  .  *  .  :
+    // 1  :  .  .  .  :
+    // 0  :  .  .  .  :
+    //-1  :  :  :  :  :
+    //    0  1  2  3  4
+    assert(point_equals(point_make(0, -1, 2), box.origin));
+    assert(size_equals(size_make(5, 4, 1), box.size));
+}
+
+
+static void
+box_for_area_test_south_with_left_offset_and_no_padding(void)
+{
+    struct box box = box_for_area(point_make(2, 2, 2), direction_south, 3, 3, 2, 0);
+
+    // 2  *  .  .
+    // 1  .  .  .
+    // 0  .  .  .
+    //    2  3  4
+    assert(point_equals(point_make(2, 0, 2), box.origin));
+    assert(size_equals(size_make(3, 3, 1), box.size));
+}
+
+
+static void
+box_for_area_test_east(void)
+{
+    struct box box = box_for_area(point_make(2, 2, 2), direction_east, 3, 3, 0, 1);
+
+    // 3  :  :  :  :
+    // 2  *  .  .  :
+    // 1  .  .  .  :
+    // 0  .  .  .  :
+    //-1  :  :  :  :
+    //    2  3  4  5
+    assert(point_equals(point_make(2, -1, 2), box.origin));
+    assert(size_equals(size_make(4, 5, 1), box.size));
+}
+
+
+static void
+box_for_area_test_east_with_left_offset(void)
+{
+    struct box box = box_for_area(point_make(2, 2, 2), direction_east, 3, 3, 1, 1);
+
+    // 4  :  :  :  :
+    // 3  .  .  .  :
+    // 2  *  .  .  :
+    // 1  .  .  .  :
+    // 0  :  :  :  :
+    //    2  3  4  5
+    assert(point_equals(point_make(2, 0, 2), box.origin));
+    assert(size_equals(size_make(4, 5, 1), box.size));
+}
+
+
+static void
+box_for_area_test_east_with_left_offset_and_no_padding(void)
+{
+    struct box box = box_for_area(point_make(2, 2, 2), direction_east, 3, 3, 2, 0);
+
+    // 4  .  .  .
+    // 3  .  .  .
+    // 2  *  .  .
+    //    2  3  4
+    assert(point_equals(point_make(2, 2, 2), box.origin));
+    assert(size_equals(size_make(3, 3, 1), box.size));
+}
+
+
+static void
+box_for_area_test_west(void)
+{
+    struct box box = box_for_area(point_make(2, 2, 2), direction_west, 3, 3, 0, 1);
+
+    // 5  :  :  :  :
+    // 4  :  .  .  .
+    // 3  :  .  .  .
+    // 2  :  .  .  *
+    // 1  :  :  :  :
+    //   -1  0  1  2
+    assert(point_equals(point_make(-1, 1, 2), box.origin));
+    assert(size_equals(size_make(4, 5, 1), box.size));
+}
+
+
+static void
+box_for_area_test_west_with_left_offset(void)
+{
+    struct box box = box_for_area(point_make(2, 2, 2), direction_west, 3, 3, 1, 1);
+
+    // 4  :  :  :  :
+    // 3  :  .  .  .
+    // 2  :  .  .  *
+    // 1  :  .  .  .
+    // 0  :  :  :  :
+    //   -1  0  1  2
+    assert(point_equals(point_make(-1, 0, 2), box.origin));
+    assert(size_equals(size_make(4, 5, 1), box.size));
+}
+
+
+static void
+box_for_area_test_west_with_left_offset_and_no_padding(void)
+{
+    struct box box = box_for_area(point_make(2, 2, 2), direction_west, 3, 3, 2, 0);
+
+    // 2  .  .  *
+    // 1  .  .  .
+    // 0  .  .  .
+    //    0  1  2
+    assert(point_equals(point_make(0, 0, 2), box.origin));
+    assert(size_equals(size_make(3, 3, 1), box.size));
+}
+
+
 void
 box_test(void)
 {
@@ -408,4 +588,16 @@ box_test(void)
     box_extend_to_include_point_test();
     box_index_for_point_test();
     box_intersects_test();
+    box_for_area_test_north();
+    box_for_area_test_north_with_left_offset();
+    box_for_area_test_north_with_left_offset_and_no_padding();
+    box_for_area_test_south();
+    box_for_area_test_south_with_left_offset();
+    box_for_area_test_south_with_left_offset_and_no_padding();
+    box_for_area_test_east();
+    box_for_area_test_east_with_left_offset();
+    box_for_area_test_east_with_left_offset_and_no_padding();
+    box_for_area_test_west();
+    box_for_area_test_west_with_left_offset();
+    box_for_area_test_west_with_left_offset_and_no_padding();
 }

@@ -18,14 +18,6 @@ struct digger {
     enum direction direction;
 };
 
-
-struct box
-box_for_area(struct digger *digger,
-             int length,
-             int width,
-             int left_offset,
-             int padding);
-
 struct digger *
 digger_alloc(struct generator *generator,
              struct point point,
