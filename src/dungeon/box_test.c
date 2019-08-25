@@ -295,6 +295,8 @@ box_normalize_test(void)
 static void
 box_expand_test(void)
 {
+    // TODO: add test for box with zero size
+
     struct box box = box_make(point_make(0, 0, 0), size_make(1, 1, 1));
     box = box_expand(box, size_make(0, 0, 0));
     

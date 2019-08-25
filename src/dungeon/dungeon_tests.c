@@ -18,6 +18,9 @@ void
 generator_test(void);
 
 void
+level_map_test(void);
+
+void
 point_test(void);
 
 void
@@ -41,6 +44,7 @@ main(int argc, char *argv[])
     digger_test();
     dungeon_test();
     generator_test();
+    level_map_test();
     point_test();
     size_test();
     text_rectangle_test();

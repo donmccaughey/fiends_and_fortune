@@ -183,6 +183,7 @@ add_executable(dungeon_tests
         src/dungeon/dungeon_test.c
         src/dungeon/dungeon_tests.c
         src/dungeon/generator_test.c
+        src/dungeon/level_map_test.c
         src/dungeon/point_test.c
         src/dungeon/size_test.c
         src/dungeon/text_rectangle_test.c
