@@ -81,24 +81,12 @@ level_map_alloc(struct dungeon *dungeon, int level)
 struct text_rectangle *
 level_map_alloc_text_rectangle(struct level_map *level_map, bool show_scale)
 {
-    int const top_scale_length = show_scale ? 1 : 0;
-    int const top_border_length = 1;
-    int const text_rows_per_map_row = 2;
-    int const bottom_scale_length = show_scale ? 1 : 0;
-    int row_count = top_scale_length
-                  + top_border_length
-                  + level_map->box.size.length * text_rows_per_map_row
-                  + bottom_scale_length;
-    
-    int const left_scale_width = show_scale ? 4 : 0;
-    int const text_columns_per_map_column = 4;
-    int const right_border_width = 1;
-    int const right_scale_width = show_scale ? 4 : 0;
-    int column_count = left_scale_width
-                     + level_map->box.size.width * text_columns_per_map_column
-                     + right_border_width
-                     + right_scale_width;
-    
+    int column_count;
+    int row_count;
+    level_map_calculate_text_rectangle_dimensions(level_map->box.size,
+                                                  show_scale,
+                                                  &column_count,
+                                                  &row_count);
     struct text_rectangle *text_rectangle = text_rectangle_alloc(column_count,
                                                                  row_count);
     if (show_scale) {
@@ -147,6 +135,32 @@ level_map_alloc_text_rectangle(struct level_map *level_map, bool show_scale)
         print_scale_row(level_map, text_rectangle);
     }
     return text_rectangle;
+}
+
+
+void
+level_map_calculate_text_rectangle_dimensions(struct size level_map_size,
+                                              bool show_scale,
+                                              int *column_count_out,
+                                              int *row_count_out)
+{
+    int const left_scale_width = show_scale ? 4 : 0;
+    int const text_columns_per_map_column = 4;
+    int const right_border_width = 1;
+    int const right_scale_width = show_scale ? 4 : 0;
+    *column_count_out = left_scale_width
+                      + level_map_size.width * text_columns_per_map_column
+                      + right_border_width
+                      + right_scale_width;
+
+    int const top_scale_length = show_scale ? 1 : 0;
+    int const top_border_length = 1;
+    int const text_rows_per_map_row = 2;
+    int const bottom_scale_length = show_scale ? 1 : 0;
+    *row_count_out = top_scale_length
+                   + top_border_length
+                   + level_map_size.length * text_rows_per_map_row
+                   + bottom_scale_length;
 }
 
 
