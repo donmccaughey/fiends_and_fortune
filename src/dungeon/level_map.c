@@ -18,15 +18,6 @@
 
 
 static void
-print_border_row(struct level_map const *level_map,
-                 struct text_rectangle *text_rectangle,
-                 bool show_scale);
-
-static void
-print_scale_row(struct level_map const *level_map,
-                struct text_rectangle *text_rectangle);
-
-static void
 tile_bottom_half(struct level_map const *level_map,
                  struct point point,
                  char half_tile[5]);
@@ -90,11 +81,11 @@ level_map_alloc_text_rectangle(struct level_map *level_map, bool show_scale)
     struct text_rectangle *text_rectangle = text_rectangle_alloc(column_count,
                                                                  row_count);
     if (show_scale) {
-        print_scale_row(level_map, text_rectangle);
+        level_map_print_scale_row(level_map, text_rectangle);
         text_rectangle_next_row(text_rectangle);
     }
 
-    print_border_row(level_map, text_rectangle, show_scale);
+    level_map_print_border_row(level_map, text_rectangle, show_scale);
     
     // map tiles
     struct point point = level_map->box.origin;
@@ -132,7 +123,7 @@ level_map_alloc_text_rectangle(struct level_map *level_map, bool show_scale)
     // bottom scale
     if (show_scale) {
         text_rectangle_next_row(text_rectangle);
-        print_scale_row(level_map, text_rectangle);
+        level_map_print_scale_row(level_map, text_rectangle);
     }
     return text_rectangle;
 }
@@ -183,10 +174,10 @@ level_map_tile_at(struct level_map const *level_map, struct point point)
 }
 
 
-static void
-print_border_row(struct level_map const *level_map,
-                 struct text_rectangle *text_rectangle,
-                 bool show_scale)
+void
+level_map_print_border_row(struct level_map const *level_map,
+                           struct text_rectangle *text_rectangle,
+                           bool show_scale)
 {
     if (show_scale) text_rectangle_print_format(text_rectangle, LMARGIN);
     for (int i = 0; i < level_map->box.size.width; ++i) {
@@ -196,9 +187,9 @@ print_border_row(struct level_map const *level_map,
 }
 
 
-static void
-print_scale_row(struct level_map const *level_map,
-                struct text_rectangle *text_rectangle)
+void
+level_map_print_scale_row(struct level_map const *level_map,
+                          struct text_rectangle *text_rectangle)
 {
     text_rectangle_print_format(text_rectangle, LMARGIN);
     for (int i = 0; i < level_map->box.size.width; ++i) {

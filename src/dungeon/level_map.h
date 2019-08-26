@@ -36,5 +36,13 @@ level_map_calculate_text_rectangle_dimensions(struct size level_map_size,
                                               int *column_count_out,
                                               int *row_count_out);
 
+void
+level_map_print_border_row(struct level_map const *level_map,
+                           struct text_rectangle *text_rectangle,
+                           bool show_scale);
+void
+level_map_print_scale_row(struct level_map const *level_map,
+                          struct text_rectangle *text_rectangle);
+
 
 #endif
