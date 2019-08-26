@@ -183,7 +183,8 @@ level_map_print_border_row(struct size level_map_size,
     for (int i = 0; i < level_map_size.width; ++i) {
         text_rectangle_print_format(text_rectangle, "+---");
     }
-    text_rectangle_print_format(text_rectangle, "+   ");
+    text_rectangle_print_format(text_rectangle, "+");
+    if (show_scale) text_rectangle_print_format(text_rectangle, RMARGIN);
 }
 
 
@@ -196,6 +197,8 @@ level_map_print_scale_row(struct box level_map_box,
         int x = level_map_box.origin.x + i;
         text_rectangle_print_format(text_rectangle, "%3i ", x);
     }
+    text_rectangle_print_format(text_rectangle, " ");
+    text_rectangle_print_format(text_rectangle, RMARGIN);
 }
 
 

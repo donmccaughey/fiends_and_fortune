@@ -157,7 +157,8 @@ level_map_calculate_text_rectangle_dimensions_test(void)
 static void
 level_map_print_border_row_test(void)
 {
-    struct text_rectangle *text_rectangle = text_rectangle_alloc(20, 2);
+    struct text_rectangle *text_rectangle = text_rectangle_alloc(18, 2);
+    text_rectangle_fill(text_rectangle, '.');
     struct size level_map_size;
     bool show_scale;
     char const *expected;
@@ -167,8 +168,8 @@ level_map_print_border_row_test(void)
     level_map_print_border_row(level_map_size, text_rectangle, show_scale);
 
     expected =
-            "    +---+---+       \n"
-            "                    \n";
+            "    +---+---+    .\n"
+            "..................\n";
     assert(str_eq(expected, text_rectangle->chars));
 
     text_rectangle_next_row(text_rectangle);
@@ -177,8 +178,8 @@ level_map_print_border_row_test(void)
     level_map_print_border_row(level_map_size, text_rectangle, show_scale);
 
     expected =
-            "    +---+---+       \n"
-            "+---+---+---+---+   \n";
+            "    +---+---+    .\n"
+            "+---+---+---+---+.\n";
     assert(str_eq(expected, text_rectangle->chars));
 
     text_rectangle_free(text_rectangle);
@@ -188,7 +189,8 @@ level_map_print_border_row_test(void)
 static void
 level_map_print_scale_row_test(void)
 {
-    struct text_rectangle *text_rectangle = text_rectangle_alloc(25, 2);
+    struct text_rectangle *text_rectangle = text_rectangle_alloc(26, 2);
+    text_rectangle_fill(text_rectangle, '.');
     struct box level_map_box;
     char const *expected;
 
@@ -197,8 +199,8 @@ level_map_print_scale_row_test(void)
     level_map_print_scale_row(level_map_box, text_rectangle);
 
     expected =
-            "      2   3              \n"
-            "                         \n";
+            "      2   3      .........\n"
+            "..........................\n";
     assert(str_eq(expected, text_rectangle->chars));
 
     text_rectangle_next_row(text_rectangle);
@@ -207,8 +209,8 @@ level_map_print_scale_row_test(void)
     level_map_print_scale_row(level_map_box, text_rectangle);
 
     expected =
-            "      2   3              \n"
-            "     -2  -1   0   1      \n";
+            "      2   3      .........\n"
+            "     -2  -1   0   1      .\n";
     assert(str_eq(expected, text_rectangle->chars));
 
     text_rectangle_free(text_rectangle);
