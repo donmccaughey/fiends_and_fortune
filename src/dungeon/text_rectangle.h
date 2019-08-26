@@ -23,6 +23,9 @@ void
 text_rectangle_clear(struct text_rectangle *text_rectangle);
 
 void
+text_rectangle_fill(struct text_rectangle *text_rectangle, char ch);
+
+void
 text_rectangle_home(struct text_rectangle *text_rectangle);
 
 void

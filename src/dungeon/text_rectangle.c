@@ -36,18 +36,25 @@ text_rectangle_alloc(int column_count, int row_count)
 void
 text_rectangle_clear(struct text_rectangle *text_rectangle)
 {
+    text_rectangle_fill(text_rectangle, ' ');
+}
+
+
+void
+text_rectangle_fill(struct text_rectangle *text_rectangle, char ch)
+{
     size_t size = chars_size(text_rectangle->column_count,
                              text_rectangle->row_count);
-    memset(text_rectangle->chars, ' ', size - 1);
-    
+    memset(text_rectangle->chars, ch, size - 1);
+
     assert(size - 1 < INT_MAX);
     int last_index = (int)(size - 1);
     text_rectangle->chars[last_index] = '\0';
-    
+
     for (int i = 0; i < text_rectangle->row_count; ++i) {
         *text_rectangle_row_end_at(text_rectangle, i) = '\n';
     }
-    
+
     text_rectangle_home(text_rectangle);
 }
 
