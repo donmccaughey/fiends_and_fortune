@@ -81,11 +81,11 @@ level_map_alloc_text_rectangle(struct level_map *level_map, bool show_scale)
     struct text_rectangle *text_rectangle = text_rectangle_alloc(column_count,
                                                                  row_count);
     if (show_scale) {
-        level_map_print_scale_row(level_map, text_rectangle);
+        level_map_print_scale_row(level_map->box, text_rectangle);
         text_rectangle_next_row(text_rectangle);
     }
 
-    level_map_print_border_row(level_map, text_rectangle, show_scale);
+    level_map_print_border_row(level_map->box.size, text_rectangle, show_scale);
     
     // map tiles
     struct point point = level_map->box.origin;
@@ -123,7 +123,7 @@ level_map_alloc_text_rectangle(struct level_map *level_map, bool show_scale)
     // bottom scale
     if (show_scale) {
         text_rectangle_next_row(text_rectangle);
-        level_map_print_scale_row(level_map, text_rectangle);
+        level_map_print_scale_row(level_map->box, text_rectangle);
     }
     return text_rectangle;
 }
@@ -175,12 +175,12 @@ level_map_tile_at(struct level_map const *level_map, struct point point)
 
 
 void
-level_map_print_border_row(struct level_map const *level_map,
+level_map_print_border_row(struct size level_map_size,
                            struct text_rectangle *text_rectangle,
                            bool show_scale)
 {
     if (show_scale) text_rectangle_print_format(text_rectangle, LMARGIN);
-    for (int i = 0; i < level_map->box.size.width; ++i) {
+    for (int i = 0; i < level_map_size.width; ++i) {
         text_rectangle_print_format(text_rectangle, "+---");
     }
     text_rectangle_print_format(text_rectangle, "+   ");
@@ -188,12 +188,12 @@ level_map_print_border_row(struct level_map const *level_map,
 
 
 void
-level_map_print_scale_row(struct level_map const *level_map,
+level_map_print_scale_row(struct box level_map_box,
                           struct text_rectangle *text_rectangle)
 {
     text_rectangle_print_format(text_rectangle, LMARGIN);
-    for (int i = 0; i < level_map->box.size.width; ++i) {
-        int x = level_map->box.origin.x + i;
+    for (int i = 0; i < level_map_box.size.width; ++i) {
+        int x = level_map_box.origin.x + i;
         text_rectangle_print_format(text_rectangle, "%3i ", x);
     }
 }

@@ -157,84 +157,61 @@ level_map_calculate_text_rectangle_dimensions_test(void)
 static void
 level_map_print_border_row_test(void)
 {
-    struct dungeon *dungeon = dungeon_alloc();
-    struct level_map *level_map = level_map_alloc(dungeon, 1);
-    struct text_rectangle *text_rectangle = text_rectangle_alloc(17, 2);
-    bool show_scale = true;
+    struct text_rectangle *text_rectangle = text_rectangle_alloc(20, 2);
+    struct size level_map_size;
+    bool show_scale;
+    char const *expected;
 
-    level_map_print_border_row(level_map, text_rectangle, show_scale);
+    level_map_size = size_make(2, 2, 1);
+    show_scale = true;
+    level_map_print_border_row(level_map_size, text_rectangle, show_scale);
 
-    char const *expected =
-            "    +---+---+    \n"
-            "                 \n";
+    expected =
+            "    +---+---+       \n"
+            "                    \n";
+    assert(str_eq(expected, text_rectangle->chars));
+
+    text_rectangle_next_row(text_rectangle);
+    level_map_size = size_make(4, 3, 1);
+    show_scale = false;
+    level_map_print_border_row(level_map_size, text_rectangle, show_scale);
+
+    expected =
+            "    +---+---+       \n"
+            "+---+---+---+---+   \n";
     assert(str_eq(expected, text_rectangle->chars));
 
     text_rectangle_free(text_rectangle);
-    level_map_free(level_map);
-    dungeon_free(dungeon);
-}
-
-
-static void
-level_map_print_border_row_test_without_scale(void)
-{
-    struct dungeon *dungeon = dungeon_alloc();
-    struct level_map *level_map = level_map_alloc(dungeon, 1);
-    struct text_rectangle *text_rectangle = text_rectangle_alloc(9, 2);
-    bool show_scale = false;
-
-    level_map_print_border_row(level_map, text_rectangle, show_scale);
-
-    char const *expected =
-            "+---+---+\n"
-            "         \n";
-    assert(str_eq(expected, text_rectangle->chars));
-
-    text_rectangle_free(text_rectangle);
-    level_map_free(level_map);
-    dungeon_free(dungeon);
 }
 
 
 static void
 level_map_print_scale_row_test(void)
 {
-    struct dungeon *dungeon = dungeon_alloc();
-    struct level_map *level_map = level_map_alloc(dungeon, 1);
-    struct text_rectangle *text_rectangle = text_rectangle_alloc(17, 2);
+    struct text_rectangle *text_rectangle = text_rectangle_alloc(25, 2);
+    struct box level_map_box;
+    char const *expected;
 
-    level_map_print_scale_row(level_map, text_rectangle);
+    level_map_box = box_make(point_make(2, 2, 1),
+                             size_make(2, 2, 1));
+    level_map_print_scale_row(level_map_box, text_rectangle);
 
-    char const *expected =
-            "     -1   0      \n"
-            "                 \n";
+    expected =
+            "      2   3              \n"
+            "                         \n";
+    assert(str_eq(expected, text_rectangle->chars));
+
+    text_rectangle_next_row(text_rectangle);
+    level_map_box = box_make(point_make(-2, 3, 1),
+                             size_make(4, 3, 1));
+    level_map_print_scale_row(level_map_box, text_rectangle);
+
+    expected =
+            "      2   3              \n"
+            "     -2  -1   0   1      \n";
     assert(str_eq(expected, text_rectangle->chars));
 
     text_rectangle_free(text_rectangle);
-    level_map_free(level_map);
-    dungeon_free(dungeon);
-}
-
-
-static void
-level_map_print_scale_row_test_with_tile_added(void)
-{
-    struct dungeon *dungeon = dungeon_alloc();
-    struct tile *tile = dungeon_tile_at(dungeon, point_make(2, 3, 1));
-    tile->type = tile_type_empty;
-    struct level_map *level_map = level_map_alloc(dungeon, 1);
-    struct text_rectangle *text_rectangle = text_rectangle_alloc(21, 2);
-
-    level_map_print_scale_row(level_map, text_rectangle);
-
-    char const *expected =
-            "      1   2   3      \n"
-            "                     \n";
-    assert(str_eq(expected, text_rectangle->chars));
-
-    text_rectangle_free(text_rectangle);
-    level_map_free(level_map);
-    dungeon_free(dungeon);
 }
 
 
@@ -248,7 +225,5 @@ level_map_test(void)
     level_map_alloc_text_rectangle_test_with_tile_added();
     level_map_calculate_text_rectangle_dimensions_test();
     level_map_print_border_row_test();
-    level_map_print_border_row_test_without_scale();
     level_map_print_scale_row_test();
-    level_map_print_scale_row_test_with_tile_added();
 }

@@ -37,11 +37,11 @@ level_map_calculate_text_rectangle_dimensions(struct size level_map_size,
                                               int *row_count_out);
 
 void
-level_map_print_border_row(struct level_map const *level_map,
+level_map_print_border_row(struct size level_map_size,
                            struct text_rectangle *text_rectangle,
                            bool show_scale);
 void
-level_map_print_scale_row(struct level_map const *level_map,
+level_map_print_scale_row(struct box level_map_box,
                           struct text_rectangle *text_rectangle);
 
 
