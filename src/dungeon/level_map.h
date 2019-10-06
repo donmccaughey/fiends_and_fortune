@@ -40,6 +40,7 @@ void
 level_map_print_border_row(struct size level_map_size,
                            struct text_rectangle *text_rectangle,
                            bool show_scale);
+
 void
 level_map_print_scale_row(struct box level_map_box,
                           struct text_rectangle *text_rectangle);

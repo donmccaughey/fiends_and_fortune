@@ -11,10 +11,7 @@
 #include "wall_type.h"
 
 
-#define LMARGIN     "    "
-#define LMARGIN_NUM "%3i "
-#define RMARGIN     "    "
-#define RMARGIN_NUM "| %-3i\n"
+static char const *const margin =                "    ";
 
 
 static void
@@ -32,7 +29,6 @@ static void
 fill_half_tile(struct tile *tile, char half_tile[5])
 {
     switch (tile->type) {
-        case tile_type_filled: strcpy(half_tile, "::::"); break;
         case tile_type_empty: strcpy(half_tile, "    "); break;
         case tile_type_stairs_down:
             switch (tile->direction) {
@@ -95,22 +91,19 @@ level_map_alloc_text_rectangle(struct level_map *level_map, bool show_scale)
         --point.y;
         // top line of row
         text_rectangle_next_row(text_rectangle);
-        if (show_scale) text_rectangle_print_format(text_rectangle, LMARGIN_NUM, point.y);
+        if (show_scale) text_rectangle_print_format(text_rectangle, "%3i ", point.y);
         point.x = level_map->box.origin.x;
         for (int i = 0; i < level_map->box.size.width; ++i) {
             tile_top_half(level_map, point, half_tile);
             text_rectangle_print_format(text_rectangle, half_tile);
             ++point.x;
         }
-        if (show_scale) {
-            text_rectangle_print_format(text_rectangle, RMARGIN_NUM, point.y);
-        } else {
-            text_rectangle_print_format(text_rectangle, "|");
-        }
-        
+        text_rectangle_print_format(text_rectangle, "|");
+        if (show_scale) text_rectangle_print_format(text_rectangle, " %-3i", point.y);
+
         // bottom line of row
         text_rectangle_next_row(text_rectangle);
-        if (show_scale) text_rectangle_print_format(text_rectangle, LMARGIN);
+        if (show_scale) text_rectangle_print_format(text_rectangle, margin);
         point.x = level_map->box.origin.x;
         for (int i = 0; i < level_map->box.size.width; ++i) {
             tile_bottom_half(level_map, point, half_tile);
@@ -179,12 +172,12 @@ level_map_print_border_row(struct size level_map_size,
                            struct text_rectangle *text_rectangle,
                            bool show_scale)
 {
-    if (show_scale) text_rectangle_print_format(text_rectangle, LMARGIN);
+    if (show_scale) text_rectangle_print_format(text_rectangle, margin);
     for (int i = 0; i < level_map_size.width; ++i) {
         text_rectangle_print_format(text_rectangle, "+---");
     }
     text_rectangle_print_format(text_rectangle, "+");
-    if (show_scale) text_rectangle_print_format(text_rectangle, RMARGIN);
+    if (show_scale) text_rectangle_print_format(text_rectangle, margin);
 }
 
 
@@ -192,13 +185,13 @@ void
 level_map_print_scale_row(struct box level_map_box,
                           struct text_rectangle *text_rectangle)
 {
-    text_rectangle_print_format(text_rectangle, LMARGIN);
+    text_rectangle_print_format(text_rectangle, margin);
     for (int i = 0; i < level_map_box.size.width; ++i) {
         int x = level_map_box.origin.x + i;
         text_rectangle_print_format(text_rectangle, "%3i ", x);
     }
     text_rectangle_print_format(text_rectangle, " ");
-    text_rectangle_print_format(text_rectangle, RMARGIN);
+    text_rectangle_print_format(text_rectangle, margin);
 }
 
 
