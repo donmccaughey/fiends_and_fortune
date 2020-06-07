@@ -45,5 +45,14 @@ void
 level_map_print_scale_row(struct box level_map_box,
                           struct text_rectangle *text_rectangle);
 
+void
+level_map_fill_tile_bottom_half(struct level_map const *level_map,
+                                struct point point,
+                                char *half_tile);
+
+void
+level_map_fill_tile_top_half(struct level_map const *level_map,
+                             struct point point,
+                             char *half_tile);
 
 #endif

@@ -15,17 +15,6 @@ static char const *const margin =                "    ";
 
 
 static void
-tile_bottom_half(struct level_map const *level_map,
-                 struct point point,
-                 char half_tile[5]);
-
-static void
-tile_top_half(struct level_map const *level_map,
-              struct point point,
-              char half_tile[5]);
-
-
-static void
 fill_half_tile(struct tile *tile, char half_tile[5])
 {
     switch (tile->type) {
@@ -94,7 +83,7 @@ level_map_alloc_text_rectangle(struct level_map *level_map, bool show_scale)
         if (show_scale) text_rectangle_print_format(text_rectangle, "%3i ", point.y);
         point.x = level_map->box.origin.x;
         for (int i = 0; i < level_map->box.size.width; ++i) {
-            tile_top_half(level_map, point, half_tile);
+            level_map_fill_tile_top_half(level_map, point, half_tile);
             text_rectangle_print_format(text_rectangle, half_tile);
             ++point.x;
         }
@@ -106,7 +95,7 @@ level_map_alloc_text_rectangle(struct level_map *level_map, bool show_scale)
         if (show_scale) text_rectangle_print_format(text_rectangle, margin);
         point.x = level_map->box.origin.x;
         for (int i = 0; i < level_map->box.size.width; ++i) {
-            tile_bottom_half(level_map, point, half_tile);
+            level_map_fill_tile_bottom_half(level_map, point, half_tile);
             text_rectangle_print_format(text_rectangle, half_tile);
             ++point.x;
         }
@@ -195,12 +184,14 @@ level_map_print_scale_row(struct box level_map_box,
 }
 
 
-static void
-tile_bottom_half(struct level_map const *level_map,
-                 struct point point,
-                 char half_tile[5])
+void
+level_map_fill_tile_bottom_half(struct level_map const *level_map,
+                                struct point point,
+                                char *half_tile)
 {
     struct tile *tile = level_map_tile_at(level_map, point);
+    assert(tile);
+
     if (wall_type_none == tile->walls.south) {
         fill_half_tile(tile, half_tile);
         if (tile_type_empty == tile->type) half_tile[0] = '.';
@@ -263,12 +254,13 @@ tile_bottom_half(struct level_map const *level_map,
 }
 
 
-static void
-tile_top_half(struct level_map const *level_map,
-              struct point point,
-              char half_tile[5])
+void
+level_map_fill_tile_top_half(struct level_map const *level_map,
+                             struct point point,
+                             char *half_tile)
 {
     struct tile *tile = level_map_tile_at(level_map, point);
+    assert(tile);
     fill_half_tile(tile, half_tile);
     
     // south wall only on bottom half

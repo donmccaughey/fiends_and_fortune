@@ -217,6 +217,227 @@ level_map_print_scale_row_test(void)
 }
 
 
+static void
+level_map_fill_tile_bottom_half_test(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+
+    struct tile *extent;
+    extent = dungeon_tile_at(dungeon, point_make(1, 3, 1));
+    extent->type = tile_type_empty;
+    extent = dungeon_tile_at(dungeon, point_make(3, 1, 1));
+    extent->type = tile_type_empty;
+    // produces a level map with origin (0, 0, 1) and size (5, 5, 1)
+
+    struct level_map *level_map = level_map_alloc(dungeon, 1);
+
+    struct tile *tile = level_map_tile_at(level_map, point_make(1, 1, 1));
+
+    char half_tile[5];
+
+    // no walls
+    tile->walls.south = wall_type_none;
+    tile->walls.west = wall_type_none;
+
+    tile->type = tile_type_empty;
+    level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq(".   ", half_tile));
+
+    tile->type = tile_type_stairs_down;
+    tile->direction = direction_north;
+    level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("  ^ ", half_tile));
+
+    tile->type = tile_type_stairs_down;
+    tile->direction = direction_south;
+    level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("  v ", half_tile));
+
+    tile->type = tile_type_stairs_down;
+    tile->direction = direction_east;
+    level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq(" > >", half_tile));
+
+    tile->type = tile_type_stairs_down;
+    tile->direction = direction_west;
+    level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq(" < <", half_tile));
+
+    tile->type = tile_type_stairs_up;
+    tile->direction = direction_north;
+    level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("====", half_tile));
+
+    tile->type = tile_type_stairs_up;
+    tile->direction = direction_east;
+    level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("IIII", half_tile));
+
+    tile->type = tile_type_filled;
+    level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("::::", half_tile));
+
+    // south wall
+    tile->type = tile_type_empty;
+    tile->walls.west = wall_type_none;
+
+    struct tile *west_tile = level_map_tile_at(level_map, point_make(0, 1, 1));
+    west_tile->type = tile_type_empty;
+    west_tile->walls.south = wall_type_solid;
+
+    tile->walls.south = wall_type_solid;
+    level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("----", half_tile));
+
+    tile->walls.south = wall_type_door;
+    level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("-[-]", half_tile));
+
+    tile->walls.south = wall_type_secret_door;
+    level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("--s-", half_tile));
+
+    west_tile->type = tile_type_filled;
+    west_tile->walls.south = wall_type_none;
+
+    // west wall
+    tile->walls.south = wall_type_none;
+    tile->walls.west = wall_type_solid;
+
+    struct tile *south_tile = level_map_tile_at(level_map, point_make(1, 0, 1));
+    south_tile->walls.west = wall_type_solid;
+
+    tile->type = tile_type_filled;
+    level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("|:::", half_tile));
+
+    tile->type = tile_type_empty;
+    level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("|   ", half_tile));
+
+    south_tile->walls.west = wall_type_none;
+
+    level_map_free(level_map);
+    dungeon_free(dungeon);
+}
+
+
+// TODO: test level_map_fill_tile_bottom_half() for corner cases
+
+
+static void
+level_map_fill_tile_top_half_test(void)
+{
+    struct dungeon *dungeon = dungeon_alloc();
+
+    struct tile *extent;
+    extent = dungeon_tile_at(dungeon, point_make(1, 3, 1));
+    extent->type = tile_type_empty;
+    extent = dungeon_tile_at(dungeon, point_make(3, 1, 1));
+    extent->type = tile_type_empty;
+    // produces a level map with origin (0, 0, 1) and size (5, 5, 1)
+
+    struct level_map *level_map = level_map_alloc(dungeon, 1);
+
+    struct tile *tile = level_map_tile_at(level_map, point_make(1, 1, 1));
+
+    char half_tile[5];
+
+    // no walls
+    tile->walls.south = wall_type_none;
+    tile->walls.west = wall_type_none;
+
+    tile->type = tile_type_empty;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("    ", half_tile));
+
+    tile->type = tile_type_stairs_down;
+    tile->direction = direction_north;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("  ^ ", half_tile));
+
+    tile->type = tile_type_stairs_down;
+    tile->direction = direction_south;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("  v ", half_tile));
+
+    tile->type = tile_type_stairs_down;
+    tile->direction = direction_east;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq(" > >", half_tile));
+
+    tile->type = tile_type_stairs_down;
+    tile->direction = direction_west;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq(" < <", half_tile));
+
+    tile->type = tile_type_stairs_up;
+    tile->direction = direction_north;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("====", half_tile));
+
+    tile->type = tile_type_stairs_up;
+    tile->direction = direction_east;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("IIII", half_tile));
+
+    tile->type = tile_type_filled;
+    tile->direction = direction_east;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("::::", half_tile));
+
+    // west wall
+    tile->type = tile_type_empty;
+
+    tile->walls.west = wall_type_solid;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("|   ", half_tile));
+
+    tile->walls.west = wall_type_door;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("|]  ", half_tile));
+
+    tile->walls.west = wall_type_secret_door;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("$   ", half_tile));
+
+    // features
+    tile->type = tile_type_empty;
+    tile->walls.west = wall_type_none;
+
+    tile->features = tile_features_chimney_down;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("  o ", half_tile));
+
+    tile->features = tile_features_chimney_up;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq(" ( )", half_tile));
+
+    tile->features = tile_features_chimney_up | tile_features_chimney_down;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq(" (o)", half_tile));
+
+    tile->features = tile_features_chute_entrance;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("  @ ", half_tile));
+
+    tile->features = tile_features_chute_exit;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("  * ", half_tile));
+
+    tile->features = tile_features_none;
+
+    // east door
+    struct tile *east_tile = level_map_tile_at(level_map, point_make(2, 1, 1));
+    east_tile->walls.west = wall_type_door;
+    level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
+    assert(str_eq("   [", half_tile));
+
+    level_map_free(level_map);
+    dungeon_free(dungeon);
+}
+
+
 void
 level_map_test(void)
 {
@@ -228,4 +449,6 @@ level_map_test(void)
     level_map_calculate_text_rectangle_dimensions_test();
     level_map_print_border_row_test();
     level_map_print_scale_row_test();
+    level_map_fill_tile_bottom_half_test();
+    level_map_fill_tile_top_half_test();
 }
