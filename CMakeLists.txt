@@ -1,7 +1,4 @@
-# fix for Xcode 11 on macOS 10.14 Mojave
-set(CMAKE_OSX_SYSROOT /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk)
-
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.17)
 project(fiends_and_fortune C)
 
 set(CMAKE_C_STANDARD 99)
