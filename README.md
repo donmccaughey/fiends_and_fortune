@@ -28,14 +28,13 @@ an [MIT license][23].
 
 _Fiends And Fortune_ is developed on macOS and should work on most POSIX
 compatible operating systems.  Building it requires that your system have
-a C toolchain, [CMake][31] and the [`ncurses`][32] library installed.
+a C toolchain, a recent version of [CMake][31] and the [`ncurses`][32] library 
+installed.
 
     git clone https://github.com/donmccaughey/fiends_and_fortune.git
     cd fiends_and_fortune
-    mkdir tmp
-    cd tmp
-    cmake -G "Unix Makefiles" ..
-    make all test
+    cmake -S . -B tmp
+    cmake --build tmp --target all test
 
 Note that on MacOS 10.14 Mojave with Xcode 10.3, linking to `ncurses` `libmenu` 
 fails with "Undefined symbols for architecture x86_64" errors.  You can 
