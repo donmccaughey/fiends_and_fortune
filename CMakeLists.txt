@@ -4,15 +4,37 @@ project(fiends_and_fortune C)
 set(CMAKE_C_STANDARD 99)
 enable_testing()
 add_compile_options(--coverage -g -O0)
-set (CMAKE_EXE_LINKER_FLAGS --coverage)
+set(CMAKE_EXE_LINKER_FLAGS --coverage)
 
-# requires `brew install ncurses`
-include_directories(/usr/local/opt/ncurses/include)
-link_directories(/usr/local/opt/ncurses/lib)
 
-find_library(form REQUIRED)
-find_library(menu REQUIRED)
-find_library(ncurses REQUIRED)
+# ----- find external dependencies -----
+
+find_library(form
+        NAMES libform.a
+        PATHS /usr/local/opt/ncurses/lib
+        NO_DEFAULT_PATH
+        )
+if(NOT form)
+    message(FATAL_ERROR "Unable to locate form library")
+endif()
+
+find_library(menu
+        NAMES libmenu.a
+        PATHS /usr/local/opt/ncurses/lib
+        NO_DEFAULT_PATH
+        )
+if(NOT menu)
+    message(FATAL_ERROR "Unable to locate menu library")
+endif()
+
+find_library(ncurses
+        NAMES libncurses.a
+        PATHS /usr/local/opt/ncurses/lib
+        NO_DEFAULT_PATH
+        )
+if(NOT ncurses)
+    message(FATAL_ERROR "Unable to locate ncurses library")
+endif()
 
 
 # ----- fiends command -----
@@ -32,10 +54,9 @@ target_link_libraries(fiends
         magic
         mechanics
         treasure
-        # external dependencies
-        form
-        menu
-        ncurses
+        ${form}
+        ${menu}
+        ${ncurses}
         )
 
 
@@ -301,10 +322,9 @@ target_include_directories(tui_example PUBLIC src)
 target_link_libraries(tui_example
         tui
         base
-        # external dependencies
-        form
-        menu
-        ncurses
+        ${form}
+        ${menu}
+        ${ncurses}
         )
 
 
