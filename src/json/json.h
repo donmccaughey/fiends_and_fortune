@@ -3,7 +3,7 @@
 
 
 #include <stdbool.h>
-#include <cJSON/cJSON.h>
+#include <cJSON.h>
 
 
 typedef int

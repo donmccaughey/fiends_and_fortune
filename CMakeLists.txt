@@ -3,7 +3,8 @@ project(fiends_and_fortune
         VERSION 0.0.1
         DESCRIPTION "Fiends and Fortune"
         HOMEPAGE_URL https://github.com/donmccaughey/fiends_and_fortune
-        LANGUAGES C)
+        LANGUAGES C
+        )
 
 option(COVERAGE "Enable code coverage analysis")
 
@@ -42,6 +43,10 @@ if(NOT LIB_FORM)
     message(FATAL_ERROR "Unable to locate ncurses form library")
 endif()
 
+# ----- add build files in subdirectories -----
+
+add_subdirectory(libs/cJSON)
+
 
 # ----- fiends command -----
 
@@ -54,7 +59,7 @@ target_link_libraries(fiends
         background
         base
         character
-        cjson
+        cJSON
         dungeon
         json
         ${LIB_FORM}
@@ -76,7 +81,7 @@ target_link_libraries(fnf
         background
         base
         character
-        cjson
+        cJSON
         dungeon
         json
         magic
@@ -96,7 +101,7 @@ target_link_libraries(fnf_tests
         background
         base
         character
-        cjson
+        cJSON
         dungeon
         json
         magic
@@ -115,6 +120,7 @@ add_library(background STATIC
         src/background/orientation.c
         )
 target_include_directories(background PUBLIC src)
+target_link_libraries(background base mechanics)
 
 add_executable(background_tests
         src/background/background_tests.c
@@ -164,6 +170,7 @@ add_library(character STATIC
         src/character/character.c
         )
 target_include_directories(character PUBLIC src)
+target_link_libraries(character base mechanics)
 
 add_executable(character_tests
         src/character/abilities_test.c
@@ -175,13 +182,6 @@ add_executable(character_tests
 target_include_directories(character_tests PUBLIC src)
 target_link_libraries(character_tests character base mechanics)
 add_test(character_tests character_tests)
-
-
-# ----- cJSON library -----
-
-add_library(cjson STATIC
-        libs/cJSON/cJSON.c
-        )
 
 
 # ----- dungeon library -----
@@ -202,6 +202,7 @@ add_library(dungeon STATIC
         src/dungeon/tile.c
         )
 target_include_directories(dungeon PUBLIC src)
+target_link_libraries(dungeon background base mechanics)
 
 add_executable(dungeon_tests
         src/dungeon/area_test.c
@@ -229,14 +230,13 @@ add_library(json STATIC
         src/json/json.c
         )
 target_include_directories(json PUBLIC src)
-target_include_directories(json PUBLIC libs)
+target_link_libraries(json base cJSON)
 
 add_executable(json_tests
         src/json/json_tests.c
         )
 target_include_directories(json_tests PUBLIC src)
-target_include_directories(json_tests PUBLIC libs)
-target_link_libraries(json_tests json base cjson)
+target_link_libraries(json_tests json base cJSON)
 add_test(json_tests json_tests)
 
 
@@ -246,6 +246,7 @@ add_library(magic STATIC
         src/magic/spell.c
         )
 target_include_directories(magic PUBLIC src)
+target_link_libraries(magic base mechanics)
 
 add_executable(magic_tests
         src/magic/magic_tests.c
@@ -262,6 +263,7 @@ add_library(mechanics STATIC
         src/mechanics/dice.c
         )
 target_include_directories(mechanics PUBLIC src)
+target_link_libraries(mechanics base)
 
 add_executable(mechanics_tests
         src/mechanics/dice_test.c
@@ -284,7 +286,14 @@ add_library(treasure STATIC
         src/treasure/treasure_type.c
         )
 target_include_directories(treasure PUBLIC src)
-target_include_directories(treasure PUBLIC libs)
+target_link_libraries(treasure
+        background
+        base
+        cJSON
+        json
+        magic
+        mechanics
+        )
 
 add_executable(treasure_tests
         src/treasure/coins_test.c
@@ -297,15 +306,15 @@ add_executable(treasure_tests
         src/treasure/treasure_type_test.c
         )
 target_include_directories(treasure_tests PUBLIC src)
-target_include_directories(treasure_tests PUBLIC libs)
 target_link_libraries(treasure_tests
         treasure
         background
         base
-        cjson
+        cJSON
         json
         magic
-        mechanics)
+        mechanics
+        )
 add_test(treasure_tests treasure_tests)
 
 
@@ -320,6 +329,12 @@ add_library(tui STATIC
         src/tui/window.c
         )
 target_include_directories(tui PUBLIC src)
+target_link_libraries(tui
+        base
+        ${LIB_FORM}
+        ${LIB_MENU}
+        ${LIB_NCURSES}
+        )
 
 add_executable(tui_example
         src/tui/tui_example.c
