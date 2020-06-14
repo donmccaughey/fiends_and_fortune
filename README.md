@@ -42,7 +42,7 @@ fails with "Undefined symbols for architecture x86_64" errors.  You can
 
     brew install ncurses
 
-This repository contains a copy of the [cJSON 1.7.7][35] source.
+This repository contains a copy of the [cJSON 1.7.13][35] source.
 
 [31]: https://cmake.org
 [32]: https://invisible-island.net/ncurses/
