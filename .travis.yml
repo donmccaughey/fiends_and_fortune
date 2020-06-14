@@ -13,7 +13,7 @@ addons:
         packages: ncurses
 
 install:
-    - cmake -S . -B build -G "Unix Makefiles"
+    - cmake -S . -B build -G "Unix Makefiles" -DCOVERAGE=ON
 
 script:
     - cmake --build build --target all test

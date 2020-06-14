@@ -5,10 +5,15 @@ project(fiends_and_fortune
         HOMEPAGE_URL https://github.com/donmccaughey/fiends_and_fortune
         LANGUAGES C)
 
+option(COVERAGE "Enable code coverage analysis")
+
 set(CMAKE_C_STANDARD 99)
 enable_testing()
-add_compile_options(--coverage -g -O0)
-set(CMAKE_EXE_LINKER_FLAGS --coverage)
+
+if(COVERAGE)
+    add_compile_options(--coverage -g -O0)
+    set(CMAKE_EXE_LINKER_FLAGS --coverage)
+endif()
 
 
 # ----- find external dependencies -----
