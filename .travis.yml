@@ -13,10 +13,10 @@ addons:
         packages: ncurses
 
 install:
-    - cmake -G "Unix Makefiles" .
+    - cmake -S . -B build -G "Unix Makefiles"
 
 script:
-    - make all test
+    - cmake --build build --target all test
 
 after_success:
     - bash <(curl -s https://codecov.io/bash)
