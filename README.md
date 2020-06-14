@@ -55,6 +55,9 @@ This repository contains a copy of the [cJSON 1.7.13][35] source.
 
 _Fiends And Fortune_ uses [Cmake][41] as a build system, [Travis CI][42] for
 continuous integration, and [Codecov.io][43] for code coverage reporting.
+Set the `COVERAGE` option to `ON` to generage coverage files.
+
+    cmake -S . -B tmp -DCOVERAGE=ON
 
 [41]: https://cmake.org
 [42]: https://travis-ci.org/donmccaughey/fiends_and_fortune
