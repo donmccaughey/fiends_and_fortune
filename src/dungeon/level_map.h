@@ -55,4 +55,8 @@ level_map_fill_tile_top_half(struct level_map const *level_map,
                              struct point point,
                              char *half_tile);
 
+bool
+level_map_tile_has_sw_corner(struct level_map const *level_map,
+                             struct tile *tile);
+
 #endif

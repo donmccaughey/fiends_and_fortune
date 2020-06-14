@@ -439,6 +439,138 @@ level_map_fill_tile_top_half_test(void)
 
 
 void
+level_map_tile_has_sw_corner_test()
+{
+    struct dungeon *dungeon = dungeon_alloc();
+
+    struct tile *extent;
+    extent = dungeon_tile_at(dungeon, point_make(1, 3, 1));
+    extent->type = tile_type_empty;
+    extent = dungeon_tile_at(dungeon, point_make(3, 1, 1));
+    extent->type = tile_type_empty;
+    // produces a level map with origin (0, 0, 1) and size (5, 5, 1)
+
+    struct level_map *level_map = level_map_alloc(dungeon, 1);
+
+    struct tile *tile = level_map_tile_at(level_map, point_make(1, 1, 1));
+    struct tile *south_tile = level_map_tile_at(level_map, point_make(1, 0, 1));
+    struct tile *west_tile = level_map_tile_at(level_map, point_make(0, 1, 1));
+
+    // has no walls
+    tile->walls.west = wall_type_none;
+    tile->walls.south = wall_type_none;
+
+    // ::::....
+    // ::::....
+    // ::::::::
+    south_tile->walls.west = wall_type_none;
+    west_tile->walls.south = wall_type_none;
+    assert(!level_map_tile_has_sw_corner(level_map, tile));
+
+    // ::::....
+    // ----+...
+    // ::::::::
+    south_tile->walls.west = wall_type_none;
+    west_tile->walls.south = wall_type_solid;
+    assert(level_map_tile_has_sw_corner(level_map, tile));
+
+    // ::::....
+    // ::::+...
+    // ::::|:::
+    south_tile->walls.west = wall_type_solid;
+    west_tile->walls.south = wall_type_none;
+    assert(level_map_tile_has_sw_corner(level_map, tile));
+
+    // ::::....
+    // ----+...
+    // ::::|:::
+    south_tile->walls.west = wall_type_solid;
+    west_tile->walls.south = wall_type_solid;
+    assert(level_map_tile_has_sw_corner(level_map, tile));
+
+
+    // has only south wall
+    tile->walls.west = wall_type_none;
+    tile->walls.south = wall_type_solid;
+
+    // ::::....
+    // ::::+---
+    // ::::::::
+    south_tile->walls.west = wall_type_none;
+    west_tile->walls.south = wall_type_none;
+    assert(level_map_tile_has_sw_corner(level_map, tile));
+
+    // ::::....
+    // --------
+    // ::::::::
+    south_tile->walls.west = wall_type_none;
+    west_tile->walls.south = wall_type_solid;
+    assert(!level_map_tile_has_sw_corner(level_map, tile));
+
+    // ::::....
+    // ::::+---
+    // ::::|:::
+    south_tile->walls.west = wall_type_solid;
+    west_tile->walls.south = wall_type_none;
+    assert(level_map_tile_has_sw_corner(level_map, tile));
+
+    // ::::....
+    // ----+---
+    // ::::|:::
+    south_tile->walls.west = wall_type_solid;
+    west_tile->walls.south = wall_type_solid;
+    assert(level_map_tile_has_sw_corner(level_map, tile));
+
+
+    // has only west wall
+    tile->walls.west = wall_type_solid;
+    tile->walls.south = wall_type_none;
+
+    // ::::|...
+    // ::::+...
+    // ::::::::
+    south_tile->walls.west = wall_type_none;
+    west_tile->walls.south = wall_type_none;
+    assert(level_map_tile_has_sw_corner(level_map, tile));
+
+    // ::::|...
+    // ----+...
+    // ::::::::
+    south_tile->walls.west = wall_type_none;
+    west_tile->walls.south = wall_type_solid;
+    assert(level_map_tile_has_sw_corner(level_map, tile));
+
+    // ::::|...
+    // ::::|...
+    // ::::|:::
+    south_tile->walls.west = wall_type_solid;
+    west_tile->walls.south = wall_type_none;
+    assert(!level_map_tile_has_sw_corner(level_map, tile));
+
+    // ::::|...
+    // ----+...
+    // ::::|:::
+    south_tile->walls.west = wall_type_solid;
+    west_tile->walls.south = wall_type_solid;
+    assert(level_map_tile_has_sw_corner(level_map, tile));
+
+
+    // has both south and west walls
+    // ::::|
+    // ::::+---
+    // ::::::::
+    tile->walls.south = wall_type_solid;
+    tile->walls.west = wall_type_solid;
+    south_tile->walls.west = wall_type_none;
+    west_tile->walls.south = wall_type_none;
+    assert(level_map_tile_has_sw_corner(level_map, tile));
+
+    level_map_free(level_map);
+    dungeon_free(dungeon);
+}
+
+
+void
 level_map_test(void)
 {
     level_map_alloc_test();
@@ -451,4 +583,5 @@ level_map_test(void)
     level_map_print_scale_row_test();
     level_map_fill_tile_bottom_half_test();
     level_map_fill_tile_top_half_test();
+    level_map_tile_has_sw_corner_test();
 }
