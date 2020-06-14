@@ -18,27 +18,27 @@ endif()
 
 # ----- find external dependencies -----
 
-find_library(ncurses
+find_library(LIB_NCURSES
         NAMES libncurses.a
         HINTS /usr/local/opt/ncurses/lib
         )
-if(NOT ncurses)
+if(NOT LIB_NCURSES)
     message(FATAL_ERROR "Unable to locate ncurses library")
 endif()
 
-find_library(menu
+find_library(LIB_MENU
         NAMES libmenu.a
         HINTS /usr/local/opt/ncurses/lib
         )
-if(NOT menu)
+if(NOT LIB_MENU)
     message(FATAL_ERROR "Unable to locate ncurses menu library")
 endif()
 
-find_library(form
+find_library(LIB_FORM
         NAMES libform.a
         HINTS /usr/local/opt/ncurses/lib
         )
-if(NOT form)
+if(NOT LIB_FORM)
     message(FATAL_ERROR "Unable to locate ncurses form library")
 endif()
 
@@ -57,12 +57,12 @@ target_link_libraries(fiends
         cjson
         dungeon
         json
+        ${LIB_FORM}
+        ${LIB_MENU}
+        ${LIB_NCURSES}
         magic
         mechanics
         treasure
-        ${form}
-        ${menu}
-        ${ncurses}
         )
 
 
@@ -328,9 +328,9 @@ target_include_directories(tui_example PUBLIC src)
 target_link_libraries(tui_example
         tui
         base
-        ${form}
-        ${menu}
-        ${ncurses}
+        ${LIB_FORM}
+        ${LIB_MENU}
+        ${LIB_NCURSES}
         )
 
 
