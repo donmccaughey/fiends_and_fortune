@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.17)
-project(fiends_and_fortune C)
+project(fiends_and_fortune
+        VERSION 0.0.1
+        DESCRIPTION "Fiends and Fortune"
+        HOMEPAGE_URL https://github.com/donmccaughey/fiends_and_fortune
+        LANGUAGES C)
 
 set(CMAKE_C_STANDARD 99)
 enable_testing()
@@ -9,31 +13,28 @@ set(CMAKE_EXE_LINKER_FLAGS --coverage)
 
 # ----- find external dependencies -----
 
-find_library(form
-        NAMES libform.a
-        PATHS /usr/local/opt/ncurses/lib
-        NO_DEFAULT_PATH
+find_library(ncurses
+        NAMES libncurses.a
+        HINTS /usr/local/opt/ncurses/lib
         )
-if(NOT form)
-    message(FATAL_ERROR "Unable to locate form library")
+if(NOT ncurses)
+    message(FATAL_ERROR "Unable to locate ncurses library")
 endif()
 
 find_library(menu
         NAMES libmenu.a
-        PATHS /usr/local/opt/ncurses/lib
-        NO_DEFAULT_PATH
+        HINTS /usr/local/opt/ncurses/lib
         )
 if(NOT menu)
-    message(FATAL_ERROR "Unable to locate menu library")
+    message(FATAL_ERROR "Unable to locate ncurses menu library")
 endif()
 
-find_library(ncurses
-        NAMES libncurses.a
-        PATHS /usr/local/opt/ncurses/lib
-        NO_DEFAULT_PATH
+find_library(form
+        NAMES libform.a
+        HINTS /usr/local/opt/ncurses/lib
         )
-if(NOT ncurses)
-    message(FATAL_ERROR "Unable to locate ncurses library")
+if(NOT form)
+    message(FATAL_ERROR "Unable to locate ncurses form library")
 endif()
 
 
