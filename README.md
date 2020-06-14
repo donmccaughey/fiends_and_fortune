@@ -56,9 +56,6 @@ This repository contains a copy of the [cJSON 1.7.7][35] source.
 _Fiends And Fortune_ uses [Cmake][41] as a build system, [Travis CI][42] for
 continuous integration, and [Codecov.io][43] for code coverage reporting.
 
-Currently, the [Codecov bash script][44] is pinned at [commit 8b76995][45] from 
-8-Feb-2018, since the following commit [breaks uploading for Cmake projects][46].
-
 [41]: https://cmake.org
 [42]: https://travis-ci.org/donmccaughey/fiends_and_fortune
 [43]: https://codecov.io/gh/donmccaughey/fiends_and_fortune

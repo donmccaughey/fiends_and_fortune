@@ -20,4 +20,3 @@ script:
 
 after_success:
     - bash <(curl -s https://codecov.io/bash)
-#    - bash <(curl -s https://raw.githubusercontent.com/codecov/codecov-bash/8b76995ad4a95a61cecd4b049a448a402d91d197/codecov)
