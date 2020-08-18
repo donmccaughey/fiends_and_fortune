@@ -49,6 +49,7 @@ endif()
 add_subdirectory(libs/cJSON)
 add_subdirectory(src/base)
 add_subdirectory(src/json)
+add_subdirectory(src/mechanics)
 
 
 # ----- fiends command -----
@@ -216,23 +217,6 @@ add_executable(magic_tests
 target_include_directories(magic_tests PUBLIC src)
 target_link_libraries(magic_tests magic base mechanics)
 add_test(magic_tests magic_tests)
-
-
-# ----- mechanics library -----
-
-add_library(mechanics STATIC
-        src/mechanics/dice.c
-        )
-target_include_directories(mechanics PUBLIC src)
-target_link_libraries(mechanics base)
-
-add_executable(mechanics_tests
-        src/mechanics/dice_test.c
-        src/mechanics/mechanics_tests.c
-        )
-target_include_directories(mechanics_tests PUBLIC src)
-target_link_libraries(mechanics_tests mechanics base)
-add_test(mechanics_tests mechanics_tests)
 
 
 # ----- treasure library -----
