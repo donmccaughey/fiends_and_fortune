@@ -19,10 +19,5 @@ add_executable(base_tests
         result_test.c
         rnd_test.c
         )
-target_include_directories(base_tests
-        PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/.."
-        )
-target_link_libraries(base_tests
-        PRIVATE base
-        )
+target_link_libraries(base_tests base)
 add_test(base_tests base_tests)
