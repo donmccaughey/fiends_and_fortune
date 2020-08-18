@@ -50,6 +50,7 @@ add_subdirectory(libs/cJSON)
 add_subdirectory(src/background)
 add_subdirectory(src/base)
 add_subdirectory(src/json)
+add_subdirectory(src/magic)
 add_subdirectory(src/mechanics)
 
 
@@ -178,23 +179,6 @@ add_executable(dungeon_tests
 target_include_directories(dungeon_tests PUBLIC src)
 target_link_libraries(dungeon_tests dungeon background base mechanics)
 add_test(dungeon_tests dungeon_tests)
-
-
-# ----- magic library -----
-
-add_library(magic STATIC
-        src/magic/spell.c
-        )
-target_include_directories(magic PUBLIC src)
-target_link_libraries(magic base mechanics)
-
-add_executable(magic_tests
-        src/magic/magic_tests.c
-        src/magic/spell_test.c
-        )
-target_include_directories(magic_tests PUBLIC src)
-target_link_libraries(magic_tests magic base mechanics)
-add_test(magic_tests magic_tests)
 
 
 # ----- treasure library -----
