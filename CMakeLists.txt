@@ -47,6 +47,7 @@ endif()
 
 add_subdirectory(libs/cJSON)
 add_subdirectory(src/base)
+add_subdirectory(src/json)
 
 
 # ----- fiends command -----
@@ -197,22 +198,6 @@ add_executable(dungeon_tests
 target_include_directories(dungeon_tests PUBLIC src)
 target_link_libraries(dungeon_tests dungeon background base mechanics)
 add_test(dungeon_tests dungeon_tests)
-
-
-# ----- json library -----
-
-add_library(json STATIC
-        src/json/json.c
-        )
-target_include_directories(json PUBLIC src)
-target_link_libraries(json base cJSON)
-
-add_executable(json_tests
-        src/json/json_tests.c
-        )
-target_include_directories(json_tests PUBLIC src)
-target_link_libraries(json_tests json base cJSON)
-add_test(json_tests json_tests)
 
 
 # ----- magic library -----
