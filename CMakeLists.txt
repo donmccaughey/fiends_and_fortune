@@ -54,6 +54,7 @@ add_subdirectory(src/dungeon)
 add_subdirectory(src/json)
 add_subdirectory(src/magic)
 add_subdirectory(src/mechanics)
+add_subdirectory(src/treasure)
 
 
 # ----- fiends command -----
@@ -117,50 +118,6 @@ target_link_libraries(fnf_tests
         treasure
         )
 add_test(fnf_tests fnf_tests)
-
-
-# ----- treasure library -----
-
-add_library(treasure STATIC
-        src/treasure/coins.c
-        src/treasure/gem.c
-        src/treasure/jewelry.c
-        src/treasure/magic_item.c
-        src/treasure/treasure.c
-        src/treasure/treasure_map.c
-        src/treasure/treasure_type.c
-        )
-target_include_directories(treasure PUBLIC src)
-target_link_libraries(treasure
-        background
-        base
-        cJSON
-        json
-        magic
-        mechanics
-        )
-
-add_executable(treasure_tests
-        src/treasure/coins_test.c
-        src/treasure/gem_test.c
-        src/treasure/jewelry_test.c
-        src/treasure/magic_item_test.c
-        src/treasure/treasure_map_test.c
-        src/treasure/treasure_test.c
-        src/treasure/treasure_tests.c
-        src/treasure/treasure_type_test.c
-        )
-target_include_directories(treasure_tests PUBLIC src)
-target_link_libraries(treasure_tests
-        treasure
-        background
-        base
-        cJSON
-        json
-        magic
-        mechanics
-        )
-add_test(treasure_tests treasure_tests)
 
 
 # ----- tui library -----
