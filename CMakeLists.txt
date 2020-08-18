@@ -46,6 +46,7 @@ endif()
 # ----- add build files in subdirectories -----
 
 add_subdirectory(libs/cJSON)
+add_subdirectory(src/base)
 
 
 # ----- fiends command -----
@@ -132,32 +133,6 @@ add_executable(background_tests
 target_include_directories(background_tests PUBLIC src)
 target_link_libraries(background_tests background base mechanics)
 add_test(background_tests background_tests)
-
-
-# ----- base library -----
-
-add_library(base STATIC
-        src/base/alloc_or_die.c
-        src/base/fail.c
-        src/base/int.c
-        src/base/ptr_array.c
-        src/base/result.c
-        src/base/rnd.c
-        src/base/str.c
-        )
-target_include_directories(base PUBLIC src)
-
-add_executable(base_tests
-        src/base/base_tests.c
-        src/base/int_test.c
-        src/base/ptr_array_test.c
-        src/base/str_test.c
-        src/base/result_test.c
-        src/base/rnd_test.c
-        )
-target_include_directories(base_tests PUBLIC src)
-target_link_libraries(base_tests base)
-add_test(base_tests base_tests)
 
 
 # ----- character library -----
