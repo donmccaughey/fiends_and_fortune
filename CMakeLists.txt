@@ -50,6 +50,7 @@ add_subdirectory(libs/cJSON)
 add_subdirectory(src/background)
 add_subdirectory(src/base)
 add_subdirectory(src/character)
+add_subdirectory(src/dungeon)
 add_subdirectory(src/json)
 add_subdirectory(src/magic)
 add_subdirectory(src/mechanics)
@@ -116,46 +117,6 @@ target_link_libraries(fnf_tests
         treasure
         )
 add_test(fnf_tests fnf_tests)
-
-
-# ----- dungeon library -----
-
-add_library(dungeon STATIC
-        src/dungeon/area.c
-        src/dungeon/box.c
-        src/dungeon/digger.c
-        src/dungeon/dungeon.c
-        src/dungeon/dungeon_options.c
-        src/dungeon/exit.c
-        src/dungeon/generator.c
-        src/dungeon/level_map.c
-        src/dungeon/periodic_check.c
-        src/dungeon/point.c
-        src/dungeon/size.c
-        src/dungeon/text_rectangle.c
-        src/dungeon/tile.c
-        )
-target_include_directories(dungeon PUBLIC src)
-target_link_libraries(dungeon background base mechanics)
-
-add_executable(dungeon_tests
-        src/dungeon/area_test.c
-        src/dungeon/box_test.c
-        src/dungeon/digger_test.c
-        src/dungeon/dungeon_test.c
-        src/dungeon/dungeon_tests.c
-        src/dungeon/generator_test.c
-        src/dungeon/level_map_test.c
-        src/dungeon/point_test.c
-        src/dungeon/size_test.c
-        src/dungeon/text_rectangle_test.c
-        src/dungeon/tile_test.c
-        src/dungeon/tiles_thumbnail.c
-        src/dungeon/tiles_thumbnail_test.c
-        )
-target_include_directories(dungeon_tests PUBLIC src)
-target_link_libraries(dungeon_tests dungeon background base mechanics)
-add_test(dungeon_tests dungeon_tests)
 
 
 # ----- treasure library -----
