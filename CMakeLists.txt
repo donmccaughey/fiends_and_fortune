@@ -7,6 +7,7 @@ project(fiends_and_fortune
         )
 
 option(COVERAGE "Enable code coverage analysis")
+option(GRAPH_TARGETS "Generate a graph of build targets")
 
 set(CMAKE_C_STANDARD 99)
 enable_testing()
@@ -346,3 +347,13 @@ add_dependencies(check
         treasure_tests
         tui_example
         )
+
+
+# ----- generate a graph of build targets -----
+
+if(GRAPH_TARGETS)
+    add_custom_target(target_graph ALL
+            COMMAND "${CMAKE_COMMAND}" "--graphviz=${CMAKE_BINARY_DIR}/fnf_targets.dot" .
+            COMMAND dot -Tpng -o "${CMAKE_BINARY_DIR}/fnf_targets.png" "${CMAKE_BINARY_DIR}/fnf_targets.dot"
+            )
+endif()
