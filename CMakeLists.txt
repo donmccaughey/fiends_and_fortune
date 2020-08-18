@@ -47,6 +47,7 @@ endif()
 # ----- add build files in subdirectories -----
 
 add_subdirectory(libs/cJSON)
+add_subdirectory(src/background)
 add_subdirectory(src/base)
 add_subdirectory(src/json)
 add_subdirectory(src/mechanics)
@@ -113,29 +114,6 @@ target_link_libraries(fnf_tests
         treasure
         )
 add_test(fnf_tests fnf_tests)
-
-
-# ----- background library -----
-
-add_library(background STATIC
-        src/background/direction.c
-        src/background/language.c
-        src/background/money.c
-        src/background/orientation.c
-        )
-target_include_directories(background PUBLIC src)
-target_link_libraries(background base mechanics)
-
-add_executable(background_tests
-        src/background/background_tests.c
-        src/background/direction_test.c
-        src/background/language_test.c
-        src/background/money_test.c
-        src/background/orientation_test.c
-        )
-target_include_directories(background_tests PUBLIC src)
-target_link_libraries(background_tests background base mechanics)
-add_test(background_tests background_tests)
 
 
 # ----- character library -----
