@@ -56,6 +56,7 @@ add_subdirectory(src/json)
 add_subdirectory(src/magic)
 add_subdirectory(src/mechanics)
 add_subdirectory(src/treasure)
+add_subdirectory(src/tui)
 
 
 # ----- fnf command -----
@@ -96,37 +97,6 @@ target_link_libraries(fnf_tests
         treasure
         )
 add_test(fnf_tests fnf_tests)
-
-
-# ----- tui library -----
-
-add_library(tui STATIC
-        src/tui/app.c
-        src/tui/menu_view.c
-        src/tui/rect.c
-        src/tui/screen_view.c
-        src/tui/view.c
-        src/tui/window.c
-        )
-target_include_directories(tui PUBLIC src)
-target_link_libraries(tui
-        base
-        ${LIB_FORM}
-        ${LIB_MENU}
-        ${LIB_NCURSES}
-        )
-
-add_executable(tui_example
-        src/tui/tui_example.c
-        )
-target_include_directories(tui_example PUBLIC src)
-target_link_libraries(tui_example
-        tui
-        base
-        ${LIB_FORM}
-        ${LIB_MENU}
-        ${LIB_NCURSES}
-        )
 
 
 # ----- functional tests -----
