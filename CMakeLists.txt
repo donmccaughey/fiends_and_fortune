@@ -49,6 +49,7 @@ endif()
 add_subdirectory(libs/cJSON)
 add_subdirectory(src/background)
 add_subdirectory(src/base)
+add_subdirectory(src/character)
 add_subdirectory(src/json)
 add_subdirectory(src/magic)
 add_subdirectory(src/mechanics)
@@ -115,30 +116,6 @@ target_link_libraries(fnf_tests
         treasure
         )
 add_test(fnf_tests fnf_tests)
-
-
-# ----- character library -----
-
-add_library(character STATIC
-        src/character/abilities.c
-        src/character/ability_score_generation_method.c
-        src/character/ability_scores.c
-        src/character/ability_sets.c
-        src/character/character.c
-        )
-target_include_directories(character PUBLIC src)
-target_link_libraries(character base mechanics)
-
-add_executable(character_tests
-        src/character/abilities_test.c
-        src/character/ability_score_generation_method_test.c
-        src/character/ability_scores_test.c
-        src/character/ability_sets_test.c
-        src/character/character_tests.c
-        )
-target_include_directories(character_tests PUBLIC src)
-target_link_libraries(character_tests character base mechanics)
-add_test(character_tests character_tests)
 
 
 # ----- dungeon library -----
