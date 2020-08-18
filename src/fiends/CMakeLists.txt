@@ -1,0 +1,19 @@
+add_executable(fiends
+        game.c
+        main.c
+        selection.c
+        )
+target_link_libraries(fiends
+        background
+        base
+        character
+        cJSON
+        dungeon
+        json
+        ${LIB_FORM}
+        ${LIB_MENU}
+        ${LIB_NCURSES}
+        magic
+        mechanics
+        treasure
+        )

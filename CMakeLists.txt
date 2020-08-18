@@ -51,33 +51,11 @@ add_subdirectory(src/background)
 add_subdirectory(src/base)
 add_subdirectory(src/character)
 add_subdirectory(src/dungeon)
+add_subdirectory(src/fiends)
 add_subdirectory(src/json)
 add_subdirectory(src/magic)
 add_subdirectory(src/mechanics)
 add_subdirectory(src/treasure)
-
-
-# ----- fiends command -----
-
-add_executable(fiends
-        src/fiends/game.c
-        src/fiends/main.c
-        src/fiends/selection.c
-        )
-target_link_libraries(fiends
-        background
-        base
-        character
-        cJSON
-        dungeon
-        json
-        ${LIB_FORM}
-        ${LIB_MENU}
-        ${LIB_NCURSES}
-        magic
-        mechanics
-        treasure
-        )
 
 
 # ----- fnf command -----
