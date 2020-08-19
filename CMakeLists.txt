@@ -52,6 +52,7 @@ add_subdirectory(src/base)
 add_subdirectory(src/character)
 add_subdirectory(src/dungeon)
 add_subdirectory(src/fiends)
+add_subdirectory(src/fnf)
 add_subdirectory(src/json)
 add_subdirectory(src/magic)
 add_subdirectory(src/mechanics)
@@ -59,58 +60,9 @@ add_subdirectory(src/treasure)
 add_subdirectory(src/tui)
 
 
-# ----- fnf command -----
-
-add_executable(fnf
-        src/fnf/action.c
-        src/fnf/options.c
-        src/fnf/main.c)
-target_link_libraries(fnf
-        background
-        base
-        character
-        cJSON
-        dungeon
-        json
-        magic
-        mechanics
-        treasure
-        )
-
-add_executable(fnf_tests
-        src/fnf/action.c
-        src/fnf/action_test.c
-        src/fnf/fnf_tests.c
-        src/fnf/options.c
-        src/fnf/options_test.c
-        )
-target_include_directories(fnf_tests PUBLIC src)
-target_link_libraries(fnf_tests
-        background
-        base
-        character
-        cJSON
-        dungeon
-        json
-        magic
-        mechanics
-        treasure
-        )
-add_test(fnf_tests fnf_tests)
-
-
-# ----- functional tests -----
-
-configure_file(tests/fnf_check.out fnf_check.out)
-configure_file(tests/fnf_check fnf_check)
-configure_file(tests/precheck precheck)
-add_test(fnf_check fnf_check)
-
-
 # ----- build all targets and run all tests -----
 
 add_custom_target(check
-        COMMAND ./precheck
         COMMAND background_tests
         COMMAND base_tests
         COMMAND character_tests
@@ -120,11 +72,11 @@ add_custom_target(check
         COMMAND magic_tests
         COMMAND mechanics_tests
         COMMAND treasure_tests
-        COMMAND ./fnf_check
         )
 add_dependencies(check
         fiends
         fnf
+        fnf_check
         background_tests
         base_tests
         character_tests
