@@ -71,9 +71,8 @@ endif()
 # ----- compatibility checks -----
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-    add_definitions(
-        -D_GNU_SOURCE
-        )
+    # make asprintf() visible
+    add_definitions(-D_GNU_SOURCE)
 endif()
 
 check_symbol_exists(optreset "getopt.h" HAS_OPTRESET)
