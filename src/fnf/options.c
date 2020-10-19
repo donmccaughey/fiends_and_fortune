@@ -174,9 +174,9 @@ get_format(struct options *options, char const *arg)
 static void
 get_jrand48(struct options *options, char const *arg)
 {
-    unsigned long const max_seed = 0x0000ffffffffffff;
+    unsigned long long const max_seed = 0x0000ffffffffffff;
     errno = 0;
-    unsigned long long_seed = strtoul(arg, NULL, 0);
+    unsigned long long long_seed = strtoull(arg, NULL, 0);
     if (errno || long_seed > max_seed) {
         options->error = true;
         fprintf(stderr, "%s: invalid jrand48 seed - %s\n",
