@@ -195,7 +195,9 @@ get_jrand48(struct options *options, char const *arg)
 static void
 getopt_reset(void)
 {
+#ifdef HAS_OPTRESET
     optreset = 1;
+#endif
     optind = 1;
 }
 

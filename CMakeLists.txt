@@ -7,6 +7,9 @@ project(fiends_and_fortune
         )
 
 
+include(CheckSymbolExists)
+
+
 option(COVERAGE "Enable code coverage analysis")
 option(GRAPH_TARGETS "Generate a graph of build targets")
 
@@ -53,6 +56,8 @@ if(CMAKE_SYSTEM_NAME MATCHES "Linux")
         -D_GNU_SOURCE
         )
 endif()
+
+check_symbol_exists(optreset "getopt.h" HAS_OPTRESET)
 
 
 # ----- add build files in subdirectories -----
