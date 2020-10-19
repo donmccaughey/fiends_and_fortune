@@ -77,7 +77,7 @@ get_selection(struct selection *selection)
         
         if ('\r' == ch) break;
         
-        if (isnumber(ch)) {
+        if (isdigit(ch)) {
             for (int i = 0; i < selection->items_count; ++i) {
                 char const *name = item_name(selection->items[i]);
                 if (name && ch == name[0]) {
