@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.13...3.18)
 project(fiends_and_fortune
         VERSION 0.0.1
         DESCRIPTION "Fiends and Fortune"
