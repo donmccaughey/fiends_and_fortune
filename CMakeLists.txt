@@ -6,6 +6,7 @@ project(fiends_and_fortune
         LANGUAGES C
         )
 
+
 option(COVERAGE "Enable code coverage analysis")
 option(GRAPH_TARGETS "Generate a graph of build targets")
 
@@ -43,6 +44,16 @@ find_library(LIB_FORM
 if(NOT LIB_FORM)
     message(FATAL_ERROR "Unable to locate ncurses form library")
 endif()
+
+
+# ----- compatibility checks -----
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+    add_definitions(
+        -D_GNU_SOURCE
+        )
+endif()
+
 
 # ----- add build files in subdirectories -----
 
