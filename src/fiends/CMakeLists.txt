@@ -9,11 +9,12 @@ target_link_libraries(fiends
         character
         cJSON
         dungeon
+        form
         json
-        ${LIB_FORM}
-        ${LIB_MENU}
-        ${LIB_NCURSES}
         magic
         mechanics
+        menu
+        ncurses
         treasure
         )
+

@@ -10,9 +10,9 @@ target_include_directories(tui PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/..")
 target_link_libraries(tui
         PUBLIC
             base
-            ${LIB_FORM}
-            ${LIB_MENU}
-            ${LIB_NCURSES}
+            form
+            menu
+            ncurses
         )
 
 add_executable(tui_example

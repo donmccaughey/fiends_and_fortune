@@ -24,26 +24,17 @@ endif()
 
 # ----- find external dependencies -----
 
-find_library(LIB_NCURSES
-        NAMES libncurses.a
-        HINTS /usr/local/opt/ncurses/lib
-        )
+find_library(LIB_NCURSES NAMES ncurses)
 if(NOT LIB_NCURSES)
     message(FATAL_ERROR "Unable to locate ncurses library")
 endif()
 
-find_library(LIB_MENU
-        NAMES libmenu.a
-        HINTS /usr/local/opt/ncurses/lib
-        )
+find_library(LIB_MENU NAMES menu)
 if(NOT LIB_MENU)
     message(FATAL_ERROR "Unable to locate ncurses menu library")
 endif()
 
-find_library(LIB_FORM
-        NAMES libform.a
-        HINTS /usr/local/opt/ncurses/lib
-        )
+find_library(LIB_FORM NAMES form)
 if(NOT LIB_FORM)
     message(FATAL_ERROR "Unable to locate ncurses form library")
 endif()
