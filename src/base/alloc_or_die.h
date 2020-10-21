@@ -97,6 +97,7 @@ inline void *
 realloc_or_die(void *memory, size_t size)
 {
     void *new_memory = realloc(memory, size);
+    if ( ! size && ! new_memory) new_memory = calloc(1, 1);
     if ( ! new_memory) print_error_and_die();
     if ( ! memory) ++alloc_or_die_count;
     return new_memory;
