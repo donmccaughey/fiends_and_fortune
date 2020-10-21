@@ -12,6 +12,8 @@ include(CheckSymbolExists)
 
 option(COVERAGE "Enable code coverage analysis")
 option(GRAPH_TARGETS "Generate a graph of build targets")
+option(HOMEBREW_NCURSES "Use Homebrew ncurses instead of macOS system ncurses")
+
 
 set(CMAKE_C_STANDARD 99)
 enable_testing()
@@ -24,17 +26,34 @@ endif()
 
 # ----- find external dependencies -----
 
-find_library(LIB_NCURSES NAMES ncurses)
+if(HOMEBREW_NCURSES)
+    include_directories(/usr/local/opt/ncurses/include)
+    link_directories(/usr/local/opt/ncurses/lib)
+    set(LIB_NCURSES_HINTS /usr/local/opt/ncurses/lib)
+else()
+    set(LIB_NCURSES_HINTS "")
+endif()
+
+find_library(LIB_NCURSES 
+    NAMES ncurses
+    HINTS ${LIB_NCURSES_HINTS}
+    )
 if(NOT LIB_NCURSES)
     message(FATAL_ERROR "Unable to locate ncurses library")
 endif()
 
-find_library(LIB_MENU NAMES menu)
+find_library(LIB_MENU 
+    NAMES menu
+    HINTS ${LIB_NCURSES_HINTS}
+    )
 if(NOT LIB_MENU)
     message(FATAL_ERROR "Unable to locate ncurses menu library")
 endif()
 
-find_library(LIB_FORM NAMES form)
+find_library(LIB_FORM 
+    NAMES form
+    HINTS ${LIB_NCURSES_HINTS}
+    )
 if(NOT LIB_FORM)
     message(FATAL_ERROR "Unable to locate ncurses form library")
 endif()

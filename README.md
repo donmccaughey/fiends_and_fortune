@@ -26,21 +26,35 @@ an [MIT license][23].
 
 ## Building From Source
 
-_Fiends And Fortune_ is developed on macOS and should work on most POSIX
-compatible operating systems.  Building it requires that your system have
-a C toolchain, a recent version of [CMake][31] and the [`ncurses`][32] library 
-installed.
+_Fiends And Fortune_ is tested on macOS and Linux.  Building it requires that
+your system have a C toolchain, a recent version of [CMake][31] and the
+[`ncurses`][32] library.
 
     git clone https://github.com/donmccaughey/fiends_and_fortune.git
     cd fiends_and_fortune
     cmake -S . -B tmp
     cmake --build tmp --target all test
 
-Note that on MacOS 10.14 Mojave with Xcode 10.3, linking to `ncurses` `libmenu` 
-fails with "Undefined symbols for architecture x86_64" errors.  You can 
-[work around this][33] by installing `ncurses` using [Homebrew][34].
+Note that on recent versions of macOS, linking to `ncurses` `libmenu` may
+fails with an error like:
+
+    Undefined symbols for architecture x86_64:
+      "_current_item", referenced from:
+          _selection_show in selection.c.o
+      "_free_item", referenced from:
+      ...
+      "_unpost_menu", referenced from:
+          _selection_free_or_die in selection.c.o
+          _selection_show in selection.c.o
+    ld: symbol(s) not found for architecture x86_64
+
+You can [work around this][33] by installing `ncurses` using [Homebrew][34].
 
     brew install ncurses
+
+And enabling the build option `HOMEBREW_NCURSES`:
+
+    cmake -S . -B tmp -DHOMEBREW_NCURSES=ON
 
 This repository contains a copy of the [cJSON 1.7.13][35] source.
 
