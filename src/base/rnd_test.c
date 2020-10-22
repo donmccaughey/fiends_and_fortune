@@ -209,6 +209,42 @@ rnd_alloc_jrand48_range_test(void)
 
 
 static void
+rnd_alloc_lcg_test(void)
+{
+    struct rnd *rnd = rnd_alloc_lcg(100200300);
+
+    uint32_t value = rnd_next_value(rnd);
+    assert(32121 == value);
+
+    value = rnd_next_value(rnd);
+    assert(24917 == value);
+
+    value = rnd_next_value(rnd);
+    assert(6036 == value);
+
+    rnd_free(rnd);
+}
+
+
+static void
+rnd_alloc_lcg_range_test(void)
+{
+    struct rnd *rnd = rnd_alloc_lcg(100200300);
+
+    uint32_t value = rnd_next_uniform_value_in_range(rnd, 1, 99);
+    assert(46 == value);
+
+    value = rnd_next_uniform_value_in_range(rnd, 2, 5);
+    assert(3 == value);
+
+    value = rnd_next_uniform_value_in_range(rnd, 2, 5);
+    assert(2 == value);
+
+    rnd_free(rnd);
+}
+
+
+static void
 rnd_next_uniform_value_test(void)
 {
     struct rnd *rnd = rnd_alloc_fake_ascending(8);
@@ -302,6 +338,8 @@ rnd_test(void)
     rnd_alloc_fake_min_test();
     rnd_alloc_jrand48_test();
     rnd_alloc_jrand48_range_test();
+    rnd_alloc_lcg_test();
+    rnd_alloc_lcg_range_test();
     rnd_next_uniform_value_test();
     rnd_next_uniform_value_in_range_test();
     rnd_shuffle_test();

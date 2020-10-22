@@ -31,6 +31,9 @@
 #include "alloc_or_die.h"
 
 
+typedef uint32_t next_value_fn(void *user_data);
+
+
 static uint32_t
 next_arc4random_uniform_value_in_range(void *user_data,
                                        uint32_t inclusive_lower_bound,
@@ -76,6 +79,41 @@ next_arc4random_uniform_value_in_range(void *user_data,
                                                   + 1;
         return inclusive_lower_bound
              + arc4random_uniform(normalized_exclusive_upper_bound);
+    }
+}
+
+
+static uint32_t
+next_uniform_value(next_value_fn next_value,
+                   void *user_data,
+                   uint32_t normalized_exclusive_upper_bound)
+{
+    uint32_t modulo_bias = UINT32_MAX % normalized_exclusive_upper_bound;
+    uint32_t largest_multiple = UINT32_MAX - modulo_bias;
+    uint32_t value;
+    do {
+        value = next_value(user_data);
+    } while (value > largest_multiple);
+    return value % normalized_exclusive_upper_bound;
+}
+
+
+static uint32_t
+next_uniform_value_in_range(next_value_fn next_value,
+                            void *user_data,
+                            uint32_t inclusive_lower_bound,
+                            uint32_t inclusive_upper_bound)
+{
+    if (0 == inclusive_lower_bound && UINT32_MAX == inclusive_upper_bound) {
+        return next_value(user_data);
+    } else {
+        uint32_t normalized_exclusive_upper_bound = inclusive_upper_bound
+                                                    - inclusive_lower_bound
+                                                    + 1;
+        return inclusive_lower_bound
+               + next_uniform_value(next_value,
+                                    user_data,
+                                    normalized_exclusive_upper_bound);
     }
 }
 
@@ -215,32 +253,35 @@ next_jrand48_value(void *user_data)
 
 
 static uint32_t
-next_jrand48_uniform_value(void *user_data, uint32_t normalized_exclusive_upper_bound)
-{
-    uint32_t modulo_bias = UINT32_MAX % normalized_exclusive_upper_bound;
-    uint32_t largest_multiple = UINT32_MAX - modulo_bias;
-    uint32_t value;
-    do {
-        value = next_jrand48_value(user_data);
-    } while (value > largest_multiple);
-    return value % normalized_exclusive_upper_bound;
-}
-
-
-static uint32_t
 next_jrand48_uniform_value_in_range(void *user_data,
                                     uint32_t inclusive_lower_bound,
                                     uint32_t inclusive_upper_bound)
 {
-    if (0 == inclusive_lower_bound && UINT32_MAX == inclusive_upper_bound) {
-        return next_jrand48_value(user_data);
-    } else {
-        uint32_t normalized_exclusive_upper_bound = inclusive_upper_bound
-                                                  - inclusive_lower_bound
-                                                  + 1;
-        return inclusive_lower_bound
-             + next_jrand48_uniform_value(user_data, normalized_exclusive_upper_bound);
-    }
+    return next_uniform_value_in_range(next_jrand48_value,
+                                       user_data,
+                                       inclusive_lower_bound,
+                                       inclusive_upper_bound);
+}
+
+
+static uint32_t
+next_lcg_value(void *user_data)
+{
+    uint32_t *state = user_data;
+    *state = *state * 1103515245 + 12345;
+    return *state / 65536 % 32768;
+}
+
+
+static uint32_t
+next_lcg_uniform_value_in_range(void *user_data,
+                                uint32_t inclusive_lower_bound,
+                                uint32_t inclusive_upper_bound)
+{
+    return next_uniform_value_in_range(next_lcg_value,
+                                       user_data,
+                                       inclusive_lower_bound,
+                                       inclusive_upper_bound);
 }
 
 
@@ -255,6 +296,21 @@ rnd_alloc_jrand48(unsigned short const state[3])
     memcpy(rnd->user_data, state, state_size);
     rnd->next_uniform_value_in_range = next_jrand48_uniform_value_in_range;
     
+    return rnd;
+}
+
+
+struct rnd *
+rnd_alloc_lcg(uint32_t state)
+{
+    size_t state_size = sizeof state;
+
+    struct rnd *rnd = alloc_with_user_data_size(state_size);
+    if (!rnd) return NULL;
+
+    memcpy(rnd->user_data, &state, state_size);
+    rnd->next_uniform_value_in_range = next_lcg_uniform_value_in_range;
+
     return rnd;
 }
 

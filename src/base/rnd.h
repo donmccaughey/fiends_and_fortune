@@ -62,6 +62,13 @@ rnd_alloc_fake_min(void);
 struct rnd *
 rnd_alloc_jrand48(unsigned short const state[3]);
 
+// A linear congruent generator
+// https://en.wikipedia.org/wiki/Linear_congruential_generator
+// based on sample code from POSIX 1003.1-2017
+// https://pubs.opengroup.org/onlinepubs/9699919799/functions/rand.html
+struct rnd *
+rnd_alloc_lcg(uint32_t state);
+
 void
 rnd_free(struct rnd *rnd);
 
