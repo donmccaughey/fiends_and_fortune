@@ -5,6 +5,7 @@ add_library(base STATIC
         ptr_array.c
         result.c
         rnd.c
+        sort.c
         str.c
         )
 target_include_directories(base
@@ -15,6 +16,7 @@ add_executable(base_tests
         base_tests.c
         int_test.c
         ptr_array_test.c
+        sort_test.c
         str_test.c
         result_test.c
         rnd_test.c

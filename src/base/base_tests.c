@@ -15,6 +15,9 @@ void
 rnd_test(void);
 
 void
+sort_test(void);
+
+void
 str_test(void);
 
 
@@ -25,6 +28,7 @@ main(int argc, char *argv[])
     ptr_array_test();
     result_test();
     rnd_test();
+    sort_test();
     str_test();
     alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;

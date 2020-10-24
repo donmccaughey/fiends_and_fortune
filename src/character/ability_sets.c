@@ -1,12 +1,7 @@
 #include "ability_sets.h"
 
-#include <stdlib.h>
 #include <base/base.h>
 #include <mechanics/mechanics.h>
-
-
-typedef int
-(compare_fn)(void const *, void const *);
 
 
 struct ability_sets *
@@ -40,5 +35,5 @@ ability_sets_sort(struct ability_sets *sets)
     size_t size = sizeof sets->values[0];
     size_t count = sizeof sets->values / size;
     compare_fn *compare = (compare_fn *)abilities_compare;
-    qsort(&sets->values, count, size, compare);
+    insertion_sort(&sets->values, count, size, compare);
 }

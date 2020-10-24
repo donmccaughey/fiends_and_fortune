@@ -68,11 +68,11 @@ ability_sets_alloc_method_4_random_test(void)
     assert(12 == sets->values[4].constitution);
     assert(8 == sets->values[4].charisma);
 
-    assert(13 == sets->values[5].strength);
-    assert(13 == sets->values[5].intelligence);
-    assert(6 == sets->values[5].wisdom);
-    assert(11 == sets->values[5].dexterity);
-    assert(9 == sets->values[5].constitution);
+    assert(11 == sets->values[5].strength);
+    assert(9 == sets->values[5].intelligence);
+    assert(8 == sets->values[5].wisdom);
+    assert(12 == sets->values[5].dexterity);
+    assert(12 == sets->values[5].constitution);
     assert(10 == sets->values[5].charisma);
 
     assert(11 == sets->values[6].strength);
@@ -82,26 +82,26 @@ ability_sets_alloc_method_4_random_test(void)
     assert(12 == sets->values[6].constitution);
     assert(14 == sets->values[6].charisma);
 
-    assert(11 == sets->values[7].strength);
-    assert(9 == sets->values[7].intelligence);
-    assert(8 == sets->values[7].wisdom);
-    assert(12 == sets->values[7].dexterity);
-    assert(12 == sets->values[7].constitution);
+    assert(13 == sets->values[7].strength);
+    assert(13 == sets->values[7].intelligence);
+    assert(6 == sets->values[7].wisdom);
+    assert(11 == sets->values[7].dexterity);
+    assert(9 == sets->values[7].constitution);
     assert(10 == sets->values[7].charisma);
 
-    assert(13 == sets->values[8].strength);
-    assert(12 == sets->values[8].intelligence);
-    assert(4 == sets->values[8].wisdom);
-    assert(8 == sets->values[8].dexterity);
-    assert(13 == sets->values[8].constitution);
-    assert(10 == sets->values[8].charisma);
+    assert(16 == sets->values[8].strength);
+    assert(9 == sets->values[8].intelligence);
+    assert(9 == sets->values[8].wisdom);
+    assert(11 == sets->values[8].dexterity);
+    assert(10 == sets->values[8].constitution);
+    assert(5 == sets->values[8].charisma);
 
-    assert(16 == sets->values[9].strength);
-    assert(9 == sets->values[9].intelligence);
-    assert(9 == sets->values[9].wisdom);
-    assert(11 == sets->values[9].dexterity);
-    assert(10 == sets->values[9].constitution);
-    assert(5 == sets->values[9].charisma);
+    assert(13 == sets->values[9].strength);
+    assert(12 == sets->values[9].intelligence);
+    assert(4 == sets->values[9].wisdom);
+    assert(8 == sets->values[9].dexterity);
+    assert(13 == sets->values[9].constitution);
+    assert(10 == sets->values[9].charisma);
 
     assert(6 == sets->values[10].strength);
     assert(7 == sets->values[10].intelligence);
