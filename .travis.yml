@@ -1,5 +1,4 @@
 language: c
-os: osx
 jobs:
     include:
         -   os: osx
@@ -13,8 +12,11 @@ jobs:
                 - cmake --build build --target all test
             after_success:
                 - bash <(curl -s https://codecov.io/bash)
+
         -   os: linux
             dist: focal
+            before_install:
+                - sudo apt-get -y install libbsd-dev
             install:
                 - cmake -S . -B build -G "Unix Makefiles"
             script:
