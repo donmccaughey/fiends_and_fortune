@@ -1,22 +1,21 @@
 language: c
-
-os:
-    - osx
-
-osx_image: xcode12.2
-
-compiler:
-    - clang
-
-addons:
-    homebrew:
-        packages: ncurses
-
-install:
-    - cmake -S . -B build -G "Unix Makefiles" -DCOVERAGE=ON -DHOMEBREW_NCURSES=ON
-
-script:
-    - cmake --build build --target all test
-
-after_success:
-    - bash <(curl -s https://codecov.io/bash)
+os: osx
+jobs:
+    include:
+        -   os: osx
+            osx_image: xcode12.2
+            addons:
+                homebrew:
+                    packages: ncurses
+            install:
+                - cmake -S . -B build -G "Unix Makefiles" -DCOVERAGE=ON -DHOMEBREW_NCURSES=ON
+            script:
+                - cmake --build build --target all test
+            after_success:
+                - bash <(curl -s https://codecov.io/bash)
+        -   os: linux
+            dist: focal
+            install:
+                - cmake -S . -B build -G "Unix Makefiles"
+            script:
+                - cmake --build build --target all test
