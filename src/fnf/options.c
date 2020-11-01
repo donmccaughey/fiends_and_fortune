@@ -238,7 +238,7 @@ struct options *
 options_alloc(int argc, char *argv[])
 {
     struct options *options = calloc_or_die(1, sizeof(struct options));
-    options->command_name = strdup_or_die(basename(argv[0]));
+    options->command_name = basename_or_die(argv[0]);
     options->rnd = rnd_alloc();
     
     int action_index = get_options(options, argc, argv);

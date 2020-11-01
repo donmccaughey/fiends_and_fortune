@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -euo pipefail
 
 @CMAKE_CURRENT_BINARY_DIR@/fnf check | diff @CMAKE_CURRENT_SOURCE_DIR@/check.out -

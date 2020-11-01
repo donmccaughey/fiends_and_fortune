@@ -71,6 +71,20 @@ asprintf_or_die(char **string, char const *format, ...)
 }
 
 
+char *
+basename_or_die(char const *path)
+{
+    char *path_copy = strdup_or_die(path ? path : "");
+    char *result = basename(path_copy);
+    if (result == path_copy) {
+        return result;
+    } else {
+        free_or_die(path_copy);
+        return strdup_or_die(result);
+    }
+}
+
+
 ////////// extern inline declarations //////////
 
 extern inline void *
