@@ -79,8 +79,9 @@ basename_or_die(char const *path)
     if (result == path_copy) {
         return result;
     } else {
+        char *name = strdup_or_die(result);
         free_or_die(path_copy);
-        return strdup_or_die(result);
+        return name;
     }
 }
 
