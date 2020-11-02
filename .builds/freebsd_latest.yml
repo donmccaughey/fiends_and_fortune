@@ -1,5 +1,5 @@
 image: freebsd/latest
-packages;
+packages:
     - cmake
 sources:
     - https://github.com/donmccaughey/fiends_and_fortune
