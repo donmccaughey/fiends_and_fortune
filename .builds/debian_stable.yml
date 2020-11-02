@@ -1,6 +1,7 @@
 image: debian/stable
 packages:
     - cmake
+    - libbsd-dev
     - ncurses-dev
 sources:
     - https://github.com/donmccaughey/fiends_and_fortune
