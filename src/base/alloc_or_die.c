@@ -25,6 +25,7 @@
 #include "alloc_or_die.h"
 
 #include <errno.h>
+#include <libgen.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>

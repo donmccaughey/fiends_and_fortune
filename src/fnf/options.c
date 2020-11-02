@@ -2,7 +2,6 @@
 
 #include <ctype.h>
 #include <getopt.h>
-#include <libgen.h>
 #include <base/base.h>
 #include <dungeon/dungeon.h>
 
