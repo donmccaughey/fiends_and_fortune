@@ -1,0 +1,15 @@
+image: debian/stable
+packages:
+    - cmake
+sources:
+    - https://github.com/donmccaughey/fiends_and_fortune
+tasks:
+    - setup: |
+        cmake -S . -B tmp
+    - build: |
+        cmake --build tmp --target all test
+triggers:
+    - action: email
+      condition: failure
+      to: Don McCaughey <don@donm.cc>
+
