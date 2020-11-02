@@ -28,9 +28,9 @@ an [MIT license][23].
 
 ## Building From Source
 
-_Fiends And Fortune_ is tested on macOS and Linux.  Building it requires that
-your system have a C toolchain, a recent version of [CMake][31] and the
-[`ncurses`][32] library.
+_Fiends And Fortune_ is tested on macOS, Linux and FreeBSD.  Building it
+requires that your system have a C toolchain, a recent version of [CMake][31]
+and the [`ncurses`][32] library.  Building on Linux requires [`libbsd`][33].
 
     git clone https://github.com/donmccaughey/fiends_and_fortune.git
     cd fiends_and_fortune
@@ -50,7 +50,7 @@ fails with an error like:
           _selection_show in selection.c.o
     ld: symbol(s) not found for architecture x86_64
 
-You can [work around this][33] by installing `ncurses` using [Homebrew][34].
+You can [work around this][34] by installing `ncurses` using [Homebrew][35].
 
     brew install ncurses
 
@@ -58,13 +58,14 @@ And enabling the build option `HOMEBREW_NCURSES`:
 
     cmake -S . -B tmp -DHOMEBREW_NCURSES=ON
 
-This repository contains a copy of the [cJSON 1.7.13][35] source.
+This repository contains a copy of the [cJSON 1.7.13][36] source.
 
 [31]: https://cmake.org
 [32]: https://invisible-island.net/ncurses/
-[33]: https://stackoverflow.com/questions/56622042/clang-on-macos-fails-linking-lmenu-from-ncurses
-[34]: https://brew.sh
-[35]: https://github.com/DaveGamble/cJSON
+[33]: https://libbsd.freedesktop.org/
+[34]: https://stackoverflow.com/questions/56622042/clang-on-macos-fails-linking-lmenu-from-ncurses
+[35]: https://brew.sh
+[36]: https://github.com/DaveGamble/cJSON
 
 
 ## Build System
