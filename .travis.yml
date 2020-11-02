@@ -9,7 +9,8 @@ jobs:
             install:
                 - cmake -S . -B build -G "Unix Makefiles" -DCOVERAGE=ON -DHOMEBREW_NCURSES=ON
             script:
-                - cmake --build build --target all test
+                - cmake --build build --target all
+                - cd build && ctest --output-on-failure
             after_success:
                 - bash <(curl -s https://codecov.io/bash)
 
@@ -20,4 +21,5 @@ jobs:
             install:
                 - cmake -S . -B build -G "Unix Makefiles"
             script:
-                - cmake --build build --target all test
+                - cmake --build build --target all
+                - cd build && ctest --output-on-failure
