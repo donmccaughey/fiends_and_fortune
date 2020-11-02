@@ -11,7 +11,9 @@ tasks:
         cmake -S . -B tmp
     - build: |
         cd fiends_and_fortune
-        cmake --build tmp --target all test
+        cmake --build tmp --target all
+        cd tmp
+        ctest --output-on-failure
 triggers:
     - action: email
       condition: failure
