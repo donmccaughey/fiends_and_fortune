@@ -13,6 +13,11 @@ include(CheckSymbolExists)
 option(COVERAGE "Enable code coverage analysis")
 option(GRAPH_TARGETS "Generate a graph of build targets")
 option(HOMEBREW_NCURSES "Use Homebrew ncurses instead of macOS system ncurses")
+set(HOMEBREW_NCURSES_PATH
+    "/opt/homebrew/opt/ncurses"
+    CACHE PATH
+    "Location of the Homebrew 'ncurses' directory"
+    )
 
 
 set(CMAKE_C_STANDARD 99)
@@ -27,9 +32,9 @@ endif()
 # ----- find external dependencies -----
 
 if(HOMEBREW_NCURSES)
-    include_directories(/usr/local/opt/ncurses/include)
-    link_directories(/usr/local/opt/ncurses/lib)
-    set(LIB_NCURSES_HINTS /usr/local/opt/ncurses/lib)
+    include_directories("${HOMEBREW_NCURSES_PATH}/include")
+    link_directories("${HOMEBREW_NCURSES_PATH}/lib")
+    set(LIB_NCURSES_HINTS "${HOMEBREW_NCURSES_PATH}/lib")
 else()
     set(LIB_NCURSES_HINTS "")
 endif()

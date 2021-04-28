@@ -58,6 +58,10 @@ And enabling the build option `HOMEBREW_NCURSES`:
 
     cmake -S . -B tmp -DHOMEBREW_NCURSES=ON
 
+If your Homebrew path to `ncurses` is different than
+`/opt/homebrew/opt/ncurses`, you can change the search path using the 
+`HOMEBREW_NCURSES_PATH` cache variable.
+
 This repository contains a copy of the [cJSON 1.7.13][36] source.
 
 [31]: https://cmake.org
