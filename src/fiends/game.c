@@ -329,7 +329,7 @@ draw_scroll_window(WINDOW *window, char const *title)
     if (ERR == code) return result_ncurses_err();
     
     if (title) {
-        int width, height;
+        int width, __attribute__((unused)) height;
         getmaxyx(window, height, width);
         size_t title_length = strlen(title);
         assert(title_length < (size_t)INT_MAX);
