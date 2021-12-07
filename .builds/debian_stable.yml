@@ -8,14 +8,12 @@ sources:
 tasks:
     - setup: |
         cd fiends_and_fortune
-        cmake -S . -B tmp -DADDRESS_SANITIZER=ON -DCOVERAGE=ON -DWALL=ON
+        cmake -S . -B tmp -DADDRESS_SANITIZER=ON -DWALL=ON
     - build: |
         cd fiends_and_fortune
         cmake --build tmp --target all
         cd tmp
         ctest --output-on-failure
-    - coverage: |
-        bash <(curl -s https://codecov.io/bash)
 triggers:
     - action: email
       condition: failure
