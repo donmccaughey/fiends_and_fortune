@@ -81,6 +81,7 @@ point_move(struct point start, int distance, enum direction direction)
         case direction_northwest:
             return point_make(start.x - distance, start.y + distance, start.z);
     }
+    return point_make(start.x, start.y + distance, start.z);
 }
 
 
@@ -144,6 +145,7 @@ point_rotate_90_degrees_left(struct point point, enum direction direction)
             assert(point.y > INT_MIN + 1);
             return point_make(point.x, point.y - 2, point.z);
     }
+    return point_make(point.x - 1, point.y - 1, point.z);
 }
 
 
@@ -181,6 +183,7 @@ point_rotate_90_degrees_right(struct point point, enum direction direction)
             assert(point.x < INT_MAX - 1);
             return point_make(point.x + 2, point.y, point.z);
     }
+    return point_make(point.x + 1, point.y - 1, point.z);
 }
 
 
