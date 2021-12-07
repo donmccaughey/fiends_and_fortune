@@ -1,3 +1,21 @@
+1.7.15 (Aug 25, 2021)
+======
+Fixes:
+------
+* Fix potential core dumped for strrchr, see [#546](https://github.com/DaveGamble/cJSON/pull/546)
+* Fix null pointer crash in cJSON_CreateXxArray, see [#538](https://github.com/DaveGamble/cJSON/pull/538)
+* Fix several null pointer problems on allocation failure, see [#526](https://github.com/DaveGamble/cJSON/pull/526)
+* Fix a possible dereference of null pointer, see [#519](https://github.com/DaveGamble/cJSON/pull/519)
+* Fix windows build failure about defining nan, see [#518](https://github.com/DaveGamble/cJSON/pull/518)
+
+1.7.14 (Sep 3, 2020)
+======
+Fixes:
+------
+* optimize the way to find tail node, see [#503](https://github.com/DaveGamble/cJSON/pull/503)
+* Fix WError error on macosx because NAN is a float. Thanks @sappo, see [#484](https://github.com/DaveGamble/cJSON/pull/484)
+* Fix some bugs in detach and replace. Thanks @miaoerduo, see [#456](https://github.com/DaveGamble/cJSON/pull/456)
+
 1.7.13 (Apr 2, 2020)
 ======
 Features:

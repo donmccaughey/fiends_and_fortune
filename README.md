@@ -63,7 +63,7 @@ If your Homebrew path to `ncurses` is different than
 `HOMEBREW_NCURSES_PATH` cache variable.  (The path is likely to be 
 `/usr/local/opt/ncurses` on [Intel Macs][36].)
 
-This repository contains a copy of the [cJSON 1.7.13][37] source.
+This repository contains a copy of the [cJSON 1.7.15][37] source.
 
 [31]: https://cmake.org
 [32]: https://invisible-island.net/ncurses/
