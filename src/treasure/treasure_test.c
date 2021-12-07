@@ -408,7 +408,7 @@ treasure_initialize_from_json_object_with_maps_test(void)
                               "    {\n"
                               "      \"struct\": \"treasure_map\",\n"
                               "      \"rev\": 0,\n"
-                              "      \"is_false\": false,\n"
+                              "      \"is_false\": true,\n"
                               "      \"treasure\": {\n"
                               "        \"struct\": \"treasure\",\n"
                               "        \"rev\": 0,\n"
@@ -456,7 +456,7 @@ treasure_initialize_from_json_object_with_maps_test(void)
     assert(0 == treasure.maps[0].treasure.jewelry_count);
     assert(0 == treasure.maps[0].treasure.maps_count);
     assert(0 == treasure.maps[0].treasure.magic_items_count);
-    assert(str_eq("false map to treasure of (no treasure) in nearby labyrinth to the north",
+    assert(str_eq("map to monetary treasure of 1500 platinum 7 miles to the south, guarded in a lair",
                   treasure.maps[0].true_description));
 
     assert(treasure.maps[1].is_false);
@@ -465,7 +465,7 @@ treasure_initialize_from_json_object_with_maps_test(void)
     assert(0 == treasure.maps[1].treasure.jewelry_count);
     assert(0 == treasure.maps[1].treasure.maps_count);
     assert(0 == treasure.maps[1].treasure.magic_items_count);
-    assert(str_eq("map to monetary treasure of 1500 platinum 7 miles to the south, guarded in a lair",
+    assert(str_eq("false map to treasure of (no treasure) in nearby labyrinth to the north",
                   treasure.maps[1].true_description));
 
     assert(NULL == treasure.magic_items);
@@ -611,6 +611,7 @@ treasure_test(void)
 
     treasure_initialize_from_json_object_with_gems_test();
     treasure_initialize_from_json_object_with_jewelry_test();
+    treasure_initialize_from_json_object_with_maps_test();
     treasure_initialize_from_json_object_with_magic_items_test();
 
     treasure_generate_magic_items_test();

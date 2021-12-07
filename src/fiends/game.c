@@ -470,7 +470,7 @@ list_dungeon_level_areas(struct dungeon *dungeon,
     int x = 0;
     int y = 0;
     for (int i = 0; i < lines->count; ++i) {
-        code = mvwprintw(*pad, y, x, "%s", lines->elements[i]);
+        code = mvwprintw(*pad, y, x, "%s", (char *)lines->elements[i]);
         if (ERR == code) {
             mvwprintw(*pad, y, 0, "*");
         }
@@ -728,7 +728,7 @@ generate_treasure_type(struct game *game, char letter)
     int x = 0;
     int y = 0;
     for (int i = 0; i < lines->count; ++i) {
-        code = mvwprintw(pad, y, x, "%s", lines->elements[i]);
+        code = mvwprintw(pad, y, x, "%s", (char *)lines->elements[i]);
         if (ERR == code) { /* ignore */ }
         ++y;
     }

@@ -519,7 +519,7 @@ print_treasure_as_text(struct treasure *treasure, FILE *out)
 {
     struct ptr_array *lines = treasure_alloc_details(treasure);
     for (int i = 0; i < lines->count; ++i) {
-        fprintf(out, "%s\n", lines->elements[i]);
+        fprintf(out, "%s\n", (char *)lines->elements[i]);
     }
     ptr_array_clear(lines, free_or_die);
     ptr_array_free(lines);

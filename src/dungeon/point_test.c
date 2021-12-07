@@ -53,12 +53,12 @@ point_equals_test(void)
     assert( ! point_equals(more_x, point1));
 
     struct point less_y = point_make(1, 1, 3);
-    assert( ! point_equals(point1, more_x));
-    assert( ! point_equals(more_x, point1));
+    assert( ! point_equals(point1, less_y));
+    assert( ! point_equals(less_y, point1));
 
     struct point more_z = point_make(1, 2, 4);
-    assert( ! point_equals(point1, more_x));
-    assert( ! point_equals(more_x, point1));
+    assert( ! point_equals(point1, more_z));
+    assert( ! point_equals(more_z, point1));
 }
 
 

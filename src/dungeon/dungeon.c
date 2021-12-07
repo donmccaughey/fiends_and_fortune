@@ -200,7 +200,7 @@ dungeon_print_areas_for_level(struct dungeon *dungeon, int level, FILE *out)
     fprintf(out, "  Entrances and Exits:\n");
     struct ptr_array *descriptions = dungeon_alloc_descriptions_of_entrances_and_exits_for_level(dungeon, level);
     for (int i = 0; i < descriptions->count; ++i) {
-        fprintf(out, "    %s\n", descriptions->elements[i]);
+        fprintf(out, "    %s\n", (char *)descriptions->elements[i]);
     }
     ptr_array_clear(descriptions, free_or_die);
     ptr_array_free(descriptions);
@@ -209,7 +209,7 @@ dungeon_print_areas_for_level(struct dungeon *dungeon, int level, FILE *out)
     fprintf(out, "  Chambers and Rooms:\n");
     descriptions = dungeon_alloc_descriptions_of_chambers_and_rooms_for_level(dungeon, level);
     for (int i = 0; i < descriptions->count; ++i) {
-        fprintf(out, "    %s\n", descriptions->elements[i]);
+        fprintf(out, "    %s\n", (char *)descriptions->elements[i]);
     }
     ptr_array_clear(descriptions, free_or_die);
     ptr_array_free(descriptions);
