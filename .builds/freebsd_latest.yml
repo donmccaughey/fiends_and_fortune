@@ -16,4 +16,3 @@ triggers:
     - action: email
       condition: failure
       to: Don McCaughey <don@donm.cc>
-  
