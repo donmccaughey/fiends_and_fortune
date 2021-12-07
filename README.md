@@ -5,12 +5,14 @@ pencil role playing rules into code.  Like the games that inspired this
 project, these programs are old-school, command-line oriented and text based.
 The code is modern C99.
 
-[![builds.sr.ht status][11]][12] [![Code Coverage][13]][14]
+[![builds.sr.ht status][11]][12] [![GitHub Actions][13]][14] [![Code Coverage][15]][16]
 
 [11]: https://builds.sr.ht/~donmcc/fiends_and_fortune.svg
 [12]: https://builds.sr.ht/~donmcc/fiends_and_fortune?
-[13]: https://codecov.io/gh/donmccaughey/fiends_and_fortune/branch/master/graph/badge.svg
-[14]: https://codecov.io/gh/donmccaughey/fiends_and_fortune
+[13]: https://github.com/donmccaughey/fiends_and_fortune/actions/workflows/tests.yml/badge.svg
+[14]: https://github.com/donmccaughey/fiends_and_fortune/actions/workflows/tests.yml
+[15]: https://codecov.io/gh/donmccaughey/fiends_and_fortune/branch/master/graph/badge.svg
+[16]: https://codecov.io/gh/donmccaughey/fiends_and_fortune
 
 
 ## License
