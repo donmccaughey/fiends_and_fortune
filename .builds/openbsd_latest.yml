@@ -6,7 +6,7 @@ sources:
 tasks:
     - setup: |
         cd fiends_and_fortune
-        CC=cc cmake -S . -B tmp
+        CC=cc cmake -S . -B tmp -DWALL=ON
     - build: |
         cd fiends_and_fortune
         cmake --build tmp --target all
