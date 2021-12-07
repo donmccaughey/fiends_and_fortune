@@ -25,4 +25,5 @@ orientation_name(enum orientation orientation)
         case orientation_east_to_west: return "east to west";
         case orientation_southeast_to_northwest: return "southeast to northwest";
     }
+    return "north to south";
 }
