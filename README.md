@@ -28,8 +28,8 @@ an [MIT license][23].
 
 ## Building From Source
 
-_Fiends And Fortune_ is tested on macOS, Linux and FreeBSD.  Building it
-requires that your system have a C toolchain, a recent version of [CMake][31]
+_Fiends And Fortune_ is tested on macOS, Linux, FreeBSD and OpenBSD.  Building 
+it requires that your system have a C toolchain, a recent version of [CMake][31]
 and the [`ncurses`][32] library.  Building on Linux requires [`libbsd`][33].
 
     git clone https://github.com/donmccaughey/fiends_and_fortune.git
@@ -60,32 +60,51 @@ And enabling the build option `HOMEBREW_NCURSES`:
 
 If your Homebrew path to `ncurses` is different than
 `/opt/homebrew/opt/ncurses`, you can change the search path using the 
-`HOMEBREW_NCURSES_PATH` cache variable.
+`HOMEBREW_NCURSES_PATH` cache variable.  (The path is likely to be 
+`/usr/local/opt/ncurses` on [Intel Macs][36].)
 
-This repository contains a copy of the [cJSON 1.7.13][36] source.
+This repository contains a copy of the [cJSON 1.7.13][37] source.
 
 [31]: https://cmake.org
 [32]: https://invisible-island.net/ncurses/
 [33]: https://libbsd.freedesktop.org/
 [34]: https://stackoverflow.com/questions/56622042/clang-on-macos-fails-linking-lmenu-from-ncurses
 [35]: https://brew.sh
-[36]: https://github.com/DaveGamble/cJSON
+[36]: https://docs.brew.sh/FAQ#why-should-i-install-homebrew-in-the-default-location
+[37]: https://github.com/DaveGamble/cJSON
 
 
 ## Build System
 
-_Fiends And Fortune_ uses [Cmake][41] as a build system, [Travis CI][42] for
-continuous integration, and [Codecov.io][43] for code coverage reporting.
-Set the `COVERAGE` option to `ON` to generage coverage files.
+_Fiends And Fortune_ uses [Cmake][41] as a build system, [GitHub Actions][42] 
+and [Sourcehut][43] for continuous integration, and [Codecov.io][44] for code 
+coverage reporting.
+
+### Build Options
+
+To build with the [Address Sanitizer][45] enabled, set the `ADDRESS_SANITIZER`
+option to `ON`.
+
+    cmake -S . -B tmp -DADDRESS_SANITIZER=ON
+
+Mac users note that the `clang` that ships with Xcode accepts the 
+`-fsanitize=address` flag, but doesn't actually include the Address Sanitizer.
+
+Set the `COVERAGE` option to `ON` to generate coverage files.
 
     cmake -S . -B tmp -DCOVERAGE=ON
 
+Set the `WALL` option to `ON` turns on [additional warnings][45] using the 
+`-Wall` compiler option and treats warnings as errors.  `WALL` is off by default
+but should be turned on for development and integration builds.
+
+    cmake -S . -B tmp -DCOVERAGE=ON -DWALL=ON
+
 [41]: https://cmake.org
-[42]: https://travis-ci.org/donmccaughey/fiends_and_fortune
-[43]: https://codecov.io/gh/donmccaughey/fiends_and_fortune
-[44]: https://github.com/codecov/codecov-bash
-[45]: https://github.com/codecov/codecov-bash/commit/8b76995ad4a95a61cecd4b049a448a402d91d197
-[46]: https://github.com/codecov/codecov-bash/issues/162
+[42]: https://github.com/donmccaughey/fiends_and_fortune/actions/workflows/tests.yml
+[43]: https://builds.sr.ht/~donmcc/fiends_and_fortune?
+[44]: https://codecov.io/gh/donmccaughey/fiends_and_fortune
+[45]: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#Warning-Options
 
 
 ## Motivation
