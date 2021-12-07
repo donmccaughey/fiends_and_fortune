@@ -20,7 +20,7 @@ draw_window(struct selection *selection)
     
     if (title_string_length) {
         int title_string_width = (int)title_string_length;
-        int window_height;
+        int __attribute__((unused)) window_height;
         int window_width;
         getmaxyx(selection->window, window_height, window_width);
         
