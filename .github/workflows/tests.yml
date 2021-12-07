@@ -6,9 +6,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Packages
+        run: |
+          sudo apt install libbsd-dev ncurses-dev
       - name: Configure
-        run: cmake -S . -B ${{github.workspace}}/tmp -DADDRESS_SANITIZER=ON -DCOVERAGE=ON -DWALL=ON
+        run: |
+          cmake -S . -B ${{github.workspace}}/tmp -DADDRESS_SANITIZER=ON -DCOVERAGE=ON -DWALL=ON
       - name: Build
-        run: cmake --build ${{github.workspace}}/tmp --target all test
+        run: |
+          cmake --build ${{github.workspace}}/tmp --target all test
       - name: Coverage
-        run: bash <(curl -s https://codecov.io/bash)
+        run: |
+          bash <(curl -s https://codecov.io/bash)
