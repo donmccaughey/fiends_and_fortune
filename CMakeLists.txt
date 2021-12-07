@@ -10,6 +10,7 @@ project(fiends_and_fortune
 include(CheckSymbolExists)
 
 
+option(ADDRESS_SANITIZER "Enable the address sanitizer")
 option(COVERAGE "Enable code coverage analysis")
 option(GRAPH_TARGETS "Generate a graph of build targets")
 option(HOMEBREW_NCURSES "Use Homebrew ncurses instead of macOS system ncurses")
@@ -18,14 +19,24 @@ set(HOMEBREW_NCURSES_PATH
     CACHE PATH
     "Location of the Homebrew 'ncurses' directory"
     )
+option(WALL "Enable all warnings")
 
 
 set(CMAKE_C_STANDARD 99)
 enable_testing()
 
+if(ADDRESS_SANITIZER)
+    add_compile_options(-fsanitize=address -g)
+    add_link_options(-fsanitize=address)
+endif()
+
 if(COVERAGE)
     add_compile_options(--coverage -g -O0)
-    set(CMAKE_EXE_LINKER_FLAGS --coverage)
+    add_link_options(--coverage)
+endif()
+
+if(WALL)
+    add_compile_options(-Wall -Werror)
 endif()
 
 
