@@ -435,6 +435,7 @@ treasure_initialize_from_json_object_with_maps_test(void)
     struct cJSON *json_object = cJSON_Parse(json_string);
     struct treasure treasure;
     treasure_initialize_from_json_object(&treasure, json_object);
+    cJSON_Delete(json_object);
 
     assert(NULL == treasure.type);
     assert(coins_is_zero(treasure.coins));
