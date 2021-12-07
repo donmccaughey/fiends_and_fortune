@@ -38,6 +38,7 @@ direction_name(enum direction direction)
         case direction_west: return "west";
         case direction_northwest: return "northwest";
     }
+    return "north";
 }
 
 
