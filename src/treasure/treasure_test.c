@@ -159,6 +159,7 @@ treasure_initialize_from_json_object_for_empty_object_test(void)
     struct cJSON *json_object = cJSON_Parse(json_string);
     struct treasure treasure;
     treasure_initialize_from_json_object(&treasure, json_object);
+    cJSON_Delete(json_object);
 
     assert(NULL == treasure.type);
     assert(coins_is_zero(treasure.coins));
@@ -182,6 +183,7 @@ treasure_initialize_from_json_object_for_empty_array_test(void)
     struct cJSON *json_object = cJSON_Parse(json_string);
     struct treasure treasure;
     treasure_initialize_from_json_object(&treasure, json_object);
+    cJSON_Delete(json_object);
 
     assert(NULL == treasure.type);
     assert(coins_is_zero(treasure.coins));
@@ -243,6 +245,7 @@ treasure_initialize_from_json_object_with_gems_test(void)
     struct cJSON *json_object = cJSON_Parse(json_string);
     struct treasure treasure;
     treasure_initialize_from_json_object(&treasure, json_object);
+    cJSON_Delete(json_object);
 
     assert(NULL == treasure.type);
     assert(coins_is_zero(treasure.coins));
@@ -324,6 +327,7 @@ treasure_initialize_from_json_object_with_jewelry_test(void)
     struct cJSON *json_object = cJSON_Parse(json_string);
     struct treasure treasure;
     treasure_initialize_from_json_object(&treasure, json_object);
+    cJSON_Delete(json_object);
 
     assert(NULL == treasure.type);
     assert(coins_is_zero(treasure.coins));
@@ -519,6 +523,7 @@ treasure_initialize_from_json_object_with_magic_items_test(void)
     struct cJSON *json_object = cJSON_Parse(json_string);
     struct treasure treasure;
     treasure_initialize_from_json_object(&treasure, json_object);
+    cJSON_Delete(json_object);
 
     assert(NULL == treasure.type);
     assert(coins_is_zero(treasure.coins));

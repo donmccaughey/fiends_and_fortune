@@ -99,6 +99,7 @@ magic_item_initialize_from_json_object_for_empty_object_test(void)
     struct cJSON *json_object = cJSON_Parse(json_string);
     struct magic_item magic_item;
     magic_item_initialize_from_json_object(&magic_item, json_object);
+    cJSON_Delete(json_object);
 
     assert(0 == magic_item.experience_points);
     assert(NULL == magic_item.true_description);
@@ -117,6 +118,7 @@ magic_item_initialize_from_json_object_for_empty_array_test(void)
     struct cJSON *json_object = cJSON_Parse(json_string);
     struct magic_item magic_item;
     magic_item_initialize_from_json_object(&magic_item, json_object);
+    cJSON_Delete(json_object);
 
     assert(0 == magic_item.experience_points);
     assert(NULL == magic_item.true_description);
@@ -143,6 +145,7 @@ magic_item_initialize_from_json_object_for_complete_object_test(void)
     struct cJSON *json_object = cJSON_Parse(json_string);
     struct magic_item magic_item;
     magic_item_initialize_from_json_object(&magic_item, json_object);
+    cJSON_Delete(json_object);
 
     assert(2000 == magic_item.experience_points);
     assert(str_eq("cloak of protection +2", magic_item.true_description));
@@ -174,6 +177,7 @@ magic_item_initialize_from_json_object_for_complete_object_with_true_details_tes
     struct cJSON *json_object = cJSON_Parse(json_string);
     struct magic_item magic_item;
     magic_item_initialize_from_json_object(&magic_item, json_object);
+    cJSON_Delete(json_object);
 
     assert(5000 == magic_item.experience_points);
     assert(str_eq("broadsword of life stealing (unusual)", magic_item.true_description));

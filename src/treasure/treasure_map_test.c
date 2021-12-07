@@ -80,6 +80,7 @@ treasure_map_initialize_from_json_object_for_empty_object_test(void)
     struct cJSON *json_object = cJSON_Parse(json_string);
     struct treasure_map map;
     treasure_map_initialize_from_json_object(&map, json_object);
+    cJSON_Delete(json_object);
 
     assert( ! map.is_false);
     assert(coins_is_zero(map.treasure.coins));
@@ -100,6 +101,7 @@ treasure_map_initialize_from_json_object_for_empty_array_test(void)
     struct cJSON *json_object = cJSON_Parse(json_string);
     struct treasure_map map;
     treasure_map_initialize_from_json_object(&map, json_object);
+    cJSON_Delete(json_object);
 
     assert( ! map.is_false);
     assert(coins_is_zero(map.treasure.coins));
@@ -143,6 +145,7 @@ treasure_map_initialize_from_json_object_for_complete_object_test(void)
     struct cJSON *json_object = cJSON_Parse(json_string);
     struct treasure_map map;
     treasure_map_initialize_from_json_object(&map, json_object);
+    cJSON_Delete(json_object);
 
     assert( ! map.is_false);
     assert(1500 == map.treasure.coins.pp);

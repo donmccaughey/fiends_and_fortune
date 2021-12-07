@@ -66,6 +66,7 @@ jewelry_initialize_from_json_object_for_empty_object_test(void)
     struct cJSON *json_object = cJSON_Parse(json_string);
     struct jewelry jewelry;
     jewelry_initialize_from_json_object(&jewelry, json_object);
+    cJSON_Delete(json_object);
 
     assert( ! jewelry.has_gems);
     assert(jewelry_form_anklet == jewelry.form);
@@ -86,6 +87,7 @@ jewelry_initialize_from_json_object_for_empty_array_test(void)
     struct cJSON *json_object = cJSON_Parse(json_string);
     struct jewelry jewelry;
     jewelry_initialize_from_json_object(&jewelry, json_object);
+    cJSON_Delete(json_object);
 
     assert( ! jewelry.has_gems);
     assert(jewelry_form_anklet == jewelry.form);
@@ -115,6 +117,7 @@ jewelry_initialize_from_json_object_for_complete_object_test(void)
     struct cJSON *json_object = cJSON_Parse(json_string);
     struct jewelry jewelry;
     jewelry_initialize_from_json_object(&jewelry, json_object);
+    cJSON_Delete(json_object);
 
     assert(true == jewelry.has_gems);
     assert(jewelry_form_goblet == jewelry.form);
