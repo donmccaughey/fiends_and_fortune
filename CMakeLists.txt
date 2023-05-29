@@ -36,7 +36,7 @@ if(COVERAGE)
 endif()
 
 if(WALL)
-    add_compile_options(-Wall -Werror)
+    add_compile_options(-Wall -Werror -Wno-deprecated-declarations)
 endif()
 
 
