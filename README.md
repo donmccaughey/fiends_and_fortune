@@ -26,61 +26,30 @@ an [MIT license][23].
 
 ## Building From Source
 
-_Fiends And Fortune_ is tested on macOS, Linux, FreeBSD and OpenBSD.  Building 
-it requires that your system have a C toolchain, a recent version of [CMake][31]
-and the [`ncurses`][32] library.  Building on Linux requires [`libbsd`][33].
+_Fiends And Fortune_ is tested on macOS and Linux.  Building it requires that
+your system have a C toolchain, a recent version of [CMake][31].  Building on
+Linux requires [`libbsd`][32].
 
     git clone https://github.com/donmccaughey/fiends_and_fortune.git
     cd fiends_and_fortune
-    cmake -S . -B tmp
+    cmake -S . -B tmp -DWALL=ON
     cmake --build tmp --target all test
 
-Note that on recent versions of macOS, linking to `ncurses` `libmenu` may
-fails with an error like:
-
-    Undefined symbols for architecture x86_64:
-      "_current_item", referenced from:
-          _selection_show in selection.c.o
-      "_free_item", referenced from:
-      ...
-      "_unpost_menu", referenced from:
-          _selection_free_or_die in selection.c.o
-          _selection_show in selection.c.o
-    ld: symbol(s) not found for architecture x86_64
-
-You can [work around this][34] by installing `ncurses` using [Homebrew][35].
-
-    brew install ncurses
-
-And enabling the build option `HOMEBREW_NCURSES`:
-
-    cmake -S . -B tmp -DHOMEBREW_NCURSES=ON
-
-If your Homebrew path to `ncurses` is different than
-`/opt/homebrew/opt/ncurses`, you can change the search path using the 
-`HOMEBREW_NCURSES_PATH` cache variable.  (The path is likely to be 
-`/usr/local/opt/ncurses` on [Intel Macs][36].)
-
-This repository contains a copy of the [cJSON 1.7.15][37] source.
+This repository contains a copy of the [cJSON 1.7.15][33] source.
 
 [31]: https://cmake.org
-[32]: https://invisible-island.net/ncurses/
-[33]: https://libbsd.freedesktop.org/
-[34]: https://stackoverflow.com/questions/56622042/clang-on-macos-fails-linking-lmenu-from-ncurses
-[35]: https://brew.sh
-[36]: https://docs.brew.sh/FAQ#why-should-i-install-homebrew-in-the-default-location
-[37]: https://github.com/DaveGamble/cJSON
+[32]: https://libbsd.freedesktop.org/
+[33]: https://github.com/DaveGamble/cJSON
 
 
 ## Build System
 
 _Fiends And Fortune_ uses [Cmake][41] as a build system, [GitHub Actions][42] 
-and [Sourcehut][43] for continuous integration, and [Codecov.io][44] for code 
-coverage reporting.
+for continuous integration, and [Codecov.io][43] for code coverage reporting.
 
 ### Build Options
 
-To build with the [Address Sanitizer][45] enabled, set the `ADDRESS_SANITIZER`
+To build with the [Address Sanitizer][44] enabled, set the `ADDRESS_SANITIZER`
 option to `ON`.
 
     cmake -S . -B tmp -DADDRESS_SANITIZER=ON
@@ -92,7 +61,7 @@ Set the `COVERAGE` option to `ON` to generate coverage files.
 
     cmake -S . -B tmp -DCOVERAGE=ON
 
-Set the `WALL` option to `ON` turns on [additional warnings][45] using the 
+Set the `WALL` option to `ON` turns on [additional warnings][44] using the 
 `-Wall` compiler option and treats warnings as errors.  `WALL` is off by default
 but should be turned on for development and integration builds.
 
@@ -100,9 +69,8 @@ but should be turned on for development and integration builds.
 
 [41]: https://cmake.org
 [42]: https://github.com/donmccaughey/fiends_and_fortune/actions/workflows/tests.yml
-[43]: https://builds.sr.ht/~donmcc/fiends_and_fortune?
-[44]: https://codecov.io/gh/donmccaughey/fiends_and_fortune
-[45]: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#Warning-Options
+[43]: https://codecov.io/gh/donmccaughey/fiends_and_fortune
+[44]: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#Warning-Options
 
 
 ## Motivation

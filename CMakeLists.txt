@@ -13,12 +13,6 @@ include(CheckSymbolExists)
 option(ADDRESS_SANITIZER "Enable the address sanitizer")
 option(COVERAGE "Enable code coverage analysis")
 option(GRAPH_TARGETS "Generate a graph of build targets")
-option(HOMEBREW_NCURSES "Use Homebrew ncurses instead of macOS system ncurses")
-set(HOMEBREW_NCURSES_PATH
-    "/opt/homebrew/opt/ncurses"
-    CACHE PATH
-    "Location of the Homebrew 'ncurses' directory"
-    )
 option(WALL "Enable all warnings")
 
 
@@ -41,38 +35,6 @@ endif()
 
 
 # ----- find external dependencies -----
-
-if(HOMEBREW_NCURSES)
-    include_directories("${HOMEBREW_NCURSES_PATH}/include")
-    link_directories("${HOMEBREW_NCURSES_PATH}/lib")
-    set(LIB_NCURSES_HINTS "${HOMEBREW_NCURSES_PATH}/lib")
-else()
-    set(LIB_NCURSES_HINTS "")
-endif()
-
-find_library(LIB_NCURSES 
-    NAMES ncurses
-    HINTS ${LIB_NCURSES_HINTS}
-    )
-if(NOT LIB_NCURSES)
-    message(FATAL_ERROR "Unable to locate ncurses library")
-endif()
-
-find_library(LIB_MENU 
-    NAMES menu
-    HINTS ${LIB_NCURSES_HINTS}
-    )
-if(NOT LIB_MENU)
-    message(FATAL_ERROR "Unable to locate ncurses menu library")
-endif()
-
-find_library(LIB_FORM 
-    NAMES form
-    HINTS ${LIB_NCURSES_HINTS}
-    )
-if(NOT LIB_FORM)
-    message(FATAL_ERROR "Unable to locate ncurses form library")
-endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_library(LIB_BSD
@@ -111,7 +73,6 @@ add_subdirectory(src/background)
 add_subdirectory(src/base)
 add_subdirectory(src/character)
 add_subdirectory(src/dungeon)
-add_subdirectory(src/fiends)
 add_subdirectory(src/fnf)
 add_subdirectory(src/json)
 add_subdirectory(src/magic)
@@ -133,7 +94,6 @@ add_custom_target(check
         COMMAND treasure_tests
         )
 add_dependencies(check
-        fiends
         fnf
         fnf_check
         background_tests
