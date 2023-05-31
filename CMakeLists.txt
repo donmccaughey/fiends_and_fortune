@@ -117,7 +117,6 @@ add_subdirectory(src/json)
 add_subdirectory(src/magic)
 add_subdirectory(src/mechanics)
 add_subdirectory(src/treasure)
-add_subdirectory(src/tui)
 
 
 # ----- build all targets and run all tests -----
@@ -146,7 +145,6 @@ add_dependencies(check
         magic_tests
         mechanics_tests
         treasure_tests
-        tui_example
         )
 
 
