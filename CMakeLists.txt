@@ -3,7 +3,7 @@ project(fiends_and_fortune
         VERSION 0.0.1
         DESCRIPTION "Fiends and Fortune"
         HOMEPAGE_URL https://github.com/donmccaughey/fiends_and_fortune
-        LANGUAGES C
+        LANGUAGES C CXX
         )
 
 
@@ -74,6 +74,7 @@ add_subdirectory(src/background)
 add_subdirectory(src/base)
 add_subdirectory(src/character)
 add_subdirectory(src/dungeon)
+add_subdirectory(src/fiends)
 add_subdirectory(src/fnf)
 add_subdirectory(src/json)
 add_subdirectory(src/magic)
@@ -88,6 +89,7 @@ add_custom_target(check
         COMMAND base_tests
         COMMAND character_tests
         COMMAND dungeon_tests
+        COMMAND fiends_tests
         COMMAND fnf_tests
         COMMAND json_tests
         COMMAND magic_tests
@@ -101,6 +103,7 @@ add_dependencies(check
         base_tests
         character_tests
         dungeon_tests
+        fiends_tests
         fnf_tests
         json_tests
         magic_tests

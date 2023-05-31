@@ -1,7 +1,8 @@
 add_executable(fnf
         action.c
+        main.c
         options.c
-        main.c)
+        )
 target_link_libraries(fnf
         background
         base
