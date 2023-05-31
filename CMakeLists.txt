@@ -69,6 +69,7 @@ check_symbol_exists(optreset "getopt.h" HAS_OPTRESET)
 # ----- add build files in subdirectories -----
 
 add_subdirectory(libs/cJSON)
+add_subdirectory(libs/tvision)
 add_subdirectory(src/background)
 add_subdirectory(src/base)
 add_subdirectory(src/character)

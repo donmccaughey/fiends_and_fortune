@@ -1,8 +1,5 @@
 - box_expand(): add test for behavior when size is zero
 
-- cmake: figure out why this doesn't build in MacOS Mojave with
-    "Undefined symbols for architecture x86_64:" when linking to libmenu
-
 - cmake: figure out how to build separate configurations for test and release
 - cmake: figure out how to add an install step
 
