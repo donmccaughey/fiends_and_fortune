@@ -1,14 +1,16 @@
-#include "fiends_app.h"
+#include "fiends_app.hpp"
 
-
-int const GREET_THEM_CMD = 100;
+#include "commands.hpp"
+#include "desk_top.hpp"
+#include "menu_bar.hpp"
+#include "status_line.hpp"
 
 
 TFiendsApp::TFiendsApp() :
     TProgInit(
-        &TFiendsApp::initStatusLine,
-        &TFiendsApp::initMenuBar,
-        &TFiendsApp::initDeskTop
+        &newStatusLine,
+        &newMenuBar,
+        &newDeskTop
     )
 {
 }
@@ -65,7 +67,7 @@ TFiendsApp::handleEvent(TEvent &event)
     TApplication::handleEvent(event);
     if(event.what == evCommand) {
         switch(event.message.command) {
-            case GREET_THEM_CMD:
+            case cmGreeting:
                 greetingBox();
                 clearEvent(event);
                 break;
@@ -73,38 +75,4 @@ TFiendsApp::handleEvent(TEvent &event)
                 break;
         }
     }
-}
-
-
-TMenuBar *
-TFiendsApp::initMenuBar(TRect r)
-{
-    r.b.y = r.a.y + 1;
-
-    return new TMenuBar(
-        r,
-        *new TSubMenu("~F~iends", kbAltH)
-        + *new TMenuItem(
-            "~G~reeting...", GREET_THEM_CMD,
-            kbAltG
-        )
-        + newLine()
-        + *new TMenuItem(
-            "E~x~it", cmQuit,
-            cmQuit, hcNoContext, "Alt-X"
-        )
-    );
-}
-
-
-TStatusLine *
-TFiendsApp::initStatusLine(TRect r)
-{
-    r.a.y = r.b.y - 1;
-    return new TStatusLine(
-        r,
-        *new TStatusDef(0, 0xFFFF)
-        + *new TStatusItem("~Alt-X~ Exit", kbAltX, cmQuit)
-        + *new TStatusItem(0, kbF10, cmMenu )
-    );
 }

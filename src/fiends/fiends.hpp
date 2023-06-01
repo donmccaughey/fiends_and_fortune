@@ -1,5 +1,5 @@
-#ifndef FIENDS_FIENDS_APP_H_INCLUDED
-#define FIENDS_FIENDS_APP_H_INCLUDED
+#ifndef FIENDS_HPP_INCLUDED
+#define FIENDS_HPP_INCLUDED
 
 
 #define Uses_TApplication
@@ -17,19 +17,6 @@
 #define Uses_TStatusLine
 #define Uses_TSubMenu
 #include <tvision/tv.h>
-
-
-class TFiendsApp : public TApplication {
-public:
-    TFiendsApp();
-
-    void handleEvent(TEvent& event) override;
-    static TMenuBar *initMenuBar(TRect r);
-    static TStatusLine *initStatusLine(TRect r);
-
-private:
-    void greetingBox();
-};
 
 
 #endif

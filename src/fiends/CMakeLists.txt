@@ -1,6 +1,9 @@
 add_executable(fiends
+        desk_top.cpp
         fiends_app.cpp
         main.cpp
+        menu_bar.cpp
+        status_line.cpp
         )
 target_link_libraries(fiends
         tvision
