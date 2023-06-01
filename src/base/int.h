@@ -19,13 +19,13 @@ fill_shuffled(struct rnd *rnd, int *values, int count)
 }
 
 inline int
-max(int i, int j)
+max_int(int i, int j)
 {
     return i > j ? i : j;
 }
 
 inline int
-min(int i, int j)
+min_int(int i, int j)
 {
     return i < j ? i : j;
 }

@@ -2,6 +2,12 @@
 #define FIENDS_HPP_INCLUDED
 
 
+#include <string>
+using std::string;
+
+#include <vector>
+using std::vector;
+
 #define Uses_TApplication
 #define Uses_TButton
 #define Uses_TDeskTop

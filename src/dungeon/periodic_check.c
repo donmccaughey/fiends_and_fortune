@@ -119,7 +119,7 @@ chambers(struct digger *digger, enum wall_type entrance_type)
         if (orientation) swap(&length, &width);
     }
     
-    int max_left_offsets_count = max(length, width);
+    int max_left_offsets_count = max_int(length, width);
     int left_offsets[max_left_offsets_count];
     fill_shuffled(digger->generator->rnd, left_offsets, width);
     for (int i = 0; i < width; ++i) {
@@ -520,7 +520,7 @@ exit_location_in_direction(struct digger *digger,
                            struct area *chamber_or_room,
                            enum direction direction)
 {
-    int count = max(chamber_or_room->box.size.width, chamber_or_room->box.size.length);
+    int count = max_int(chamber_or_room->box.size.width, chamber_or_room->box.size.length);
     struct exit exits[count];
     count = possible_exits_in_direction(digger->generator,
                                         chamber_or_room->box,
@@ -677,7 +677,7 @@ rooms(struct digger *digger, enum wall_type entrance_type)
         if (orientation) swap(&length, &width);
     }
     
-    int left_offsets[max(length, width)];
+    int left_offsets[max_int(length, width)];
     fill_shuffled(digger->generator->rnd, left_offsets, width);
     for (int i = 0; i < width; ++i) {
         room = digger_dig_room(digger, length, width, left_offsets[i], entrance_type);

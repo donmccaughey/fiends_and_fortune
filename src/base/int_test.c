@@ -40,28 +40,28 @@ fill_shuffled_test(void)
 
 
 static void
-max_test(void)
+max_int_test(void)
 {
-    assert(5 == max(5, 5));
+    assert(5 == max_int(5, 5));
 
-    assert(5 == max(1, 5));
-    assert(5 == max(5, 1));
+    assert(5 == max_int(1, 5));
+    assert(5 == max_int(5, 1));
 
-    assert(5 == max(-1, 5));
-    assert(5 == max(5, -1));
+    assert(5 == max_int(-1, 5));
+    assert(5 == max_int(5, -1));
 }
 
 
 static void
-min_test(void)
+min_int_test(void)
 {
-    assert(5 == min(5, 5));
+    assert(5 == min_int(5, 5));
 
-    assert(1 == min(1, 5));
-    assert(1 == min(5, 1));
+    assert(1 == min_int(1, 5));
+    assert(1 == min_int(5, 1));
 
-    assert(-1 == min(-1, 5));
-    assert(-1 == min(5, -1));
+    assert(-1 == min_int(-1, 5));
+    assert(-1 == min_int(5, -1));
 }
 
 
@@ -90,7 +90,7 @@ int_test(void)
 {
     fill_test();
     fill_shuffled_test();
-    max_test();
-    min_test();
+    max_int_test();
+    min_int_test();
     swap_test();
 }

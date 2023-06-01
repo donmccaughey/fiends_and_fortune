@@ -73,7 +73,7 @@ dungeon_ending_level(struct dungeon const *dungeon)
     
     int level = dungeon->tiles[0]->point.z;
     for (int i = 0; i < dungeon->tiles_count; ++i) {
-        level = max(level, dungeon->tiles[i]->point.z);
+        level = max_int(level, dungeon->tiles[i]->point.z);
     }
     return level;
 }
@@ -245,7 +245,7 @@ dungeon_starting_level(struct dungeon const *dungeon)
     
     int level = dungeon->tiles[0]->point.z;
     for (int i = 0; i < dungeon->tiles_count; ++i) {
-        level = min(level, dungeon->tiles[i]->point.z);
+        level = min_int(level, dungeon->tiles[i]->point.z);
     }
     return level;
 }

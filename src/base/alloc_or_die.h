@@ -143,7 +143,7 @@ arraydup_or_die(void const *memory, size_t count, size_t element_size)
 inline char *
 strdup_or_die(char const *string)
 {
-    return not_null_or_die(strdup(string));
+    return (char *)not_null_or_die(strdup(string));
 }
 
 
@@ -185,7 +185,7 @@ basename_or_die(char const *path);
 inline char *
 getcwd_or_die(void)
 {
-    return not_null_or_die(getcwd(NULL, 0));
+    return (char *)not_null_or_die(getcwd(NULL, 0));
 }
 
 

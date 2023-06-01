@@ -20,7 +20,7 @@ str_alloc_centered_and_formatted_from_va_list(int width,
 inline char *
 str_alloc_empty(void)
 {
-    return calloc_or_die(1, 1);
+    return (char *)calloc_or_die(1, 1);
 }
 
 char *

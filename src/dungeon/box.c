@@ -19,18 +19,18 @@ normalize(int *box_point, int *box_size)
 static inline struct point
 point_max(struct point point, struct point other)
 {
-    return point_make(max(point.x, other.x),
-                      max(point.y, other.y),
-                      max(point.z, other.z));
+    return point_make(max_int(point.x, other.x),
+                      max_int(point.y, other.y),
+                      max_int(point.z, other.z));
 }
 
 
 static inline struct point
 point_min(struct point point, struct point other)
 {
-    return point_make(min(point.x, other.x),
-                      min(point.y, other.y),
-                      min(point.z, other.z));
+    return point_make(min_int(point.x, other.x),
+                      min_int(point.y, other.y),
+                      min_int(point.z, other.z));
 }
 
 
@@ -178,15 +178,15 @@ box_intersection(struct box box, struct box other)
     box = box_normalize(box);
     other = box_normalize(other);
     
-    struct point origin = point_make(max(box.origin.x, other.origin.x),
-                                     max(box.origin.y, other.origin.y),
-                                     max(box.origin.z, other.origin.z));
+    struct point origin = point_make(max_int(box.origin.x, other.origin.x),
+                                     max_int(box.origin.y, other.origin.y),
+                                     max_int(box.origin.z, other.origin.z));
     
     struct point box_end = box_end_point(box);
     struct point other_end = box_end_point(other);
-    struct point end = point_make(min(box_end.x, other_end.x),
-                                  min(box_end.y, other_end.y),
-                                  min(box_end.z, other_end.z));
+    struct point end = point_make(min_int(box_end.x, other_end.x),
+                                  min_int(box_end.y, other_end.y),
+                                  min_int(box_end.z, other_end.z));
     
     struct box intersection = box_make_from_points(origin, end);
     if (size_has_volume(intersection.size)) {
