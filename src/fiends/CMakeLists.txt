@@ -4,6 +4,8 @@ add_executable(fiends
         main.cpp
         menu_bar.cpp
         status_line.cpp
+        treasure_table_window.cpp
+        window_numbers.cpp
         )
 target_link_libraries(fiends
         tvision

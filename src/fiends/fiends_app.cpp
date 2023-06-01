@@ -4,14 +4,11 @@
 #include "desk_top.hpp"
 #include "menu_bar.hpp"
 #include "status_line.hpp"
+#include "treasure_table_window.hpp"
 
 
 FiendsApp::FiendsApp() :
-    TProgInit(
-        &newStatusLine,
-        &newMenuBar,
-        &newDeskTop
-    )
+    TProgInit(&newStatusLine, &newMenuBar, &newDeskTop)
 {
 }
 
@@ -71,8 +68,21 @@ FiendsApp::handleEvent(TEvent &event)
                 greetingBox();
                 clearEvent(event);
                 break;
+            case cmTreasureTable:
+                treasureTable();
+                clearEvent(event);
+                break;
             default:
                 break;
         }
     }
+}
+
+
+void
+FiendsApp::treasureTable()
+{
+    TRect r(0, 0, 40, 15);
+    auto *treasureTableWindow = new TreasureTableWindow(r);
+    deskTop->insert(treasureTableWindow);
 }

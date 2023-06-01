@@ -3,6 +3,7 @@
 
 
 int const cmGreeting = 100;
+int const cmTreasureTable = 101;
 
 
 #endif

@@ -13,6 +13,7 @@ public:
 
 private:
     static void greetingBox();
+    static void treasureTable();
 };
 
 
