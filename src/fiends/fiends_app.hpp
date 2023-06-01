@@ -5,9 +5,9 @@
 #include "fiends.hpp"
 
 
-class TFiendsApp : public TApplication {
+class FiendsApp : public TApplication {
 public:
-    TFiendsApp();
+    FiendsApp();
 
     void handleEvent(TEvent& event) override;
 

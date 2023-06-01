@@ -6,7 +6,7 @@
 #include "status_line.hpp"
 
 
-TFiendsApp::TFiendsApp() :
+FiendsApp::FiendsApp() :
     TProgInit(
         &newStatusLine,
         &newMenuBar,
@@ -17,7 +17,7 @@ TFiendsApp::TFiendsApp() :
 
 
 void
-TFiendsApp::greetingBox()
+FiendsApp::greetingBox()
 {
     auto *d = new TDialog(
         TRect(25, 5, 55, 16),
@@ -62,7 +62,7 @@ TFiendsApp::greetingBox()
 
 
 void
-TFiendsApp::handleEvent(TEvent &event)
+FiendsApp::handleEvent(TEvent &event)
 {
     TApplication::handleEvent(event);
     if(event.what == evCommand) {

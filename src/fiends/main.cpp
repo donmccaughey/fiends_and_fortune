@@ -6,7 +6,7 @@
 int
 main(int argc, char *argv[])
 {
-    TFiendsApp fiendsApp;
+    FiendsApp fiendsApp;
     fiendsApp.run();
     return EXIT_SUCCESS;
 }
