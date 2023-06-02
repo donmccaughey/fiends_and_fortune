@@ -2,6 +2,9 @@
 #define FIENDS_HPP_INCLUDED
 
 
+#include <memory>
+using std::unique_ptr;
+
 #include <string>
 using std::string;
 

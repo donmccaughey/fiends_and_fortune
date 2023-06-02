@@ -1,5 +1,7 @@
 #include "treasure_table_view.hpp"
 
+#include "alloc_ptr.hpp"
+
 extern "C" {
 #include "base/base.h"
 #include "treasure/treasure.h"
@@ -15,7 +17,7 @@ TreasureTableView::TreasureTableView(const TRect &bounds) : TView(bounds)
 
 
 void
-TreasureTableView::appendLine(const char *source, size_t begin, size_t end)
+TreasureTableView::appendLine(char const *source, size_t begin, size_t end)
 {
     auto start = source + begin;
     auto length = end - begin;
@@ -24,7 +26,7 @@ TreasureTableView::appendLine(const char *source, size_t begin, size_t end)
 
 
 void
-TreasureTableView::appendLines(const char *source)
+TreasureTableView::appendLines(char const *source)
 {
     size_t begin = 0;
     size_t end = 0;
@@ -69,8 +71,9 @@ TreasureTableView::initializeTable()
 {
     for (char letter = 'A'; letter <= 'Z'; ++letter) {
         struct treasure_type *treasureType = treasure_type_by_letter(letter);
-        auto description = treasure_type_alloc_description(treasureType, letter == 'A');
-        appendLines(description);
-        free_or_die(description);
+        auto description = makeAllocPtr(
+            treasure_type_alloc_description(treasureType, letter == 'A')
+        );
+        appendLines(description.get());
     }
 }
