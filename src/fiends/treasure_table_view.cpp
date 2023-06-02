@@ -49,9 +49,9 @@ TreasureTableView::draw()
     auto color = getColor(0x0301);
     for (int i = 0; i < size.y; ++i) {
         TDrawBuffer b;
-        if (i < treasureTypes.size()) {
+        if (size_t(i) < treasureTypes.size()) {
             auto line = string(treasureTypes[i]);
-            if (line.length() < size.x) {
+            if (line.length() < size_t(size.x)) {
                 auto count = size.x - line.length();
                 line.append(count, ' ');
             } else {
