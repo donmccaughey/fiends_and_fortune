@@ -58,7 +58,7 @@ TreasureTableView::draw()
         TDrawBuffer b;
         int i = delta.y + y;
         if (size_t(i) < treasureTypes.size()) {
-            auto line = (delta.x < treasureTypes[i].length())
+            auto line = (size_t(delta.x) < treasureTypes[i].length())
                     ? treasureTypes[i].substr(size_t(delta.x))
                     : string();
             if (line.length() < size_t(size.x)) {
