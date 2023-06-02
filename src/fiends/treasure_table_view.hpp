@@ -5,11 +5,16 @@
 #include "fiends.hpp"
 
 
-class TreasureTableView : public TView {
+class TreasureTableView : public TScroller {
     vector<string> treasureTypes;
+    size_t width{};
 
 public:
-    explicit TreasureTableView(const TRect &bounds);
+    TreasureTableView(
+        const TRect &bounds,
+        TScrollBar *aHScrollBar,
+        TScrollBar *aVScrollBar
+    );
 
     void draw() override;
 

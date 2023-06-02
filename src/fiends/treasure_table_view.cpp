@@ -8,11 +8,17 @@ extern "C" {
 }
 
 
-TreasureTableView::TreasureTableView(const TRect &bounds) : TView(bounds)
+TreasureTableView::TreasureTableView(
+    const TRect &bounds,
+    TScrollBar *aHScrollBar,
+    TScrollBar *aVScrollBar
+) :
+    TScroller(bounds, aHScrollBar, aVScrollBar)
 {
     growMode = gfGrowHiX | gfGrowHiY;
     options |= ofFramed;
     initializeTable();
+    setLimit(int(width), int(treasureTypes.size()));
 }
 
 
@@ -22,6 +28,7 @@ TreasureTableView::appendLine(char const *source, size_t begin, size_t end)
     auto start = source + begin;
     auto length = end - begin;
     treasureTypes.emplace_back(start, length);
+    width = max(length, width);
 }
 
 
@@ -47,10 +54,13 @@ void
 TreasureTableView::draw()
 {
     auto color = getColor(0x0301);
-    for (int i = 0; i < size.y; ++i) {
+    for (int y = 0; y < size.y; ++y) {
         TDrawBuffer b;
+        int i = delta.y + y;
         if (size_t(i) < treasureTypes.size()) {
-            auto line = string(treasureTypes[i]);
+            auto line = (delta.x < treasureTypes[i].length())
+                    ? treasureTypes[i].substr(size_t(delta.x))
+                    : string();
             if (line.length() < size_t(size.x)) {
                 auto count = size.x - line.length();
                 line.append(count, ' ');
@@ -61,7 +71,7 @@ TreasureTableView::draw()
         } else {
             b.moveChar(0, ' ', color, size.x);
         }
-        writeLine(0, short(i), short(size.x), 1, b);
+        writeLine(0, short(y), short(size.x), 1, b);
     }
 }
 

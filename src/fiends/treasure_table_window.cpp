@@ -10,7 +10,9 @@ TreasureTableWindow::TreasureTableWindow(const TRect &bounds) :
 {
     auto r = getClipRect();
     r.grow(-1, -1);
-    insert(new TreasureTableView(r));
+    auto hScrollBar = standardScrollBar(sbHorizontal | sbHandleKeyboard);
+    auto vScrollBar = standardScrollBar(sbVertical | sbHandleKeyboard);
+    insert(new TreasureTableView(r, hScrollBar, vScrollBar));
 }
 
 

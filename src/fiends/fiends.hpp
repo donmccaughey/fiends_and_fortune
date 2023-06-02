@@ -20,6 +20,8 @@ using std::vector;
 #define Uses_TMenuBar
 #define Uses_TMenuItem
 #define Uses_TRect
+#define Uses_TScroller
+#define Uses_TScrollBar
 #define Uses_TStaticText
 #define Uses_TStatusDef
 #define Uses_TStatusItem
