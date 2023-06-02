@@ -1,9 +1,12 @@
 # Fiends And Fortune
 
-_Fiends And Fortune_ is a personal playground where I turn old school paper and
-pencil role playing rules into code.  Like the games that inspired this
-project, these programs are old-school, command-line oriented and text based.
-The code is modern C99.
+_Fiends And Fortune_ is a translation of paper and pencil role playing rules
+into code.  Like the games that inspired this project, these programs are 
+old-school, command-line oriented and text based.  The core code is C99; I 
+grudgingly use C++14 for the [TUI][1].
+
+[1]: https://en.wikipedia.org/wiki/Text-based_user_interface
+
 
 [![GitHub Actions][11]][12] [![Code Coverage][13]][14]
 
@@ -13,33 +16,76 @@ The code is modern C99.
 [14]: https://codecov.io/gh/donmccaughey/fiends_and_fortune
 
 
-## License
+## Modules
 
-_Fiends And Fortune_ is available under a BSD-style license.  See the
-[`LICENSE`][21] file for details.  The [_cJSON_ library][22] is available under 
-an [MIT license][23].
+_Fiends And Fortune_ has modules for generating characters, dungeons, magic 
+items and treasure.  Currently, the character generator is very nascent; the
+dungeon generator is the most mature but still has some missing features and
+odd behavior.
 
-[21]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/LICENSE
-[22]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/libs/cJSON
-[23]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/libs/cJSON/LICENSE
+
+## Executables
+
+_Fiends And Fortune_ contains two executables: `fnf` and `fiends`.  The `fnf`
+executable is a command-line tool that generates output as human-readable text
+and JSON.  `fiends` is a full-screen text UI with a familiar menu and windows
+interface.
+
+
+## `fnf` Options
+
+    fnf: no action given
+    Usage: fnf [OPTIONS] ACTION
+    
+      -d, --debug         print debugging information
+      -h, --help          display this help message and exit
+      -j, --jrand48=SEED  use the jrand48 random number generator
+                            with the given 48-bit SEED
+      ---format=FORMAT    output format where FORMAT is
+                            `text' or `json' (default `text'
+      -v, --verbose       print more details
+    
+    Available actions:
+      character [METHOD]  generate a character where METHOD is
+                            `method1', `method2', `method3', `method4',
+                            `generalnpc', `specialnpc' or `simple'
+                            (default `simple')
+      check [N]           run tests where N is the "constant"
+                            random number (default 0)
+      dungeon [TYPE]      generate a dungeon where TYPE is
+                            `random' or `small' (default `random')
+      each                generate one of each treasure
+      magic [COUNT]       generate COUNT magic items (default 10)
+      map                 generate one treasure map
+      table               generate the treasure type table
+      LETTER              generate the treasure type for LETTER (A-Z)
+
+
+## `fiends` Screen Shot
+
+![`fiends` Screen Shot][21]
+
+[21]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/docs/images/fiends-screenshot-1.png
 
 
 ## Building From Source
 
 _Fiends And Fortune_ is tested on macOS and Linux.  Building it requires that
-your system have a C toolchain, a recent version of [CMake][31].  Building on
+your system have a C/C++ toolchain and [CMake][31] 3.13 or later.  Building on
 Linux requires [`libbsd`][32].
 
     git clone https://github.com/donmccaughey/fiends_and_fortune.git
     cd fiends_and_fortune
-    cmake -S . -B tmp -DWALL=ON
+    cmake -S . -B tmp
     cmake --build tmp --target all test
 
-This repository contains a copy of the [cJSON 1.7.15][33] source.
+This repository contains a copy of the source code for [cJSON 1.7.15][33] and 
+[tvision commit 9c9608e dated 2023-05-23][34].
 
 [31]: https://cmake.org
 [32]: https://libbsd.freedesktop.org/
 [33]: https://github.com/DaveGamble/cJSON
+[34]: https://github.com/magiblot/tvision
 
 
 ## Build System
@@ -62,38 +108,34 @@ Set the `COVERAGE` option to `ON` to generate coverage files.
     cmake -S . -B tmp -DCOVERAGE=ON
 
 Set the `WALL` option to `ON` turns on [additional warnings][44] using the 
-`-Wall` compiler option and treats warnings as errors.  `WALL` is off by default
-but should be turned on for development and integration builds.
+`-Wall` compiler flag and also treats warnings as errors.  `WALL` is off by
+default but is recommended for development and integration builds.
 
-    cmake -S . -B tmp -DCOVERAGE=ON -DWALL=ON
+    cmake -S . -B tmp -DWALL=ON
+
+Set the `GRAPH_TARGETS` option to `ON` to visualize the relationships between
+Cmake build targets.  This will generate the files `fnf_targets.dot` and
+`fnf_targets.png` in the `tmp` directory.  [Graphviz][45] must be installed to
+use this option.
+
+    cmake -S . -B tmp -DGRAPH_TARGETS=ON
 
 [41]: https://cmake.org
 [42]: https://github.com/donmccaughey/fiends_and_fortune/actions/workflows/tests.yml
 [43]: https://codecov.io/gh/donmccaughey/fiends_and_fortune
 [44]: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#Warning-Options
+[45]: https://graphviz.org
 
 
-## Motivation
+## License
 
-I was an avid role player and game master in high school and college, spending
-hours with friends enjoying Dungeons & Dragons, Tunnels & Trolls, Traveller,
-RuneQuest and many others.  Aspects of these games screamed out to be
-automated, which I tried to do for various games at various times in numerous
-languages, including TRS-80 BASIC, Pascal, dBase, Excel macros, C++, Visual
-BASIC, Java, Python, Scala, Objective-C -- you get the picture.  I'm sure
-there's a half-finished project in a half-learned language I'm forgetting here.
+_Fiends And Fortune_ is available under a BSD-style license.  See the
+[`LICENSE`][21] file for details.  The [_cJSON_ library][22] is available under 
+an [MIT license][23].  The code in the [_tvision_ library][24] is available
+under a [variety of permissive licenses][25].
 
-The progression of half-baked attempts to encode various rule systems closely
-tracks my development as a programmer.  I find this type of project to be a
-great way to really learn a new language or framework; the complexity and
-ambiguity inherent in game rules designed for humans is a good example of the
-types of real world problems you have to tackle as a programmer.  Unfortunately
-most of these RPG projects were abandoned part-way through.  They provided a
-good learning experience, then inevitably my interests moved on.
-
-Though I still enjoy learning new languages, the C language has become and
-remained a favorite over the years.  In 2012 I decided to automate some of the
-old treasure generation tables from one of the old fantasy games I spent
-countless hours playing.  I've returned to this project periodically since
-then.
-
+[21]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/LICENSE
+[22]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/libs/cJSON
+[23]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/libs/cJSON/LICENSE
+[24]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/libs/tvision
+[25]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/libs/tvision/COPYRIGHT

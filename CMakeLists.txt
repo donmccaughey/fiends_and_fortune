@@ -17,6 +17,7 @@ option(WALL "Enable all warnings")
 
 
 set(CMAKE_C_STANDARD 99)
+set(CMAKE_CXX_STANDARD 14)
 enable_testing()
 
 if(ADDRESS_SANITIZER)
