@@ -1,4 +1,5 @@
 add_executable(fiends
+        about_box.cpp
         desk_top.cpp
         fiends_app.cpp
         main.cpp
@@ -6,7 +7,8 @@ add_executable(fiends
         status_line.cpp
         treasure_table_window.cpp
         window_numbers.cpp
-        treasure_table_view.cpp treasure_table_view.hpp)
+        treasure_table_view.cpp
+        )
 target_link_libraries(fiends
         base
         treasure

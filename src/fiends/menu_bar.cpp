@@ -12,7 +12,7 @@ newMenuBar(TRect r)
         r,
         *new TSubMenu("~F~iends", kbAltH)
         + *new TMenuItem(
-                "~G~reeting...", cmGreeting, kbAltG
+                "~A~bout...", cmAbout, kbAltA
         )
         + newLine()
         + *new TMenuItem(

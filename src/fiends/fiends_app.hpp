@@ -12,7 +12,7 @@ public:
     void handleEvent(TEvent& event) override;
 
 private:
-    static void greetingBox();
+    static void aboutBox();
     static void treasureTable();
 };
 

@@ -1,5 +1,6 @@
 #include "fiends_app.hpp"
 
+#include "about_box.hpp"
 #include "commands.hpp"
 #include "desk_top.hpp"
 #include "menu_bar.hpp"
@@ -14,45 +15,9 @@ FiendsApp::FiendsApp() :
 
 
 void
-FiendsApp::greetingBox()
+FiendsApp::aboutBox()
 {
-    auto *d = new TDialog(
-        TRect(25, 5, 55, 16),
-        "Hello, World!"
-    );
-
-    d->insert(
-        new TStaticText(
-            TRect( 3, 5, 15, 6),
-            "How are you?"
-        )
-    );
-
-    d->insert(
-        new TButton(
-            TRect(16, 2, 28, 4),
-            "Terrific", cmCancel, bfNormal
-        )
-    );
-    d->insert(
-        new TButton(
-            TRect(16, 4, 28, 6),
-            "Ok", cmCancel, bfNormal
-        )
-    );
-    d->insert(
-        new TButton(
-            TRect(16, 6, 28, 8),
-            "Lousy", cmCancel, bfNormal
-        )
-    );
-    d->insert(
-        new TButton(
-            TRect(16, 8, 28, 10),
-            "Cancel", cmCancel, bfNormal
-        )
-    );
-
+    auto d = newAboutBox();
     deskTop->execView(d);
     destroy(d);
 }
@@ -64,8 +29,8 @@ FiendsApp::handleEvent(TEvent &event)
     TApplication::handleEvent(event);
     if(event.what == evCommand) {
         switch(event.message.command) {
-            case cmGreeting:
-                greetingBox();
+            case cmAbout:
+                aboutBox();
                 clearEvent(event);
                 break;
             case cmTreasureTable:
