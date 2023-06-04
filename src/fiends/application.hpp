@@ -1,13 +1,13 @@
-#ifndef FIENDS_FIENDS_APP_HPP_INCLUDED
-#define FIENDS_FIENDS_APP_HPP_INCLUDED
+#ifndef FIENDS_APPLICATION_HPP_INCLUDED
+#define FIENDS_APPLICATION_HPP_INCLUDED
 
 
 #include "fiends.hpp"
 
 
-class FiendsApp : public TApplication {
+class Application : public TApplication {
 public:
-    FiendsApp();
+    Application();
 
     void handleEvent(TEvent& event) override;
 

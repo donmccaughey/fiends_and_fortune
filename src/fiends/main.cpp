@@ -1,12 +1,12 @@
 #include <cstdlib>
 
-#include "fiends_app.hpp"
+#include "application.hpp"
 
 
 int
 main(int argc, char *argv[])
 {
-    FiendsApp fiendsApp;
-    fiendsApp.run();
+    Application application;
+    application.run();
     return EXIT_SUCCESS;
 }

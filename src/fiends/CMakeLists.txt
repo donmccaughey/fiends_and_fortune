@@ -1,7 +1,7 @@
 add_executable(fiends
         about_box.cpp
+        application.cpp
         desk_top.cpp
-        fiends_app.cpp
         generate_treasure_dialog.cpp
         main.cpp
         menu_bar.cpp

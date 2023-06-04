@@ -1,4 +1,4 @@
-#include "fiends_app.hpp"
+#include "application.hpp"
 
 #include "about_box.hpp"
 #include "commands.hpp"
@@ -9,14 +9,14 @@
 #include "treasure_types_table_window.hpp"
 
 
-FiendsApp::FiendsApp() :
+Application::Application() :
     TProgInit(&newStatusLine, &newMenuBar, &newDeskTop)
 {
 }
 
 
 void
-FiendsApp::aboutBox()
+Application::aboutBox()
 {
     auto d = newAboutBox();
     deskTop->execView(d);
@@ -25,7 +25,7 @@ FiendsApp::aboutBox()
 
 
 void
-FiendsApp::generateTreasure()
+Application::generateTreasure()
 {
     struct GenerateTreasureDialog generateTreasureDialog = {
         .treasureType=" ",
@@ -45,7 +45,7 @@ FiendsApp::generateTreasure()
 
 
 void
-FiendsApp::handleEvent(TEvent &event)
+Application::handleEvent(TEvent &event)
 {
     TApplication::handleEvent(event);
     if(event.what == evCommand) {
@@ -70,7 +70,7 @@ FiendsApp::handleEvent(TEvent &event)
 
 
 void
-FiendsApp::treasureTypesTable()
+Application::treasureTypesTable()
 {
     TRect r(0, 0, 60, 20);
     auto *treasureTypesTableWindow = new TreasureTypesTableWindow(r);
