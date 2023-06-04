@@ -1,6 +1,6 @@
 #include "application.hpp"
 
-#include "about_box.hpp"
+#include "about_dialog.hpp"
 #include "commands.hpp"
 #include "desk_top.hpp"
 #include "generate_treasure_dialog.hpp"
@@ -16,9 +16,9 @@ Application::Application() :
 
 
 void
-Application::aboutBox()
+Application::about()
 {
-    auto d = newAboutBox();
+    auto d = newAboutDialog();
     deskTop->execView(d);
     destroy(d);
 }
@@ -50,8 +50,8 @@ Application::handleEvent(TEvent &event)
     TApplication::handleEvent(event);
     if(event.what == evCommand) {
         switch(event.message.command) {
-            case cmAboutBox:
-                aboutBox();
+            case cmAbout:
+                about();
                 clearEvent(event);
                 break;
             case cmGenerateTreasure:

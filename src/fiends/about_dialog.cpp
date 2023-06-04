@@ -1,11 +1,11 @@
-#include "about_box.hpp"
+#include "about_dialog.hpp"
 
 
 #include "fiends.hpp"
 
 
 TDialog *
-newAboutBox()
+newAboutDialog()
 {
     auto d = new TDialog(
         TRect(6, 3, 36, 11),

@@ -1,5 +1,5 @@
 add_executable(fiends
-        about_box.cpp
+        about_dialog.cpp
         application.cpp
         desk_top.cpp
         generate_treasure_dialog.cpp
