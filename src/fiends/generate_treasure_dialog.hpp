@@ -5,8 +5,8 @@
 class TDialog;
 
 
-struct GenerateTreasureDialog {
-    char treasureType[2];
+struct GenerateTreasureDialogData {
+    char letter[2];
 };
 
 

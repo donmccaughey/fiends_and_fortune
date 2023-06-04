@@ -7,7 +7,7 @@
 
 class TreasureTypesTableWindow : public TWindow {
 public:
-    explicit TreasureTypesTableWindow(const TRect &bounds);
+    explicit TreasureTypesTableWindow(TRect const &bounds);
     ~TreasureTypesTableWindow() override;
 };
 

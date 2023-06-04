@@ -4,7 +4,7 @@
 #include "window_numbers.hpp"
 
 
-TreasureTypesTableWindow::TreasureTypesTableWindow(const TRect &bounds) :
+TreasureTypesTableWindow::TreasureTypesTableWindow(TRect const &bounds) :
     TWindowInit(&TreasureTypesTableWindow::initFrame),
     TWindow(bounds, "Treasure Types Table", windowNumbers.takeNext())
 {

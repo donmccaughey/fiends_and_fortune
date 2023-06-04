@@ -1,5 +1,7 @@
 #include "application.hpp"
 
+#include <cctype>
+
 #include "about_dialog.hpp"
 #include "commands.hpp"
 #include "desk_top.hpp"
@@ -7,6 +9,7 @@
 #include "menu_bar.hpp"
 #include "status_line.hpp"
 #include "treasure_types_table_window.hpp"
+#include "treasure_window.hpp"
 
 
 Application::Application() :
@@ -27,19 +30,24 @@ Application::about()
 void
 Application::generateTreasure()
 {
-    struct GenerateTreasureDialog generateTreasureDialog = {
-        .treasureType=" ",
+    struct GenerateTreasureDialogData data = {
+        .letter=" ",
     };
 
     auto d = newGenerateTreasureDialog();
-    d->setData(&generateTreasureDialog);
+    d->setData(&data);
     auto buttonPressed = deskTop->execView(d);
     if (buttonPressed != cmCancel) {
-        d->getData(&generateTreasureDialog);
+        d->getData(&data);
     }
     destroy(d);
     if (buttonPressed != cmCancel) {
-        // new treasure window
+        char letter = (char)toupper(data.letter[0]);
+        if (letter >= 'A' && letter <= 'Z') {
+            TRect r(0, 0, 60, 20);
+            auto treasureWindow = new TreasureWindow(r, letter);
+            deskTop->insert(treasureWindow);
+        }
     }
 }
 
@@ -73,6 +81,6 @@ void
 Application::treasureTypesTable()
 {
     TRect r(0, 0, 60, 20);
-    auto *treasureTypesTableWindow = new TreasureTypesTableWindow(r);
+    auto treasureTypesTableWindow = new TreasureTypesTableWindow(r);
     deskTop->insert(treasureTypesTableWindow);
 }
