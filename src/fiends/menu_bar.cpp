@@ -20,6 +20,11 @@ newMenuBar(TRect r)
                 cmQuit, hcNoContext, "Alt-X"
         )
 
+        + *new TSubMenu("~G~enerate", kbAltG)
+        + *new TMenuItem(
+                "~T~reasure", cmGenerateTreasure, kbAltT
+        )
+
         + *new TSubMenu("~R~eference", kbAltR)
         + *new TMenuItem(
                 "~T~reasure Types Table", cmTreasureTypesTable, kbAltT

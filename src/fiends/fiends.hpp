@@ -16,7 +16,9 @@ using std::vector;
 #define Uses_TDeskTop
 #define Uses_TDialog
 #define Uses_TEvent
+#define Uses_TInputLine
 #define Uses_TKeys
+#define Uses_TLabel
 #define Uses_TMenuBar
 #define Uses_TMenuItem
 #define Uses_TRect

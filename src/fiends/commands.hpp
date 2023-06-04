@@ -3,7 +3,8 @@
 
 
 int const cmAboutBox = 100;
-int const cmTreasureTypesTable = 101;
+int const cmGenerateTreasure = 101;
+int const cmTreasureTypesTable = 102;
 
 
 #endif
