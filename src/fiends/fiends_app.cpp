@@ -5,7 +5,7 @@
 #include "desk_top.hpp"
 #include "menu_bar.hpp"
 #include "status_line.hpp"
-#include "treasure_table_window.hpp"
+#include "treasure_types_table_window.hpp"
 
 
 FiendsApp::FiendsApp() :
@@ -29,12 +29,12 @@ FiendsApp::handleEvent(TEvent &event)
     TApplication::handleEvent(event);
     if(event.what == evCommand) {
         switch(event.message.command) {
-            case cmAbout:
+            case cmAboutBox:
                 aboutBox();
                 clearEvent(event);
                 break;
-            case cmTreasureTable:
-                treasureTable();
+            case cmTreasureTypesTable:
+                treasureTypesTable();
                 clearEvent(event);
                 break;
             default:
@@ -45,9 +45,9 @@ FiendsApp::handleEvent(TEvent &event)
 
 
 void
-FiendsApp::treasureTable()
+FiendsApp::treasureTypesTable()
 {
-    TRect r(0, 0, 40, 15);
-    auto *treasureTableWindow = new TreasureTableWindow(r);
-    deskTop->insert(treasureTableWindow);
+    TRect r(0, 0, 60, 20);
+    auto *treasureTypesTableWindow = new TreasureTypesTableWindow(r);
+    deskTop->insert(treasureTypesTableWindow);
 }

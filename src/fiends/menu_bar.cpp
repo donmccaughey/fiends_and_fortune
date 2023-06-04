@@ -12,7 +12,7 @@ newMenuBar(TRect r)
         r,
         *new TSubMenu("~F~iends", kbAltH)
         + *new TMenuItem(
-                "~A~bout...", cmAbout, kbAltA
+                "~A~bout...", cmAboutBox, kbAltA
         )
         + newLine()
         + *new TMenuItem(
@@ -20,9 +20,9 @@ newMenuBar(TRect r)
                 cmQuit, hcNoContext, "Alt-X"
         )
 
-        + *new TSubMenu("~T~reasure", kbAltT)
+        + *new TSubMenu("~R~eference", kbAltR)
         + *new TMenuItem(
-                "Treasure ~T~able", cmTreasureTable, kbAltT
+                "~T~reasure Types Table", cmTreasureTypesTable, kbAltT
         )
     );
 }

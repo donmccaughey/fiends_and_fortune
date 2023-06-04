@@ -13,7 +13,7 @@ public:
 
 private:
     static void aboutBox();
-    static void treasureTable();
+    static void treasureTypesTable();
 };
 
 
