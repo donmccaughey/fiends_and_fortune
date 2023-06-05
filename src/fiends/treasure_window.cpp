@@ -1,5 +1,6 @@
 #include "treasure_window.hpp"
 
+#include "treasure_view.hpp"
 #include "window_numbers.hpp"
 
 
@@ -16,6 +17,9 @@ TreasureWindow::TreasureWindow(TRect const &bounds, char letter) :
 {
     auto r = getExtent();
     r.grow(-1, -1);
+    auto hScrollBar = standardScrollBar(sbHorizontal | sbHandleKeyboard);
+    auto vScrollBar = standardScrollBar(sbVertical | sbHandleKeyboard);
+    insert(new TreasureView(r, hScrollBar, vScrollBar, letter));
 }
 
 

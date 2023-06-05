@@ -8,8 +8,10 @@ add_executable(fiends
         status_line.cpp
         treasure_types_table_view.cpp
         treasure_types_table_window.cpp
+        treasure_view.cpp
+        treasure_window.cpp
         window_numbers.cpp
-        treasure_window.cpp)
+        )
 target_link_libraries(fiends
         base
         treasure

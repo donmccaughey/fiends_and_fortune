@@ -11,7 +11,7 @@ class TreasureTypesTableView : public TScroller {
 
 public:
     TreasureTypesTableView(
-        const TRect &bounds,
+        TRect const &bounds,
         TScrollBar *aHScrollBar,
         TScrollBar *aVScrollBar
     );
