@@ -8,45 +8,32 @@ extern "C" {
 }
 
 
+static TextRect
+treasureTable()
+{
+    auto lines = vector<string>();
+    for (char letter = 'A'; letter <= 'Z'; ++letter) {
+        struct treasure_type *treasureType = treasure_type_by_letter(letter);
+        auto description = makeAllocPtr(
+            treasure_type_alloc_description(treasureType, letter == 'A')
+        );
+        lines.emplace_back(description.get());
+    }
+    return TextRect(lines);
+}
+
+
 TreasureTypesTableView::TreasureTypesTableView(
     const TRect &bounds,
     TScrollBar *aHScrollBar,
     TScrollBar *aVScrollBar
 ) :
-    TScroller(bounds, aHScrollBar, aVScrollBar)
+    TScroller(bounds, aHScrollBar, aVScrollBar),
+    table(treasureTable())
 {
     growMode = gfGrowHiX | gfGrowHiY;
     options |= ofFramed;
-    initializeTable();
-    setLimit(int(width), int(table.size()));
-}
-
-
-void
-TreasureTypesTableView::appendLine(char const *source, size_t begin, size_t end)
-{
-    auto start = source + begin;
-    auto length = end - begin;
-    table.emplace_back(start, length);
-    width = max(length, width);
-}
-
-
-void
-TreasureTypesTableView::appendLines(char const *source)
-{
-    size_t begin = 0;
-    size_t end = 0;
-    while (source && source[end]) {
-        if ('\n' == source[end]) {
-            appendLine(source, begin, end);
-            begin = end + 1;
-        }
-        ++end;
-    }
-    if (begin < end) {
-        appendLine(source, begin, end);
-    }
+    setLimit(table.width(), table.height());
 }
 
 
@@ -57,7 +44,7 @@ TreasureTypesTableView::draw()
     for (int y = 0; y < size.y; ++y) {
         TDrawBuffer b;
         int i = delta.y + y;
-        if (size_t(i) < table.size()) {
+        if (i < table.height()) {
             auto line = (size_t(delta.x) < table[i].length())
                     ? table[i].substr(size_t(delta.x))
                     : string();
@@ -72,18 +59,5 @@ TreasureTypesTableView::draw()
             b.moveChar(0, ' ', color, size.x);
         }
         writeLine(0, short(y), short(size.x), 1, b);
-    }
-}
-
-
-void
-TreasureTypesTableView::initializeTable()
-{
-    for (char letter = 'A'; letter <= 'Z'; ++letter) {
-        struct treasure_type *treasureType = treasure_type_by_letter(letter);
-        auto description = makeAllocPtr(
-            treasure_type_alloc_description(treasureType, letter == 'A')
-        );
-        appendLines(description.get());
     }
 }

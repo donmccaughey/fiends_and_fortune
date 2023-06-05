@@ -3,11 +3,11 @@
 
 
 #include "fiends.hpp"
+#include "text_rect.hpp"
 
 
 class TreasureView : public TScroller {
-    vector<string> lines;
-    size_t width{};
+    TextRect text;
 
 public:
     TreasureView(
@@ -18,9 +18,6 @@ public:
     );
 
     void draw() override;
-
-private:
-    void initializeTreasure(char letter);
 };
 
 

@@ -6,6 +6,7 @@ add_executable(fiends
         main.cpp
         menu_bar.cpp
         status_line.cpp
+        text_rect.cpp
         treasure_types_table_view.cpp
         treasure_types_table_window.cpp
         treasure_view.cpp
