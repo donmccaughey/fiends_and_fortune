@@ -1,6 +1,6 @@
 #include "treasure_types_table_view.hpp"
 
-#include "alloc_ptr.hpp"
+#include "ptr.hpp"
 
 extern "C" {
 #include "base/base.h"
@@ -14,8 +14,9 @@ treasureTypes()
     auto types = vector<string>();
     for (char letter = 'A'; letter <= 'Z'; ++letter) {
         struct treasure_type *treasureType = treasure_type_by_letter(letter);
-        auto description = makeAllocPtr(
-            treasure_type_alloc_description(treasureType, letter == 'A')
+        auto description = makeUnique(
+            treasure_type_alloc_description(treasureType, letter == 'A'),
+            free_or_die
         );
         types.emplace_back(description.get());
     }

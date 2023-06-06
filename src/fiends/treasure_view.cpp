@@ -1,5 +1,7 @@
 #include "treasure_view.hpp"
 
+#include "ptr.hpp"
+
 extern "C" {
 #include "base/base.h"
 #include "treasure/treasure.h"
@@ -9,18 +11,21 @@ extern "C" {
 static TextRect
 generateTreasure(char letter)
 {
-    struct rnd *rnd = rnd_alloc();
+    auto rnd = makeUnique(rnd_alloc(), rnd_free);
+
     struct treasure treasure{};
     treasure_initialize(&treasure);
 
-    treasure_type_generate(treasure_type_by_letter(letter), rnd, &treasure);
-    struct ptr_array *details = treasure_alloc_details(&treasure);
-    TextRect text = TextRect(details);
-    ptr_array_clear(details, free_or_die);
-    ptr_array_free(details);
+    treasure_type_generate(treasure_type_by_letter(letter), rnd.get(), &treasure);
+    auto details = makeUnique(
+            treasure_alloc_details(&treasure),
+            [](struct ptr_array *ptr_array) {
+                ptr_array_clear(ptr_array, free_or_die);
+                ptr_array_free(ptr_array);
+            });
+    TextRect text = TextRect(details.get());
 
     treasure_finalize(&treasure);
-    rnd_free(rnd);
 
     return text;
 }
