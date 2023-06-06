@@ -41,20 +41,14 @@ void
 TreasureTypesTableView::draw()
 {
     auto color = getColor(0x0301);
+    auto rightPad = (table.width() < size.x) ? string(size.x - table.width(), ' ') : string();
     for (int y = 0; y < size.y; ++y) {
         TDrawBuffer b;
-        int i = delta.y + y;
-        if (i < table.height()) {
-            auto line = (size_t(delta.x) < table[i].length())
-                    ? table[i].substr(size_t(delta.x))
-                    : string();
-            if (line.length() < size_t(size.x)) {
-                auto count = size.x - line.length();
-                line.append(count, ' ');
-            } else {
-                line.erase(size.x);
-            }
-            b.moveStr(0, line.c_str(), color);
+        int j = delta.y + y;
+        if (j < table.height()) {
+            auto line = table[j].substr(size_t(delta.x), size_t(size.x));
+            b.moveStr(0, line, color);
+            if (!rightPad.empty()) b.moveStr(table.width(), rightPad.c_str(), color);
         } else {
             b.moveChar(0, ' ', color, size.x);
         }

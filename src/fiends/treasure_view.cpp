@@ -45,20 +45,14 @@ void
 TreasureView::draw()
 {
     auto color = getColor(0x0301);
+    auto rightPad = (text.width() < size.x) ? string(size.x - text.width(), ' ') : string();
     for (int y = 0; y < size.y; ++y) {
         TDrawBuffer b;
-        int i = delta.y + y;
-        if (size_t(i) < text.height()) {
-            auto line = (size_t(delta.x) < text[i].length())
-                    ? text[i].substr(size_t(delta.x))
-                    : string();
-            if (line.length() < size_t(size.x)) {
-                auto count = size.x - line.length();
-                line.append(count, ' ');
-            } else {
-                line.erase(size.x);
-            }
-            b.moveStr(0, line.c_str(), color);
+        int j = delta.y + y;
+        if (j < text.height()) {
+            auto line = text[j].substr(size_t(delta.x), size_t(size.x));
+            b.moveStr(0, line, color);
+            if (!rightPad.empty()) b.moveStr(text.width(), rightPad.c_str(), color);
         } else {
             b.moveChar(0, ' ', color, size.x);
         }
