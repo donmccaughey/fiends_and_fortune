@@ -9,27 +9,27 @@ extern "C" {
 
 
 static TextRect
-treasureTable()
+treasureTypes()
 {
-    auto lines = vector<string>();
+    auto types = vector<string>();
     for (char letter = 'A'; letter <= 'Z'; ++letter) {
         struct treasure_type *treasureType = treasure_type_by_letter(letter);
         auto description = makeAllocPtr(
             treasure_type_alloc_description(treasureType, letter == 'A')
         );
-        lines.emplace_back(description.get());
+        types.emplace_back(description.get());
     }
-    return TextRect(lines);
+    return TextRect(types);
 }
 
 
 TreasureTypesTableView::TreasureTypesTableView(
-    const TRect &bounds,
+    TRect const &bounds,
     TScrollBar *aHScrollBar,
     TScrollBar *aVScrollBar
 ) :
     TScroller(bounds, aHScrollBar, aVScrollBar),
-    table(treasureTable())
+    table(treasureTypes())
 {
     growMode = gfGrowHiX | gfGrowHiY;
     options |= ofFramed;

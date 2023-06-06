@@ -8,8 +8,8 @@ extern "C" {
 static int
 appendLine(vector<string> &lines, char const *source, int begin, int end)
 {
-    auto start = source + begin;
-    auto length = end - begin;
+    char const *start = source + begin;
+    int length = end - begin;
     lines.emplace_back(start, length);
     return length;
 }
@@ -40,9 +40,9 @@ appendLines(vector<string> &lines, const char *text)
 static void
 padLines(vector<string> &lines, size_t length)
 {
-    for(auto &line : lines) {
+    for(string &line : lines) {
         if (line.length() < length) {
-            auto count = length - line.length();
+            size_t count = length - line.length();
             line.append(count, ' ');
         }
     }
@@ -55,7 +55,7 @@ TextRect::TextRect() = default;
 TextRect::TextRect(vector<string> const &strings)
 {
     int maxLength = 0;
-    for (auto const& s : strings) {
+    for (string const &s : strings) {
         int length = appendLines(lines, s.c_str());
         maxLength = max(maxLength, length);
     }
@@ -63,7 +63,7 @@ TextRect::TextRect(vector<string> const &strings)
 }
 
 
-TextRect::TextRect(const struct ptr_array *array) {
+TextRect::TextRect(struct ptr_array const *array) {
     int maxLength = 0;
     for (int i = 0; i < array->count; ++i) {
         lines.emplace_back((char *)array->elements[i]);

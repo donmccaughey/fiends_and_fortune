@@ -7,7 +7,7 @@
 
 
 class TreasureView : public TScroller {
-    TextRect text;
+    TextRect const text;
 
 public:
     TreasureView(

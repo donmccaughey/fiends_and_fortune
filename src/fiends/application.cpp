@@ -42,7 +42,7 @@ Application::generateTreasure()
     }
     destroy(d);
     if (buttonPressed != cmCancel) {
-        char letter = (char)toupper(data.letter[0]);
+        char letter = char(toupper(data.letter[0]));
         if (letter >= 'A' && letter <= 'Z') {
             TRect r(0, 0, 60, 20);
             auto treasureWindow = new TreasureWindow(r, letter);
