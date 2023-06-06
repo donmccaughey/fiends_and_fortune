@@ -8,7 +8,7 @@ TreasureTypesTableWindow::TreasureTypesTableWindow(TRect const &bounds) :
     TWindowInit(&TreasureTypesTableWindow::initFrame),
     TWindow(bounds, "Treasure Types Table", windowNumbers.takeNext())
 {
-    auto r = getClipRect();
+    auto r = getExtent();
     r.grow(-1, -1);
     auto hScrollBar = standardScrollBar(sbHorizontal | sbHandleKeyboard);
     auto vScrollBar = standardScrollBar(sbVertical | sbHandleKeyboard);
