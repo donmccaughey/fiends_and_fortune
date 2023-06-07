@@ -5,11 +5,11 @@
 #include "fiends.hpp"
 
 
-template<typename T, typename D>
-unique_ptr<T, D>
-makeUnique(T *p, D deleter)
+template<typename P, typename D>
+unique_ptr<P, D>
+makeUnique(P *pointer, D deleter)
 {
-    return unique_ptr<T, D>(p, deleter);
+    return unique_ptr<P, D>(pointer, deleter);
 }
 
 
