@@ -72,3 +72,18 @@ TextRect::TextRect(struct ptr_array const *array) {
     }
     padLines(lines, maxLength);
 }
+
+
+TextRect::TextRect(TextRect &&textRect) noexcept
+{
+    lines = std::move(textRect.lines);
+}
+
+
+TextRect &
+TextRect::operator=(TextRect &&textRect) noexcept
+{
+    if (&textRect == this) return *this;
+    lines = std::move(textRect.lines);
+    return *this;
+}

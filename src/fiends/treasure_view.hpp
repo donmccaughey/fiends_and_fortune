@@ -6,8 +6,12 @@
 #include "text_rect.hpp"
 
 
+struct treasure;
+
+
 class TreasureView : public TScroller {
-    TextRect const text;
+    TextRect text;
+    unique_ptr<treasure, void(*)(treasure *)> treasure;
 
 public:
     TreasureView(

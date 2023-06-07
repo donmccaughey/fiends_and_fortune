@@ -8,26 +8,36 @@ extern "C" {
 }
 
 
-static TextRect
+static unique_ptr<treasure, void(*)(treasure *)>
 generateTreasure(char letter)
 {
     auto rnd = makeUnique(rnd_alloc(), rnd_free);
 
-    struct treasure treasure{};
-    treasure_initialize(&treasure);
+    auto treasure = makeUnique(
+            new struct treasure,
+            [](struct treasure *p) {
+                treasure_finalize(p);
+                delete p;
+            }
+    );
+    treasure_initialize(treasure.get());
 
-    treasure_type_generate(treasure_type_by_letter(letter), rnd.get(), &treasure);
+    treasure_type_generate(treasure_type_by_letter(letter), rnd.get(), treasure.get());
+
+    return treasure;
+}
+
+
+static TextRect
+treasureDetails(treasure *treasure)
+{
     auto details = makeUnique(
-            treasure_alloc_details(&treasure),
+            treasure_alloc_details(treasure),
             [](struct ptr_array *ptr_array) {
                 ptr_array_clear(ptr_array, free_or_die);
                 ptr_array_free(ptr_array);
             });
-    TextRect text = TextRect(details.get());
-
-    treasure_finalize(&treasure);
-
-    return text;
+    return TextRect(details.get());
 }
 
 
@@ -38,10 +48,11 @@ TreasureView::TreasureView(
         char letter
 ) :
     TScroller(bounds, aHScrollBar, aVScrollBar),
-    text(generateTreasure(letter))
+    treasure(generateTreasure(letter))
 {
     growMode = gfGrowHiX | gfGrowHiY;
     options |= ofFramed;
+    text = treasureDetails(treasure.get());
     setLimit(text.width(), text.height());
 }
 
