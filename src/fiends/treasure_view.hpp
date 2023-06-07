@@ -11,7 +11,7 @@ struct treasure;
 
 class TreasureView : public TScroller {
     TextRect text;
-    unique_ptr<treasure, void(*)(treasure *)> treasure;
+    unique_ptr<treasure, void(*)(treasure *)> aTreasure;
 
 public:
     TreasureView(

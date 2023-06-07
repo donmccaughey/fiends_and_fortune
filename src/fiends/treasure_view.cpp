@@ -47,12 +47,12 @@ TreasureView::TreasureView(
         TScrollBar *aVScrollBar,
         char letter
 ) :
-    TScroller(bounds, aHScrollBar, aVScrollBar),
-    treasure(generateTreasure(letter))
+        TScroller(bounds, aHScrollBar, aVScrollBar),
+        aTreasure(generateTreasure(letter))
 {
     growMode = gfGrowHiX | gfGrowHiY;
     options |= ofFramed;
-    text = treasureDetails(treasure.get());
+    text = treasureDetails(aTreasure.get());
     setLimit(text.width(), text.height());
 }
 
