@@ -2,7 +2,7 @@
 #define FIENDS_TREASURE_WINDOW_HPP_INCLUDED
 
 
-#include "fiends.hpp"
+#include "fiends/fiends.hpp"
 
 
 class TreasureWindow : public TWindow {

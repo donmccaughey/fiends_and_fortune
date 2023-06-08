@@ -1,7 +1,7 @@
 #include "treasure_window.hpp"
 
 #include "treasure_view.hpp"
-#include "window_numbers.hpp"
+#include "fiends/window_numbers.hpp"
 
 
 static string

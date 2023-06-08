@@ -1,3 +1,5 @@
+- fiends: is there a broadcast event when the app quits?
+
 - box_expand(): add test for behavior when size is zero
 
 - cmake: figure out how to build separate configurations for test and release

@@ -1,6 +1,6 @@
 #include "treasure_view.hpp"
 
-#include "ptr.hpp"
+#include "fiends/ptr.hpp"
 
 extern "C" {
 #include "base/base.h"

@@ -2,16 +2,17 @@ add_executable(fiends
         about_dialog.cpp
         application.cpp
         desk_top.cpp
-        generate_treasure_dialog.cpp
         main.cpp
         menu_bar.cpp
         status_line.cpp
         text_rect.cpp
         treasure_types_table_view.cpp
         treasure_types_table_window.cpp
-        treasure_view.cpp
-        treasure_window.cpp
         window_numbers.cpp
+        generate_treasure/generate_treasure.cpp
+        generate_treasure/generate_treasure_dialog.cpp
+        generate_treasure/treasure_view.cpp
+        generate_treasure/treasure_window.cpp
         )
 target_link_libraries(fiends
         base

@@ -13,7 +13,6 @@ public:
 
 private:
     static void about();
-    static void generateTreasure();
     static void treasureTypesTable();
 };
 
