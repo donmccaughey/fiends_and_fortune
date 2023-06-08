@@ -1,7 +1,8 @@
 #include "treasure_types_table_window.hpp"
 
 #include "treasure_types_table_view.hpp"
-#include "window_numbers.hpp"
+
+#include "fiends/window_numbers.hpp"
 
 
 TreasureTypesTableWindow::TreasureTypesTableWindow(TRect const &bounds) :

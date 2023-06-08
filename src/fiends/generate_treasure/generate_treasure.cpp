@@ -2,10 +2,10 @@
 
 #include <cctype>
 
-#include "fiends/application.hpp"
-
 #include "generate_treasure_dialog.hpp"
 #include "treasure_window.hpp"
+
+#include "fiends/application.hpp"
 
 
 void

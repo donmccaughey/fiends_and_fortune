@@ -5,9 +5,10 @@
 #include "desk_top.hpp"
 #include "menu_bar.hpp"
 #include "status_line.hpp"
-#include "treasure_types_table_window.hpp"
 
 #include "generate_treasure/generate_treasure.hpp"
+
+#include "treasure_types_table/treasure_types_table.hpp"
 
 
 Application::Application() :
@@ -39,20 +40,10 @@ Application::handleEvent(TEvent &event)
                 generateTreasure(*this, event);
                 break;
             case cmTreasureTypesTable:
-                treasureTypesTable();
-                clearEvent(event);
+                treasureTypesTable(*this, event);
                 break;
             default:
                 break;
         }
     }
-}
-
-
-void
-Application::treasureTypesTable()
-{
-    TRect r(0, 0, 60, 20);
-    auto treasureTypesTableWindow = new TreasureTypesTableWindow(r);
-    deskTop->insert(treasureTypesTableWindow);
 }

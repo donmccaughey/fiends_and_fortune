@@ -2,8 +2,8 @@
 #define FIENDS_TREASURE_TYPES_TABLE_VIEW_HPP_INCLUDED
 
 
-#include "fiends.hpp"
-#include "text_rect.hpp"
+#include "fiends/fiends.hpp"
+#include "fiends/text_rect.hpp"
 
 
 class TreasureTypesTableView : public TScroller {
