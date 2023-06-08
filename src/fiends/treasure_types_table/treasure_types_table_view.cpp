@@ -1,6 +1,6 @@
 #include "treasure_types_table_view.hpp"
 
-#include "fiends/ptr.hpp"
+#include "fiends/util/ptr.hpp"
 
 extern "C" {
 #include "base/base.h"

@@ -2,7 +2,7 @@
 #define FIENDS_PTR_HPP_INCLUDED
 
 
-#include "fiends.hpp"
+#include "fiends/fiends.hpp"
 
 
 template<typename P, typename D>

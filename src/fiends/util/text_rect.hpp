@@ -2,7 +2,7 @@
 #define FIENDS_TEXT_RECT_HPP_INCLUDED
 
 
-#include "fiends.hpp"
+#include "fiends/fiends.hpp"
 
 
 struct ptr_array;

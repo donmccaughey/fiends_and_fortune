@@ -3,7 +3,8 @@
 
 
 #include "fiends/fiends.hpp"
-#include "fiends/text_rect.hpp"
+
+#include "fiends/util/text_rect.hpp"
 
 
 class TreasureTypesTableView : public TScroller {

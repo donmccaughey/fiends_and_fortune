@@ -2,7 +2,7 @@
 
 #include "treasure_types_table_view.hpp"
 
-#include "fiends/window_numbers.hpp"
+#include "fiends/util/window_numbers.hpp"
 
 
 TreasureTypesTableWindow::TreasureTypesTableWindow(TRect const &bounds) :

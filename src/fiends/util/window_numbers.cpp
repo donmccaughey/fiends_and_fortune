@@ -1,6 +1,6 @@
 #include "window_numbers.hpp"
 
-#include "fiends.hpp"
+#include "fiends/fiends.hpp"
 
 
 WindowNumbers windowNumbers = WindowNumbers();

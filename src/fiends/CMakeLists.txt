@@ -1,7 +1,5 @@
 add_executable(fiends
         main.cpp
-        text_rect.cpp
-        window_numbers.cpp
 
         application/application.cpp
         application/desk_top.cpp
@@ -19,6 +17,9 @@ add_executable(fiends
         treasure_types_table/treasure_types_table.cpp
         treasure_types_table/treasure_types_table_view.cpp
         treasure_types_table/treasure_types_table_window.cpp
+
+        util/text_rect.cpp
+        util/window_numbers.cpp
         )
 target_link_libraries(fiends
         base

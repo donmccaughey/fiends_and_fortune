@@ -2,7 +2,7 @@
 #define FIENDS_TREASURE_VIEW_HPP_INCLUDED
 
 
-#include "fiends/text_rect.hpp"
+#include "fiends/util/text_rect.hpp"
 
 
 struct treasure;
