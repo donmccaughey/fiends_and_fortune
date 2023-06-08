@@ -3,6 +3,10 @@
 #include "treasure_view.hpp"
 #include "fiends/util/window_numbers.hpp"
 
+extern "C" {
+#include "treasure/treasure.h"
+}
+
 
 static string
 makeTitle(char letter)
@@ -11,7 +15,12 @@ makeTitle(char letter)
 }
 
 
-TreasureWindow::TreasureWindow(TRect const &bounds, char letter) :
+TreasureWindow::TreasureWindow(
+    TRect const &bounds,
+    char letter,
+    unique_ptr<treasure, void(*)(treasure *)> &&aTreasure,
+    TextRect &&textRect
+) :
     TWindowInit(&TreasureWindow::initFrame),
     TWindow(bounds, makeTitle(letter), windowNumbers.takeNext())
 {
@@ -19,7 +28,7 @@ TreasureWindow::TreasureWindow(TRect const &bounds, char letter) :
     r.grow(-1, -1);
     auto hScrollBar = standardScrollBar(sbHorizontal | sbHandleKeyboard);
     auto vScrollBar = standardScrollBar(sbVertical | sbHandleKeyboard);
-    insert(new TreasureView(r, hScrollBar, vScrollBar, letter));
+    insert(new TreasureView(r, hScrollBar, vScrollBar, std::move(aTreasure), std::move(textRect)));
 }
 
 

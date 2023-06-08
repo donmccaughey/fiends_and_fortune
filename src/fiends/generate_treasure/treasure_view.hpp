@@ -9,15 +9,16 @@ struct treasure;
 
 
 class TreasureView : public TScroller {
-    TextRect text;
     unique_ptr<treasure, void(*)(treasure *)> aTreasure;
+    TextRect text;
 
 public:
     TreasureView(
         TRect const &bounds,
         TScrollBar *aHScrollBar,
         TScrollBar *aVScrollBar,
-        char letter
+        unique_ptr<treasure, void(*)(treasure *)> &&aTreasure,
+        TextRect &&textRect
     );
 
     void draw() override;
