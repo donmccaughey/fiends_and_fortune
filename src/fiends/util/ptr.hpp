@@ -1,5 +1,5 @@
-#ifndef FIENDS_PTR_HPP_INCLUDED
-#define FIENDS_PTR_HPP_INCLUDED
+#ifndef FIENDS_UTIL_PTR_HPP_INCLUDED
+#define FIENDS_UTIL_PTR_HPP_INCLUDED
 
 
 #include "fiends/fiends.hpp"

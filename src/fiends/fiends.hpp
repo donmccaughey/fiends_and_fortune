@@ -1,5 +1,5 @@
-#ifndef FIENDS_HPP_INCLUDED
-#define FIENDS_HPP_INCLUDED
+#ifndef FIENDS_FIENDS_HPP_INCLUDED
+#define FIENDS_FIENDS_HPP_INCLUDED
 
 
 #include <memory>
