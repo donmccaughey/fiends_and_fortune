@@ -1,7 +1,7 @@
 #include "about_dialog.hpp"
 
 
-#include "fiends.hpp"
+#include "fiends/fiends.hpp"
 
 
 TDialog *

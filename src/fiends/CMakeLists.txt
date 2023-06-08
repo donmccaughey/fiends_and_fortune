@@ -1,5 +1,4 @@
 add_executable(fiends
-        about_dialog.cpp
         application.cpp
         desk_top.cpp
         main.cpp
@@ -7,6 +6,9 @@ add_executable(fiends
         status_line.cpp
         text_rect.cpp
         window_numbers.cpp
+
+        about/about.cpp
+        about/about_dialog.cpp
 
         generate_treasure/generate_treasure.cpp
         generate_treasure/generate_treasure_dialog.cpp

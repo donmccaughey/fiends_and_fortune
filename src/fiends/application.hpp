@@ -10,9 +10,6 @@ public:
     Application();
 
     void handleEvent(TEvent& event) override;
-
-private:
-    static void about();
 };
 
 
