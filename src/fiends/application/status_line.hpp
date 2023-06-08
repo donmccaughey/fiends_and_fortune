@@ -2,7 +2,7 @@
 #define FIENDS_STATUS_LINE_HPP_INCLUDED
 
 
-#include "fiends.hpp"
+#include "fiends/fiends.hpp"
 
 
 TStatusLine *

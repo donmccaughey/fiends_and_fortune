@@ -5,7 +5,7 @@
 #include "generate_treasure_dialog.hpp"
 #include "treasure_window.hpp"
 
-#include "fiends/application.hpp"
+#include "fiends/application/application.hpp"
 
 
 void

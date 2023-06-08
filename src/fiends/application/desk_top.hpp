@@ -2,7 +2,7 @@
 #define FIENDS_DESK_TOP_HPP_INCLUDED
 
 
-#include "fiends.hpp"
+#include "fiends/fiends.hpp"
 
 
 TDeskTop *

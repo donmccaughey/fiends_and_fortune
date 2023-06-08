@@ -5,11 +5,11 @@
 #include "menu_bar.hpp"
 #include "status_line.hpp"
 
-#include "about/about.hpp"
+#include "fiends/about/about.hpp"
 
-#include "generate_treasure/generate_treasure.hpp"
+#include "fiends/generate_treasure/generate_treasure.hpp"
 
-#include "treasure_types_table/treasure_types_table.hpp"
+#include "fiends/treasure_types_table/treasure_types_table.hpp"
 
 
 Application::Application() :

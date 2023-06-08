@@ -2,7 +2,7 @@
 
 #include "about_dialog.hpp"
 
-#include "fiends/application.hpp"
+#include "fiends/application/application.hpp"
 
 
 void

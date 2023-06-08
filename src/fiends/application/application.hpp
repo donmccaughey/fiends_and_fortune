@@ -2,7 +2,7 @@
 #define FIENDS_APPLICATION_HPP_INCLUDED
 
 
-#include "fiends.hpp"
+#include "fiends/fiends.hpp"
 
 
 class Application : public TApplication {

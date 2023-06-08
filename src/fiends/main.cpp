@@ -1,6 +1,6 @@
 #include <cstdlib>
 
-#include "application.hpp"
+#include "fiends/application/application.hpp"
 
 extern "C" {
 #include "base/base.h"

@@ -1,11 +1,12 @@
 add_executable(fiends
-        application.cpp
-        desk_top.cpp
         main.cpp
-        menu_bar.cpp
-        status_line.cpp
         text_rect.cpp
         window_numbers.cpp
+
+        application/application.cpp
+        application/desk_top.cpp
+        application/menu_bar.cpp
+        application/status_line.cpp
 
         about/about.cpp
         about/about_dialog.cpp

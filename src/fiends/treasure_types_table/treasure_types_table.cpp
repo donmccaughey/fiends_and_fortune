@@ -2,7 +2,7 @@
 
 #include "treasure_types_table_window.hpp"
 
-#include "fiends/application.hpp"
+#include "fiends/application/application.hpp"
 
 
 void
