@@ -23,9 +23,7 @@ void
 TextRectView::draw()
 {
     auto aColor = getColor(this->color);
-    string rightPad = (textRect.width() < size.x)
-            ? string(size.x - textRect.width(), ' ')
-            : string();
+    string rightPad = string(max(size.x - textRect.width(), 0), ' ');
     for (int y = 0; y < size.y; ++y) {
         TDrawBuffer b;
         int j = delta.y + y;
