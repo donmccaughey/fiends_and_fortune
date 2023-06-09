@@ -14,7 +14,6 @@ public:
     explicit TreasureWindow(
         TRect const &bounds,
         char letter,
-        unique_ptr<treasure, void(*)(treasure *)> &&aTreasure,
         TextRect &&textRect
     );
     ~TreasureWindow() override;

@@ -6,11 +6,9 @@ TreasureView::TreasureView(
     TRect const &bounds,
     TScrollBar *aHScrollBar,
     TScrollBar *aVScrollBar,
-    unique_ptr<treasure, void(*)(treasure *)> &&aTreasure,
     TextRect &&textRect
 ) :
         TScroller(bounds, aHScrollBar, aVScrollBar),
-        aTreasure(std::move(aTreasure)),
         text(std::move(textRect))
 {
     growMode = gfGrowHiX | gfGrowHiY;

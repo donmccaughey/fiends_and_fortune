@@ -9,7 +9,6 @@ struct treasure;
 
 
 class TreasureView : public TScroller {
-    unique_ptr<treasure, void(*)(treasure *)> aTreasure;
     TextRect text;
 
 public:
@@ -17,7 +16,6 @@ public:
         TRect const &bounds,
         TScrollBar *aHScrollBar,
         TScrollBar *aVScrollBar,
-        unique_ptr<treasure, void(*)(treasure *)> &&aTreasure,
         TextRect &&textRect
     );
 
