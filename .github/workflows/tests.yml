@@ -9,7 +9,7 @@ jobs:
       - name: Packages
         run: |
           sudo apt-get update
-          sudo apt-get install libbsd-dev
+          sudo apt-get install libbsd-dev libgpm-dev
       - name: Configure
         run: |
           cmake -S . -B ${{github.workspace}}/tmp -DADDRESS_SANITIZER=ON -DCOVERAGE=ON -DWALL=ON

@@ -1,9 +1,4 @@
 - fiends: is there a broadcast event when the app quits?
-- fiends: configure warning on linux:
-        CMake Warning at libs/tvision/CMakeLists.txt:38 (message):
-            (tvision) 'gpm' library requested but not found
-        Call Stack (most recent call first):
-            libs/tvision/source/CMakeLists.txt:118 (tv_message)
 - fiends: fix build warning on macOS / GitHub Actions (macOS 12.6.5 / Xcode 21G531):
         [ 87%] Building CXX object src/fiends/CMakeFiles/fiends.dir/main.cpp.o
         warning: unknown warning option '-Wno-unqualified-std-cast-call';

@@ -72,20 +72,21 @@ interface.
 
 _Fiends And Fortune_ is tested on macOS and Linux.  Building it requires that
 your system have a C/C++ toolchain and [CMake][31] 3.13 or later.  Building on
-Linux requires [`libbsd`][32].
+Linux requires [`libbsd`][32] and [`libgpm`][33].
 
     git clone https://github.com/donmccaughey/fiends_and_fortune.git
     cd fiends_and_fortune
     cmake -S . -B tmp
     cmake --build tmp --target all test
 
-This repository contains a copy of the source code for [cJSON 1.7.15][33] and 
-[tvision commit 9c9608e dated 2023-05-23][34].
+This repository contains a copy of the source code for [cJSON 1.7.15][34] and 
+[tvision commit 9c9608e dated 2023-05-23][35].
 
 [31]: https://cmake.org
 [32]: https://libbsd.freedesktop.org/
-[33]: https://github.com/DaveGamble/cJSON
-[34]: https://github.com/magiblot/tvision
+[33]: https://www.nico.schottelius.org/software/gpm/
+[34]: https://github.com/DaveGamble/cJSON
+[35]: https://github.com/magiblot/tvision
 
 
 ## Build System
