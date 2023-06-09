@@ -95,19 +95,26 @@ for continuous integration, and [Codecov.io][43] for code coverage reporting.
 
 ### Build Options
 
-To build with the [Address Sanitizer][44] enabled, set the `ADDRESS_SANITIZER`
+To build with the [AddressSanitizer][44] enabled, set the `ADDRESS_SANITIZER`
 option to `ON`.
 
     cmake -S . -B tmp -DADDRESS_SANITIZER=ON
 
-Mac users note that the `clang` that ships with Xcode accepts the 
-`-fsanitize=address` flag, but doesn't actually include the Address Sanitizer.
+Mac users note that the `clang` that ships with Xcode support the 
+`-fsanitize=address` flag, but doesn't support [LeakSanitizer][44] on
+[Apple Silicon][45].
+
+    % ASAN_OPTIONS=detect_leaks=1 tmp/src/fiends/fiends
+    ==43188==AddressSanitizer: detect_leaks is not supported on this platform.
+    zsh: abort      ASAN_OPTIONS=detect_leaks=1 tmp/src/fiends/fiends
+
+(Last checked on macOS Ventura 13.4, Xcode 14.3, Apple clang version 14.0.3.)
 
 Set the `COVERAGE` option to `ON` to generate coverage files.
 
     cmake -S . -B tmp -DCOVERAGE=ON
 
-Set the `WALL` option to `ON` turns on [additional warnings][44] using the 
+Set the `WALL` option to `ON` turns on [additional warnings][46] using the 
 `-Wall` compiler flag and also treats warnings as errors.  `WALL` is off by
 default but is recommended for development and integration builds.
 
@@ -115,7 +122,7 @@ default but is recommended for development and integration builds.
 
 Set the `GRAPH_TARGETS` option to `ON` to visualize the relationships between
 Cmake build targets.  This will generate the files `fnf_targets.dot` and
-`fnf_targets.png` in the `tmp` directory.  [Graphviz][45] must be installed to
+`fnf_targets.png` in the `tmp` directory.  [Graphviz][47] must be installed to
 use this option.
 
     cmake -S . -B tmp -DGRAPH_TARGETS=ON
@@ -123,19 +130,21 @@ use this option.
 [41]: https://cmake.org
 [42]: https://github.com/donmccaughey/fiends_and_fortune/actions/workflows/tests.yml
 [43]: https://codecov.io/gh/donmccaughey/fiends_and_fortune
-[44]: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#Warning-Options
-[45]: https://graphviz.org
+[44]: https://clang.llvm.org/docs/LeakSanitizer.html
+[45]: https://github.com/google/sanitizers/wiki/AddressSanitizerLeakSanitizer
+[46]: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#Warning-Options
+[47]: https://graphviz.org
 
 
 ## License
 
 _Fiends And Fortune_ is available under a BSD-style license.  See the
-[`LICENSE`][21] file for details.  The [_cJSON_ library][22] is available under 
-an [MIT license][23].  The code in the [_tvision_ library][24] is available
-under a [variety of permissive licenses][25].
+[`LICENSE`][51] file for details.  The [_cJSON_ library][52] is available under 
+an [MIT license][53].  The code in the [_tvision_ library][54] is available
+under a [variety of permissive licenses][55].
 
-[21]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/LICENSE
-[22]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/libs/cJSON
-[23]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/libs/cJSON/LICENSE
-[24]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/libs/tvision
-[25]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/libs/tvision/COPYRIGHT
+[51]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/LICENSE
+[52]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/libs/cJSON
+[53]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/libs/cJSON/LICENSE
+[54]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/libs/tvision
+[55]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/libs/tvision/COPYRIGHT
