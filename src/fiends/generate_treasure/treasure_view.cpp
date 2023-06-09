@@ -9,11 +9,11 @@ TreasureView::TreasureView(
     TextRect &&textRect
 ) :
         TScroller(bounds, aHScrollBar, aVScrollBar),
-        text(std::move(textRect))
+        textRect(std::move(textRect))
 {
     growMode = gfGrowHiX | gfGrowHiY;
     options |= ofFramed;
-    setLimit(text.width(), text.height());
+    setLimit(this->textRect.width(), this->textRect.height());
 }
 
 
@@ -21,14 +21,14 @@ void
 TreasureView::draw()
 {
     auto color = getColor(0x0301);
-    auto rightPad = (text.width() < size.x) ? string(size.x - text.width(), ' ') : string();
+    auto rightPad = (textRect.width() < size.x) ? string(size.x - textRect.width(), ' ') : string();
     for (int y = 0; y < size.y; ++y) {
         TDrawBuffer b;
         int j = delta.y + y;
-        if (j < text.height()) {
-            auto line = text[j].substr(size_t(delta.x), size_t(size.x));
+        if (j < textRect.height()) {
+            auto line = textRect[j].substr(size_t(delta.x), size_t(size.x));
             b.moveStr(0, line, color);
-            if (!rightPad.empty()) b.moveStr(text.width(), rightPad.c_str(), color);
+            if (!rightPad.empty()) b.moveStr(textRect.width(), rightPad.c_str(), color);
         } else {
             b.moveChar(0, ' ', color, size.x);
         }

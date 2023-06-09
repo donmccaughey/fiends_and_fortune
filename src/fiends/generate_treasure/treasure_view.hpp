@@ -9,7 +9,7 @@ struct treasure;
 
 
 class TreasureView : public TScroller {
-    TextRect text;
+    TextRect textRect;
 
 public:
     TreasureView(

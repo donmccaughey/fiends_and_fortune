@@ -8,7 +8,7 @@
 
 
 class TreasureTypesTableView : public TScroller {
-    TextRect const table;
+    TextRect const textRect;
 
 public:
     TreasureTypesTableView(
