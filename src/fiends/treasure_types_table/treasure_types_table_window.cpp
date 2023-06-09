@@ -11,11 +11,17 @@ TreasureTypesTableWindow::TreasureTypesTableWindow(
     TWindowInit(&TreasureTypesTableWindow::initFrame),
     TWindow(bounds, "Treasure Types Table", windowNumbers.takeNext())
 {
-    auto r = getExtent();
-    r.grow(-1, -1);
-    auto hScrollBar = standardScrollBar(sbHorizontal | sbHandleKeyboard);
-    auto vScrollBar = standardScrollBar(sbVertical | sbHandleKeyboard);
-    insert(new TextRectView(r, hScrollBar, vScrollBar, std::move(textRect), 0x0301));
+    auto viewBounds = getExtent();
+    viewBounds.grow(-1, -1);
+    insert(
+            new TextRectView(
+                    viewBounds,
+                    standardScrollBar(sbHorizontal | sbHandleKeyboard),
+                    standardScrollBar(sbVertical | sbHandleKeyboard),
+                    std::move(textRect),
+                    0x0301
+            )
+    );
 }
 
 
