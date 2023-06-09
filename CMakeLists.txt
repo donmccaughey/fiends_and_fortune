@@ -59,13 +59,12 @@ endif()
 
 # ----- compatibility checks -----
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-  add_compile_options(-Wno-unknown-warning-option)
-endif()
+#if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+#  add_compile_options(-Wno-unknown-warning-option)
+#endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-    # make asprintf() visible
-    add_definitions(-D_GNU_SOURCE)
+    add_definitions(-D_GNU_SOURCE)  # make asprintf() visible
 endif()
 
 check_symbol_exists(optreset "getopt.h" HAS_OPTRESET)

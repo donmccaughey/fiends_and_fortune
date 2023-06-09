@@ -26,13 +26,9 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Packages
-        run: |
-          brew update
-          brew install ncurses
       - name: Configure
         run: |
-          cmake -S . -B ${{github.workspace}}/tmp -DHOMEBREW_NCURSES=ON -DHOMEBREW_NCURSES_PATH="/usr/local/opt/ncurses" -DWALL=ON
+          cmake -S . -B ${{github.workspace}}/tmp
       - name: Build
         run: |
           cmake --build ${{github.workspace}}/tmp --target all
