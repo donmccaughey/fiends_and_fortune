@@ -10,9 +10,9 @@ grudgingly use C++14 for the [TUI][1].
 
 [![GitHub Actions][11]][12] [![Code Coverage][13]][14]
 
-[11]: https://github.com/donmccaughey/fiends_and_fortune/actions/workflows/tests.yml/badge.svg
+[11]: https://github.com/donmccaughey/fiends_and_fortune/actions/workflows/tests.yml/badge.svg?branch=main
 [12]: https://github.com/donmccaughey/fiends_and_fortune/actions/workflows/tests.yml
-[13]: https://codecov.io/gh/donmccaughey/fiends_and_fortune/branch/master/graph/badge.svg
+[13]: https://codecov.io/gh/donmccaughey/fiends_and_fortune/branch/main/graph/badge.svg
 [14]: https://codecov.io/gh/donmccaughey/fiends_and_fortune
 
 
@@ -65,7 +65,7 @@ interface.
 
 ![`fiends` Screen Shot][21]
 
-[21]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/docs/images/fiends-screenshot-1.png
+[21]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/docs/images/fiends-screenshot-1.png
 
 
 ## Building From Source
@@ -134,8 +134,8 @@ _Fiends And Fortune_ is available under a BSD-style license.  See the
 an [MIT license][23].  The code in the [_tvision_ library][24] is available
 under a [variety of permissive licenses][25].
 
-[21]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/LICENSE
-[22]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/libs/cJSON
-[23]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/libs/cJSON/LICENSE
-[24]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/libs/tvision
-[25]: https://github.com/donmccaughey/fiends_and_fortune/blob/master/libs/tvision/COPYRIGHT
+[21]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/LICENSE
+[22]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/libs/cJSON
+[23]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/libs/cJSON/LICENSE
+[24]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/libs/tvision
+[25]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/libs/tvision/COPYRIGHT
