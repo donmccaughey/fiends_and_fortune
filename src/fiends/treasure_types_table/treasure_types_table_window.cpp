@@ -1,8 +1,8 @@
 #include "treasure_types_table_window.hpp"
 
-#include "treasure_types_table_view.hpp"
-
 #include "fiends/util/window_numbers.hpp"
+
+#include "fiends/views/text_rect_view.hpp"
 
 
 TreasureTypesTableWindow::TreasureTypesTableWindow(
@@ -15,7 +15,7 @@ TreasureTypesTableWindow::TreasureTypesTableWindow(
     r.grow(-1, -1);
     auto hScrollBar = standardScrollBar(sbHorizontal | sbHandleKeyboard);
     auto vScrollBar = standardScrollBar(sbVertical | sbHandleKeyboard);
-    insert(new TreasureTypesTableView(r, hScrollBar, vScrollBar, std::move(textRect)));
+    insert(new TextRectView(r, hScrollBar, vScrollBar, std::move(textRect), 0x0301));
 }
 
 

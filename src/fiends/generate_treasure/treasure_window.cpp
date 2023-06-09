@@ -1,7 +1,8 @@
 #include "treasure_window.hpp"
 
-#include "treasure_view.hpp"
 #include "fiends/util/window_numbers.hpp"
+
+#include "fiends/views/text_rect_view.hpp"
 
 extern "C" {
 #include "treasure/treasure.h"
@@ -27,7 +28,7 @@ TreasureWindow::TreasureWindow(
     r.grow(-1, -1);
     auto hScrollBar = standardScrollBar(sbHorizontal | sbHandleKeyboard);
     auto vScrollBar = standardScrollBar(sbVertical | sbHandleKeyboard);
-    insert(new TreasureView(r, hScrollBar, vScrollBar, std::move(textRect)));
+    insert(new TextRectView(r, hScrollBar, vScrollBar, std::move(textRect), 0x0301));
 }
 
 

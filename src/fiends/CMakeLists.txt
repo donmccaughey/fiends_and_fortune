@@ -11,15 +11,15 @@ add_executable(fiends
 
         generate_treasure/generate_treasure.cpp
         generate_treasure/generate_treasure_dialog.cpp
-        generate_treasure/treasure_view.cpp
         generate_treasure/treasure_window.cpp
 
         treasure_types_table/treasure_types_table.cpp
-        treasure_types_table/treasure_types_table_view.cpp
         treasure_types_table/treasure_types_table_window.cpp
 
         util/text_rect.cpp
         util/window_numbers.cpp
+
+        views/text_rect_view.cpp
         )
 target_link_libraries(fiends
         base
