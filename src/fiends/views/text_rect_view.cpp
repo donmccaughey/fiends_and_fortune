@@ -30,9 +30,7 @@ TextRectView::draw()
         if (j < textRect.height()) {
             string line = textRect[j].substr(size_t(delta.x), size_t(size.x));
             b.moveStr(0, line, aColor);
-            if (rightPad.length()) {
-                b.moveStr(textRect.width(), rightPad.c_str(), aColor);
-            }
+            b.moveStr(textRect.width(), rightPad.c_str(), aColor);
         } else {
             b.moveChar(0, ' ', aColor, size.x);
         }
