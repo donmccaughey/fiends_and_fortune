@@ -9,6 +9,7 @@ using std::unique_ptr;
 using std::string;
 
 #include <utility>
+using std::move;
 
 #include <vector>
 using std::vector;

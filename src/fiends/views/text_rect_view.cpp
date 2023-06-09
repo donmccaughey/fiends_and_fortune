@@ -10,7 +10,7 @@ TextRectView::TextRectView(
     ushort color
 ) :
         TScroller(bounds, aHScrollBar, aVScrollBar),
-        textRect(std::move(textRect)),
+        textRect(move(textRect)),
         color(color)
 {
     growMode = gfGrowHiX | gfGrowHiY;

@@ -71,7 +71,7 @@ generateTreasure(Application &application, TEvent &event)
             auto aTreasure = newTreasure(letter);
             auto textRect = treasureDetails(aTreasure.get());
             auto treasureWindow = new TreasureWindow(
-                    bounds, letter, std::move(textRect)
+                    bounds, letter, move(textRect)
             );
             Application::deskTop->insert(treasureWindow);
         }

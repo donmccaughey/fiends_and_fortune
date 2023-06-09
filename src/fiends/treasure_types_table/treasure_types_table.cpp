@@ -35,7 +35,7 @@ treasureTypesTable(Application &application, TEvent &event)
     TRect bounds(0, 0, 60, 20);
     TextRect textRect = treasureTypesDescription();
     auto treasureTypesTableWindow = new TreasureTypesTableWindow(
-            bounds, std::move(textRect)
+            bounds, move(textRect)
     );
     Application::deskTop->insert(treasureTypesTableWindow);
     application.clearEvent(event);

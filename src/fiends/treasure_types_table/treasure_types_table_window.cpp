@@ -18,7 +18,7 @@ TreasureTypesTableWindow::TreasureTypesTableWindow(
                     viewBounds,
                     standardScrollBar(sbHorizontal | sbHandleKeyboard),
                     standardScrollBar(sbVertical | sbHandleKeyboard),
-                    std::move(textRect),
+                    move(textRect),
                     0x0301
             )
     );

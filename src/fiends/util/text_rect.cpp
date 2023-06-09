@@ -76,7 +76,7 @@ TextRect::TextRect(struct ptr_array const *array) {
 
 TextRect::TextRect(TextRect &&textRect) noexcept
 {
-    lines = std::move(textRect.lines);
+    lines = move(textRect.lines);
 }
 
 
@@ -84,6 +84,6 @@ TextRect &
 TextRect::operator=(TextRect &&textRect) noexcept
 {
     if (&textRect == this) return *this;
-    lines = std::move(textRect.lines);
+    lines = move(textRect.lines);
     return *this;
 }

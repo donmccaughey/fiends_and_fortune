@@ -21,6 +21,9 @@ add_executable(fiends
 
         views/text_rect_view.cpp
         )
+target_compile_options(fiends
+        PRIVATE -Wno-unqualified-std-cast-call  # to use `move()` w/o `std::`
+        )
 target_link_libraries(fiends
         base
         treasure
