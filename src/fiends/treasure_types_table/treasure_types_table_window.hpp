@@ -5,9 +5,12 @@
 #include "fiends/fiends.hpp"
 
 
+class TextRect;
+
+
 class TreasureTypesTableWindow : public TWindow {
 public:
-    explicit TreasureTypesTableWindow(TRect const &bounds);
+    explicit TreasureTypesTableWindow(TRect const &bounds, TextRect &&textRect);
     ~TreasureTypesTableWindow() override;
 };
 

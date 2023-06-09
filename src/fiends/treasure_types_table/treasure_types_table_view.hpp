@@ -14,7 +14,8 @@ public:
     TreasureTypesTableView(
         TRect const &bounds,
         TScrollBar *aHScrollBar,
-        TScrollBar *aVScrollBar
+        TScrollBar *aVScrollBar,
+        TextRect &&textRect
     );
 
     void draw() override;

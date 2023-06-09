@@ -5,7 +5,9 @@
 #include "fiends/util/window_numbers.hpp"
 
 
-TreasureTypesTableWindow::TreasureTypesTableWindow(TRect const &bounds) :
+TreasureTypesTableWindow::TreasureTypesTableWindow(
+        TRect const &bounds, TextRect &&textRect
+) :
     TWindowInit(&TreasureTypesTableWindow::initFrame),
     TWindow(bounds, "Treasure Types Table", windowNumbers.takeNext())
 {
@@ -13,7 +15,7 @@ TreasureTypesTableWindow::TreasureTypesTableWindow(TRect const &bounds) :
     r.grow(-1, -1);
     auto hScrollBar = standardScrollBar(sbHorizontal | sbHandleKeyboard);
     auto vScrollBar = standardScrollBar(sbVertical | sbHandleKeyboard);
-    insert(new TreasureTypesTableView(r, hScrollBar, vScrollBar));
+    insert(new TreasureTypesTableView(r, hScrollBar, vScrollBar, std::move(textRect)));
 }
 
 

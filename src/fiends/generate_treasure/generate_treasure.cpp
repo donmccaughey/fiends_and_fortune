@@ -67,11 +67,11 @@ generateTreasure(Application &application, TEvent &event)
     if (buttonPressed != cmCancel) {
         char letter = char(toupper(data.letter[0]));
         if (letter >= 'A' && letter <= 'Z') {
+            TRect bounds(0, 0, 60, 20);
             auto aTreasure = newTreasure(letter);
             auto textRect = treasureDetails(aTreasure.get());
-            TRect r(0, 0, 60, 20);
             auto treasureWindow = new TreasureWindow(
-                r, letter, std::move(textRect)
+                    bounds, letter, std::move(textRect)
             );
             Application::deskTop->insert(treasureWindow);
         }

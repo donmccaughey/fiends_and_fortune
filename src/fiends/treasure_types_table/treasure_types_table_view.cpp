@@ -1,36 +1,14 @@
 #include "treasure_types_table_view.hpp"
 
-#include "fiends/util/ptr.hpp"
-
-extern "C" {
-#include "base/base.h"
-#include "treasure/treasure.h"
-}
-
-
-static TextRect
-treasureTypes()
-{
-    auto types = vector<string>();
-    for (char letter = 'A'; letter <= 'Z'; ++letter) {
-        struct treasure_type *treasureType = treasure_type_by_letter(letter);
-        auto description = makeUnique(
-            treasure_type_alloc_description(treasureType, letter == 'A'),
-            free_or_die
-        );
-        types.emplace_back(description.get());
-    }
-    return TextRect(types);
-}
-
 
 TreasureTypesTableView::TreasureTypesTableView(
     TRect const &bounds,
     TScrollBar *aHScrollBar,
-    TScrollBar *aVScrollBar
+    TScrollBar *aVScrollBar,
+    TextRect &&textRect
 ) :
     TScroller(bounds, aHScrollBar, aVScrollBar),
-    table(treasureTypes())
+    table(std::move(textRect))
 {
     growMode = gfGrowHiX | gfGrowHiY;
     options |= ofFramed;
