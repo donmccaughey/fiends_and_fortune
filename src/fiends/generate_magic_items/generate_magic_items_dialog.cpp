@@ -1,14 +1,14 @@
-#include "generate_treasure_dialog.hpp"
+#include "generate_magic_items_dialog.hpp"
 
 #include "fiends/fiends.hpp"
 
 
 TDialog *
-newGenerateTreasureDialog()
+newGenerateMagicItemsDialog()
 {
     auto d = new TDialog(
         TRect(6, 3, 46, 11),
-        "Generate Treasure"
+        "Generate Magic Items"
     );
 
     d->insert(
@@ -25,13 +25,13 @@ newGenerateTreasureDialog()
         )
     );
 
-    auto inputLine = new TInputLine(TRect(26, 2, 29, 3), 2);
+    auto inputLine = new TInputLine(TRect(27, 2, 31, 3), 3);
     d->insert(inputLine);
 
     d->insert(
         new TLabel(
-            TRect(10, 2, 24, 3),
-            "~T~reasure type:", inputLine
+            TRect(8, 2, 25, 3),
+            "~N~umber of items:", inputLine
         )
     );
 

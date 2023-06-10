@@ -4,10 +4,6 @@
 
 #include "fiends/views/text_rect_view.hpp"
 
-extern "C" {
-#include "treasure/treasure.h"
-}
-
 
 static string
 makeTitle(char letter)

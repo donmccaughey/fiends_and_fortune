@@ -7,6 +7,8 @@
 
 #include "fiends/about/about.hpp"
 
+#include "fiends/generate_magic_items/generate_magic_items.hpp"
+
 #include "fiends/generate_treasure/generate_treasure.hpp"
 
 #include "fiends/treasure_types_table/treasure_types_table.hpp"
@@ -26,6 +28,9 @@ Application::handleEvent(TEvent &event)
         switch(event.message.command) {
             case cmAbout:
                 about(*this, event);
+                break;
+            case cmGenerateMagicItems:
+                generateMagicItems(*this, event);
                 break;
             case cmGenerateTreasure:
                 generateTreasure(*this, event);

@@ -53,27 +53,26 @@ newTreasure(char letter)
 void
 generateTreasure(Application &application, TEvent &event)
 {
-    struct GenerateTreasureDialogData data = {
-        .letter=" ",
+    GenerateTreasureDialogData data = {
+        .treasureType="",
     };
-
-    auto d = newGenerateTreasureDialog();
+    TDialog *d = newGenerateTreasureDialog();
     d->setData(&data);
-    auto buttonPressed = Application::deskTop->execView(d);
+    ushort buttonPressed = Application::deskTop->execView(d);
     if (buttonPressed != cmCancel) {
         d->getData(&data);
     }
     Application::destroy(d);
     if (buttonPressed != cmCancel) {
-        char letter = char(toupper(data.letter[0]));
+        char letter = char(toupper(data.treasureType[0]));
         if (letter >= 'A' && letter <= 'Z') {
             TRect bounds(0, 0, 60, 20);
             auto aTreasure = newTreasure(letter);
-            auto textRect = treasureDetails(aTreasure.get());
-            auto treasureWindow = new TreasureWindow(
+            TextRect textRect = treasureDetails(aTreasure.get());
+            auto *window = new TreasureWindow(
                     bounds, letter, move(textRect)
             );
-            Application::deskTop->insert(treasureWindow);
+            Application::deskTop->insert(window);
         }
     }
     application.clearEvent(event);

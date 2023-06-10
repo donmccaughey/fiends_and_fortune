@@ -6,7 +6,7 @@ class TDialog;
 
 
 struct GenerateTreasureDialogData {
-    char letter[2];
+    char treasureType[2];
 };
 
 

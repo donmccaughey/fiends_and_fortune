@@ -7,6 +7,7 @@ using std::unique_ptr;
 
 #include <string>
 using std::string;
+using std::to_string;
 
 #include <utility>
 using std::move;

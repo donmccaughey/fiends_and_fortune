@@ -22,6 +22,9 @@ newMenuBar(TRect r)
 
         + *new TSubMenu("~G~enerate", kbAltG)
         + *new TMenuItem(
+                "~M~agic Items", cmGenerateMagicItems, kbAltM
+        )
+        + *new TMenuItem(
                 "~T~reasure", cmGenerateTreasure, kbAltT
         )
 
