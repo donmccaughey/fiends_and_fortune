@@ -9,6 +9,9 @@ add_executable(fiends
         about/about.cpp
         about/about_dialog.cpp
 
+        generate_dungeon/dungeon_window.cpp
+        generate_dungeon/generate_dungeon.cpp
+
         generate_magic_items/generate_magic_items.cpp
         generate_magic_items/generate_magic_items_dialog.cpp
         generate_magic_items/magic_items_window.cpp

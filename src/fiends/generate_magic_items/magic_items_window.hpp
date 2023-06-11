@@ -6,7 +6,6 @@
 
 
 class TextRect;
-struct treasure;
 
 
 class MagicItemsWindow : public TWindow {
