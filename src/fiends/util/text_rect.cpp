@@ -52,6 +52,13 @@ padLines(vector<string> &lines, size_t length)
 TextRect::TextRect() = default;
 
 
+TextRect::TextRect(char const *text)
+{
+    int maxLength = appendLines(lines, text);
+    padLines(lines, maxLength);
+}
+
+
 TextRect::TextRect(vector<string> const &strings)
 {
     int maxLength = 0;

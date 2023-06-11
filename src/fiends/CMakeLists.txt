@@ -30,6 +30,7 @@ add_executable(fiends
         )
 target_link_libraries(fiends
         base
+        dungeon
         treasure
         tvision
         )

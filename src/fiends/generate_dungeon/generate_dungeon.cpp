@@ -4,15 +4,29 @@
 
 #include "fiends/application/application.hpp"
 
+#include "fiends/util/ptr.hpp"
 #include "fiends/util/text_rect.hpp"
+
+extern "C" {
+#include "base/base.h"
+#include "dungeon/dungeon.h"
+}
 
 
 static TextRect
 dungeonMap()
 {
-    vector<string> map;
+    auto dungeon = makeUnique(dungeon_alloc(), dungeon_free);
+    dungeon_generate_small(dungeon.get());
 
-    return TextRect(map);
+    auto levelMap = makeUnique(
+            level_map_alloc(dungeon.get(), 1),
+            level_map_free);
+    auto textRectangle = makeUnique(
+            level_map_alloc_text_rectangle(levelMap.get(), true),
+            text_rectangle_free);
+
+    return TextRect(textRectangle->chars);
 }
 
 
