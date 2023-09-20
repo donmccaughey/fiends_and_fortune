@@ -93,7 +93,7 @@ void
 treasure_map_finalize(struct treasure_map *treasure_map)
 {
     treasure_finalize(&treasure_map->treasure);
-    free_or_die(treasure_map->true_description);
+    free(treasure_map->true_description);
 }
 
 
@@ -430,7 +430,7 @@ treasure_map_generate(struct treasure_map *treasure_map, struct rnd *rnd)
                                                              miles,
                                                              direction_name(direction),
                                                              disposition);
-        free_or_die(description);
+        free(description);
     } else {
         char *description = treasure_alloc_description(&treasure_map->treasure);
         treasure_map->true_description = str_alloc_formatted("%smap to %s of %s in nearby labyrinth to the %s",
@@ -438,7 +438,7 @@ treasure_map_generate(struct treasure_map *treasure_map, struct rnd *rnd)
                                                              treasure_map_types[treasure_map_type],
                                                              description,
                                                              direction_name(direction));
-        free_or_die(description);
+        free(description);
     }
 }
 

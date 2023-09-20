@@ -301,7 +301,7 @@ tile_add_to_array_sorted_by_point_test(void)
     assert(tile1 == tiles[1]);
     assert(tile2 == tiles[2]);
 
-    free_or_die(tiles);
+    free(tiles);
     tile_free(tile0);
     tile_free(tile1);
     tile_free(tile2);
@@ -332,7 +332,7 @@ tile_find_in_array_sorted_by_point_test(void)
     found = tile_find_in_array_sorted_by_point(tiles, count, point_make(3, 1, 1));
     assert( ! found);
 
-    free_or_die(tiles);
+    free(tiles);
     tile_free(tile0);
     tile_free(tile1);
     tile_free(tile2);

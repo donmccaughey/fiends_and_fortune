@@ -427,7 +427,7 @@ point_alloc_xy_test(void)
 {
     char *point = point_alloc_xy(point_make(1, 2, 3));
     assert(str_eq("(1, 2)", point));
-    free_or_die(point);
+    free(point);
 }
 
 

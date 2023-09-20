@@ -16,32 +16,32 @@ coins_alloc_description_test(void)
 
     description = coins_alloc_description(coins);
     assert(str_eq("", description));
-    free_or_die(description);
+    free(description);
 
     coins.pp = 1;
     description = coins_alloc_description(coins);
     assert(str_eq("1 platinum", description));
-    free_or_die(description);
+    free(description);
 
     coins.gp = 22;
     description = coins_alloc_description(coins);
     assert(str_eq("22 gold, 1 platinum", description));
-    free_or_die(description);
+    free(description);
 
     coins.ep = 333;
     description = coins_alloc_description(coins);
     assert(str_eq("333 electrum, 22 gold, 1 platinum", description));
-    free_or_die(description);
+    free(description);
 
     coins.sp = 4444;
     description = coins_alloc_description(coins);
     assert(str_eq("4444 silver, 333 electrum, 22 gold, 1 platinum", description));
-    free_or_die(description);
+    free(description);
 
     coins.cp = 55555;
     description = coins_alloc_description(coins);
     assert(str_eq("55555 copper, 4444 silver, 333 electrum, 22 gold, 1 platinum", description));
-    free_or_die(description);
+    free(description);
 }
 
 
@@ -52,27 +52,27 @@ coins_alloc_gp_cp_description_test(void)
 
     description = coins_alloc_gp_cp_description(0);
     assert(str_eq("0 cp", description));
-    free_or_die(description);
+    free(description);
 
     description = coins_alloc_gp_cp_description(199);
     assert(str_eq("199 cp", description));
-    free_or_die(description);
+    free(description);
 
     description = coins_alloc_gp_cp_description(200);
     assert(str_eq("1 gp", description));
-    free_or_die(description);
+    free(description);
 
     description = coins_alloc_gp_cp_description(201);
     assert(str_eq("1 gp, 1 cp", description));
-    free_or_die(description);
+    free(description);
 
     description = coins_alloc_gp_cp_description(399);
     assert(str_eq("1 gp, 199 cp", description));
-    free_or_die(description);
+    free(description);
 
     description = coins_alloc_gp_cp_description(400);
     assert(str_eq("2 gp", description));
-    free_or_die(description);
+    free(description);
 }
 
 

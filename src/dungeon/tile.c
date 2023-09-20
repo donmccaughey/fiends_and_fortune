@@ -80,7 +80,7 @@ tile_find_in_array_sorted_by_point(struct tile **tiles,
 void
 tile_free(struct tile *tile)
 {
-    free_or_die(tile);
+    free(tile);
 }
 
 

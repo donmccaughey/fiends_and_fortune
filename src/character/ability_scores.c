@@ -43,7 +43,7 @@ ability_scores_alloc_method_2(struct rnd *rnd)
 void
 ability_scores_free(struct ability_scores *scores)
 {
-    free_or_die(scores);
+    free(scores);
 }
 
 

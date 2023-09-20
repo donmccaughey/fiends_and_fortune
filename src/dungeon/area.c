@@ -106,7 +106,7 @@ area_center_point(struct area const *area)
 void
 area_free(struct area *area)
 {
-    free_or_die(area);
+    free(area);
 }
 
 

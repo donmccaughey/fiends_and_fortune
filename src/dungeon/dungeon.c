@@ -86,12 +86,12 @@ dungeon_free(struct dungeon *dungeon)
         for (int i = 0; i < dungeon->areas_count; ++i) {
             area_free(dungeon->areas[i]);
         }
-        free_or_die(dungeon->areas);
+        free(dungeon->areas);
         for (int i = 0; i < dungeon->tiles_count; ++i) {
             tile_free(dungeon->tiles[i]);
         }
-        free_or_die(dungeon->tiles);
-        free_or_die(dungeon);
+        free(dungeon->tiles);
+        free(dungeon);
     }
 }
 
@@ -166,8 +166,8 @@ dungeon_alloc_descriptions_of_entrances_and_exits_for_level(struct dungeon *dung
             char *area_description = area_alloc_description(area);
             char *description = str_alloc_formatted("%-12s %s", location, area_description);
             ptr_array_add(descriptions, description);
-            free_or_die(location);
-            free_or_die(area_description);
+            free(location);
+            free(area_description);
         }
     }
     return descriptions;
@@ -186,8 +186,8 @@ dungeon_alloc_descriptions_of_chambers_and_rooms_for_level(struct dungeon *dunge
             char *area_description = area_alloc_description(area);
             char *description = str_alloc_formatted("%-12s %s", location, area_description);
             ptr_array_add(descriptions, description);
-            free_or_die(location);
-            free_or_die(area_description);
+            free(location);
+            free(area_description);
         }
     }
     return descriptions;
@@ -202,7 +202,7 @@ dungeon_print_areas_for_level(struct dungeon *dungeon, int level, FILE *out)
     for (int i = 0; i < descriptions->count; ++i) {
         fprintf(out, "    %s\n", (char *)descriptions->elements[i]);
     }
-    ptr_array_clear(descriptions, free_or_die);
+    ptr_array_clear(descriptions, free);
     ptr_array_free(descriptions);
     
     fprintf(out, "\n");
@@ -211,7 +211,7 @@ dungeon_print_areas_for_level(struct dungeon *dungeon, int level, FILE *out)
     for (int i = 0; i < descriptions->count; ++i) {
         fprintf(out, "    %s\n", (char *)descriptions->elements[i]);
     }
-    ptr_array_clear(descriptions, free_or_die);
+    ptr_array_clear(descriptions, free);
     ptr_array_free(descriptions);
 }
 

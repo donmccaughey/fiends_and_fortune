@@ -61,7 +61,7 @@ alloc_with_user_data_size(size_t size)
 {
     struct rnd *rnd = calloc_or_die(1, sizeof(struct rnd));
     rnd->user_data = calloc_or_die(1, size);
-    rnd->free_user_data = free_or_die;
+    rnd->free_user_data = free;
     return rnd;
 }
 
@@ -322,7 +322,7 @@ rnd_free(struct rnd *rnd)
     if (rnd && rnd->free_user_data) {
         rnd->free_user_data(rnd->user_data);
     }
-    free_or_die(rnd);
+    free(rnd);
 }
 
 

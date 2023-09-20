@@ -211,9 +211,9 @@ jewelry_alloc_true_description(struct jewelry *jewelry)
                                                  separator,
                                                  value_description);
 
-    free_or_die(modifiers);
-    free_or_die(value_description);
-    free_or_die(prefix);
+    free(modifiers);
+    free(value_description);
+    free(prefix);
 
     return true_description;
 }
@@ -266,7 +266,7 @@ jewelry_create_json_object(struct jewelry *jewelry)
 void
 jewelry_finalize(struct jewelry *jewelry)
 {
-    free_or_die(jewelry->true_description);
+    free(jewelry->true_description);
 }
 
 

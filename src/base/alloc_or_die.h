@@ -164,14 +164,4 @@ char *
 basename_or_die(char const *path);
 
 
-////////// Allocation Counting //////////
-
-// Wrapper for free().  Frees `memory' and decrements `alloc_or_die_count' if
-// `memory' is not NULL.
-inline void
-free_or_die(void *memory)
-{
-    free(memory);
-}
-
 #endif

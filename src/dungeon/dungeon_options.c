@@ -26,5 +26,5 @@ dungeon_options_alloc_default(void)
 void
 dungeon_options_free(struct dungeon_options *dungeon_options)
 {
-    free_or_die(dungeon_options);
+    free(dungeon_options);
 }

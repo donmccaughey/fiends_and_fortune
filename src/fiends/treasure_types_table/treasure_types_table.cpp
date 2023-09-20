@@ -21,7 +21,7 @@ treasureTypesDescription()
         struct treasure_type *treasureType = treasure_type_by_letter(letter);
         auto description = makeUnique(
             treasure_type_alloc_description(treasureType, letter == 'A'),
-            free_or_die
+            free
         );
         types.emplace_back(description.get());
     }

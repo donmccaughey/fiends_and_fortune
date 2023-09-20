@@ -36,13 +36,13 @@ magicItemDetails(magic_item const *magicItems, int count)
     for (int i = 0; i < count; ++i) {
         char *description = str_alloc_formatted("  %4i %s", (i + 1), magicItems[i].true_description);
         details.emplace_back(description);
-        free_or_die(description);
+        free(description);
         if (magicItems[i].true_details) {
             int j = 0;
             while (magicItems[i].true_details[j]) {
                 char *detail = str_alloc_formatted("           %s", magicItems[i].true_details[j]);
                 details.emplace_back(detail);
-                free_or_die(detail);
+                free(detail);
                 ++j;
             }
         }

@@ -114,7 +114,7 @@ abilities_compare(struct abilities const *first,
 void
 abilities_free(struct abilities *abilities)
 {
-    free_or_die(abilities);
+    free(abilities);
 }
 
 

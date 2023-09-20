@@ -55,7 +55,7 @@ basename_or_die(char const *path)
         return result;
     } else {
         char *name = strdup_or_die(result);
-        free_or_die(path_copy);
+        free(path_copy);
         return name;
     }
 }
@@ -68,9 +68,6 @@ arraydup_or_die(void const *memory, size_t count, size_t element_size);
 
 extern inline void *
 calloc_or_die(size_t count, size_t element_size);
-
-extern inline void
-free_or_die(void *memory);
 
 extern inline void *
 malloc_or_die(size_t size);

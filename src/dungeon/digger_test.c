@@ -425,7 +425,7 @@ digger_dig_starting_stairs_test(void)
             "-1     n  n  n \n";
     thumbnail = tiles_thumbnail_directions_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_directions, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_features =
             "   -2 -1  0  1 \n"
@@ -434,7 +434,7 @@ digger_dig_starting_stairs_test(void)
             "-1     0  0  0 \n";
     thumbnail = tiles_thumbnail_features_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_features, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_types =
             "   -2 -1  0  1 \n"
@@ -443,7 +443,7 @@ digger_dig_starting_stairs_test(void)
             "-1     :  :  : \n";
     thumbnail = tiles_thumbnail_types_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_types, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_walls =
             "   -2 -1  0  1 \n"
@@ -452,7 +452,7 @@ digger_dig_starting_stairs_test(void)
             "-1    .. .. .. \n";
     thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     digger_free(digger);
     generator_free(generator);
@@ -491,7 +491,7 @@ digger_dig_area_test_for_10x10_chamber_north(void)
             "-1     n  n \n";
     thumbnail = tiles_thumbnail_directions_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_directions, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_features =
             "   -1  0  1 \n"
@@ -500,7 +500,7 @@ digger_dig_area_test_for_10x10_chamber_north(void)
             "-1     0  0 \n";
     thumbnail = tiles_thumbnail_features_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_features, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_types =
             "   -1  0  1 \n"
@@ -509,7 +509,7 @@ digger_dig_area_test_for_10x10_chamber_north(void)
             "-1     :  : \n";
     thumbnail = tiles_thumbnail_types_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_types, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_walls =
             "   -1  0  1 \n"
@@ -518,7 +518,7 @@ digger_dig_area_test_for_10x10_chamber_north(void)
             "-1    .. .. \n";
     thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     digger_free(digger);
     generator_free(generator);
@@ -557,7 +557,7 @@ digger_dig_area_test_for_10x10_chamber_south(void)
             "-1     n  n \n";
     thumbnail = tiles_thumbnail_directions_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_directions, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_features =
             "   -1  0  1 \n"
@@ -566,7 +566,7 @@ digger_dig_area_test_for_10x10_chamber_south(void)
             "-1     0  0 \n";
     thumbnail = tiles_thumbnail_features_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_features, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_types =
             "   -1  0  1 \n"
@@ -575,7 +575,7 @@ digger_dig_area_test_for_10x10_chamber_south(void)
             "-1     :  : \n";
     thumbnail = tiles_thumbnail_types_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_types, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_walls =
             "   -1  0  1 \n"
@@ -584,7 +584,7 @@ digger_dig_area_test_for_10x10_chamber_south(void)
             "-1    .. .. \n";
     thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     digger_free(digger);
     generator_free(generator);
@@ -623,7 +623,7 @@ digger_dig_area_test_for_10x10_chamber_east(void)
             "-1     n  n \n";
     thumbnail = tiles_thumbnail_directions_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_directions, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_features =
             "   -1  0  1 \n"
@@ -632,7 +632,7 @@ digger_dig_area_test_for_10x10_chamber_east(void)
             "-1     0  0 \n";
     thumbnail = tiles_thumbnail_features_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_features, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_types =
             "   -1  0  1 \n"
@@ -641,7 +641,7 @@ digger_dig_area_test_for_10x10_chamber_east(void)
             "-1     :  : \n";
     thumbnail = tiles_thumbnail_types_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_types, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_walls =
             "   -1  0  1 \n"
@@ -650,7 +650,7 @@ digger_dig_area_test_for_10x10_chamber_east(void)
             "-1    .. .. \n";
     thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     digger_free(digger);
     generator_free(generator);
@@ -689,7 +689,7 @@ digger_dig_area_test_for_10x10_chamber_west(void)
             "-1     n  n \n";
     thumbnail = tiles_thumbnail_directions_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_directions, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_features =
             "   -1  0  1 \n"
@@ -698,7 +698,7 @@ digger_dig_area_test_for_10x10_chamber_west(void)
             "-1     0  0 \n";
     thumbnail = tiles_thumbnail_features_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_features, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_types =
             "   -1  0  1 \n"
@@ -707,7 +707,7 @@ digger_dig_area_test_for_10x10_chamber_west(void)
             "-1     :  : \n";
     thumbnail = tiles_thumbnail_types_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_types, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_walls =
             "   -1  0  1 \n"
@@ -716,7 +716,7 @@ digger_dig_area_test_for_10x10_chamber_west(void)
             "-1    .. .. \n";
     thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     digger_free(digger);
     generator_free(generator);
@@ -756,7 +756,7 @@ digger_dig_area_test_for_30x20_room(void)
             "-2     n  n  n  n \n";
     thumbnail = tiles_thumbnail_directions_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_directions, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_features =
             "   -3 -2 -1  0  1 \n"
@@ -766,7 +766,7 @@ digger_dig_area_test_for_30x20_room(void)
             "-2     0  0  0  0 \n";
     thumbnail = tiles_thumbnail_features_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_features, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_types =
             "   -3 -2 -1  0  1 \n"
@@ -776,7 +776,7 @@ digger_dig_area_test_for_30x20_room(void)
             "-2     :  :  :  : \n";
     thumbnail = tiles_thumbnail_types_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_types, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_walls =
             "   -3 -2 -1  0  1 \n"
@@ -786,7 +786,7 @@ digger_dig_area_test_for_30x20_room(void)
             "-2    .. .. .. .. \n";
     thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     digger_free(digger);
     generator_free(generator);
@@ -826,7 +826,7 @@ digger_dig_area_test_for_30x20_room_with_left_offset(void)
             "-1    .. .. .. .. \n";
     thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     digger_free(digger);
     generator_free(generator);
@@ -865,7 +865,7 @@ digger_dig_area_test_for_60_passage(void)
             "-1     n  n  n  n  n  n  n \n";
     thumbnail = tiles_thumbnail_directions_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_directions, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_features =
             "   -4 -3 -2 -1  0  1  2  3 \n"
@@ -874,7 +874,7 @@ digger_dig_area_test_for_60_passage(void)
             "-1     0  0  0  0  0  0  0 \n";
     thumbnail = tiles_thumbnail_features_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_features, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_types =
             "   -4 -3 -2 -1  0  1  2  3 \n"
@@ -883,7 +883,7 @@ digger_dig_area_test_for_60_passage(void)
             "-1     :  :  :  :  :  :  : \n";
     thumbnail = tiles_thumbnail_types_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_types, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_walls =
             "   -4 -3 -2 -1  0  1  2  3 \n"
@@ -892,7 +892,7 @@ digger_dig_area_test_for_60_passage(void)
             "-1    .. .. .. .. .. .. .. \n";
     thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     digger_free(digger);
     generator_free(generator);
@@ -931,7 +931,7 @@ digger_dig_area_test_for_stairs_up(void)
             "-1     n  n  n \n";
     thumbnail = tiles_thumbnail_directions_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_directions, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_features =
             "   -1  0  1  2 \n"
@@ -940,7 +940,7 @@ digger_dig_area_test_for_stairs_up(void)
             "-1     0  0  0 \n";
     thumbnail = tiles_thumbnail_features_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_features, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_types =
             "   -1  0  1  2 \n"
@@ -949,7 +949,7 @@ digger_dig_area_test_for_stairs_up(void)
             "-1     :  :  : \n";
     thumbnail = tiles_thumbnail_types_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_types, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_walls =
             "   -1  0  1  2 \n"
@@ -958,7 +958,7 @@ digger_dig_area_test_for_stairs_up(void)
             "-1    .. .. .. \n";
     thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     digger_free(digger);
     generator_free(generator);
@@ -997,7 +997,7 @@ digger_dig_area_test_for_stairs_down(void)
             "-1     n  n  n \n";
     thumbnail = tiles_thumbnail_directions_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_directions, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_features =
             "   -1  0  1  2 \n"
@@ -1006,7 +1006,7 @@ digger_dig_area_test_for_stairs_down(void)
             "-1     0  0  0 \n";
     thumbnail = tiles_thumbnail_features_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_features, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_types =
             "   -1  0  1  2 \n"
@@ -1015,7 +1015,7 @@ digger_dig_area_test_for_stairs_down(void)
             "-1     :  :  : \n";
     thumbnail = tiles_thumbnail_types_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_types, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_walls =
             "   -1  0  1  2 \n"
@@ -1024,7 +1024,7 @@ digger_dig_area_test_for_stairs_down(void)
             "-1    .. .. .. \n";
     thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     digger_free(digger);
     generator_free(generator);
@@ -1163,7 +1163,7 @@ digger_dig_chamber_test(void)
             "-1    .. .. .. \n";
     char *thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     digger_free(digger);
     generator_free(generator);
@@ -1223,7 +1223,7 @@ digger_dig_intersection_test(void)
             "-1     :  : \n";
     thumbnail = tiles_thumbnail_types_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_types, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_walls =
             "   -1  0  1 \n"
@@ -1232,7 +1232,7 @@ digger_dig_intersection_test(void)
             "-1    .. .. \n";
     thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     digger_free(digger);
     generator_free(generator);
@@ -1293,7 +1293,7 @@ digger_dig_passage_test(void)
             "-1     :  : \n";
     thumbnail = tiles_thumbnail_types_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_types, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_walls =
             "   -1  0  1 \n"
@@ -1304,7 +1304,7 @@ digger_dig_passage_test(void)
             "-1    .. .. \n";
     thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     digger_free(digger);
     generator_free(generator);
@@ -1365,7 +1365,7 @@ digger_dig_room_test(void)
             "-1    .. .. .. \n";
     char *thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     digger_free(digger);
     generator_free(generator);
@@ -1426,7 +1426,7 @@ digger_dig_stairs_down_test(void)
             "-1     :  : \n";
     thumbnail = tiles_thumbnail_types_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_types, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_walls =
             "   -1  0  1 \n"
@@ -1436,7 +1436,7 @@ digger_dig_stairs_down_test(void)
             "-1    .. .. \n";
     thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     digger_free(digger);
     generator_free(generator);
@@ -1497,7 +1497,7 @@ digger_dig_stairs_up_test(void)
             "-1     :  : \n";
     thumbnail = tiles_thumbnail_types_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_types, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     char const *expected_walls =
             "   -1  0  1 \n"
@@ -1507,7 +1507,7 @@ digger_dig_stairs_up_test(void)
             "-1    .. .. \n";
     thumbnail = tiles_thumbnail_walls_alloc(generator->tiles, generator->tiles_count);
     assert(str_eq(expected_walls, thumbnail));
-    free_or_die(thumbnail);
+    free(thumbnail);
 
     digger_free(digger);
     generator_free(generator);

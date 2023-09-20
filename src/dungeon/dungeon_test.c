@@ -251,7 +251,7 @@ dungeon_alloc_tiles_for_box_test(void)
     assert(point_equals(point_make(1, 1, 1), tiles[3]->point));
     assert(point_equals(point_make(0, 2, 1), tiles[4]->point));
     assert(point_equals(point_make(1, 2, 1), tiles[5]->point));
-    free_or_die(tiles);
+    free(tiles);
 
     box = box_make(point_make(0, 0, 1), size_make(2, 1, 3));
     tiles = dungeon_alloc_tiles_for_box(dungeon, box);
@@ -263,7 +263,7 @@ dungeon_alloc_tiles_for_box_test(void)
     assert(point_equals(point_make(1, 0, 2), tiles[3]->point));
     assert(point_equals(point_make(0, 0, 3), tiles[4]->point));
     assert(point_equals(point_make(1, 0, 3), tiles[5]->point));
-    free_or_die(tiles);
+    free(tiles);
 
     dungeon_free(dungeon);
 }
@@ -358,7 +358,7 @@ dungeon_alloc_descriptions_of_entrances_and_exits_for_level_test(void)
     assert(descriptions);
     assert(1 == descriptions->count);
     assert(str_eq("(0, 0)       stairs down to level 2", descriptions->elements[0]));
-    ptr_array_clear(descriptions, free_or_die);
+    ptr_array_clear(descriptions, free);
     ptr_array_free(descriptions);
 
     box = box_make(point_make(10, 10, 1), size_make(3, 3, 1));
@@ -371,7 +371,7 @@ dungeon_alloc_descriptions_of_entrances_and_exits_for_level_test(void)
     assert(2 == descriptions->count);
     assert(str_eq("(0, 0)       stairs down to level 2", descriptions->elements[0]));
     assert(str_eq("(11, 11)     30' x 30' room, chimney up to surface", descriptions->elements[1]));
-    ptr_array_clear(descriptions, free_or_die);
+    ptr_array_clear(descriptions, free);
     ptr_array_free(descriptions);
 
     dungeon_free(dungeon);
@@ -408,7 +408,7 @@ dungeon_alloc_descriptions_of_chambers_and_rooms_for_level_test(void)
     assert(descriptions);
     assert(1 == descriptions->count);
     assert(str_eq("(4, 4)       20' x 20' chamber", descriptions->elements[0]));
-    ptr_array_clear(descriptions, free_or_die);
+    ptr_array_clear(descriptions, free);
     ptr_array_free(descriptions);
 
     box = box_make(point_make(10, 10, 1), size_make(3, 3, 1));
@@ -421,7 +421,7 @@ dungeon_alloc_descriptions_of_chambers_and_rooms_for_level_test(void)
     assert(2 == descriptions->count);
     assert(str_eq("(4, 4)       20' x 20' chamber", descriptions->elements[0]));
     assert(str_eq("(11, 11)     30' x 30' room, chimney up to surface", descriptions->elements[1]));
-    ptr_array_clear(descriptions, free_or_die);
+    ptr_array_clear(descriptions, free);
     ptr_array_free(descriptions);
 
     dungeon_free(dungeon);

@@ -185,12 +185,12 @@ magic_item_finalize(struct magic_item *magic_item)
     if (magic_item->true_details) {
         int i = 0;
         while (magic_item->true_details[i]) {
-            free_or_die(magic_item->true_details[i]);
+            free(magic_item->true_details[i]);
             ++i;
         }
-        free_or_die(magic_item->true_details);
+        free(magic_item->true_details);
     }
-    free_or_die(magic_item->true_description);
+    free(magic_item->true_description);
 }
 
 
@@ -516,7 +516,7 @@ generate_figurine_of_wondrous_power(struct magic_item *magic_item,
     magic_item->true_value_in_cp = gp_to_cp(hit_dice * 1000);
     magic_item->true_description = str_alloc_formatted("figurine of wondrous power: %s",
                                                        type);
-    free_or_die(type);
+    free(type);
 }
 
 
@@ -1939,8 +1939,8 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
     char *trueDescription = magic_item->true_description;
     magic_item->true_description = str_alloc_formatted("%s (unusual)",
                                                        trueDescription);
-    free_or_die(trueDescription);
-    
+    free(trueDescription);
+
     int detail_capacity = detail_count +
                         + 2 /* intelligence, alignment */
                         + 6 /* up to 6 primary abilities */

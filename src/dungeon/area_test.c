@@ -43,107 +43,107 @@ area_alloc_description_test(void)
     area->type = area_type_chamber;
     description = area_alloc_description(area);
     assert(0 == strcmp("30' x 40' chamber", description));
-    free_or_die(description);
+    free(description);
 
     // intersection
 
     area->type = area_type_intersection;
     description = area_alloc_description(area);
     assert(0 == strcmp("intersection", description));
-    free_or_die(description);
+    free(description);
 
     // passages
 
     area->type = area_type_passage;
     description = area_alloc_description(area);
     assert(0 == strcmp("40' passage north to south", description));
-    free_or_die(description);
+    free(description);
 
     area->direction = direction_south;
     description = area_alloc_description(area);
     assert(0 == strcmp("40' passage north to south", description));
-    free_or_die(description);
+    free(description);
 
     area->direction = direction_east;
     description = area_alloc_description(area);
     assert(0 == strcmp("30' passage east to west", description));
-    free_or_die(description);
+    free(description);
 
     area->direction = direction_west;
     description = area_alloc_description(area);
     assert(0 == strcmp("30' passage east to west", description));
-    free_or_die(description);
+    free(description);
 
     // room
 
     area->type = area_type_room;
     description = area_alloc_description(area);
     assert(0 == strcmp("30' x 40' room", description));
-    free_or_die(description);
+    free(description);
 
     // stairs down
 
     area->type = area_type_stairs_down;
     description = area_alloc_description(area);
     assert(0 == strcmp("stairs down to level 8", description));
-    free_or_die(description);
+    free(description);
 
     // stairs up
 
     area->type = area_type_stairs_up;
     description = area_alloc_description(area);
     assert(0 == strcmp("stairs up to level 6", description));
-    free_or_die(description);
+    free(description);
 
     area->box.origin.z = 1;
     description = area_alloc_description(area);
     assert(0 == strcmp("stairs up to surface", description));
-    free_or_die(description);
+    free(description);
 
     // unknown
 
     area->type = area_type_unknown;
     description = area_alloc_description(area);
     assert(0 == strcmp("30' x 40' area", description));
-    free_or_die(description);
+    free(description);
 
     // with chimney up
 
     area->features = area_features_chimney_up;
     description = area_alloc_description(area);
     assert(0 == strcmp("30' x 40' area, chimney up to surface", description));
-    free_or_die(description);
+    free(description);
 
     area->box.origin.z = 7;
     description = area_alloc_description(area);
     assert(0 == strcmp("30' x 40' area, chimney up to level 6", description));
-    free_or_die(description);
+    free(description);
 
     // with chimney down
 
     area->features = area_features_chimney_down;
     description = area_alloc_description(area);
     assert(0 == strcmp("30' x 40' area, chimney down to level 8", description));
-    free_or_die(description);
+    free(description);
 
     // with chute entrance
 
     area->features = area_features_chute_entrance;
     description = area_alloc_description(area);
     assert(0 == strcmp("30' x 40' area, chute down to level 8", description));
-    free_or_die(description);
+    free(description);
 
     // with chute exit
 
     area->features = area_features_chute_exit;
     description = area_alloc_description(area);
     assert(0 == strcmp("30' x 40' area, chute down from level 6", description));
-    free_or_die(description);
+    free(description);
 
     area->box.origin.z = 1;
     description = area_alloc_description(area);
     assert(0 == strcmp("30' x 40' area, chute down from surface", description));
-    free_or_die(description);
+    free(description);
 
     // with all features
 
@@ -156,7 +156,7 @@ area_alloc_description_test(void)
                            "chute down to level 2, "
                            "chute down from surface";
     assert(0 == strcmp(expected, description));
-    free_or_die(description);
+    free(description);
 
     area_free(area);
 }

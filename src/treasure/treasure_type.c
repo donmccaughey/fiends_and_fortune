@@ -754,16 +754,16 @@ treasure_type_alloc_description(struct treasure_type *treasure_type,
                                             letter, copper, silver, electrum,
                                             gold, platinum, gems, jewelry,
                                             maps_or_magic);
-    free_or_die(letter);
-    free_or_die(copper);
-    free_or_die(silver);
-    free_or_die(electrum);
-    free_or_die(gold);
-    free_or_die(platinum);
-    free_or_die(gems);
-    free_or_die(jewelry);
-    free_or_die(maps_or_magic);
-    
+    free(letter);
+    free(copper);
+    free(silver);
+    free(electrum);
+    free(gold);
+    free(platinum);
+    free(gems);
+    free(jewelry);
+    free(maps_or_magic);
+
     return description;
 }
 
@@ -785,7 +785,7 @@ describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry *coins_gems_or_jewel
         char *range = dice_alloc_base_range_description(amount);
         char *description = str_alloc_centered_and_formatted(9, "%s per",
                                                              range);
-        free_or_die(range);
+        free(range);
         return description;
     } else {
         struct dice amount = dice_parse(coins_gems_or_jewelry->amount);
@@ -793,7 +793,7 @@ describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry *coins_gems_or_jewel
         char *description = str_alloc_centered_and_formatted(9, "%s:%2i%%",
                                                              range,
                                                              coins_gems_or_jewelry->percent_chance);
-        free_or_die(range);
+        free(range);
         return description;
     }
 }
@@ -828,7 +828,7 @@ describe_maps_or_magic(struct maps_or_magic *maps_or_magic)
             type_descriptions[i] = str_alloc_formatted("%s %s%s", range,
                                                        type_name, plural);
         }
-        free_or_die(range);
+        free(range);
     }
 
     char *description = NULL;
@@ -836,7 +836,7 @@ describe_maps_or_magic(struct maps_or_magic *maps_or_magic)
         char const *separator = (i) ? ", " : "";
         str_realloc_append_formatted(&description, "%s%s",
                                      separator, type_descriptions[i]);
-        free_or_die(type_descriptions[i]);
+        free(type_descriptions[i]);
     }
     str_realloc_append_formatted(&description, ": %i%%",
                                  maps_or_magic->percent_chance);

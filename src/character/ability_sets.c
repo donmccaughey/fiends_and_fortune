@@ -25,7 +25,7 @@ ability_sets_alloc_method_4(struct rnd *rnd)
 void
 ability_sets_free(struct ability_sets *sets)
 {
-    free_or_die(sets);
+    free(sets);
 }
 
 

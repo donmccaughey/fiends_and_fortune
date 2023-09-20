@@ -53,8 +53,8 @@ void
 ptr_array_free(struct ptr_array *ptr_array)
 {
     if (!ptr_array) return;
-    free_or_die(ptr_array->elements);
-    free_or_die(ptr_array);
+    free(ptr_array->elements);
+    free(ptr_array);
 }
 
 

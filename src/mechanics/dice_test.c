@@ -14,39 +14,39 @@ dice_alloc_base_range_description_test(void)
 {
     char *description = dice_alloc_base_range_description(dice_make(0, 6));
     assert(0 == strcmp("0", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_base_range_description(dice_make_plus(0, 6, 2));
     assert(0 == strcmp("2", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_base_range_description(dice_make_plus_times(0, 4, 4, 10));
     assert(0 == strcmp("4", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_base_range_description(dice_make(3, 1));
     assert(0 == strcmp("3", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_base_range_description(dice_make(3, 6));
     assert(0 == strcmp("3-18", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_base_range_description(dice_make_plus(2, 8, 1));
     assert(0 == strcmp("3-17", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_base_range_description(dice_make_plus(2, 4, -1));
     assert(0 == strcmp("1-7", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_base_range_description(dice_make_plus_times(1, 10, 0, 10));
     assert(0 == strcmp("1-10", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_base_range_description(dice_make_plus_times(1, 4, 1, 10000));
     assert(0 == strcmp("2-5", description));
-    free_or_die(description);
+    free(description);
 }
 
 
@@ -55,31 +55,31 @@ dice_alloc_description_test(void)
 {
     char *description = dice_alloc_description(dice_make(0, 6));
     assert(0 == strcmp("0", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_description(dice_make(5, 1));
     assert(0 == strcmp("5", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_description(dice_make(3, 6));
     assert(0 == strcmp("3d6", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_description(dice_make_plus(2, 8, 1));
     assert(0 == strcmp("2d8+1", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_description(dice_make_plus(2, 4, -1));
     assert(0 == strcmp("2d4-1", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_description(dice_make_plus_times(1, 10, 0, 10));
     assert(0 == strcmp("1d10x10", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_description(dice_make_plus_times(1, 4, 1, 10000));
     assert(0 == strcmp("1d4+1x10000", description));
-    free_or_die(description);
+    free(description);
 }
 
 
@@ -88,39 +88,39 @@ dice_alloc_range_description_test(void)
 {
     char *description = dice_alloc_range_description(dice_make(0, 6));
     assert(0 == strcmp("0", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_range_description(dice_make_plus(0, 6, 2));
     assert(0 == strcmp("2", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_range_description(dice_make_plus_times(0, 4, 4, 10));
     assert(0 == strcmp("40", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_range_description(dice_make(3, 1));
     assert(0 == strcmp("3", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_range_description(dice_make(3, 6));
     assert(0 == strcmp("3-18", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_range_description(dice_make_plus(2, 8, 1));
     assert(0 == strcmp("3-17", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_range_description(dice_make_plus(2, 4, -1));
     assert(0 == strcmp("1-7", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_range_description(dice_make_plus_times(1, 10, 0, 10));
     assert(0 == strcmp("10-100", description));
-    free_or_die(description);
+    free(description);
 
     description = dice_alloc_range_description(dice_make_plus_times(1, 4, 1, 10000));
     assert(0 == strcmp("20000-50000", description));
-    free_or_die(description);
+    free(description);
 }
 
 

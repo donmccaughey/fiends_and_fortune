@@ -63,8 +63,8 @@ void
 text_rectangle_free(struct text_rectangle *text_rectangle)
 {
     if (text_rectangle) {
-        free_or_die(text_rectangle->chars);
-        free_or_die(text_rectangle);
+        free(text_rectangle->chars);
+        free(text_rectangle);
     }
 }
 
@@ -113,8 +113,8 @@ text_rectangle_print_format(struct text_rectangle *text_rectangle,
     char *chars = text_rectangle_row_at(text_rectangle, text_rectangle->caret.row_index)
                 + text_rectangle->caret.column_index;
     memcpy(chars, buffer, chars_to_copy);
-    free_or_die(buffer);
-    
+    free(buffer);
+
     text_rectangle->caret.column_index += chars_printed;
 }
 

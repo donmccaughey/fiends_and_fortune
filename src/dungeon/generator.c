@@ -198,14 +198,14 @@ void
 generator_free(struct generator *generator)
 {
     generator_rollback(generator);
-    free_or_die(generator->areas);
+    free(generator->areas);
     for (int i = 0; i < generator->diggers_count; ++i) {
         digger_free(generator->diggers[i]);
     }
-    free_or_die(generator->diggers);
-    free_or_die(generator->saved_diggers);
-    free_or_die(generator->tiles);
-    free_or_die(generator);
+    free(generator->diggers);
+    free(generator->saved_diggers);
+    free(generator->tiles);
+    free(generator);
 }
 
 
@@ -233,7 +233,7 @@ generator_generate(struct generator *generator)
                 generator_rollback(generator);
             }
         }
-        free_or_die(diggers);
+        free(diggers);
         ++generator->iteration_count;
         if (generator->progress_callback) {
             generator->progress_callback(generator,

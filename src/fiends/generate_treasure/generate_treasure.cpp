@@ -22,7 +22,7 @@ treasureDetails(treasure *treasure)
     auto details = makeUnique(
         treasure_alloc_details(treasure),
         [](struct ptr_array *ptr_array) {
-            ptr_array_clear(ptr_array, free_or_die);
+            ptr_array_clear(ptr_array, free);
             ptr_array_free(ptr_array);
         }
     );

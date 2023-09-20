@@ -279,7 +279,7 @@ digger_dig_stairs_up(struct digger *digger,
 void
 digger_free(struct digger *digger)
 {
-    free_or_die(digger);
+    free(digger);
 }
 
 

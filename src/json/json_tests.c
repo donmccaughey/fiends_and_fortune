@@ -17,7 +17,7 @@ json_array_alloc_string_value_when_missing_test(void)
     assert(str_eq(missing, value));
     assert(missing != value);
 
-    free_or_die(value);
+    free(value);
     cJSON_Delete(json_array);
 }
 
@@ -33,7 +33,7 @@ json_array_alloc_string_value_when_present_test(void)
 
     assert(str_eq("present", value));
 
-    free_or_die(value);
+    free(value);
     cJSON_Delete(json_array);
 }
 
@@ -50,7 +50,7 @@ json_array_alloc_string_value_when_bad_value_test(void)
     assert(str_eq(missing, value));
     assert(missing != value);
 
-    free_or_die(value);
+    free(value);
     cJSON_Delete(json_array);
 }
 
@@ -65,7 +65,7 @@ json_array_alloc_string_value_when_default_is_null_test(void)
 
     assert(NULL == value);
 
-    free_or_die(value);
+    free(value);
     cJSON_Delete(json_array);
 }
 
@@ -143,7 +143,7 @@ json_object_alloc_string_value_when_missing_test(void)
     assert(str_eq(missing, value));
     assert(missing != value);
 
-    free_or_die(value);
+    free(value);
     cJSON_Delete(json_object);
 }
 
@@ -161,7 +161,7 @@ json_object_alloc_string_value_when_present_test(void)
 
     assert(str_eq("bar", value));
 
-    free_or_die(value);
+    free(value);
     cJSON_Delete(json_object);
 }
 
@@ -180,7 +180,7 @@ json_object_alloc_string_value_when_bad_value_test(void)
     assert(str_eq(missing, value));
     assert(missing != value);
 
-    free_or_die(value);
+    free(value);
     cJSON_Delete(json_object);
 }
 

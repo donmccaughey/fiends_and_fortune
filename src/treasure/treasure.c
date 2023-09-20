@@ -79,7 +79,7 @@ treasure_alloc_description(struct treasure *treasure)
         if (phrases[i]) {
             if (phrase_count) strcat(description, ", ");
             strcat(description, phrases[i]);
-            free_or_die(phrases[i]);
+            free(phrases[i]);
             ++phrase_count;
         }
     }
@@ -94,14 +94,14 @@ treasure_alloc_details(struct treasure *treasure)
 
     char *treasure_type_name = treasure_type_alloc_name(treasure->type);
     ptr_array_add(lines, str_alloc_formatted("Treasure type %s", treasure_type_name));
-    free_or_die(treasure_type_name);
+    free(treasure_type_name);
 
     char *description = treasure_alloc_description(treasure);
     int value_cp = treasure_value_in_cp(treasure);
     char *value_gp = coins_alloc_gp_cp_description(value_cp);
     ptr_array_add(lines, str_alloc_formatted("    %s (total %s)", description, value_gp));
-    free_or_die(value_gp);
-    free_or_die(description);
+    free(value_gp);
+    free(description);
 
     if (treasure->gems_count) {
         ptr_array_add(lines, strdup_or_die("Gems: --------------------------------"));
@@ -155,7 +155,7 @@ treasure_create_json_object(struct treasure *treasure)
     if (treasure->type) {
         char *type = treasure_type_alloc_name(treasure->type);
         cJSON_AddStringToObject(json_object, "type", type);
-        free_or_die(type);
+        free(type);
     } else {
         cJSON_AddNullToObject(json_object, "type");
     }
@@ -197,22 +197,22 @@ treasure_finalize(struct treasure *treasure)
     for (int i = 0; i < treasure->gems_count; ++i) {
         gem_finalize(&treasure->gems[i]);
     }
-    free_or_die(treasure->gems);
+    free(treasure->gems);
 
     for (int i = 0; i < treasure->jewelry_count; ++i) {
         jewelry_finalize(&treasure->jewelry[i]);
     }
-    free_or_die(treasure->jewelry);
+    free(treasure->jewelry);
 
     for (int i = 0; i < treasure->maps_count; ++i) {
         treasure_map_finalize(&treasure->maps[i]);
     }
-    free_or_die(treasure->maps);
+    free(treasure->maps);
 
     for (int i = 0; i < treasure->magic_items_count; ++i) {
         magic_item_finalize(&treasure->magic_items[i]);
     }
-    free_or_die(treasure->magic_items);
+    free(treasure->magic_items);
 }
 
 

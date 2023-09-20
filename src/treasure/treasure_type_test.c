@@ -17,12 +17,12 @@ treasure_type_by_letter_A_test(void)
 
     char *name = treasure_type_alloc_name(treasure_type);
     assert(str_eq("A", name));
-    free_or_die(name);
+    free(name);
 
     char *description = treasure_type_alloc_description(treasure_type, false);
     char const *expected = "    A     |  1-6:25%  |  1-6:30%  |  1-6:35%  |  1-10:40% |  1-4:25%  |  4-40:60% |  3-30:50% | any 3: 30%\n";
     assert(str_eq(expected, description));
-    free_or_die(description);
+    free(description);
 
     description = treasure_type_alloc_description(treasure_type, true);
     expected =
@@ -32,7 +32,7 @@ treasure_type_by_letter_A_test(void)
             "----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------\n"
             "    A     |  1-6:25%  |  1-6:30%  |  1-6:35%  |  1-10:40% |  1-4:25%  |  4-40:60% |  3-30:50% | any 3: 30%\n";
     assert(str_eq(expected, description));
-    free_or_die(description);
+    free(description);
 }
 
 

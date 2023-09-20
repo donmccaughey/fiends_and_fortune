@@ -141,8 +141,8 @@ void
 level_map_free(struct level_map *level_map)
 {
     if (level_map) {
-        free_or_die(level_map->tiles);
-        free_or_die(level_map);
+        free(level_map->tiles);
+        free(level_map);
     }
 }
 

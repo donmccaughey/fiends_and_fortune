@@ -296,7 +296,7 @@ generate_treasure_type_table(FILE *out)
         struct treasure_type *treasureType = treasure_type_by_letter(letter);
         char *description = treasure_type_alloc_description(treasureType, letter == 'A');
         fprintf(out, "%s", description);
-        free_or_die(description);
+        free(description);
     }
 }
 
@@ -520,6 +520,6 @@ print_treasure_as_text(struct treasure *treasure, FILE *out)
     for (int i = 0; i < lines->count; ++i) {
         fprintf(out, "%s\n", (char *)lines->elements[i]);
     }
-    ptr_array_clear(lines, free_or_die);
+    ptr_array_clear(lines, free);
     ptr_array_free(lines);
 }

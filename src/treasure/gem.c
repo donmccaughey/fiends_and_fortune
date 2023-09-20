@@ -612,9 +612,9 @@ gem_alloc_true_description(struct gem *gem)
                                                  prefix, modifiers,
                                                  separator, value);
 
-    free_or_die(value);
-    free_or_die(modifiers);
-    free_or_die(prefix);
+    free(value);
+    free(modifiers);
+    free(prefix);
 
     return true_description;
 }
@@ -672,8 +672,8 @@ gem_create_json_object(struct gem *gem)
 void
 gem_finalize(struct gem *gem)
 {
-    free_or_die(gem->true_description);
-    free_or_die(gem->visible_description);
+    free(gem->true_description);
+    free(gem->visible_description);
 }
 
 

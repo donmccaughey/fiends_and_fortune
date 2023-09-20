@@ -253,9 +253,9 @@ options_free(struct options *options)
 {
     if (options) {
         rnd_free(options->rnd);
-        free_or_die(options->command_name);
+        free(options->command_name);
         dungeon_options_free(options->dungeon_options);
-        free_or_die(options);
+        free(options);
     }
 }
 

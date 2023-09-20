@@ -37,9 +37,9 @@ tiles_thumbnail_directions_alloc_test_for_each_direction(void)
             " 0  n  s  e  w nw ne sw se \n";
     assert(str_eq(expected, thumbnail));
 
-    free_or_die(thumbnail);
+    free(thumbnail);
     for (int i = 0; i < tiles_count; ++i) tile_free(tiles[i]);
-    free_or_die(tiles);
+    free(tiles);
 }
 
 
@@ -63,9 +63,9 @@ tiles_thumbnail_features_alloc_test_for_various_feature_combinations(void)
             " 1  . \n";
     assert(str_eq(expected, thumbnail));
 
-    free_or_die(thumbnail);
+    free(thumbnail);
     for (int i = 0; i < tiles_count; ++i) tile_free(tiles[i]);
-    free_or_die(tiles);
+    free(tiles);
 }
 
 
@@ -96,9 +96,9 @@ tiles_thumbnail_types_alloc_test_for_each_tile_type(void)
             "12  0  1  2  4  8  3  c \n";
     assert(str_eq(expected, thumbnail));
 
-    free_or_die(thumbnail);
+    free(thumbnail);
     for (int i = 0; i < tiles_count; ++i) tile_free(tiles[i]);
-    free_or_die(tiles);
+    free(tiles);
 }
 
 
@@ -127,9 +127,9 @@ tiles_thumbnail_walls_alloc_test_for_each_wall_type(void)
             "-1 |_ $~ .. ]= \n";
     assert(str_eq(expected, thumbnail));
 
-    free_or_die(thumbnail);
+    free(thumbnail);
     for (int i = 0; i < tiles_count; ++i) tile_free(tiles[i]);
-    free_or_die(tiles);
+    free(tiles);
 }
 
 
@@ -143,9 +143,9 @@ tiles_thumbnail_types_alloc_test_for_no_tiles(void)
     assert(thumbnail);
     assert(str_eq("", thumbnail));
 
-    free_or_die(thumbnail);
+    free(thumbnail);
     for (int i = 0; i < tiles_count; ++i) tile_free(tiles[i]);
-    free_or_die(tiles);
+    free(tiles);
 }
 
 
@@ -163,9 +163,9 @@ tiles_thumbnail_types_alloc_test_for_one_tile(void)
             "12  . \n";
     assert(str_eq(expected, thumbnail));
 
-    free_or_die(thumbnail);
+    free(thumbnail);
     for (int i = 0; i < tiles_count; ++i) tile_free(tiles[i]);
-    free_or_die(tiles);
+    free(tiles);
 }
 
 
@@ -192,9 +192,9 @@ tiles_thumbnail_types_alloc_test_for_multiple_tiles(void)
             " 0  .                \n";
     assert(str_eq(expected, thumbnail));
 
-    free_or_die(thumbnail);
+    free(thumbnail);
     for (int i = 0; i < tiles_count; ++i) tile_free(tiles[i]);
-    free_or_die(tiles);
+    free(tiles);
 }
 
 

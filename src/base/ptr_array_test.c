@@ -173,7 +173,7 @@ ptr_array_increase_capacity_test(void)
         void *element;
         ptr_array_remove_at(ptr_array, i, &element);
         assert(expected == element);
-        free_or_die(element);
+        free(element);
     }
 
     ptr_array_free(ptr_array);
