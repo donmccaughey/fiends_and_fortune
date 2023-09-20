@@ -34,9 +34,6 @@
 #include <unistd.h>
 
 
-extern long alloc_or_die_count;
-
-
 ////////// Building Blocks //////////
 
 // Prints an error message and exit.  If `errno' is zero, it is set to ENOMEM.
@@ -58,7 +55,6 @@ inline void *
 not_null_or_die(void *memory)
 {
     if ( ! memory) print_error_and_die();
-    ++alloc_or_die_count;
     return memory;
 }
 
@@ -99,7 +95,6 @@ realloc_or_die(void *memory, size_t size)
     void *new_memory = realloc(memory, size);
     if ( ! size && ! new_memory) new_memory = calloc(1, 1);
     if ( ! new_memory) print_error_and_die();
-    if ( ! memory) ++alloc_or_die_count;
     return new_memory;
 }
 
@@ -159,7 +154,6 @@ vasprintf_or_die(char **string, const char *format, va_list arguments)
 {
     int result = vasprintf(string, format, arguments);
     if (-1 == result) print_error_and_die();
-    ++alloc_or_die_count;
     return result;
 }
 
@@ -178,7 +172,6 @@ inline void
 free_or_die(void *memory)
 {
     free(memory);
-    if (memory) --alloc_or_die_count;
 }
 
 #endif

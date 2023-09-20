@@ -32,9 +32,6 @@
 #include <string.h>
 
 
-long alloc_or_die_count = 0;
-
-
 size_t
 array_size_or_die(size_t count, size_t element_size)
 {
