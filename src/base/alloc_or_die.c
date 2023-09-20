@@ -61,17 +61,6 @@ array_size_or_die(size_t count, size_t element_size)
 }
 
 
-int
-asprintf_or_die(char **string, char const *format, ...)
-{
-    va_list arguments;
-    va_start(arguments, format);
-    int result = vasprintf_or_die(string, format, arguments);
-    va_end(arguments);
-    return result;
-}
-
-
 char *
 basename_or_die(char const *path)
 {

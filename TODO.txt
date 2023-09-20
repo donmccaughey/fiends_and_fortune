@@ -10,6 +10,7 @@
 - cmake: figure out how to build separate configurations for test and release
 - cmake: figure out how to add an install step
 
+- base: remove alloc_or_die functions
 - base: add ARRAY_COUNT() macro
 
 - rnd: implement a simple seedable PRNG that will yield identical results

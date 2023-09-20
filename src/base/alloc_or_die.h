@@ -154,14 +154,6 @@ strdup_or_die(char const *string)
 // and returns the number of characters in the formatted string (excluding the
 // terminating zero).  On failure, prints the error message for `errno' to
 // `stderr' and exits the process with `errno' as the status code.
-int
-asprintf_or_die(char **string, char const *format, ...);
-
-// Allocates a formatted string.  On success, sets `*string' contains a pointer
-// to the newly allocated, formatted string, increments `alloc_or_die_count',
-// and returns the number of characters in the formatted string (excluding the
-// terminating zero).  On failure, prints the error message for `errno' to
-// `stderr' and exits the process with `errno' as the status code.
 inline int
 vasprintf_or_die(char **string, const char *format, va_list arguments)
 {
@@ -176,17 +168,6 @@ vasprintf_or_die(char **string, const char *format, va_list arguments)
 
 char *
 basename_or_die(char const *path);
-
-
-// Allocates a zero-terminated string containing the absolute pathname of the
-// current working directory.  Increments `alloc_or_die_count' and returns the
-// string on success.  On failure, prints the error message for `errno' to
-// `stderr' and exits the process with `errno' as the status code.
-inline char *
-getcwd_or_die(void)
-{
-    return (char *)not_null_or_die(getcwd(NULL, 0));
-}
 
 
 ////////// Allocation Counting //////////
