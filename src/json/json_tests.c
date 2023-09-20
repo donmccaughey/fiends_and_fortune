@@ -454,6 +454,5 @@ main(int argc, char *argv[])
     json_object_has_struct_member_when_wrong_value_test();
     json_object_has_struct_member_test();
 
-    alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }

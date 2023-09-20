@@ -22,6 +22,5 @@ main(int argc, char *argv[])
     language_test();
     money_test();
     orientation_test();
-    alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }

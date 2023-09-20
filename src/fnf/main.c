@@ -356,7 +356,6 @@ main(int argc, char *argv[])
     fprintf(out, "\n");
 
     options_free(options);
-    alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }
 

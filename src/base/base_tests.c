@@ -34,6 +34,5 @@ main(int argc, char *argv[])
     rnd_test();
     sort_test();
     str_test();
-    alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }

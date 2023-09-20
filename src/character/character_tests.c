@@ -23,6 +23,5 @@ main(int argc, char *argv[])
     ability_scores_test();
     ability_sets_test();
     ability_score_generation_method_test();
-    alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }

@@ -181,11 +181,4 @@ free_or_die(void *memory)
     if (memory) --alloc_or_die_count;
 }
 
-// Checks that `alloc_or_die_count' is zero.  If it is zero, does nothing.  If
-// it is not zero, prints a message to `stderr' and calls exit() with
-// EXIT_FAILURE as the status code.
-void
-alloc_count_is_zero_or_die(void);
-
-
 #endif

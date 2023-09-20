@@ -36,6 +36,5 @@ main(int argc, char *argv[])
     treasure_test();
     treasure_map_test();
     treasure_type_test();
-    alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }

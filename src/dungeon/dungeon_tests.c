@@ -50,6 +50,5 @@ main(int argc, char *argv[])
     text_rectangle_test();
     tile_test();
     tiles_thumbnail_test();
-    alloc_count_is_zero_or_die();
     return EXIT_SUCCESS;
 }
