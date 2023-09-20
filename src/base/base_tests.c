@@ -23,6 +23,9 @@ sort_test(void);
 void
 str_test(void);
 
+void
+xmalloc_test(void);
+
 
 int
 main(int argc, char *argv[])
@@ -34,5 +37,6 @@ main(int argc, char *argv[])
     rnd_test();
     sort_test();
     str_test();
+    xmalloc_test();
     return EXIT_SUCCESS;
 }

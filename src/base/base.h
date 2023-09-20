@@ -10,5 +10,6 @@
 #include <base/rnd.h>
 #include <base/sort.h>
 #include <base/str.h>
+#include <base/xmalloc.h>
 
 #endif

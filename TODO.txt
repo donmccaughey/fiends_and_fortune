@@ -12,6 +12,9 @@
 
 - base: remove alloc_or_die functions
 - base: add ARRAY_COUNT() macro
+- base: add attributes for format string checking to fail()/vfail()
+- base: add attributes to mark fail()/vfail() as never returning
+- base: script test for fail()
 
 - rnd: implement a simple seedable PRNG that will yield identical results
     cross-platform
