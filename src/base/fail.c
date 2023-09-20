@@ -27,5 +27,5 @@ vfail(char const *format, va_list arguments)
     vfprintf(stderr, format, arguments);
     fprintf(stderr, "\n");
     if (errno) perror(NULL);
-    exit(errno ? errno : EXIT_FAILURE);
+    exit(EXIT_SUCCESS == errno ? EXIT_FAILURE : errno);
 }
