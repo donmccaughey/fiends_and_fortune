@@ -1,5 +1,5 @@
 #include "xstring.h"
-#include "fail.h"
+#include <stdlib.h>
 #include <string.h>
 
 
@@ -8,6 +8,6 @@ xstrdup(const char *string)
 {
     if ( ! string) return NULL;
     char *dup = strdup(string);
-    if ( ! dup) fail("strdup(%p) failed", string);
+    if ( ! dup) abort();
     return dup;
 }
