@@ -70,7 +70,7 @@ treasure_alloc_description(struct treasure *treasure)
     bytes += sizeof('\0');
 
     if (!phrase_count) {
-        return strdup_or_die("(no treasure)");
+        return xstrdup("(no treasure)");
     }
 
     char *description = calloc_or_die(bytes, sizeof(char));
@@ -104,7 +104,7 @@ treasure_alloc_details(struct treasure *treasure)
     free(description);
 
     if (treasure->gems_count) {
-        ptr_array_add(lines, strdup_or_die("Gems: --------------------------------"));
+        ptr_array_add(lines, xstrdup("Gems: --------------------------------"));
         for (int i = 0; i < treasure->gems_count; ++i) {
             ptr_array_add(lines, str_alloc_formatted("    %2i  %s", i + 1,
                                                      treasure->gems[i].visible_description));
@@ -114,21 +114,21 @@ treasure_alloc_details(struct treasure *treasure)
     }
 
     if (treasure->jewelry_count) {
-        ptr_array_add(lines, strdup_or_die("Jewelry: -----------------------------"));
+        ptr_array_add(lines, xstrdup("Jewelry: -----------------------------"));
         for (int i = 0; i < treasure->jewelry_count; ++i) {
             ptr_array_add(lines, str_alloc_formatted("    %2i  %s", i + 1, treasure->jewelry[i].true_description));
         }
     }
 
     if (treasure->maps_count) {
-        ptr_array_add(lines, strdup_or_die("Maps: --------------------------------"));
+        ptr_array_add(lines, xstrdup("Maps: --------------------------------"));
         for (int i = 0; i < treasure->maps_count; ++i) {
             ptr_array_add(lines, str_alloc_formatted("    %2i  %s", i + 1, treasure->maps[i].true_description));
         }
     }
 
     if (treasure->magic_items_count) {
-        ptr_array_add(lines, strdup_or_die("Magic Items: -------------------------"));
+        ptr_array_add(lines, xstrdup("Magic Items: -------------------------"));
         for (int i = 0; i < treasure->magic_items_count; ++i) {
             ptr_array_add(lines, str_alloc_formatted("    %2i  %s", i + 1, treasure->magic_items[i].true_description));
             if (treasure->magic_items[i].true_details) {

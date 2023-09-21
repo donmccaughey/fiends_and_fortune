@@ -16,6 +16,7 @@
 - base: add attributes to mark fail()/vfail() as never returning
 - base: script test for fail()
 - base: xmalloc/reallocarray move to their own project
+- base: test if `basename()` modifies `path`, defensively copy only if true
 
 - rnd: implement a simple seedable PRNG that will yield identical results
     cross-platform

@@ -111,7 +111,7 @@ tiles_thumbnail_alloc(struct tile **tiles, int tiles_count, print_tile_fn print_
         print_tile(text_rectangle, tile);
     }
 
-    char *thumbnail = strdup_or_die(text_rectangle->chars);
+    char *thumbnail = xstrdup(text_rectangle->chars);
     text_rectangle_free(text_rectangle);
     return thumbnail;
 }

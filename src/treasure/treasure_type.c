@@ -778,7 +778,7 @@ treasure_type_alloc_name(struct treasure_type *treasure_type)
 static char *
 describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry *coins_gems_or_jewelry)
 {
-    if (!coins_gems_or_jewelry->percent_chance) return strdup_or_die("   nil   ");
+    if (!coins_gems_or_jewelry->percent_chance) return xstrdup("   nil   ");
 
     if (coins_gems_or_jewelry->is_per_individual) {
         struct dice amount = dice_parse(coins_gems_or_jewelry->amount);
@@ -802,7 +802,7 @@ describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry *coins_gems_or_jewel
 static char *
 describe_maps_or_magic(struct maps_or_magic *maps_or_magic)
 {
-    if (!maps_or_magic->percent_chance) return strdup_or_die("   nil   ");
+    if (!maps_or_magic->percent_chance) return xstrdup("   nil   ");
     
     char *type_descriptions[6] = {};
     for (int i = 0; i < maps_or_magic->types_count; ++i) {

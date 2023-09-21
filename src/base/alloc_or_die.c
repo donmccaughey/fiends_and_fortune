@@ -72,8 +72,5 @@ realloc_or_die(void *memory, size_t size);
 extern inline void *
 reallocarray_or_die(void *memory, size_t count, size_t element_size);
 
-extern inline char *
-strdup_or_die(char const *string);
-
 extern inline int
 vasprintf_or_die(char **string, const char *format, va_list arguments);

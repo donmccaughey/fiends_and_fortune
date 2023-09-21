@@ -131,17 +131,6 @@ arraydup_or_die(void const *memory, size_t count, size_t element_size)
     return memdup_or_die(memory, array_size_or_die(count, element_size));
 }
 
-// Allocates a copy of a zero-terminated string.  Increments
-// `alloc_or_die_count' and returns the copied string on success.  On failure,
-// prints the error message for `errno' to `stderr' and exits the process with
-// `errno' as the status code.
-inline char *
-strdup_or_die(char const *string)
-{
-    return (char *)not_null_or_die(strdup(string));
-}
-
-
 ////////// Formatting Functions //////////
 
 // Allocates a formatted string.  On success, sets `*string' contains a pointer

@@ -159,7 +159,7 @@ ptr_array_increase_capacity_test(void)
     int test_count = 1024;
 
     for (int i = 0; i < test_count; ++i) {
-        char *element = strdup_or_die("foo");
+        char *element = xstrdup("foo");
         assert(element);
         ptr_array_add(ptr_array, element);
         assert(ptr_array->elements[i] == element);

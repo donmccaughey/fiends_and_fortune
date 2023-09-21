@@ -11,7 +11,7 @@ json_array_alloc_string_value(struct cJSON *json_array,
                               char const *default_value)
 {
     char const *string_value = json_array_get_string_value(json_array, index, default_value);
-    return string_value ? strdup_or_die(string_value) : NULL;
+    return string_value ? xstrdup(string_value) : NULL;
 }
 
 
@@ -33,7 +33,7 @@ json_object_alloc_string_value(struct cJSON *json_object,
                                char const *default_value)
 {
     char const *string_value = json_object_get_string_value(json_object, name, default_value);
-    return string_value ? strdup_or_die(string_value) : NULL;
+    return string_value ? xstrdup(string_value) : NULL;
 }
 
 

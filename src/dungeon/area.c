@@ -45,7 +45,7 @@ area_alloc_description(struct area const *area)
             description = str_alloc_formatted("%u' x %u' chamber", width, length);
             break;
         case area_type_intersection:
-            description = strdup_or_die("intersection");
+            description = xstrdup("intersection");
             break;
         case area_type_passage: {
             enum orientation orientation = orientation_from_direction(area->direction);

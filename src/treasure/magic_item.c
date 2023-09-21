@@ -1890,7 +1890,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
     if (detail_count) {
         magic_item->true_details = calloc_or_die(detail_count + 1, sizeof(char *));
         for (int i = 0; i < detail_count; ++i) {
-            magic_item->true_details[i] = strdup_or_die(sword->details[i]);
+            magic_item->true_details[i] = xstrdup(sword->details[i]);
         }
     }
     
