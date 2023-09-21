@@ -14,5 +14,8 @@ xmalloc(size_t size);
 void *
 xrealloc(void *memory, size_t size);
 
+void *
+xreallocarray(void *memory, size_t count, size_t element_size);
+
 
 #endif

@@ -1,5 +1,6 @@
 #include "xmalloc.h"
 #include "fail.h"
+#include "reallocarray.h"
 #include <stdlib.h>
 
 
@@ -26,5 +27,14 @@ xrealloc(void *memory, size_t size)
 {
     memory = realloc(memory, size);
     if ( ! memory) fail("realloc(%p, %zu) failed", memory, size);
+    return memory;
+}
+
+
+void *
+xreallocarray(void *memory, size_t count, size_t element_size)
+{
+    memory = reallocarray(memory, count, element_size);
+    if ( ! memory) fail("reallocarray(%p, %zu, %zu) failed", memory, count, element_size);
     return memory;
 }

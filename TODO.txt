@@ -15,6 +15,7 @@
 - base: add attributes for format string checking to fail()/vfail()
 - base: add attributes to mark fail()/vfail() as never returning
 - base: script test for fail()
+- base: xmalloc/reallocarray move to their own project
 
 - rnd: implement a simple seedable PRNG that will yield identical results
     cross-platform
