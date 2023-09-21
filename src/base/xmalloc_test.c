@@ -9,6 +9,10 @@ xcalloc_test(void)
     assert(memory);
     assert(0 == memory[0]);
     free(memory);
+
+    memory = xcalloc(0, sizeof(int));
+    assert(memory);
+    free(memory);
 }
 
 
@@ -16,6 +20,10 @@ static void
 xmalloc_function_test(void)
 {
     int *memory = xmalloc(100 * sizeof(int));
+    assert(memory);
+    free(memory);
+
+    memory = xmalloc(0 * sizeof(int));
     assert(memory);
     free(memory);
 }
@@ -41,6 +49,9 @@ xrealloc_test(void)
     assert(memory);
     assert(1 == memory[0]);
     assert(5 == memory[4]);
+
+    memory = xrealloc(memory, 0 * sizeof(int));
+    assert(memory);
 
     free(memory);
 
@@ -70,6 +81,12 @@ xreallocarray_test(void)
     assert(memory);
     assert(1 == memory[0]);
     assert(5 == memory[4]);
+
+    memory = xreallocarray(memory, 0, sizeof(int));
+    assert(memory);
+
+    memory = xreallocarray(memory, 10, 0);
+    assert(memory);
 
     free(memory);
 
