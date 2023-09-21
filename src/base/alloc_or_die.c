@@ -46,21 +46,6 @@ array_size_or_die(size_t count, size_t element_size)
 }
 
 
-char *
-basename_or_die(char const *path)
-{
-    char *path_copy = strdup_or_die(path ? path : "");
-    char *result = basename(path_copy);
-    if (result == path_copy) {
-        return result;
-    } else {
-        char *name = strdup_or_die(result);
-        free(path_copy);
-        return name;
-    }
-}
-
-
 ////////// extern inline declarations //////////
 
 extern inline void *

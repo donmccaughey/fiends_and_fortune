@@ -158,10 +158,4 @@ vasprintf_or_die(char **string, const char *format, va_list arguments)
 }
 
 
-////////// Miscellaneous Functions //////////
-
-char *
-basename_or_die(char const *path);
-
-
 #endif

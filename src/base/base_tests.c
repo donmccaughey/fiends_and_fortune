@@ -3,9 +3,6 @@
 
 
 void
-alloc_or_die_test(void);
-
-void
 int_test(void);
 
 void
@@ -39,7 +36,6 @@ xstring_test(void);
 int
 main(int argc, char *argv[])
 {
-    alloc_or_die_test();
     int_test();
     ptr_array_test();
     reallocarray_test();
