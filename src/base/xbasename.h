@@ -3,7 +3,7 @@
 
 
 char *
-xbasename(char *path);
+xbasename(char const *path);
 
 
 #endif
