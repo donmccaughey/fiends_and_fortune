@@ -27,7 +27,13 @@ void
 str_test(void);
 
 void
+xbasename_test(void);
+
+void
 xmalloc_test(void);
+
+void
+xstring_test(void);
 
 
 int
@@ -41,6 +47,8 @@ main(int argc, char *argv[])
     rnd_test();
     sort_test();
     str_test();
+    xbasename_test();
     xmalloc_test();
+    xstring_test();
     return EXIT_SUCCESS;
 }

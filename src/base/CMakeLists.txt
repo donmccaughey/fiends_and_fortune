@@ -3,12 +3,14 @@ add_library(base STATIC
         fail.c
         int.c
         ptr_array.c
+        reallocarray.c
         result.c
         rnd.c
         sort.c
         str.c
+        xbasename.c
         xmalloc.c
-        reallocarray.c
+        xstring.c
 )
 target_include_directories(base
         PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.."
@@ -21,10 +23,12 @@ add_executable(base_tests
         ptr_array_test.c
         sort_test.c
         str_test.c
+        reallocarray_test.c
         result_test.c
         rnd_test.c
+        xbasename_test.c
         xmalloc_test.c
-        reallocarray_test.c
+        xstring_test.c
 )
 target_link_libraries(base_tests base)
 add_test(base_tests base_tests)
