@@ -29,18 +29,18 @@ xrealloc_test(void)
         memory[i] = i + 1;
     }
     assert(memory);
-    assert(memory[0] == 1);
-    assert(memory[9] == 10);
+    assert(1 == memory[0]);
+    assert(10 == memory[9]);
 
     memory = xrealloc(memory, 20 * sizeof(int));
     assert(memory);
-    assert(memory[0] == 1);
-    assert(memory[9] == 10);
+    assert(1 == memory[0]);
+    assert(10 == memory[9]);
 
     memory = xrealloc(memory, 5 * sizeof(int));
     assert(memory);
-    assert(memory[0] == 1);
-    assert(memory[4] == 5);
+    assert(1 == memory[0]);
+    assert(5 == memory[4]);
 
     free(memory);
 

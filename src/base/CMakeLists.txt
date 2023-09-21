@@ -8,6 +8,7 @@ add_library(base STATIC
         sort.c
         str.c
         xmalloc.c
+        reallocarray.c
 )
 target_include_directories(base
         PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.."
@@ -23,6 +24,7 @@ add_executable(base_tests
         result_test.c
         rnd_test.c
         xmalloc_test.c
+        reallocarray_test.c
 )
 target_link_libraries(base_tests base)
 add_test(base_tests base_tests)

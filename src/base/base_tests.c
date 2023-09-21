@@ -12,6 +12,9 @@ void
 ptr_array_test(void);
 
 void
+reallocarray_test(void);
+
+void
 result_test(void);
 
 void
@@ -33,6 +36,7 @@ main(int argc, char *argv[])
     alloc_or_die_test();
     int_test();
     ptr_array_test();
+    reallocarray_test();
     result_test();
     rnd_test();
     sort_test();
