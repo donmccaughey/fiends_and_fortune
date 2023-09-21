@@ -25,7 +25,7 @@ struct text_rectangle *
 text_rectangle_alloc(int column_count, int row_count)
 {
     struct text_rectangle *text_rectangle = calloc_or_die(1, sizeof(struct text_rectangle));
-    text_rectangle->chars = malloc_or_die(chars_size(column_count, row_count));
+    text_rectangle->chars = xmalloc(chars_size(column_count, row_count));
     text_rectangle->column_count = column_count;
     text_rectangle->row_count = row_count;
     text_rectangle_clear(text_rectangle);

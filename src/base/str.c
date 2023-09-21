@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include "fail.h"
+#include "xmalloc.h"
 
 
 char *
@@ -37,7 +38,7 @@ str_alloc_centered_and_formatted_from_va_list(int width,
     size_t padding_length = width - formatted_length;
     size_t trailing_length = padding_length / 2;
     size_t leading_length = trailing_length + (padding_length % 2);
-    char *str = malloc_or_die(width + 1);
+    char *str = xmalloc(width + 1);
     memset(str, ' ', leading_length);
     int result = vsprintf(str + leading_length, format, arguments);
     if (result < 0) fail("vsprintf() error");
