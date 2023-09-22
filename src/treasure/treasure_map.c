@@ -326,9 +326,9 @@ generate_monetary_treasure_13_to_15_gems(struct treasure *treasure,
                                          struct rnd *rnd)
 {
     int count = roll("1d10", rnd) * 10;
-    treasure->gems = reallocarray_or_die(treasure->gems,
-                                         treasure->gems_count + count,
-                                         sizeof(struct gem));
+    treasure->gems = xreallocarray(treasure->gems,
+                                   treasure->gems_count + count,
+                                   sizeof(struct gem));
     for (int i = 0; i < count; ++i) {
         int j = treasure->gems_count + i;
         gem_initialize(&treasure->gems[j]);
@@ -343,9 +343,9 @@ generate_monetary_treasure_16_to_17_jewelry(struct treasure *treasure,
                                             struct rnd *rnd)
 {
     int count = roll("5d10", rnd);
-    treasure->jewelry = reallocarray_or_die(treasure->jewelry,
-                                            treasure->jewelry_count + count,
-                                            sizeof(struct jewelry));
+    treasure->jewelry = xreallocarray(treasure->jewelry,
+                                      treasure->jewelry_count + count,
+                                      sizeof(struct jewelry));
     for (int i = 0; i < count; ++i) {
         int j = treasure->jewelry_count + i;
         jewelry_initialize(&treasure->jewelry[j]);

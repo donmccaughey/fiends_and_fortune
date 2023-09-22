@@ -1950,9 +1950,9 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
     if (!magic_item->true_details) {
         magic_item->true_details = calloc_or_die(detail_capacity, sizeof(char *));
     } else {
-        magic_item->true_details = reallocarray_or_die(magic_item->true_details,
-                                                       detail_capacity,
-                                                       sizeof(char *));
+        magic_item->true_details = xreallocarray(magic_item->true_details,
+                                                 detail_capacity,
+                                                 sizeof(char *));
         char **start_of_unused = magic_item->true_details + detail_count;
         size_t size_of_unused = (detail_capacity - detail_count)
                               * sizeof(char *);

@@ -21,9 +21,9 @@ generator_add_area(struct generator *generator,
     struct area *area = area_alloc(area_type, direction, box);
     int index = generator->areas_count;
     ++generator->areas_count;
-    generator->areas = reallocarray_or_die(generator->areas,
-                                           generator->areas_count,
-                                           sizeof(struct area *));
+    generator->areas = xreallocarray(generator->areas,
+                                     generator->areas_count,
+                                     sizeof(struct area *));
     generator->areas[index] = area;
     generator_fill_box(generator, box, direction, tile_type);
     generator_set_walls(generator, box, wall_type_solid);
@@ -38,9 +38,9 @@ generator_add_digger(struct generator *generator,
 {
     int index = generator->diggers_count;
     ++generator->diggers_count;
-    generator->diggers = reallocarray_or_die(generator->diggers,
-                                             generator->diggers_count,
-                                             sizeof(struct digger *));
+    generator->diggers = xreallocarray(generator->diggers,
+                                       generator->diggers_count,
+                                       sizeof(struct digger *));
     generator->diggers[index] = digger_alloc(generator, point, direction);
     return generator->diggers[index];
 }
@@ -105,9 +105,9 @@ generator_commit(struct generator *generator)
     generator->areas_count = 0;
     
     generator->saved_diggers_count = generator->diggers_count;
-    generator->saved_diggers = reallocarray_or_die(generator->saved_diggers,
-                                                   generator->saved_diggers_count,
-                                                   sizeof(struct digger));
+    generator->saved_diggers = xreallocarray(generator->saved_diggers,
+                                             generator->saved_diggers_count,
+                                             sizeof(struct digger));
     for (int i = 0; i < generator->diggers_count; ++i) {
         generator->saved_diggers[i] = *(generator->diggers[i]);
     }
@@ -153,9 +153,9 @@ generator_delete_digger(struct generator *generator, struct digger *digger)
         memmove(vacant, next, size);
     }
     --generator->diggers_count;
-    generator->diggers = reallocarray_or_die(generator->diggers,
-                                             generator->diggers_count,
-                                             sizeof(struct digger *));
+    generator->diggers = xreallocarray(generator->diggers,
+                                       generator->diggers_count,
+                                       sizeof(struct digger *));
 }
 
 

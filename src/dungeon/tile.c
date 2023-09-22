@@ -29,7 +29,7 @@ tile_add_to_array_sorted_by_point(struct tile **tiles,
 {
     int index = *count;
     ++*count;
-    tiles = reallocarray_or_die(tiles, *count, sizeof(struct tile *));
+    tiles = xreallocarray(tiles, *count, sizeof(struct tile *));
     tiles[index] = tile;
     tile_sort_array_by_point(tiles, *count);
     return tiles;

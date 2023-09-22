@@ -25,11 +25,7 @@
 #include "alloc_or_die.h"
 
 #include <errno.h>
-#include <libgen.h>
-#include <stdio.h>
 #include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
 
 
 size_t
@@ -65,12 +61,6 @@ not_null_or_die(void *memory);
 
 extern inline void
 print_error_and_die(void);
-
-extern inline void *
-realloc_or_die(void *memory, size_t size);
-
-extern inline void *
-reallocarray_or_die(void *memory, size_t count, size_t element_size);
 
 extern inline int
 vasprintf_or_die(char **string, const char *format, va_list arguments);

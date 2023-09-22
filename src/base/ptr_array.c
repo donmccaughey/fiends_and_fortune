@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "alloc_or_die.h"
+#include "xmalloc.h"
 
 
 static int const initial_capacity = 256;
@@ -15,9 +16,9 @@ ptr_array_add(struct ptr_array *ptr_array, void *element)
     assert(ptr_array);
     if (ptr_array->count == ptr_array->capacity) {
         int new_capacity = ptr_array->capacity / 2 * 3;
-        void *new_elements = reallocarray_or_die(ptr_array->elements,
-                                                 new_capacity,
-                                                 sizeof(void *));
+        void *new_elements = xreallocarray(ptr_array->elements,
+                                           new_capacity,
+                                           sizeof(void *));
         ptr_array->capacity = new_capacity;
         ptr_array->elements = new_elements;
     }

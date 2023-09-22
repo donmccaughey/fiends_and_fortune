@@ -222,9 +222,9 @@ treasure_generate_magic_items(struct treasure *treasure,
                               int count,
                               possible_magic_items_t possible_magic_items)
 {
-    treasure->magic_items = reallocarray_or_die(treasure->magic_items,
-                                                treasure->magic_items_count + count,
-                                                sizeof(struct magic_item));
+    treasure->magic_items = xreallocarray(treasure->magic_items,
+                                          treasure->magic_items_count + count,
+                                          sizeof(struct magic_item));
     for (int i = 0; i < count; ++i) {
         int j = treasure->magic_items_count + i;
         magic_item_initialize(&treasure->magic_items[j]);
@@ -237,9 +237,9 @@ treasure_generate_magic_items(struct treasure *treasure,
 void
 treasure_generate_maps(struct treasure *treasure, struct rnd *rnd, int count)
 {
-    treasure->maps = reallocarray_or_die(treasure->maps,
-                                         treasure->maps_count + count,
-                                         sizeof(struct treasure_map));
+    treasure->maps = xreallocarray(treasure->maps,
+                                   treasure->maps_count + count,
+                                   sizeof(struct treasure_map));
     for (int i = 0; i < count; ++i) {
         int j = treasure->maps_count + i;
         treasure_map_initialize(&treasure->maps[j]);

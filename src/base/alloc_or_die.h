@@ -86,28 +86,6 @@ malloc_or_die(size_t size)
     return not_null_or_die(malloc(size));
 }
 
-// Wrapper for realloc().  Increments `alloc_or_die_count' on success.  On
-// failure, prints the error message for `errno' to `stderr' and exits the
-// process with `errno' as the status code.
-inline void *
-realloc_or_die(void *memory, size_t size)
-{
-    void *new_memory = realloc(memory, size);
-    if ( ! size && ! new_memory) new_memory = calloc(1, 1);
-    if ( ! new_memory) print_error_and_die();
-    return new_memory;
-}
-
-// Reallocates an array.  Increments `alloc_or_die_count' on success.  If
-// allocation fails or the requested size exceeds SIZE_MAX, prints the error
-// message for `errno' to `stderr' and exits the process with `errno' as the
-// status code.
-inline void *
-reallocarray_or_die(void *memory, size_t count, size_t element_size)
-{
-    return realloc_or_die(memory, array_size_or_die(count, element_size));
-}
-
 
 ////////// Duplication Functions //////////
 
