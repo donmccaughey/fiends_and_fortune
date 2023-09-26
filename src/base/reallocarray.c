@@ -1,7 +1,6 @@
 #include "reallocarray.h"
 
 #include <stdint.h>
-#include <stdlib.h>
 
 
 size_t
@@ -19,11 +18,20 @@ array_size(size_t count, size_t element_size, bool *overflow)
 }
 
 
+#ifndef HAS_REALLOCARRAY
+#include <errno.h>
+#include <stdlib.h>
+
 void *
 reallocarray(void *memory, size_t count, size_t element_size)
 {
-    bool overflow;
-    size_t size = array_size(count, element_size, &overflow);
-    if (overflow) return NULL;
-    return realloc(memory, size);
+    bool too_big;
+    size_t size = array_size(count, element_size, &too_big);
+    if (too_big) {
+        errno = ENOMEM;
+        return NULL;
+    } else {
+        return realloc(memory, size);
+    }
 }
+#endif

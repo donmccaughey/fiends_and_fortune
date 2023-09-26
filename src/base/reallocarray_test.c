@@ -50,6 +50,7 @@ array_size_test(void)
 }
 
 
+#ifndef HAS_REALLOCARRAY
 static void
 reallocarray_function_test(void)
 {
@@ -70,17 +71,35 @@ reallocarray_function_test(void)
     assert(1 == array[0]);
     assert(5 == array[4]);
 
+    errno = 0;
+    array = reallocarray(array, 0, sizeof(int));
+    // array may be NULL or a valid pointer
+    assert(0 == errno);
+    free(array);
+
+    errno = 0;
+    array = reallocarray(NULL, 0, sizeof(int));
+    // array may be NULL or a valid pointer
+    assert(0 == errno);
     free(array);
 
     array = reallocarray(NULL, 10, sizeof(int));
     assert(array);
     free(array);
+
+    errno = 0;
+    array = reallocarray(NULL, SIZE_MAX / 2, 4);
+    assert( ! array);
+    assert(ENOMEM == errno);
 }
+#endif
 
 
 void
 reallocarray_test(void)
 {
     array_size_test();
+#ifndef HAS_REALLOCARRAY
     reallocarray_function_test();
+#endif
 }

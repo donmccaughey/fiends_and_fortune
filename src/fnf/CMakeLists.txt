@@ -3,6 +3,9 @@ add_executable(fnf
         main.c
         options.c
         )
+if(HAS_OPTRESET)
+        target_compile_definitions(base PRIVATE HAS_OPTRESET)
+endif()
 target_link_libraries(fnf
         background
         base

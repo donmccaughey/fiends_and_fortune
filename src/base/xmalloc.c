@@ -1,6 +1,12 @@
 #include "xmalloc.h"
-#include "reallocarray.h"
 #include <stdlib.h>
+
+
+#ifndef HAS_REALLOCARRAY
+
+#include "reallocarray.h"
+
+#endif
 
 
 void *

@@ -61,12 +61,15 @@ endif()
 # ----- compatibility checks -----
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-    add_definitions(-D_GNU_SOURCE)  # make asprintf() visible
+    # make asprintf() and reallocarray() visible
+    add_definitions(-D_DEFAULT_SOURCE)
+    add_definitions(-D_GNU_SOURCE)
 endif()
 
 check_cxx_compiler_flag(-Wno-unqualified-std-cast-call HAS_NO_UNQUALIFIED_STD_CAST_CALL)
 
 check_symbol_exists(optreset "getopt.h" HAS_OPTRESET)
+check_symbol_exists(reallocarray "stdlib.h" HAS_REALLOCARRAY)
 
 
 # ----- add build files in subdirectories -----
