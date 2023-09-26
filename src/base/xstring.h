@@ -8,6 +8,8 @@
 void *
 memdup(void const *memory, size_t size);
 
+void *
+xmemdup(void const *memory, size_t size);
 
 char *
 xstrdup(char const *string);
