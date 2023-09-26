@@ -6,6 +6,9 @@
 
 
 void *
+arraydup(void const *array, size_t count, size_t element_size);
+
+void *
 memdup(void const *memory, size_t size);
 
 void *

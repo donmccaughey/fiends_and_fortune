@@ -3,6 +3,32 @@
 
 
 static void
+arraydup_test(void)
+{
+    int const array[] = { 1, 2, 3, 4, 5 };
+    int *copy = arraydup(array, 5, sizeof(int));
+    assert(copy);
+    assert(1 == copy[0]);
+    assert(5 == copy[4]);
+    free(copy);
+
+    copy = arraydup(array, 0, sizeof(int));
+    assert(copy);
+    free(copy);
+
+    errno = 0;
+    copy = arraydup(NULL, 5, sizeof(int));
+    assert( ! copy);
+    assert(0 == errno);
+
+    errno = 0;
+    copy = arraydup(array, SIZE_MAX / 2, sizeof(int));
+    assert( ! copy);
+    assert(ENOMEM == errno);
+}
+
+
+static void
 memdup_test(void)
 {
     int const array[] = { 1, 2, 3, 4, 5 };
@@ -61,6 +87,7 @@ xstrdup_test(void)
 void
 xstring_test(void)
 {
+    arraydup_test();
     memdup_test();
     xmemdup_test();
     xstrdup_test();

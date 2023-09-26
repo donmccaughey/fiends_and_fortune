@@ -1,6 +1,22 @@
 #include "xstring.h"
+#include <errno.h>
 #include <stdlib.h>
 #include <string.h>
+#include "reallocarray.h"
+
+
+void *
+arraydup(void const *array, size_t count, size_t element_size)
+{
+    bool too_big;
+    size_t size = array_size(count, element_size, &too_big);
+    if (too_big) {
+        errno = ENOMEM;
+        return NULL;
+    } else {
+        return memdup(array, size);
+    }
+}
 
 
 void *
