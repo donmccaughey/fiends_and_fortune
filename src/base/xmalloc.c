@@ -30,16 +30,28 @@ xmalloc(size_t size)
 void *
 xrealloc(void *memory, size_t size)
 {
-    memory = realloc(memory, size);
-    if ( ! memory) abort();
-    return memory;
+    void *new_memory;
+    if (size) {
+        new_memory = realloc(memory, size);
+    } else {
+        free(memory);
+        new_memory = malloc(1);
+    }
+    if ( ! new_memory) abort();
+    return new_memory;
 }
 
 
 void *
 xreallocarray(void *memory, size_t count, size_t element_size)
 {
-    memory = reallocarray(memory, count, element_size);
-    if ( ! memory) abort();
-    return memory;
+    void *new_memory;
+    if (count && element_size) {
+        new_memory = reallocarray(memory, count, element_size);
+    } else {
+        free(memory);
+        new_memory = malloc(1);
+    }
+    if ( ! new_memory) abort();
+    return new_memory;
 }
