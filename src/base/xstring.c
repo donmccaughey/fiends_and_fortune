@@ -30,6 +30,16 @@ memdup(void const *memory, size_t size)
 
 
 void *
+xarraydup(void const *array, size_t count, size_t element_size)
+{
+    if ( ! array) return NULL;
+    void *copy = arraydup(array, count, element_size);
+    if ( ! copy) abort();
+    return copy;
+}
+
+
+void *
 xmemdup(void const *memory, size_t size)
 {
     if ( ! memory) return NULL;

@@ -45,16 +45,7 @@ array_size_or_die(size_t count, size_t element_size)
 ////////// extern inline declarations //////////
 
 extern inline void *
-arraydup_or_die(void const *memory, size_t count, size_t element_size);
-
-extern inline void *
 calloc_or_die(size_t count, size_t element_size);
-
-extern inline void *
-malloc_or_die(size_t size);
-
-extern inline void *
-memdup_or_die(void const *memory, size_t size);
 
 extern inline void *
 not_null_or_die(void *memory);

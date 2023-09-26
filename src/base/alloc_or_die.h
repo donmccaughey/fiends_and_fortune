@@ -77,37 +77,6 @@ calloc_or_die(size_t count, size_t element_size)
     return not_null_or_die(calloc(count, element_size));
 }
 
-// Wrapper for malloc().  Increments `alloc_or_die_count' on success.  On
-// failure, prints the error message for `errno' to `stderr' and exits the
-// process with `errno' as the status code.
-inline void *
-malloc_or_die(size_t size)
-{
-    return not_null_or_die(malloc(size));
-}
-
-
-////////// Duplication Functions //////////
-
-// Allocates a copy of `size' bytes of `memory'.  Increments
-// `alloc_or_die_count' and returns the copied memory on success.  On failure,
-// prints the error message for `errno' to `stderr' and exits the process with
-// `errno' as the status code.
-inline void *
-memdup_or_die(void const *memory, size_t size)
-{
-    return memcpy(malloc_or_die(size), memory, size);
-}
-
-// Allocates a copy of `count' elements of an array.  Increments
-// `alloc_or_die_count' and returns the copied array on success.  On failure,
-// prints the error message for `errno' to `stderr' and exits the process with
-// `errno' as the status code.
-inline void *
-arraydup_or_die(void const *memory, size_t count, size_t element_size)
-{
-    return memdup_or_die(memory, array_size_or_die(count, element_size));
-}
 
 ////////// Formatting Functions //////////
 

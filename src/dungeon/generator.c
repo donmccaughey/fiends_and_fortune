@@ -222,9 +222,9 @@ generator_generate(struct generator *generator)
     while (   generator->diggers_count
            && generator->iteration_count < generator->max_iteration_count)
     {
-        struct digger **diggers = arraydup_or_die(generator->diggers,
-                                                  generator->diggers_count,
-                                                  sizeof(struct digger *));
+        struct digger **diggers = xarraydup(generator->diggers,
+                                            generator->diggers_count,
+                                            sizeof(struct digger *));
         int count = generator->diggers_count;
         for (int i = 0; i < count; ++i) {
             if (periodic_check(diggers[i])) {

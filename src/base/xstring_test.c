@@ -48,6 +48,25 @@ memdup_test(void)
 
 
 static void
+xarraydup_test(void)
+{
+    int const array[] = { 1, 2, 3, 4, 5 };
+    int *copy = xarraydup(array, 5, sizeof(int));
+    assert(copy);
+    assert(1 == copy[0]);
+    assert(5 == copy[4]);
+    free(copy);
+
+    copy = xarraydup(array, 0, sizeof(int));
+    assert(copy);
+    free(copy);
+
+    copy = xarraydup(NULL, 5, sizeof(int));
+    assert( ! copy);
+}
+
+
+static void
 xmemdup_test(void)
 {
     int const array[] = { 1, 2, 3, 4, 5 };
@@ -89,6 +108,7 @@ xstring_test(void)
 {
     arraydup_test();
     memdup_test();
+    xarraydup_test();
     xmemdup_test();
     xstrdup_test();
 }
