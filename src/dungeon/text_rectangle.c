@@ -16,8 +16,10 @@ horizontal_char_count(int column_count)
 static size_t
 chars_size(int column_count, int row_count)
 {
-    return array_size_or_die(horizontal_char_count(column_count), row_count)
-         + 1;
+    bool too_big;
+    size_t size = array_size(horizontal_char_count(column_count), row_count, &too_big);
+    if (too_big || SIZE_MAX == size) abort();
+    return size + 1;
 }
 
 

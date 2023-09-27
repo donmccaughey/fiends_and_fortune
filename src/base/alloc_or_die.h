@@ -58,13 +58,6 @@ not_null_or_die(void *memory)
     return memory;
 }
 
-// Calculates the size of an array, checking for overflow.  Returns the size if
-// it is less than or equal to SIZE_MAX.  If the calculated size exceeds
-// SIZE_MAX, sets `errno' to EOVERFLOW, prints the error message for `errno' to
-// `stderr' and exits the process with `errno' as the status code.
-size_t
-array_size_or_die(size_t count, size_t element_size);
-
 
 ////////// Core Allocation Wrappers //////////
 
