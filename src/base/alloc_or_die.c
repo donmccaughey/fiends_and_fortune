@@ -28,9 +28,6 @@
 ////////// extern inline declarations //////////
 
 extern inline void *
-calloc_or_die(size_t count, size_t element_size);
-
-extern inline void *
 not_null_or_die(void *memory);
 
 extern inline void

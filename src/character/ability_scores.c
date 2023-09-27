@@ -11,7 +11,7 @@ compare_ability_scores(void const *first, void const *second);
 struct ability_scores *
 ability_scores_alloc_method_1(struct rnd *rnd)
 {
-    struct ability_scores *scores = calloc_or_die(1, sizeof(struct ability_scores));
+    struct ability_scores *scores = xcalloc(1, sizeof(struct ability_scores));
     size_t count = sizeof scores->values / sizeof scores->values[0];
     struct dice dice = dice_make(4, 6);
     for (size_t i = 0; i < count; ++i) {
@@ -34,7 +34,7 @@ ability_scores_alloc_method_2(struct rnd *rnd)
     qsort(characteristics, count, sizeof characteristics[0],
           compare_ability_scores);
 
-    struct ability_scores *scores = calloc_or_die(1, sizeof(struct ability_scores));
+    struct ability_scores *scores = xcalloc(1, sizeof(struct ability_scores));
     memcpy(scores->values, characteristics, sizeof scores->values);
     return scores;
 }

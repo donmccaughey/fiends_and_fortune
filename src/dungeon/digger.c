@@ -11,7 +11,7 @@ digger_alloc(struct generator *generator,
              struct point point,
              enum direction direction)
 {
-    struct digger *digger = calloc_or_die(1, sizeof(struct digger));
+    struct digger *digger = xcalloc(1, sizeof(struct digger));
     digger->generator = generator;
     digger->point = point;
     digger->direction = direction;

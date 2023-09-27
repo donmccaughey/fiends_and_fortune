@@ -29,6 +29,7 @@
 #include <string.h>
 
 #include "alloc_or_die.h"
+#include "xmalloc.h"
 
 
 typedef uint32_t next_value_fn(void *user_data);
@@ -50,7 +51,7 @@ struct rnd *const global_rnd = &((struct rnd){
 static struct rnd *
 alloc_with_next_uniform_value_in_range(uint32_t (*next_uniform_value_in_range)(void *, uint32_t, uint32_t))
 {
-    struct rnd *rnd = calloc_or_die(1, sizeof(struct rnd));
+    struct rnd *rnd = xcalloc(1, sizeof(struct rnd));
     rnd->next_uniform_value_in_range = next_uniform_value_in_range;
     return rnd;
 }
@@ -59,8 +60,8 @@ alloc_with_next_uniform_value_in_range(uint32_t (*next_uniform_value_in_range)(v
 static struct rnd *
 alloc_with_user_data_size(size_t size)
 {
-    struct rnd *rnd = calloc_or_die(1, sizeof(struct rnd));
-    rnd->user_data = calloc_or_die(1, size);
+    struct rnd *rnd = xcalloc(1, sizeof(struct rnd));
+    rnd->user_data = xcalloc(1, size);
     rnd->free_user_data = free;
     return rnd;
 }

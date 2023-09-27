@@ -7,7 +7,7 @@
 struct ability_sets *
 ability_sets_alloc_method_4(struct rnd *rnd)
 {
-    struct ability_sets *sets = calloc_or_die(1, sizeof(struct ability_sets));
+    struct ability_sets *sets = xcalloc(1, sizeof(struct ability_sets));
     size_t count = sizeof sets->values / sizeof sets->values[0];
     for (size_t i = 0; i < count; ++i) {
         sets->values[i].strength = roll("3d6", rnd);

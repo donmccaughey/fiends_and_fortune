@@ -31,8 +31,8 @@ ptr_array_add(struct ptr_array *ptr_array, void *element)
 struct ptr_array *
 ptr_array_alloc(void)
 {
-    struct ptr_array *ptr_array = calloc_or_die(1, sizeof(struct ptr_array));
-    ptr_array->elements = calloc_or_die(initial_capacity, sizeof(void *));
+    struct ptr_array *ptr_array = xcalloc(1, sizeof(struct ptr_array));
+    ptr_array->elements = xcalloc(initial_capacity, sizeof(void *));
     ptr_array->capacity = initial_capacity;
     return ptr_array;
 }

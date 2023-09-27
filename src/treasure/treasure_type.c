@@ -889,7 +889,7 @@ generate_gems(struct treasure *treasure, struct rnd *rnd)
     int percent_score = roll("1d100", rnd);
     if (percent_score <= treasure->type->gems.percent_chance) {
         treasure->gems_count = roll(treasure->type->gems.amount, rnd);
-        treasure->gems = calloc_or_die(treasure->gems_count, sizeof(struct gem));
+        treasure->gems = xcalloc(treasure->gems_count, sizeof(struct gem));
         for (int i = 0; i < treasure->gems_count; ++i) {
             gem_initialize(&treasure->gems[i]);
             gem_generate(&treasure->gems[i], rnd);
@@ -907,8 +907,8 @@ generate_jewelry(struct treasure *treasure, struct rnd *rnd)
     int percent_score = roll("1d100", rnd);
     if (percent_score <= treasure->type->jewelry.percent_chance) {
         treasure->jewelry_count = roll(treasure->type->jewelry.amount, rnd);
-        treasure->jewelry = calloc_or_die(treasure->jewelry_count,
-                                          sizeof(struct jewelry));
+        treasure->jewelry = xcalloc(treasure->jewelry_count,
+                                    sizeof(struct jewelry));
         for (int i = 0; i < treasure->jewelry_count; ++i) {
             jewelry_initialize(&treasure->jewelry[i]);
             jewelry_generate(&treasure->jewelry[i], rnd);

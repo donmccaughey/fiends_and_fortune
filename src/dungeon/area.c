@@ -25,7 +25,7 @@ area_alloc(enum area_type area_type,
            enum direction direction,
            struct box box)
 {
-    struct area *area = calloc_or_die(1, sizeof(struct area));
+    struct area *area = xcalloc(1, sizeof(struct area));
     area->box = box;
     area->direction = direction;
     area->type = area_type;

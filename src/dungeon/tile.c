@@ -39,7 +39,7 @@ tile_add_to_array_sorted_by_point(struct tile **tiles,
 struct tile *
 tile_alloc(struct point point, enum tile_type type)
 {
-    struct tile *tile = calloc_or_die(1, sizeof(struct tile));
+    struct tile *tile = xcalloc(1, sizeof(struct tile));
     tile->point = point;
     tile->type = type;
     return tile;
@@ -49,7 +49,7 @@ tile_alloc(struct point point, enum tile_type type)
 struct tile *
 tile_alloc_copy(struct tile *tile)
 {
-    struct tile *copy = calloc_or_die(1, sizeof(struct tile));
+    struct tile *copy = xcalloc(1, sizeof(struct tile));
     *copy = *tile;
     return copy;
 }

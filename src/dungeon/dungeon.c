@@ -25,9 +25,9 @@ dungeon_add_area(struct dungeon *dungeon, struct area *area)
 struct dungeon *
 dungeon_alloc(void)
 {
-    struct dungeon *dungeon = calloc_or_die(1, sizeof(struct dungeon));
-    dungeon->areas = calloc_or_die(1, sizeof(struct area *));
-    dungeon->tiles = calloc_or_die(1, sizeof(struct tile *));
+    struct dungeon *dungeon = xcalloc(1, sizeof(struct dungeon));
+    dungeon->areas = xcalloc(1, sizeof(struct area *));
+    dungeon->tiles = xcalloc(1, sizeof(struct tile *));
     return dungeon;
 }
 
@@ -36,7 +36,7 @@ struct tile **
 dungeon_alloc_tiles_for_box(struct dungeon *dungeon, struct box box)
 {
     int count = box_volume(box);
-    struct tile **tiles = calloc_or_die(count, sizeof(struct tile *));
+    struct tile **tiles = xcalloc(count, sizeof(struct tile *));
     struct point end = box_end_point(box);
     for (int k = box.origin.z; k < end.z; ++k) {
         for (int j = box.origin.y; j < end.y; ++j) {

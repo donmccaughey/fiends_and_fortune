@@ -73,7 +73,7 @@ treasure_alloc_description(struct treasure *treasure)
         return xstrdup("(no treasure)");
     }
 
-    char *description = calloc_or_die(bytes, sizeof(char));
+    char *description = xcalloc(bytes, sizeof(char));
     phrase_count = 0;
     for (int i = 0; i < phrases_count; ++i) {
         if (phrases[i]) {
@@ -277,8 +277,8 @@ treasure_initialize_from_json_object(struct treasure *treasure,
     if (cJSON_IsArray(gems)) {
         treasure->gems_count = cJSON_GetArraySize(gems);
         if (treasure->gems_count) {
-            treasure->gems = calloc_or_die(treasure->gems_count,
-                                           sizeof(struct gem));
+            treasure->gems = xcalloc(treasure->gems_count,
+                                     sizeof(struct gem));
             for (int i = 0; i < treasure->gems_count; ++i) {
                 struct cJSON *gem = cJSON_GetArrayItem(gems, i);
                 gem_initialize_from_json_object(&treasure->gems[i], gem);
@@ -290,8 +290,8 @@ treasure_initialize_from_json_object(struct treasure *treasure,
     if (cJSON_IsArray(jewelry)) {
         treasure->jewelry_count = cJSON_GetArraySize(jewelry);
         if (treasure->jewelry_count) {
-            treasure->jewelry = calloc_or_die(treasure->jewelry_count,
-                                              sizeof(struct jewelry));
+            treasure->jewelry = xcalloc(treasure->jewelry_count,
+                                        sizeof(struct jewelry));
             for (int i = 0; i < treasure->jewelry_count; ++i) {
                 struct cJSON *jewelry_item = cJSON_GetArrayItem(jewelry, i);
                 jewelry_initialize_from_json_object(&treasure->jewelry[i], jewelry_item);
@@ -303,8 +303,8 @@ treasure_initialize_from_json_object(struct treasure *treasure,
     if (cJSON_IsArray(maps)) {
         treasure->maps_count = cJSON_GetArraySize(maps);
         if (treasure->maps_count) {
-            treasure->maps = calloc_or_die(treasure->maps_count,
-                                           sizeof(struct treasure_map));
+            treasure->maps = xcalloc(treasure->maps_count,
+                                     sizeof(struct treasure_map));
             for (int i = 0; i < treasure->maps_count; ++i) {
                 struct cJSON *map = cJSON_GetArrayItem(maps, i);
                 treasure_map_initialize_from_json_object(&treasure->maps[i], map);
@@ -316,8 +316,8 @@ treasure_initialize_from_json_object(struct treasure *treasure,
     if (cJSON_IsArray(magic_items)) {
         treasure->magic_items_count = cJSON_GetArraySize(magic_items);
         if (treasure->magic_items_count) {
-            treasure->magic_items = calloc_or_die(treasure->magic_items_count,
-                                                  sizeof(struct magic_item));
+            treasure->magic_items = xcalloc(treasure->magic_items_count,
+                                            sizeof(struct magic_item));
             for (int i = 0; i < treasure->magic_items_count; ++i) {
                 struct cJSON *magic_item = cJSON_GetArrayItem(magic_items, i);
                 magic_item_initialize_from_json_object(&treasure->magic_items[i], magic_item);

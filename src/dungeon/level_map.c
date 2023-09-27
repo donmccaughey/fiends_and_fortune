@@ -43,7 +43,7 @@ fill_half_tile(struct tile *tile, char half_tile[5])
 struct level_map *
 level_map_alloc(struct dungeon *dungeon, int level)
 {
-    struct level_map *level_map = calloc_or_die(1, sizeof(struct level_map));
+    struct level_map *level_map = xcalloc(1, sizeof(struct level_map));
     level_map->dungeon = dungeon;
     
     struct box box = dungeon_box_for_level(dungeon, level);

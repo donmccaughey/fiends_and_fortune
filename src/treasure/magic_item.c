@@ -1751,8 +1751,8 @@ generate_scroll(struct magic_item *magic_item, struct rnd *rnd)
     assert(scroll);
     
     if (scroll->is_spell_scroll) {
-        magic_item->true_details = calloc_or_die(scroll->spell_count + 1,
-                                                 sizeof(char *));
+        magic_item->true_details = xcalloc(scroll->spell_count + 1,
+                                           sizeof(char *));
         
         enum spell_type spell_type;
         char const *spell_type_name;
@@ -1888,7 +1888,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
         ++detail_count;
     }
     if (detail_count) {
-        magic_item->true_details = calloc_or_die(detail_count + 1, sizeof(char *));
+        magic_item->true_details = xcalloc(detail_count + 1, sizeof(char *));
         for (int i = 0; i < detail_count; ++i) {
             magic_item->true_details[i] = xstrdup(sword->details[i]);
         }
@@ -1948,7 +1948,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
                         + 2 /* languages list, ego points */
                         + 1 /* NULL */;
     if (!magic_item->true_details) {
-        magic_item->true_details = calloc_or_die(detail_capacity, sizeof(char *));
+        magic_item->true_details = xcalloc(detail_capacity, sizeof(char *));
     } else {
         magic_item->true_details = xreallocarray(magic_item->true_details,
                                                  detail_capacity,
@@ -2381,7 +2381,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
         languages_size += (strlen(separator) * language_count);
         languages_size += strlen(alignment);
         languages_size += sizeof('\0');
-        char *languages_detail = calloc_or_die(sizeof(char), languages_size);
+        char *languages_detail = xcalloc(sizeof(char), languages_size);
         strcat(languages_detail, prefix);
         for (int i = 0; i < language_count; ++i) {
             if (i) {
@@ -2438,7 +2438,7 @@ magic_item_initialize_from_json_object(struct magic_item *magic_item,
     if (cJSON_IsArray(true_details)) {
         int count = cJSON_GetArraySize(true_details);
         if (count) {
-            magic_item->true_details = calloc_or_die(count + 1, sizeof(char *));
+            magic_item->true_details = xcalloc(count + 1, sizeof(char *));
             for (int i = 0; i < count; ++i) {
                 magic_item->true_details[i] = json_array_alloc_string_value(true_details, i, NULL);
             }

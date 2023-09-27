@@ -59,16 +59,4 @@ not_null_or_die(void *memory)
 }
 
 
-////////// Core Allocation Wrappers //////////
-
-// Wrapper for calloc().  Increments `alloc_or_die_count' on success.  On
-// failure, prints the error message for `errno' to `stderr' and exits the
-// process with `errno' as the status code.
-inline void *
-calloc_or_die(size_t count, size_t element_size)
-{
-    return not_null_or_die(calloc(count, element_size));
-}
-
-
 #endif

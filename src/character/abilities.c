@@ -17,7 +17,7 @@ special_NPC_roll(struct rnd *rnd,
 struct abilities *
 abilities_alloc(struct rnd *rnd)
 {
-    struct abilities *abilities = calloc_or_die(1, sizeof(struct abilities));
+    struct abilities *abilities = xcalloc(1, sizeof(struct abilities));
     abilities->strength = roll("3d6", rnd);
     abilities->intelligence = roll("3d6", rnd);
     abilities->wisdom = roll("3d6", rnd);
@@ -31,7 +31,7 @@ abilities_alloc(struct rnd *rnd)
 struct abilities *
 abilities_alloc_general_NPC(struct rnd *rnd)
 {
-    struct abilities *abilities = calloc_or_die(1, sizeof(struct abilities));
+    struct abilities *abilities = xcalloc(1, sizeof(struct abilities));
     struct dice threeD6 = dice_make(3, 6);
     abilities->strength = dice_roll_with_average_scoring(threeD6, rnd);
     abilities->intelligence = dice_roll_with_average_scoring(threeD6, rnd);
@@ -46,7 +46,7 @@ abilities_alloc_general_NPC(struct rnd *rnd)
 struct abilities *
 abilities_alloc_method_3(struct rnd *rnd)
 {
-    struct abilities *abilities = calloc_or_die(1, sizeof(struct abilities));
+    struct abilities *abilities = xcalloc(1, sizeof(struct abilities));
     for (int i = 0; i < 6; ++i) {
         int ability = roll("3d6", rnd);
         if (ability > abilities->strength) {
@@ -91,7 +91,7 @@ struct abilities *
 abilities_alloc_special_NPC(struct rnd *rnd,
                             enum ability_flag flags)
 {
-    struct abilities *abilities = calloc_or_die(1, sizeof(struct abilities));
+    struct abilities *abilities = xcalloc(1, sizeof(struct abilities));
     abilities->strength = special_NPC_roll(rnd, flags, ability_flag_strength);
     abilities->intelligence = special_NPC_roll(rnd, flags, ability_flag_intelligence);
     abilities->wisdom = special_NPC_roll(rnd, flags, ability_flag_wisdom);
