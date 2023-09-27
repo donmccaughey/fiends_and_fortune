@@ -1,7 +1,6 @@
 #ifndef FNF_BASE_BASE_H_INCLUDED
 #define FNF_BASE_BASE_H_INCLUDED
 
-#include <base/alloc_or_die.h>
 #include <base/array.h>
 #include <base/fail.h>
 #include <base/int.h>

@@ -4,9 +4,8 @@
 
 #include <stdarg.h>
 #include <stdbool.h>
-#include <stddef.h>
+#include <stdlib.h>
 #include <string.h>
-#include <base/alloc_or_die.h>
 #include <base/xmalloc.h>
 
 

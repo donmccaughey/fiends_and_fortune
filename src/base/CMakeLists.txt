@@ -1,5 +1,4 @@
 add_library(base STATIC
-        alloc_or_die.c
         fail.c
         int.c
         ptr_array.c

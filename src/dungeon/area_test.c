@@ -1,8 +1,8 @@
 #include "area.h"
 
 #include <assert.h>
+#include <stdlib.h>
 #include <string.h>
-#include "base/alloc_or_die.h"
 
 
 void

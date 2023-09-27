@@ -1,9 +1,9 @@
 #include "ptr_array.h"
 
 #include <assert.h>
+#include <stdlib.h>
 #include <string.h>
 
-#include "alloc_or_die.h"
 #include "xmalloc.h"
 
 
