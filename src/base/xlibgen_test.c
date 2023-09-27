@@ -2,7 +2,7 @@
 #include <base/base.h>
 
 
-void
+static void
 xbasename_test(void)
 {
     char *name = xbasename(NULL);
@@ -47,4 +47,11 @@ xbasename_test(void)
     assert(name);
     assert(0 == strcmp("bar", name));
     free(name);
+}
+
+
+void
+xlibgen_test(void)
+{
+    xbasename_test();
 }

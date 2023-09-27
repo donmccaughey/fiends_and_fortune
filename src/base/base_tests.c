@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <base/base.h>
 
 
 void
@@ -24,7 +23,7 @@ void
 str_test(void);
 
 void
-xbasename_test(void);
+xlibgen_test(void);
 
 void
 xmalloc_test(void);
@@ -46,7 +45,7 @@ main(int argc, char *argv[])
     rnd_test();
     sort_test();
     str_test();
-    xbasename_test();
+    xlibgen_test();
     xmalloc_test();
     xstdio_test();
     xstring_test();

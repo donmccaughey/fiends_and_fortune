@@ -7,7 +7,7 @@ add_library(base STATIC
         rnd.c
         sort.c
         str.c
-        xbasename.c
+        xlibgen.c
         xmalloc.c
         xstdio.c
         xstring.c
@@ -29,7 +29,7 @@ add_executable(base_tests
         reallocarray_test.c
         result_test.c
         rnd_test.c
-        xbasename_test.c
+        xlibgen_test.c
         xmalloc_test.c
         xstdio_test.c
         xstring_test.c

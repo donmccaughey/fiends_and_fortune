@@ -10,7 +10,7 @@
 #include <base/rnd.h>
 #include <base/sort.h>
 #include <base/str.h>
-#include <base/xbasename.h>
+#include <base/xlibgen.h>
 #include <base/xmalloc.h>
 #include <base/xstdio.h>
 #include <base/xstring.h>
