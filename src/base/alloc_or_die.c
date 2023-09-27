@@ -35,6 +35,3 @@ not_null_or_die(void *memory);
 
 extern inline void
 print_error_and_die(void);
-
-extern inline int
-vasprintf_or_die(char **string, const char *format, va_list arguments);

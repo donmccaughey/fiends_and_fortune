@@ -13,6 +13,7 @@
 #include <base/str.h>
 #include <base/xbasename.h>
 #include <base/xmalloc.h>
+#include <base/xstdio.h>
 #include <base/xstring.h>
 
 #endif

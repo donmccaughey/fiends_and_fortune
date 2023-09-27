@@ -108,7 +108,7 @@ text_rectangle_print_format(struct text_rectangle *text_rectangle,
     char *buffer;
     va_list arguments;
     va_start(arguments, format);
-    int chars_printed = vasprintf_or_die(&buffer, format, arguments);
+    int chars_printed = xvasprintf(&buffer, format, arguments);
     va_end(arguments);
     
     int chars_to_copy = chars_printed > chars_available ? chars_available : chars_printed;

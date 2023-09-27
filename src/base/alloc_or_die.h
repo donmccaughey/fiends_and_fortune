@@ -71,20 +71,4 @@ calloc_or_die(size_t count, size_t element_size)
 }
 
 
-////////// Formatting Functions //////////
-
-// Allocates a formatted string.  On success, sets `*string' contains a pointer
-// to the newly allocated, formatted string, increments `alloc_or_die_count',
-// and returns the number of characters in the formatted string (excluding the
-// terminating zero).  On failure, prints the error message for `errno' to
-// `stderr' and exits the process with `errno' as the status code.
-inline int
-vasprintf_or_die(char **string, const char *format, va_list arguments)
-{
-    int result = vasprintf(string, format, arguments);
-    if (-1 == result) print_error_and_die();
-    return result;
-}
-
-
 #endif

@@ -10,6 +10,7 @@ add_library(base STATIC
         str.c
         xbasename.c
         xmalloc.c
+        xstdio.c
         xstring.c
 )
 if(HAS_REALLOCARRAY)
@@ -31,6 +32,7 @@ add_executable(base_tests
         rnd_test.c
         xbasename_test.c
         xmalloc_test.c
+        xstdio_test.c
         xstring_test.c
 )
 if(HAS_REALLOCARRAY)

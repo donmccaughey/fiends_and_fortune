@@ -5,6 +5,7 @@
 
 #include "fail.h"
 #include "xmalloc.h"
+#include "xstdio.h"
 
 
 char *
@@ -71,7 +72,7 @@ str_alloc_formatted_from_va_list(char const *format, va_list arguments)
     assert(format);
 
     char *str = NULL;
-    vasprintf_or_die(&str, format, arguments);
+    xvasprintf(&str, format, arguments);
     return str;
 }
 

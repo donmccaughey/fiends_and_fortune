@@ -30,6 +30,9 @@ void
 xmalloc_test(void);
 
 void
+xstdio_test(void);
+
+void
 xstring_test(void);
 
 
@@ -45,6 +48,7 @@ main(int argc, char *argv[])
     str_test();
     xbasename_test();
     xmalloc_test();
+    xstdio_test();
     xstring_test();
     return EXIT_SUCCESS;
 }
