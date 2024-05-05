@@ -4,6 +4,8 @@
 #include <limits.h>
 #include <base/base.h>
 
+#include "xstring.h"
+
 
 char *
 json_array_alloc_string_value(struct cJSON *json_array,

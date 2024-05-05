@@ -1,0 +1,16 @@
+image: freebsd/latest
+packages:
+    - cmake
+sources:
+    - https://git.sr.ht/~donmcc/xmalloc
+tasks:
+    - setup: |
+          cd xmalloc
+          cmake -S . -B tmp -DWALL=ON
+    - build: |
+          cd xmalloc
+          cmake --build tmp --target all test
+triggers:
+    - action: email
+      condition: failure
+      to: Don McCaughey <don@donm.cc>

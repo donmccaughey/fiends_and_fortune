@@ -1,7 +1,8 @@
 #include "tile.h"
 
 #include <stdlib.h>
-#include <base/base.h>
+
+#include "xmalloc.h"
 
 
 static int

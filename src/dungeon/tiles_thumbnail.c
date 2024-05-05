@@ -1,9 +1,11 @@
 #include "tiles_thumbnail.h"
 
 #include <base/base.h>
+
 #include "box.h"
 #include "text_rectangle.h"
 #include "tile.h"
+#include "xstring.h"
 
 
 typedef void print_tile_fn(struct text_rectangle *, struct tile *);

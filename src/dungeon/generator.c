@@ -9,6 +9,7 @@
 #include "dungeon_options.h"
 #include "periodic_check.h"
 #include "tile.h"
+#include "xstring.h"
 
 
 struct area *

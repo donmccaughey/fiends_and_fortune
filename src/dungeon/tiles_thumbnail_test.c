@@ -1,7 +1,10 @@
+#include "tiles_thumbnail.h"
+
 #include <assert.h>
 #include <base/base.h>
+
 #include "tile.h"
-#include "tiles_thumbnail.h"
+#include "xmalloc.h"
 
 
 void

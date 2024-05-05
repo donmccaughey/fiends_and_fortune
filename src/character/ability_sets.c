@@ -3,6 +3,8 @@
 #include <base/base.h>
 #include <mechanics/mechanics.h>
 
+#include "xmalloc.h"
+
 
 struct ability_sets *
 ability_sets_alloc_method_4(struct rnd *rnd)

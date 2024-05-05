@@ -3,6 +3,8 @@
 #include <base/base.h>
 #include <mechanics/mechanics.h>
 
+#include "xmalloc.h"
+
 
 static int
 compare_ability_scores(void const *first, void const *second);

@@ -9,9 +9,10 @@
 #include "tile.h"
 #include "tile_type.h"
 #include "wall_type.h"
+#include "xmalloc.h"
 
 
-static char const *const margin =                "    ";
+static char const *const margin = "    ";
 
 
 static void

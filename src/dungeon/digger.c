@@ -4,6 +4,7 @@
 
 #include "generator.h"
 #include "tile.h"
+#include "xmalloc.h"
 
 
 struct digger *

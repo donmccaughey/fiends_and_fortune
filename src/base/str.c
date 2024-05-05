@@ -49,8 +49,11 @@ str_alloc_centered_and_formatted_from_va_list(int width,
 }
 
 
-extern char *
-str_alloc_empty(void);
+char *
+str_alloc_empty(void)
+{
+    return (char *)xcalloc(1, 1);
+}
 
 
 char *

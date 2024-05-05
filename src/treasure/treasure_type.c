@@ -8,7 +8,7 @@
 #include "jewelry.h"
 #include "magic_item.h"
 #include "treasure.h"
-#include "treasure_map.h"
+#include "xstring.h"
 
 
 struct coins_gems_or_jewelry {

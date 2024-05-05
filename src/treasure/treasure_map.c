@@ -9,6 +9,7 @@
 
 #include "gem.h"
 #include "jewelry.h"
+#include "xmalloc.h"
 
 
 enum treasure_map_type {

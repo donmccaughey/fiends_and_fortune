@@ -6,7 +6,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include <base/xmalloc.h>
 
 
 char *
@@ -17,11 +16,8 @@ str_alloc_centered_and_formatted_from_va_list(int width,
                                               char const *format,
                                               va_list arguments);
 
-inline char *
-str_alloc_empty(void)
-{
-    return (char *)xcalloc(1, 1);
-}
+char *
+str_alloc_empty(void);
 
 char *
 str_alloc_formatted(char const *format, ...);

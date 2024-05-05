@@ -1,11 +1,10 @@
 #include "abilities.h"
 
-#include <assert.h>
-#include <stdbool.h>
 #include <stdlib.h>
-#include <string.h>
 #include <base/base.h>
 #include <mechanics/mechanics.h>
+
+#include "xmalloc.h"
 
 
 static int

@@ -5,6 +5,8 @@
 #include <stdarg.h>
 #include <base/base.h>
 
+#include "xstdio.h"
+
 
 static int
 horizontal_char_count(int column_count)
@@ -17,7 +19,7 @@ static size_t
 chars_size(int column_count, int row_count)
 {
     bool too_big;
-    size_t size = array_size(horizontal_char_count(column_count), row_count, &too_big);
+    size_t size = arraysize(horizontal_char_count(column_count), row_count, &too_big);
     if (too_big || SIZE_MAX == size) abort();
     return size + 1;
 }

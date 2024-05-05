@@ -8,6 +8,7 @@
 #include "level_map.h"
 #include "text_rectangle.h"
 #include "tile.h"
+#include "xmalloc.h"
 
 
 void

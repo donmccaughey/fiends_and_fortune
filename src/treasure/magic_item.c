@@ -11,6 +11,7 @@
 #include <mechanics/mechanics.h>
 
 #include "coins.h"
+#include "xstring.h"
 
 
 typedef void(*generate_function)(struct magic_item *magic_item, struct rnd *rnd);

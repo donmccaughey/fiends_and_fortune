@@ -1,6 +1,6 @@
 #include "dungeon_options.h"
 
-#include <base/base.h>
+#include "xmalloc.h"
 
 
 struct dungeon_options *
