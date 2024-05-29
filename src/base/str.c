@@ -28,16 +28,9 @@ str_alloc_formatted(char const *format, ...)
 {
     va_list arguments;
     va_start(arguments, format);
-    char *str = str_alloc_formatted_from_va_list(format, arguments);
+    char *str = astr_f_va(format, arguments);
     va_end(arguments);
     return str;
-}
-
-
-char *
-str_alloc_formatted_from_va_list(char const *format, va_list arguments)
-{
-    return astr_f_va(format, arguments);
 }
 
 

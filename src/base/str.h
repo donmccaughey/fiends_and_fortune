@@ -17,9 +17,6 @@ str_alloc_empty(void);
 char *
 str_alloc_formatted(char const *format, ...);
 
-char *
-str_alloc_formatted_from_va_list(char const *format, va_list arguments);
-
 bool
 str_empty(char const *str);
 
