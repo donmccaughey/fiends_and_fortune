@@ -44,17 +44,17 @@ dice_alloc_description(struct dice dice)
 
     char *description = NULL;
     if (!dice.count || !dice.sides) {
-        str_realloc_append_formatted(&description, "0");
+        description = astr_cat_f(description, "0");
     } else if (1 == dice.sides) {
-        str_realloc_append_formatted(&description, "%i", dice.count);
+        description = astr_cat_f(description, "%i", dice.count);
     } else {
-        str_realloc_append_formatted(&description, "%id%i", dice.count, dice.sides);
+        description = astr_cat_f(description, "%id%i", dice.count, dice.sides);
     }
     if (dice.modifier) {
-        str_realloc_append_formatted(&description, "%+i", dice.modifier);
+        description = astr_cat_f(description, "%+i", dice.modifier);
     }
     if (1 != dice.multiplier) {
-        str_realloc_append_formatted(&description, "x%i", dice.multiplier);
+        description = astr_cat_f(description, "x%i", dice.multiplier);
     }
     return description;
 }

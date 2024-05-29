@@ -1203,13 +1203,13 @@ generate_necklace_of_prayer_beads(struct magic_item *magic_item, struct rnd *rnd
     bool first = true;
     for (int i = 0; i < types_count; ++i) {
         if (!special_bead_counts[i]) continue;
-        if (!first) str_realloc_append_formatted(&description, ", ");
+        if (!first) description = astr_cat_f(description, ", ");
         first = false;
         if (special_bead_counts[i] > 1) {
-            str_realloc_append_formatted(&description,"(%i) ",
-                                         special_bead_counts[i]);
+            description = astr_cat_f(description,"(%i) ",
+                                     special_bead_counts[i]);
         }
-        str_realloc_append_formatted(&description, "%s", types[i]);
+        description = astr_cat_f(description, "%s", types[i]);
     }
 
     magic_item->experience_points = special_bead_total * 500;

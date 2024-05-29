@@ -633,12 +633,12 @@ gem_alloc_true_description_modifiers(struct gem *gem)
 {
     char *description = astr_f("%s", gem_type_name(gem));
     if (gem->value_rank_modifier) {
-        str_realloc_append_formatted(&description, ", rank %+i",
-                                     gem->value_rank_modifier);
+        description = astr_cat_f(description, ", rank %+i",
+                                 gem->value_rank_modifier);
     }
     if (gem->value_percent_modifier) {
-        str_realloc_append_formatted(&description, ", %+i%%",
-                                     gem->value_percent_modifier - 100);
+        description = astr_cat_f(description, ", %+i%%",
+                                 gem->value_percent_modifier - 100);
     }
     return description;
 }

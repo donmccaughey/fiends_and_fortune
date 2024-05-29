@@ -8,6 +8,5 @@
 #include <base/result.h>
 #include <base/rnd.h>
 #include <base/sort.h>
-#include <base/str.h>
 
 #endif

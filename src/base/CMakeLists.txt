@@ -5,7 +5,6 @@ add_library(base STATIC
         result.c
         rnd.c
         sort.c
-        str.c
 )
 if(HAS_REALLOCARRAY)
         target_compile_definitions(base PRIVATE HAS_REALLOCARRAY)

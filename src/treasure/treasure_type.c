@@ -833,12 +833,12 @@ describe_maps_or_magic(struct maps_or_magic *maps_or_magic)
     char *description = NULL;
     for (int i = 0; i < maps_or_magic->types_count; ++i) {
         char const *separator = (i) ? ", " : "";
-        str_realloc_append_formatted(&description, "%s%s",
-                                     separator, type_descriptions[i]);
+        description = astr_cat_f(description, "%s%s",
+                                 separator, type_descriptions[i]);
         free(type_descriptions[i]);
     }
-    str_realloc_append_formatted(&description, ": %i%%",
-                                 maps_or_magic->percent_chance);
+    description = astr_cat_f(description, ": %i%%",
+                             maps_or_magic->percent_chance);
     return description;
 }
 

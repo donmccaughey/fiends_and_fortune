@@ -234,15 +234,15 @@ jewelry_alloc_true_description_modifiers(struct jewelry *jewelry)
 {
     char *description = astr_empty();
     if (jewelry->workmanship_bonus) {
-        str_realloc_append_formatted(&description, "workmanship %+i",
-                                     jewelry->workmanship_bonus);
+        description = astr_cat_f(description, "workmanship %+i",
+                                 jewelry->workmanship_bonus);
     }
     if (jewelry->exceptional_stone_bonus) {
         if ( ! astr_is_empty(description)) {
-            str_realloc_append_formatted(&description, ", ");
+            description = astr_cat_f(description, ", ");
         }
-        str_realloc_append_formatted(&description, "exceptional stone %+i",
-                                     jewelry->exceptional_stone_bonus);
+        description = astr_cat_f(description, "exceptional stone %+i",
+                                 jewelry->exceptional_stone_bonus);
     }
     return description;
 }

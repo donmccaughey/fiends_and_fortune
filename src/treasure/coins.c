@@ -13,23 +13,23 @@ coins_alloc_description(struct coins coins)
     char *description = astr_empty();
     char const *separator = "";
     if (coins.cp) {
-        str_realloc_append_formatted(&description, "%d copper", coins.cp);
+        description = astr_cat_f(description, "%d copper", coins.cp);
         separator = ", ";
     }
     if (coins.sp) {
-        str_realloc_append_formatted(&description, "%s%d silver", separator, coins.sp);
+        description = astr_cat_f(description, "%s%d silver", separator, coins.sp);
         separator = ", ";
     }
     if (coins.ep) {
-        str_realloc_append_formatted(&description, "%s%d electrum", separator, coins.ep);
+        description = astr_cat_f(description, "%s%d electrum", separator, coins.ep);
         separator = ", ";
     }
     if (coins.gp) {
-        str_realloc_append_formatted(&description, "%s%d gold", separator, coins.gp);
+        description = astr_cat_f(description, "%s%d gold", separator, coins.gp);
         separator = ", ";
     }
     if (coins.pp) {
-        str_realloc_append_formatted(&description, "%s%d platinum", separator, coins.pp);
+        description = astr_cat_f(description, "%s%d platinum", separator, coins.pp);
         separator = ", ";
     }
     return description;

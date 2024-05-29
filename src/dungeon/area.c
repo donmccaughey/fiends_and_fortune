@@ -70,22 +70,22 @@ area_alloc_description(struct area const *area)
     if (!area->features) return description;
     
     if (area->features & area_features_chimney_up) {
-        str_realloc_append_formatted(&description, ", chimney up to ");
+        description = astr_cat_f(description, ", chimney up to ");
         realloc_append_level_description(&description, level - 1);
     }
     
     if (area->features & area_features_chimney_down) {
-        str_realloc_append_formatted(&description, ", chimney down to ");
+        description = astr_cat_f(description, ", chimney down to ");
         realloc_append_level_description(&description, level + 1);
     }
     
     if (area->features & area_features_chute_entrance) {
-        str_realloc_append_formatted(&description, ", chute down to ");
+        description = astr_cat_f(description, ", chute down to ");
         realloc_append_level_description(&description, level + 1);
     }
     
     if (area->features & area_features_chute_exit) {
-        str_realloc_append_formatted(&description, ", chute down from ");
+        description = astr_cat_f(description, ", chute down from ");
         realloc_append_level_description(&description, level - 1);
     }
     
@@ -141,8 +141,8 @@ static void
 realloc_append_level_description(char **s, int level)
 {
     if (level <= 0) {
-        str_realloc_append_formatted(s, "surface");
+        *s = astr_cat_f(*s, "surface");
     } else {
-        str_realloc_append_formatted(s, "level %i", level);
+        *s = astr_cat_f(*s, "level %i", level);
     }
 }
