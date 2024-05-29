@@ -1,6 +1,7 @@
 #include <assert.h>
-#include <base/base.h>
 #include <character/character.h>
+
+#include "astr.h"
 
 
 void
@@ -11,10 +12,10 @@ static void
 ability_score_generation_method_description_test(void)
 {
     char const *description = ability_score_generation_method_description(ability_score_generation_method_simple);
-    assert(str_eq("roll 3d6 once per ability", description));
+    assert(astr_eq("roll 3d6 once per ability", description));
 
     description = ability_score_generation_method_description(-42);
-    assert(str_eq("invalid ability generation method", description));
+    assert(astr_eq("invalid ability generation method", description));
 }
 
 
@@ -22,10 +23,10 @@ static void
 ability_score_generation_method_name_test(void)
 {
     char const *name = ability_score_generation_method_name(ability_score_generation_method_1);
-    assert(str_eq("method1", name));
+    assert(astr_eq("method1", name));
 
     name = ability_score_generation_method_name(-42);
-    assert(str_eq("invalid", name));
+    assert(astr_eq("invalid", name));
 }
 
 

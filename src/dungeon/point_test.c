@@ -2,6 +2,8 @@
 #include <base/base.h>
 #include <dungeon/dungeon.h>
 
+#include "astr.h"
+
 
 void
 point_test(void);
@@ -426,7 +428,7 @@ static void
 point_alloc_xy_test(void)
 {
     char *point = point_alloc_xy(point_make(1, 2, 3));
-    assert(str_eq("(1, 2)", point));
+    assert(astr_eq("(1, 2)", point));
     free(point);
 }
 

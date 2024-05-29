@@ -2,8 +2,8 @@
 
 #include <assert.h>
 #include <limits.h>
-#include <base/base.h>
 
+#include "astr.h"
 #include "xstring.h"
 
 
@@ -109,5 +109,5 @@ json_object_has_struct_member(struct cJSON *json_object,
 
     struct cJSON *struct_member = cJSON_GetObjectItem(json_object, "struct");
     char const *string_value = cJSON_GetStringValue(struct_member);
-    return string_value && str_eq(struct_name, string_value);
+    return string_value && astr_eq(struct_name, string_value);
 }

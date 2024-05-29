@@ -276,7 +276,7 @@ jewelry_form_for_name(char const *name, int default_value)
 {
     if (name) {
         for (size_t i = 0; i < jewelry_form_table_count; ++i) {
-            if (str_eq(name, jewelry_form_table[i].name)) return jewelry_form_anklet + i;
+            if (astr_eq(name, jewelry_form_table[i].name)) return jewelry_form_anklet + i;
         }
     }
     return default_value;
@@ -405,7 +405,7 @@ jewelry_material_for_name(char const *name, int default_value)
 {
     if (name) {
         for (size_t i = 0; i < jewelry_material_names_count; ++i) {
-            if (str_eq(name, jewelry_material_names[i])) return jewelry_material_fake + i;
+            if (astr_eq(name, jewelry_material_names[i])) return jewelry_material_fake + i;
         }
     }
     return default_value;

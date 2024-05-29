@@ -2,6 +2,8 @@
 #include <base/base.h>
 #include <background/background.h>
 
+#include "astr.h"
+
 
 void
 language_test(void);
@@ -13,7 +15,7 @@ language_determine_no_exclude_test(void)
     struct rnd *rnd = rnd_alloc_fake_fixed(8);
 
     char const *language = language_determine(rnd, NULL, 0);
-    assert(str_eq("Copper Dragon", language));
+    assert(astr_eq("Copper Dragon", language));
 
     rnd_free(rnd);
 }
@@ -27,7 +29,7 @@ language_determine_with_exclude_test(void)
     size_t exclude_count = 2;
 
     char const *language = language_determine(rnd, exclude, exclude_count);
-    assert(str_eq("Green Dragon", language));
+    assert(astr_eq("Green Dragon", language));
 
     rnd_free(rnd);
 }

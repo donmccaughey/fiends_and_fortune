@@ -10,6 +10,7 @@
 #include <magic/magic.h>
 #include <mechanics/mechanics.h>
 
+#include "astr.h"
 #include "coins.h"
 #include "xstring.h"
 
@@ -2456,7 +2457,7 @@ magic_item_type_for_name(char const *name, int default_value)
 {
     if (name) {
         for (size_t i = 0; i < magic_item_type_names_count; ++i) {
-            if (str_eq(name, magic_item_type_names[i])) return magic_item_type_unknown + i;
+            if (astr_eq(name, magic_item_type_names[i])) return magic_item_type_unknown + i;
         }
     }
     return default_value;

@@ -1,8 +1,9 @@
 #include <assert.h>
 #include <limits.h>
 #include <stdlib.h>
-#include <base/base.h>
 #include <json/json.h>
+
+#include "astr.h"
 
 
 static void
@@ -14,7 +15,7 @@ json_array_alloc_string_value_when_missing_test(void)
     char const missing[] = "(missing)";
     char *value = json_array_alloc_string_value(json_array, 0, missing);
 
-    assert(str_eq(missing, value));
+    assert(astr_eq(missing, value));
     assert(missing != value);
 
     free(value);
@@ -31,7 +32,7 @@ json_array_alloc_string_value_when_present_test(void)
     char const missing[] = "(missing)";
     char *value = json_array_alloc_string_value(json_array, 0, missing);
 
-    assert(str_eq("present", value));
+    assert(astr_eq("present", value));
 
     free(value);
     cJSON_Delete(json_array);
@@ -47,7 +48,7 @@ json_array_alloc_string_value_when_bad_value_test(void)
     char const missing[] = "(missing)";
     char *value = json_array_alloc_string_value(json_array, 0, missing);
 
-    assert(str_eq(missing, value));
+    assert(astr_eq(missing, value));
     assert(missing != value);
 
     free(value);
@@ -79,7 +80,7 @@ json_array_get_string_value_when_missing_test(void)
     char const missing[] = "(missing)";
     char const *value = json_array_get_string_value(json_array, 0, missing);
 
-    assert(str_eq(missing, value));
+    assert(astr_eq(missing, value));
     assert(missing == value);
 
     cJSON_Delete(json_array);
@@ -95,7 +96,7 @@ json_array_get_string_value_when_present_test(void)
     char const missing[] = "(missing)";
     char const *value = json_array_get_string_value(json_array, 0, missing);
 
-    assert(str_eq("present", value));
+    assert(astr_eq("present", value));
 
     cJSON_Delete(json_array);
 }
@@ -110,7 +111,7 @@ json_array_get_string_value_when_bad_value_test(void)
     char const missing[] = "(missing)";
     char const *value = json_array_get_string_value(json_array, 0, missing);
 
-    assert(str_eq(missing, value));
+    assert(astr_eq(missing, value));
     assert(missing == value);
 
     cJSON_Delete(json_array);
@@ -140,7 +141,7 @@ json_object_alloc_string_value_when_missing_test(void)
     char const missing[] = "(missing)";
     char *value = json_object_alloc_string_value(json_object, "foo", missing);
 
-    assert(str_eq(missing, value));
+    assert(astr_eq(missing, value));
     assert(missing != value);
 
     free(value);
@@ -159,7 +160,7 @@ json_object_alloc_string_value_when_present_test(void)
     char const missing[] = "(missing)";
     char *value = json_object_alloc_string_value(json_object, "foo", missing);
 
-    assert(str_eq("bar", value));
+    assert(astr_eq("bar", value));
 
     free(value);
     cJSON_Delete(json_object);
@@ -177,7 +178,7 @@ json_object_alloc_string_value_when_bad_value_test(void)
     char const missing[] = "(missing)";
     char *value = json_object_alloc_string_value(json_object, "foo", missing);
 
-    assert(str_eq(missing, value));
+    assert(astr_eq(missing, value));
     assert(missing != value);
 
     free(value);
@@ -326,7 +327,7 @@ json_object_get_string_value_when_present_test(void)
     char const missing[] = "(missing)";
     char const *value = json_object_get_string_value(json_object, "foo", missing);
 
-    assert(str_eq("bar", value));
+    assert(astr_eq("bar", value));
 
     cJSON_Delete(json_object);
 }

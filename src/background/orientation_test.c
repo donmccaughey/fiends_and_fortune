@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <background/background.h>
-#include <base/base.h>
-#include <dungeon/dungeon.h>
+
+#include "astr.h"
 
 
 void
@@ -43,10 +43,10 @@ orientation_is_valid_test(void)
 static void
 orientation_name_test(void)
 {
-    assert(str_eq("north to south", orientation_name(orientation_north_to_south)));
-    assert(str_eq("northeast to southwest", orientation_name(orientation_northeast_to_southwest)));
-    assert(str_eq("east to west", orientation_name(orientation_east_to_west)));
-    assert(str_eq("southeast to northwest", orientation_name(orientation_southeast_to_northwest)));
+    assert(astr_eq("north to south", orientation_name(orientation_north_to_south)));
+    assert(astr_eq("northeast to southwest", orientation_name(orientation_northeast_to_southwest)));
+    assert(astr_eq("east to west", orientation_name(orientation_east_to_west)));
+    assert(astr_eq("southeast to northwest", orientation_name(orientation_southeast_to_northwest)));
 }
 
 

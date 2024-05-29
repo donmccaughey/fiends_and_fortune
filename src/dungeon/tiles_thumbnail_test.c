@@ -1,8 +1,8 @@
 #include "tiles_thumbnail.h"
 
 #include <assert.h>
-#include <base/base.h>
 
+#include "astr.h"
 #include "tile.h"
 #include "xmalloc.h"
 
@@ -38,7 +38,7 @@ tiles_thumbnail_directions_alloc_test_for_each_direction(void)
     char const *expected =
             "   -4 -3 -2 -1  0  1  2  3 \n"
             " 0  n  s  e  w nw ne sw se \n";
-    assert(str_eq(expected, thumbnail));
+    assert(astr_eq(expected, thumbnail));
 
     free(thumbnail);
     for (int i = 0; i < tiles_count; ++i) tile_free(tiles[i]);
@@ -64,7 +64,7 @@ tiles_thumbnail_features_alloc_test_for_various_feature_combinations(void)
             " 3  v \n"
             " 2  : \n"
             " 1  . \n";
-    assert(str_eq(expected, thumbnail));
+    assert(astr_eq(expected, thumbnail));
 
     free(thumbnail);
     for (int i = 0; i < tiles_count; ++i) tile_free(tiles[i]);
@@ -97,7 +97,7 @@ tiles_thumbnail_types_alloc_test_for_each_tile_type(void)
     char const *expected =
             "   -2 -1  0  1  2  3  4 \n"
             "12  0  1  2  4  8  3  c \n";
-    assert(str_eq(expected, thumbnail));
+    assert(astr_eq(expected, thumbnail));
 
     free(thumbnail);
     for (int i = 0; i < tiles_count; ++i) tile_free(tiles[i]);
@@ -128,7 +128,7 @@ tiles_thumbnail_walls_alloc_test_for_each_wall_type(void)
     char const *expected =
             "   -1  0  1  2 \n"
             "-1 |_ $~ .. ]= \n";
-    assert(str_eq(expected, thumbnail));
+    assert(astr_eq(expected, thumbnail));
 
     free(thumbnail);
     for (int i = 0; i < tiles_count; ++i) tile_free(tiles[i]);
@@ -144,7 +144,7 @@ tiles_thumbnail_types_alloc_test_for_no_tiles(void)
 
     char *thumbnail = tiles_thumbnail_types_alloc(tiles, tiles_count);
     assert(thumbnail);
-    assert(str_eq("", thumbnail));
+    assert(astr_eq("", thumbnail));
 
     free(thumbnail);
     for (int i = 0; i < tiles_count; ++i) tile_free(tiles[i]);
@@ -164,7 +164,7 @@ tiles_thumbnail_types_alloc_test_for_one_tile(void)
     char const *expected =
             "    7 \n"
             "12  . \n";
-    assert(str_eq(expected, thumbnail));
+    assert(astr_eq(expected, thumbnail));
 
     free(thumbnail);
     for (int i = 0; i < tiles_count; ++i) tile_free(tiles[i]);
@@ -193,7 +193,7 @@ tiles_thumbnail_types_alloc_test_for_multiple_tiles(void)
             " 2        v  v       \n"
             " 1                   \n"
             " 0  .                \n";
-    assert(str_eq(expected, thumbnail));
+    assert(astr_eq(expected, thumbnail));
 
     free(thumbnail);
     for (int i = 0; i < tiles_count; ++i) tile_free(tiles[i]);

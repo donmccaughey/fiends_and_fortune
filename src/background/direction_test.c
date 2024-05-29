@@ -2,6 +2,8 @@
 #include <background/background.h>
 #include <base/base.h>
 
+#include "astr.h"
+
 
 void
 direction_test(void);
@@ -101,14 +103,14 @@ direction_is_valid_test(void)
 static void
 direction_name_test(void)
 {
-    assert(str_eq("north", direction_name(direction_north)));
-    assert(str_eq("northeast", direction_name(direction_northeast)));
-    assert(str_eq("east", direction_name(direction_east)));
-    assert(str_eq("southeast", direction_name(direction_southeast)));
-    assert(str_eq("south", direction_name(direction_south)));
-    assert(str_eq("southwest", direction_name(direction_southwest)));
-    assert(str_eq("west", direction_name(direction_west)));
-    assert(str_eq("northwest", direction_name(direction_northwest)));
+    assert(astr_eq("north", direction_name(direction_north)));
+    assert(astr_eq("northeast", direction_name(direction_northeast)));
+    assert(astr_eq("east", direction_name(direction_east)));
+    assert(astr_eq("southeast", direction_name(direction_southeast)));
+    assert(astr_eq("south", direction_name(direction_south)));
+    assert(astr_eq("southwest", direction_name(direction_southwest)));
+    assert(astr_eq("west", direction_name(direction_west)));
+    assert(astr_eq("northwest", direction_name(direction_northwest)));
 }
 
 

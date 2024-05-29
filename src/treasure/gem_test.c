@@ -4,6 +4,8 @@
 #include <json/json.h>
 #include <treasure/treasure.h>
 
+#include "astr.h"
+
 
 void
 gem_test(void);
@@ -31,7 +33,7 @@ gem_create_json_object_test(void)
                            "\"value_percent_modifier\":0,"
                            "\"value_rank_modifier\":0"
                            "}";
-    assert(str_eq(expected, json_string));
+    assert(astr_eq(expected, json_string));
 
     free(json_string);
     cJSON_Delete(json_object);
@@ -124,11 +126,11 @@ gem_initialize_from_json_object_for_complete_object_test(void)
     assert(gem_size_large == gem.size);
     assert(gem_type_precious_stone == gem.type);
     assert(gem_kind_moonstone == gem.kind);
-    assert(str_eq("white with pale blue glow", gem.colors));
+    assert(astr_eq("white with pale blue glow", gem.colors));
     assert(90 == gem.value_percent_modifier);
     assert(2 == gem.value_rank_modifier);
-    assert(str_eq("large moonstone (precious, rank +2, -10%: 9000 gp)", gem.true_description));
-    assert(str_eq("large translucent white with pale blue glow stone", gem.visible_description));
+    assert(astr_eq("large moonstone (precious, rank +2, -10%: 9000 gp)", gem.true_description));
+    assert(astr_eq("large translucent white with pale blue glow stone", gem.visible_description));
 
     gem_finalize(&gem);
     cJSON_Delete(json_object);
@@ -336,11 +338,11 @@ gem_generate_with_fake_min_test(void)
     assert(gem_size_very_small == gem.size);
     assert(gem_type_ornamental_stone == gem.type);
     assert(gem_kind_azurite == gem.kind);
-    assert(str_eq("mottled deep blue", gem.colors));
+    assert(astr_eq("mottled deep blue", gem.colors));
     assert(0 == gem.value_percent_modifier);
     assert(7 == gem.value_rank_modifier);
-    assert(str_eq("very small azurite (ornamental, rank +7: 5000 gp)", gem.true_description));
-    assert(str_eq("very small opaque mottled deep blue stone", gem.visible_description));
+    assert(astr_eq("very small azurite (ornamental, rank +7: 5000 gp)", gem.true_description));
+    assert(astr_eq("very small opaque mottled deep blue stone", gem.visible_description));
 
     gem_finalize(&gem);
     rnd_free(rnd);
@@ -358,11 +360,11 @@ gem_generate_with_fake_max_test(void)
     assert(gem_size_huge == gem.size);
     assert(gem_type_jewel_stone == gem.type);
     assert(gem_kind_ruby == gem.kind);
-    assert(str_eq("deep crimson", gem.colors));
+    assert(astr_eq("deep crimson", gem.colors));
     assert(0 == gem.value_percent_modifier);
     assert(-5 == gem.value_rank_modifier);
-    assert(str_eq("huge ruby (jewel, rank -5: 500 gp)", gem.true_description));
-    assert(str_eq("huge transparent deep crimson stone", gem.visible_description));
+    assert(astr_eq("huge ruby (jewel, rank -5: 500 gp)", gem.true_description));
+    assert(astr_eq("huge transparent deep crimson stone", gem.visible_description));
 
     gem_finalize(&gem);
     rnd_free(rnd);
@@ -380,11 +382,11 @@ gem_generate_with_fake_median_test(void)
     assert(gem_size_average == gem.size);
     assert(gem_type_fancy_stone == gem.type);
     assert(gem_kind_jade == gem.kind);
-    assert(str_eq("green and white", gem.colors));
+    assert(astr_eq("green and white", gem.colors));
     assert(0 == gem.value_percent_modifier);
     assert(0 == gem.value_rank_modifier);
-    assert(str_eq("average jade (fancy: 100 gp)", gem.true_description));
-    assert(str_eq("average translucent green and white stone", gem.visible_description));
+    assert(astr_eq("average jade (fancy: 100 gp)", gem.true_description));
+    assert(astr_eq("average translucent green and white stone", gem.visible_description));
 
     gem_finalize(&gem);
     rnd_free(rnd);
@@ -402,11 +404,11 @@ gem_generate_for_double_value_test(void)
     assert(gem_size_very_small == gem.size);
     assert(gem_type_ornamental_stone == gem.type);
     assert(gem_kind_banded_agate == gem.kind);
-    assert(str_eq("striped blue", gem.colors));
+    assert(astr_eq("striped blue", gem.colors));
     assert(200 == gem.value_percent_modifier);
     assert(0 == gem.value_rank_modifier);
-    assert(str_eq("very small banded agate (ornamental, +100%: 2 gp)", gem.true_description));
-    assert(str_eq("very small translucent striped blue stone", gem.visible_description));
+    assert(astr_eq("very small banded agate (ornamental, +100%: 2 gp)", gem.true_description));
+    assert(astr_eq("very small translucent striped blue stone", gem.visible_description));
 
     gem_finalize(&gem);
     rnd_free(rnd);
@@ -424,11 +426,11 @@ gem_generate_for_increased_value_test(void)
     assert(gem_size_very_small == gem.size);
     assert(gem_type_ornamental_stone == gem.type);
     assert(gem_kind_blue_quartz == gem.kind);
-    assert(str_eq("pale blue", gem.colors));
+    assert(astr_eq("pale blue", gem.colors));
     assert(130 == gem.value_percent_modifier);
     assert(0 == gem.value_rank_modifier);
-    assert(str_eq("very small blue quartz (ornamental, +30%: 1 gp, 60 cp)", gem.true_description));
-    assert(str_eq("very small transparent pale blue stone", gem.visible_description));
+    assert(astr_eq("very small blue quartz (ornamental, +30%: 1 gp, 60 cp)", gem.true_description));
+    assert(astr_eq("very small transparent pale blue stone", gem.visible_description));
 
     gem_finalize(&gem);
     rnd_free(rnd);
@@ -446,11 +448,11 @@ gem_generate_for_decreased_value_test(void)
     assert(gem_size_very_small == gem.size);
     assert(gem_type_ornamental_stone == gem.type);
     assert(gem_kind_obsidian == gem.kind);
-    assert(str_eq("black", gem.colors));
+    assert(astr_eq("black", gem.colors));
     assert(90 == gem.value_percent_modifier);
     assert(0 == gem.value_rank_modifier);
-    assert(str_eq("very small obsidian (ornamental, -10%: 180 cp)", gem.true_description));
-    assert(str_eq("very small opaque black stone", gem.visible_description));
+    assert(astr_eq("very small obsidian (ornamental, -10%: 180 cp)", gem.true_description));
+    assert(astr_eq("very small opaque black stone", gem.visible_description));
 
     gem_finalize(&gem);
     rnd_free(rnd);

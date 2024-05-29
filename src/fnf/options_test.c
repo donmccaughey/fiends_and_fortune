@@ -1,7 +1,8 @@
 #include <assert.h>
-#include <stddef.h>
 #include <base/base.h>
 #include <character/character.h>
+
+#include "astr.h"
 #include "options.h"
 
 
@@ -15,7 +16,7 @@ options_alloc_with_no_args_test(void)
     struct options *options = options_alloc(argc, argv);
 
     assert(action_none == options->action);
-    assert(str_eq("fnf", options->command_name));
+    assert(astr_eq("fnf", options->command_name));
     assert( ! options->debug);
     assert( ! options->dungeon_options);
     assert(options->error);
@@ -42,7 +43,7 @@ options_alloc_with_no_action_test(void)
     struct options *options = options_alloc(argc, argv);
 
     assert(action_none == options->action);
-    assert(str_eq("fnf", options->command_name));
+    assert(astr_eq("fnf", options->command_name));
     assert(options->debug);
     assert( ! options->dungeon_options);
     assert(options->error);
@@ -68,7 +69,7 @@ options_alloc_with_character_action_test(void)
     assert(action_character == options->action);
     assert(ability_score_generation_method_simple == options->character_method);
 
-    assert(str_eq("fnf", options->command_name));
+    assert(astr_eq("fnf", options->command_name));
     assert( ! options->debug);
     assert( ! options->dungeon_options);
     assert( ! options->error);
@@ -94,7 +95,7 @@ options_alloc_with_check_action_test(void)
     assert(action_check == options->action);
     assert(0 == options->check_constant);
 
-    assert(str_eq("fnf", options->command_name));
+    assert(astr_eq("fnf", options->command_name));
     assert( ! options->debug);
     assert( ! options->dungeon_options);
     assert( ! options->error);
@@ -120,7 +121,7 @@ options_alloc_with_dungeon_action_test(void)
     assert(action_dungeon == options->action);
     assert( ! options->dungeon_type_small);
 
-    assert(str_eq("fnf", options->command_name));
+    assert(astr_eq("fnf", options->command_name));
     assert( ! options->debug);
     assert(options->dungeon_options);
     assert( ! options->error);
@@ -145,7 +146,7 @@ options_alloc_with_each_action_test(void)
 
     assert(action_each == options->action);
 
-    assert(str_eq("fnf", options->command_name));
+    assert(astr_eq("fnf", options->command_name));
     assert( ! options->debug);
     assert( ! options->dungeon_options);
     assert( ! options->error);
@@ -171,7 +172,7 @@ options_alloc_with_magic_action_test(void)
     assert(action_magic == options->action);
     assert(10 == options->magic_count);
 
-    assert(str_eq("fnf", options->command_name));
+    assert(astr_eq("fnf", options->command_name));
     assert( ! options->debug);
     assert( ! options->dungeon_options);
     assert( ! options->error);
@@ -196,7 +197,7 @@ options_alloc_with_map_action_test(void)
 
     assert(action_map == options->action);
 
-    assert(str_eq("fnf", options->command_name));
+    assert(astr_eq("fnf", options->command_name));
     assert( ! options->debug);
     assert( ! options->dungeon_options);
     assert( ! options->error);
@@ -221,7 +222,7 @@ options_alloc_with_table_action_test(void)
 
     assert(action_table == options->action);
 
-    assert(str_eq("fnf", options->command_name));
+    assert(astr_eq("fnf", options->command_name));
     assert( ! options->debug);
     assert( ! options->dungeon_options);
     assert( ! options->error);
@@ -247,7 +248,7 @@ options_alloc_with_treasure_type_action_test(void)
     assert(action_treasure == options->action);
     assert('U' == options->treasure_type);
 
-    assert(str_eq("fnf", options->command_name));
+    assert(astr_eq("fnf", options->command_name));
     assert( ! options->debug);
     assert( ! options->dungeon_options);
     assert( ! options->error);

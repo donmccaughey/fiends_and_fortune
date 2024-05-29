@@ -3,6 +3,8 @@
 #include <base/base.h>
 #include <treasure/treasure.h>
 
+#include "astr.h"
+
 
 void
 treasure_type_test(void);
@@ -16,12 +18,12 @@ treasure_type_by_letter_A_test(void)
     assert(NULL != treasure_type);
 
     char *name = treasure_type_alloc_name(treasure_type);
-    assert(str_eq("A", name));
+    assert(astr_eq("A", name));
     free(name);
 
     char *description = treasure_type_alloc_description(treasure_type, false);
     char const *expected = "    A     |  1-6:25%  |  1-6:30%  |  1-6:35%  |  1-10:40% |  1-4:25%  |  4-40:60% |  3-30:50% | any 3: 30%\n";
-    assert(str_eq(expected, description));
+    assert(astr_eq(expected, description));
     free(description);
 
     description = treasure_type_alloc_description(treasure_type, true);
@@ -31,7 +33,7 @@ treasure_type_by_letter_A_test(void)
             "  Type    |  Copper   |  Silver   | Electrum  |   Gold    | Platinum  |   Gems    |  Jewelry  |   Magic   \n"
             "----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------+-----------\n"
             "    A     |  1-6:25%  |  1-6:30%  |  1-6:35%  |  1-10:40% |  1-4:25%  |  4-40:60% |  3-30:50% | any 3: 30%\n";
-    assert(str_eq(expected, description));
+    assert(astr_eq(expected, description));
     free(description);
 }
 

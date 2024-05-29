@@ -4,6 +4,8 @@
 #include <json/json.h>
 #include <treasure/treasure.h>
 
+#include "astr.h"
+
 
 void
 treasure_test(void);
@@ -67,7 +69,7 @@ treasure_create_json_object_test(void)
                                "}"
                            "]"
                            "}";
-    assert(str_eq(expected, json_string));
+    assert(astr_eq(expected, json_string));
 
     free(json_string);
     cJSON_Delete(json_object);
@@ -121,7 +123,7 @@ treasure_create_json_object_for_type_A_test(void)
                            "],"
                            "\"magic_items\":[]"
                            "}";
-    assert(str_eq(expected, json_string));
+    assert(astr_eq(expected, json_string));
 
     free(json_string);
     cJSON_Delete(json_object);
@@ -256,20 +258,20 @@ treasure_initialize_from_json_object_with_gems_test(void)
     assert(gem_size_large == treasure.gems[0].size);
     assert(gem_type_precious_stone == treasure.gems[0].type);
     assert(gem_kind_moonstone == treasure.gems[0].kind);
-    assert(str_eq("white with pale blue glow", treasure.gems[0].colors));
+    assert(astr_eq("white with pale blue glow", treasure.gems[0].colors));
     assert(90 == treasure.gems[0].value_percent_modifier);
     assert(2 == treasure.gems[0].value_rank_modifier);
-    assert(str_eq("large moonstone (precious, rank +2, -10%: 9000 gp)", treasure.gems[0].true_description));
-    assert(str_eq("large translucent white with pale blue glow stone", treasure.gems[0].visible_description));
+    assert(astr_eq("large moonstone (precious, rank +2, -10%: 9000 gp)", treasure.gems[0].true_description));
+    assert(astr_eq("large translucent white with pale blue glow stone", treasure.gems[0].visible_description));
 
     assert(gem_size_very_small == treasure.gems[1].size);
     assert(gem_type_ornamental_stone == treasure.gems[1].type);
     assert(gem_kind_azurite == treasure.gems[1].kind);
-    assert(str_eq("mottled deep blue", treasure.gems[1].colors));
+    assert(astr_eq("mottled deep blue", treasure.gems[1].colors));
     assert(0 == treasure.gems[1].value_percent_modifier);
     assert(7 == treasure.gems[1].value_rank_modifier);
-    assert(str_eq("very small azurite (ornamental, rank +7: 5000 gp)", treasure.gems[1].true_description));
-    assert(str_eq("very small opaque mottled deep blue stone", treasure.gems[1].visible_description));
+    assert(astr_eq("very small azurite (ornamental, rank +7: 5000 gp)", treasure.gems[1].true_description));
+    assert(astr_eq("very small opaque mottled deep blue stone", treasure.gems[1].visible_description));
 
     assert(NULL == treasure.jewelry);
     assert(0 == treasure.jewelry_count);
@@ -343,7 +345,7 @@ treasure_initialize_from_json_object_with_jewelry_test(void)
     assert(0 == treasure.jewelry[0].workmanship_bonus);
     assert(0 == treasure.jewelry[0].exceptional_stone_bonus);
     assert(gp_to_cp(4000) == treasure.jewelry[0].value_in_cp);
-    assert(str_eq("silver goblet with gems (4000 gp)", treasure.jewelry[0].true_description));
+    assert(astr_eq("silver goblet with gems (4000 gp)", treasure.jewelry[0].true_description));
 
     assert(true == treasure.jewelry[1].has_gems);
     assert(jewelry_form_necklace == treasure.jewelry[1].form);
@@ -351,7 +353,7 @@ treasure_initialize_from_json_object_with_jewelry_test(void)
     assert(0 == treasure.jewelry[1].workmanship_bonus);
     assert(128 == treasure.jewelry[1].exceptional_stone_bonus);
     assert(gp_to_cp(642000) == treasure.jewelry[1].value_in_cp);
-    assert(str_eq("gold necklace with gems (exceptional stone +128: 642000 gp)", treasure.jewelry[1].true_description));
+    assert(astr_eq("gold necklace with gems (exceptional stone +128: 642000 gp)", treasure.jewelry[1].true_description));
 
     assert(NULL == treasure.maps);
     assert(0 == treasure.maps_count);
@@ -457,7 +459,7 @@ treasure_initialize_from_json_object_with_maps_test(void)
     assert(0 == treasure.maps[0].treasure.jewelry_count);
     assert(0 == treasure.maps[0].treasure.maps_count);
     assert(0 == treasure.maps[0].treasure.magic_items_count);
-    assert(str_eq("map to monetary treasure of 1500 platinum 7 miles to the south, guarded in a lair",
+    assert(astr_eq("map to monetary treasure of 1500 platinum 7 miles to the south, guarded in a lair",
                   treasure.maps[0].true_description));
 
     assert(treasure.maps[1].is_false);
@@ -466,7 +468,7 @@ treasure_initialize_from_json_object_with_maps_test(void)
     assert(0 == treasure.maps[1].treasure.jewelry_count);
     assert(0 == treasure.maps[1].treasure.maps_count);
     assert(0 == treasure.maps[1].treasure.magic_items_count);
-    assert(str_eq("false map to treasure of (no treasure) in nearby labyrinth to the north",
+    assert(astr_eq("false map to treasure of (no treasure) in nearby labyrinth to the north",
                   treasure.maps[1].true_description));
 
     assert(NULL == treasure.magic_items);
@@ -538,18 +540,18 @@ treasure_initialize_from_json_object_with_magic_items_test(void)
     assert(2 == treasure.magic_items_count);
 
     assert(2000 == treasure.magic_items[0].experience_points);
-    assert(str_eq("cloak of protection +2", treasure.magic_items[0].true_description));
+    assert(astr_eq("cloak of protection +2", treasure.magic_items[0].true_description));
     assert(NULL == treasure.magic_items[0].true_details);
     assert(4000000 == treasure.magic_items[0].true_value_in_cp);
     assert(magic_item_type_misc == treasure.magic_items[0].type);
 
     assert(5000 == treasure.magic_items[1].experience_points);
-    assert(str_eq("broadsword of life stealing (unusual)", treasure.magic_items[1].true_description));
+    assert(astr_eq("broadsword of life stealing (unusual)", treasure.magic_items[1].true_description));
     assert(treasure.magic_items[1].true_details);
-    assert(str_eq("intelligence 12 (semi-empathy)", treasure.magic_items[1].true_details[0]));
-    assert(str_eq("neutral good alignment", treasure.magic_items[1].true_details[1]));
-    assert(str_eq("detect invisible objects in a 1\" radius", treasure.magic_items[1].true_details[2]));
-    assert(str_eq("personality strength 17 (ego 5)", treasure.magic_items[1].true_details[3]));
+    assert(astr_eq("intelligence 12 (semi-empathy)", treasure.magic_items[1].true_details[0]));
+    assert(astr_eq("neutral good alignment", treasure.magic_items[1].true_details[1]));
+    assert(astr_eq("detect invisible objects in a 1\" radius", treasure.magic_items[1].true_details[2]));
+    assert(astr_eq("personality strength 17 (ego 5)", treasure.magic_items[1].true_details[3]));
     assert(NULL == treasure.magic_items[1].true_details[4]);
     assert(5000000 == treasure.magic_items[1].true_value_in_cp);
     assert(magic_item_type_sword == treasure.magic_items[1].type);
@@ -580,7 +582,7 @@ treasure_generate_magic_items_test(void)
     assert(1 == treasure.magic_items_count);
 
     assert(magic_item_type_potion == treasure.magic_items[0].type);
-    assert(str_eq("animal control potion", treasure.magic_items[0].true_description));
+    assert(astr_eq("animal control potion", treasure.magic_items[0].true_description));
 
     rnd_free(rnd);
     rnd = rnd_alloc_fake_median();
@@ -591,9 +593,9 @@ treasure_generate_magic_items_test(void)
     assert(2 == treasure.magic_items_count);
 
     assert(magic_item_type_potion == treasure.magic_items[0].type);
-    assert(str_eq("animal control potion", treasure.magic_items[0].true_description));
+    assert(astr_eq("animal control potion", treasure.magic_items[0].true_description));
     assert(magic_item_type_misc == treasure.magic_items[1].type);
-    assert(str_eq("cloak of protection +2", treasure.magic_items[1].true_description));
+    assert(astr_eq("cloak of protection +2", treasure.magic_items[1].true_description));
 
     treasure_finalize(&treasure);
     rnd_free(rnd);

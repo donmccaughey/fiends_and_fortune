@@ -23,13 +23,6 @@ str_alloc_formatted(char const *format, ...)
 }
 
 
-bool
-str_eq(char const *str1, char const *str2)
-{
-    return astr_eq(str1, str2);
-}
-
-
 void
 str_realloc_append_formatted(char **str, char const *format, ...)
 {

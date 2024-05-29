@@ -4,6 +4,8 @@
 #include <json/json.h>
 #include <treasure/treasure.h>
 
+#include "astr.h"
+
 
 void
 jewelry_test(void);
@@ -31,7 +33,7 @@ jewelry_create_json_object_test(void)
                            "\"exceptional_stone_bonus\":0,"
                            "\"value_in_cp\":800000"
                            "}";
-    assert(str_eq(expected, json_string));
+    assert(astr_eq(expected, json_string));
 
     free(json_string);
     cJSON_Delete(json_object);
@@ -125,7 +127,7 @@ jewelry_initialize_from_json_object_for_complete_object_test(void)
     assert(0 == jewelry.workmanship_bonus);
     assert(0 == jewelry.exceptional_stone_bonus);
     assert(gp_to_cp(4000) == jewelry.value_in_cp);
-    assert(str_eq("silver goblet with gems (4000 gp)", jewelry.true_description));
+    assert(astr_eq("silver goblet with gems (4000 gp)", jewelry.true_description));
 
     jewelry_finalize(&jewelry);
 }
@@ -145,7 +147,7 @@ jewelry_generate_with_fake_min_test(void)
     assert(12 == jewelry.workmanship_bonus);
     assert(0 == jewelry.exceptional_stone_bonus);
     assert(gp_to_cp(2000) == jewelry.value_in_cp);
-    assert(str_eq("ivory anklet (workmanship +12: 2000 gp)", jewelry.true_description));
+    assert(astr_eq("ivory anklet (workmanship +12: 2000 gp)", jewelry.true_description));
 
     jewelry_finalize(&jewelry);
     rnd_free(rnd);
@@ -166,7 +168,7 @@ jewelry_generate_with_fake_max_test(void)
     assert(0 == jewelry.workmanship_bonus);
     assert(0 == jewelry.exceptional_stone_bonus);
     assert(gp_to_cp(12000) == jewelry.value_in_cp);
-    assert(str_eq("platinum tiara with gems (12000 gp)", jewelry.true_description));
+    assert(astr_eq("platinum tiara with gems (12000 gp)", jewelry.true_description));
 
     jewelry_finalize(&jewelry);
     rnd_free(rnd);
@@ -187,7 +189,7 @@ jewelry_generate_with_fake_median_test(void)
     assert(0 == jewelry.workmanship_bonus);
     assert(0 == jewelry.exceptional_stone_bonus);
     assert(gp_to_cp(4000) == jewelry.value_in_cp);
-    assert(str_eq("silver goblet with gems (4000 gp)", jewelry.true_description));
+    assert(astr_eq("silver goblet with gems (4000 gp)", jewelry.true_description));
 
     jewelry_finalize(&jewelry);
     rnd_free(rnd);
@@ -208,7 +210,7 @@ jewelry_generate_for_exceptional_stone_bonus_test(void)
     assert(0 == jewelry.workmanship_bonus);
     assert(1 == jewelry.exceptional_stone_bonus);
     assert(gp_to_cp(10000) == jewelry.value_in_cp);
-    assert(str_eq("silver medallion with gems (exceptional stone +1: 10000 gp)", jewelry.true_description));
+    assert(astr_eq("silver medallion with gems (exceptional stone +1: 10000 gp)", jewelry.true_description));
 
     jewelry_finalize(&jewelry);
     rnd_free(rnd);
@@ -229,7 +231,7 @@ jewelry_generate_for_exceptional_stone_bonus_multiple_test(void)
     assert(0 == jewelry.workmanship_bonus);
     assert(128 == jewelry.exceptional_stone_bonus);
     assert(gp_to_cp(642000) == jewelry.value_in_cp);
-    assert(str_eq("gold necklace with gems (exceptional stone +128: 642000 gp)", jewelry.true_description));
+    assert(astr_eq("gold necklace with gems (exceptional stone +128: 642000 gp)", jewelry.true_description));
 
     jewelry_finalize(&jewelry);
     rnd_free(rnd);

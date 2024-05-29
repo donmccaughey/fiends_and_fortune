@@ -1,7 +1,7 @@
 #include <assert.h>
-#include <base/base.h>
 #include <dungeon/dungeon.h>
-#include <dungeon/text_rectangle.h>
+
+#include "astr.h"
 #include "tile.h"
 
 
@@ -62,7 +62,7 @@ level_map_alloc_text_rectangle_test(void)
             " -1 |:::::::| -1 \n"
             "    +---+---+    \n"
             "     -1   0      \n";
-    assert(str_eq(expected, text_rectangle->chars));
+    assert(astr_eq(expected, text_rectangle->chars));
 
     text_rectangle_free(text_rectangle);
     level_map_free(level_map);
@@ -86,7 +86,7 @@ level_map_alloc_text_rectangle_test_without_scale(void)
             "+:::::::+\n"
             "|:::::::|\n"
             "+---+---+\n";
-    assert(str_eq(expected, text_rectangle->chars));
+    assert(astr_eq(expected, text_rectangle->chars));
 
     text_rectangle_free(text_rectangle);
     level_map_free(level_map);
@@ -116,7 +116,7 @@ level_map_alloc_text_rectangle_test_with_tile_added(void)
             "  2 |:::::::::::| 2  \n"
             "    +---+---+---+    \n"
             "      1   2   3      \n";
-    assert(str_eq(expected, text_rectangle->chars));
+    assert(astr_eq(expected, text_rectangle->chars));
 
     text_rectangle_free(text_rectangle);
     level_map_free(level_map);
@@ -170,7 +170,7 @@ level_map_print_border_row_test(void)
     expected =
             "    +---+---+    .\n"
             "..................\n";
-    assert(str_eq(expected, text_rectangle->chars));
+    assert(astr_eq(expected, text_rectangle->chars));
 
     text_rectangle_next_row(text_rectangle);
     level_map_size = size_make(4, 3, 1);
@@ -180,7 +180,7 @@ level_map_print_border_row_test(void)
     expected =
             "    +---+---+    .\n"
             "+---+---+---+---+.\n";
-    assert(str_eq(expected, text_rectangle->chars));
+    assert(astr_eq(expected, text_rectangle->chars));
 
     text_rectangle_free(text_rectangle);
 }
@@ -201,7 +201,7 @@ level_map_print_scale_row_test(void)
     expected =
             "      2   3      .........\n"
             "..........................\n";
-    assert(str_eq(expected, text_rectangle->chars));
+    assert(astr_eq(expected, text_rectangle->chars));
 
     text_rectangle_next_row(text_rectangle);
     level_map_box = box_make(point_make(-2, 3, 1),
@@ -211,7 +211,7 @@ level_map_print_scale_row_test(void)
     expected =
             "      2   3      .........\n"
             "     -2  -1   0   1      .\n";
-    assert(str_eq(expected, text_rectangle->chars));
+    assert(astr_eq(expected, text_rectangle->chars));
 
     text_rectangle_free(text_rectangle);
 }
@@ -241,41 +241,41 @@ level_map_fill_tile_bottom_half_test(void)
 
     tile->type = tile_type_empty;
     level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq(".   ", half_tile));
+    assert(astr_eq(".   ", half_tile));
 
     tile->type = tile_type_stairs_down;
     tile->direction = direction_north;
     level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("  ^ ", half_tile));
+    assert(astr_eq("  ^ ", half_tile));
 
     tile->type = tile_type_stairs_down;
     tile->direction = direction_south;
     level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("  v ", half_tile));
+    assert(astr_eq("  v ", half_tile));
 
     tile->type = tile_type_stairs_down;
     tile->direction = direction_east;
     level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq(" > >", half_tile));
+    assert(astr_eq(" > >", half_tile));
 
     tile->type = tile_type_stairs_down;
     tile->direction = direction_west;
     level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq(" < <", half_tile));
+    assert(astr_eq(" < <", half_tile));
 
     tile->type = tile_type_stairs_up;
     tile->direction = direction_north;
     level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("====", half_tile));
+    assert(astr_eq("====", half_tile));
 
     tile->type = tile_type_stairs_up;
     tile->direction = direction_east;
     level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("IIII", half_tile));
+    assert(astr_eq("IIII", half_tile));
 
     tile->type = tile_type_filled;
     level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("::::", half_tile));
+    assert(astr_eq("::::", half_tile));
 
     // south wall
     tile->type = tile_type_empty;
@@ -287,15 +287,15 @@ level_map_fill_tile_bottom_half_test(void)
 
     tile->walls.south = wall_type_solid;
     level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("----", half_tile));
+    assert(astr_eq("----", half_tile));
 
     tile->walls.south = wall_type_door;
     level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("-[-]", half_tile));
+    assert(astr_eq("-[-]", half_tile));
 
     tile->walls.south = wall_type_secret_door;
     level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("--s-", half_tile));
+    assert(astr_eq("--s-", half_tile));
 
     west_tile->type = tile_type_filled;
     west_tile->walls.south = wall_type_none;
@@ -309,11 +309,11 @@ level_map_fill_tile_bottom_half_test(void)
 
     tile->type = tile_type_filled;
     level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("|:::", half_tile));
+    assert(astr_eq("|:::", half_tile));
 
     tile->type = tile_type_empty;
     level_map_fill_tile_bottom_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("|   ", half_tile));
+    assert(astr_eq("|   ", half_tile));
 
     south_tile->walls.west = wall_type_none;
 
@@ -349,57 +349,57 @@ level_map_fill_tile_top_half_test(void)
 
     tile->type = tile_type_empty;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("    ", half_tile));
+    assert(astr_eq("    ", half_tile));
 
     tile->type = tile_type_stairs_down;
     tile->direction = direction_north;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("  ^ ", half_tile));
+    assert(astr_eq("  ^ ", half_tile));
 
     tile->type = tile_type_stairs_down;
     tile->direction = direction_south;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("  v ", half_tile));
+    assert(astr_eq("  v ", half_tile));
 
     tile->type = tile_type_stairs_down;
     tile->direction = direction_east;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq(" > >", half_tile));
+    assert(astr_eq(" > >", half_tile));
 
     tile->type = tile_type_stairs_down;
     tile->direction = direction_west;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq(" < <", half_tile));
+    assert(astr_eq(" < <", half_tile));
 
     tile->type = tile_type_stairs_up;
     tile->direction = direction_north;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("====", half_tile));
+    assert(astr_eq("====", half_tile));
 
     tile->type = tile_type_stairs_up;
     tile->direction = direction_east;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("IIII", half_tile));
+    assert(astr_eq("IIII", half_tile));
 
     tile->type = tile_type_filled;
     tile->direction = direction_east;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("::::", half_tile));
+    assert(astr_eq("::::", half_tile));
 
     // west wall
     tile->type = tile_type_empty;
 
     tile->walls.west = wall_type_solid;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("|   ", half_tile));
+    assert(astr_eq("|   ", half_tile));
 
     tile->walls.west = wall_type_door;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("|]  ", half_tile));
+    assert(astr_eq("|]  ", half_tile));
 
     tile->walls.west = wall_type_secret_door;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("$   ", half_tile));
+    assert(astr_eq("$   ", half_tile));
 
     // features
     tile->type = tile_type_empty;
@@ -407,23 +407,23 @@ level_map_fill_tile_top_half_test(void)
 
     tile->features = tile_features_chimney_down;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("  o ", half_tile));
+    assert(astr_eq("  o ", half_tile));
 
     tile->features = tile_features_chimney_up;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq(" ( )", half_tile));
+    assert(astr_eq(" ( )", half_tile));
 
     tile->features = tile_features_chimney_up | tile_features_chimney_down;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq(" (o)", half_tile));
+    assert(astr_eq(" (o)", half_tile));
 
     tile->features = tile_features_chute_entrance;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("  @ ", half_tile));
+    assert(astr_eq("  @ ", half_tile));
 
     tile->features = tile_features_chute_exit;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("  * ", half_tile));
+    assert(astr_eq("  * ", half_tile));
 
     tile->features = tile_features_none;
 
@@ -431,7 +431,7 @@ level_map_fill_tile_top_half_test(void)
     struct tile *east_tile = level_map_tile_at(level_map, point_make(2, 1, 1));
     east_tile->walls.west = wall_type_door;
     level_map_fill_tile_top_half(level_map, point_make(1, 1, 1), half_tile);
-    assert(str_eq("   [", half_tile));
+    assert(astr_eq("   [", half_tile));
 
     level_map_free(level_map);
     dungeon_free(dungeon);

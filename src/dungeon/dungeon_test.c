@@ -2,6 +2,8 @@
 
 #include <base/base.h>
 #include <dungeon/dungeon.h>
+
+#include "astr.h"
 #include "tile.h"
 
 
@@ -321,7 +323,7 @@ dungeon_alloc_text_rectangle_for_level_test(void)
         " -1 |:::::::::::| -1 \n"
         "    +---+---+---+    \n"
         "     -1   0   1      \n";
-    assert(str_eq(expected, text_rectangle->chars));
+    assert(astr_eq(expected, text_rectangle->chars));
 
     text_rectangle_free(text_rectangle);
     dungeon_free(dungeon);
@@ -357,7 +359,7 @@ dungeon_alloc_descriptions_of_entrances_and_exits_for_level_test(void)
     descriptions = dungeon_alloc_descriptions_of_entrances_and_exits_for_level(dungeon, 1);
     assert(descriptions);
     assert(1 == descriptions->count);
-    assert(str_eq("(0, 0)       stairs down to level 2", descriptions->elements[0]));
+    assert(astr_eq("(0, 0)       stairs down to level 2", descriptions->elements[0]));
     ptr_array_clear(descriptions, free);
     ptr_array_free(descriptions);
 
@@ -369,8 +371,8 @@ dungeon_alloc_descriptions_of_entrances_and_exits_for_level_test(void)
     descriptions = dungeon_alloc_descriptions_of_entrances_and_exits_for_level(dungeon, 1);
     assert(descriptions);
     assert(2 == descriptions->count);
-    assert(str_eq("(0, 0)       stairs down to level 2", descriptions->elements[0]));
-    assert(str_eq("(11, 11)     30' x 30' room, chimney up to surface", descriptions->elements[1]));
+    assert(astr_eq("(0, 0)       stairs down to level 2", descriptions->elements[0]));
+    assert(astr_eq("(11, 11)     30' x 30' room, chimney up to surface", descriptions->elements[1]));
     ptr_array_clear(descriptions, free);
     ptr_array_free(descriptions);
 
@@ -407,7 +409,7 @@ dungeon_alloc_descriptions_of_chambers_and_rooms_for_level_test(void)
     descriptions = dungeon_alloc_descriptions_of_chambers_and_rooms_for_level(dungeon, 1);
     assert(descriptions);
     assert(1 == descriptions->count);
-    assert(str_eq("(4, 4)       20' x 20' chamber", descriptions->elements[0]));
+    assert(astr_eq("(4, 4)       20' x 20' chamber", descriptions->elements[0]));
     ptr_array_clear(descriptions, free);
     ptr_array_free(descriptions);
 
@@ -419,8 +421,8 @@ dungeon_alloc_descriptions_of_chambers_and_rooms_for_level_test(void)
     descriptions = dungeon_alloc_descriptions_of_chambers_and_rooms_for_level(dungeon, 1);
     assert(descriptions);
     assert(2 == descriptions->count);
-    assert(str_eq("(4, 4)       20' x 20' chamber", descriptions->elements[0]));
-    assert(str_eq("(11, 11)     30' x 30' room, chimney up to surface", descriptions->elements[1]));
+    assert(astr_eq("(4, 4)       20' x 20' chamber", descriptions->elements[0]));
+    assert(astr_eq("(11, 11)     30' x 30' room, chimney up to surface", descriptions->elements[1]));
     ptr_array_clear(descriptions, free);
     ptr_array_free(descriptions);
 

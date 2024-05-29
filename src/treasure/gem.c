@@ -820,7 +820,7 @@ gem_kind_for_name(char const *name, int default_value)
 {
     if (name) {
         for (size_t i = 0; i < gem_kind_names_count; ++i) {
-            if (str_eq(name, gem_kind_names[i])) return gem_kind_unknown + i;
+            if (astr_eq(name, gem_kind_names[i])) return gem_kind_unknown + i;
         }
     }
     return default_value;
@@ -923,7 +923,7 @@ gem_size_for_name(char const *name, int default_value)
 {
     if (name) {
         for (size_t i = 0; i < gem_size_names_count; ++i) {
-            if (str_eq(name, gem_size_names[i])) return gem_size_very_small + i;
+            if (astr_eq(name, gem_size_names[i])) return gem_size_very_small + i;
         }
     }
     return default_value;
@@ -943,7 +943,7 @@ gem_type_for_name(char const *name, int default_value)
 {
     if (name) {
         for (size_t i = 0; i < gem_type_names_count; ++i) {
-            if (str_eq(name, gem_type_names[i])) return gem_type_unknown + i;
+            if (astr_eq(name, gem_type_names[i])) return gem_type_unknown + i;
         }
     }
     return default_value;

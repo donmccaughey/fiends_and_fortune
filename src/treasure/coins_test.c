@@ -3,6 +3,8 @@
 #include <json/json.h>
 #include <treasure/treasure.h>
 
+#include "astr.h"
+
 
 void
 coins_test(void);
@@ -15,32 +17,32 @@ coins_alloc_description_test(void)
     char *description;
 
     description = coins_alloc_description(coins);
-    assert(str_eq("", description));
+    assert(astr_eq("", description));
     free(description);
 
     coins.pp = 1;
     description = coins_alloc_description(coins);
-    assert(str_eq("1 platinum", description));
+    assert(astr_eq("1 platinum", description));
     free(description);
 
     coins.gp = 22;
     description = coins_alloc_description(coins);
-    assert(str_eq("22 gold, 1 platinum", description));
+    assert(astr_eq("22 gold, 1 platinum", description));
     free(description);
 
     coins.ep = 333;
     description = coins_alloc_description(coins);
-    assert(str_eq("333 electrum, 22 gold, 1 platinum", description));
+    assert(astr_eq("333 electrum, 22 gold, 1 platinum", description));
     free(description);
 
     coins.sp = 4444;
     description = coins_alloc_description(coins);
-    assert(str_eq("4444 silver, 333 electrum, 22 gold, 1 platinum", description));
+    assert(astr_eq("4444 silver, 333 electrum, 22 gold, 1 platinum", description));
     free(description);
 
     coins.cp = 55555;
     description = coins_alloc_description(coins);
-    assert(str_eq("55555 copper, 4444 silver, 333 electrum, 22 gold, 1 platinum", description));
+    assert(astr_eq("55555 copper, 4444 silver, 333 electrum, 22 gold, 1 platinum", description));
     free(description);
 }
 
@@ -51,27 +53,27 @@ coins_alloc_gp_cp_description_test(void)
     char *description;
 
     description = coins_alloc_gp_cp_description(0);
-    assert(str_eq("0 cp", description));
+    assert(astr_eq("0 cp", description));
     free(description);
 
     description = coins_alloc_gp_cp_description(199);
-    assert(str_eq("199 cp", description));
+    assert(astr_eq("199 cp", description));
     free(description);
 
     description = coins_alloc_gp_cp_description(200);
-    assert(str_eq("1 gp", description));
+    assert(astr_eq("1 gp", description));
     free(description);
 
     description = coins_alloc_gp_cp_description(201);
-    assert(str_eq("1 gp, 1 cp", description));
+    assert(astr_eq("1 gp, 1 cp", description));
     free(description);
 
     description = coins_alloc_gp_cp_description(399);
-    assert(str_eq("1 gp, 199 cp", description));
+    assert(astr_eq("1 gp, 199 cp", description));
     free(description);
 
     description = coins_alloc_gp_cp_description(400);
-    assert(str_eq("2 gp", description));
+    assert(astr_eq("2 gp", description));
     free(description);
 }
 
@@ -94,7 +96,7 @@ coins_create_json_object_test(void)
                            "\"sp\":4,"
                            "\"cp\":5"
                            "}";
-    assert(str_eq(expected, json_string));
+    assert(astr_eq(expected, json_string));
 
     free(json_string);
     cJSON_Delete(json_object);
@@ -119,7 +121,7 @@ coins_create_json_object_for_zero_test(void)
                            "\"sp\":0,"
                            "\"cp\":0"
                            "}";
-    assert(str_eq(expected, json_string));
+    assert(astr_eq(expected, json_string));
 
     free(json_string);
     cJSON_Delete(json_object);

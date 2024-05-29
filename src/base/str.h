@@ -14,9 +14,6 @@ str_alloc_empty(void);
 char *
 str_alloc_formatted(char const *format, ...);
 
-bool
-str_eq(char const *str1, char const *str2);
-
 void
 str_realloc_append_formatted(char **str, char const *format, ...);
 

@@ -1,8 +1,9 @@
 #include <assert.h>
-#include <background/background.h>
 #include <base/base.h>
 #include <json/json.h>
 #include <treasure/treasure.h>
+
+#include "astr.h"
 
 
 void
@@ -45,7 +46,7 @@ treasure_map_create_json_object_test(void)
                            "},"
                            "\"true_description\":\"map to monetary treasure of 1500 platinum 7 miles to the south, guarded in a lair\""
                            "}";
-    assert(str_eq(expected, json_string));
+    assert(astr_eq(expected, json_string));
 
     free(json_string);
     cJSON_Delete(json_object);
@@ -157,7 +158,7 @@ treasure_map_initialize_from_json_object_for_complete_object_test(void)
     assert(0 == map.treasure.jewelry_count);
     assert(0 == map.treasure.maps_count);
     assert(0 == map.treasure.magic_items_count);
-    assert(str_eq("map to monetary treasure of 1500 platinum 7 miles to the south, guarded in a lair",
+    assert(astr_eq("map to monetary treasure of 1500 platinum 7 miles to the south, guarded in a lair",
                   map.true_description));
 
     treasure_map_finalize(&map);
@@ -178,7 +179,7 @@ treasure_map_generate_with_fake_min_test(void)
     assert(0 == map.treasure.jewelry_count);
     assert(0 == map.treasure.maps_count);
     assert(0 == map.treasure.magic_items_count);
-    assert(str_eq("false map to treasure of (no treasure) in nearby labyrinth to the north", map.true_description));
+    assert(astr_eq("false map to treasure of (no treasure) in nearby labyrinth to the north", map.true_description));
 
     treasure_map_finalize(&map);
     rnd_free(rnd);
@@ -199,7 +200,7 @@ treasure_map_generate_with_fake_max_test(void)
     assert(0 == map.treasure.jewelry_count);
     assert(0 == map.treasure.maps_count);
     assert(17 == map.treasure.magic_items_count);
-    assert(str_eq("map to combined hoard of 17 magic items 500 miles to the northwest, secreted in a town", map.true_description));
+    assert(astr_eq("map to combined hoard of 17 magic items 500 miles to the northwest, secreted in a town", map.true_description));
 
     treasure_map_finalize(&map);
     rnd_free(rnd);
@@ -224,7 +225,7 @@ treasure_map_generate_with_fake_median_test(void)
     assert(0 == map.treasure.jewelry_count);
     assert(0 == map.treasure.maps_count);
     assert(0 == map.treasure.magic_items_count);
-    assert(str_eq("map to monetary treasure of 1500 platinum 7 miles to the south, guarded in a lair", map.true_description));
+    assert(astr_eq("map to monetary treasure of 1500 platinum 7 miles to the south, guarded in a lair", map.true_description));
 
     treasure_map_finalize(&map);
     rnd_free(rnd);
