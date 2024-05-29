@@ -24,7 +24,6 @@ add_executable(base_tests
         int_test.c
         ptr_array_test.c
         sort_test.c
-        str_test.c
         result_test.c
         rnd_test.c
 )

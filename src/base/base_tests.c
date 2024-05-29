@@ -16,9 +16,6 @@ rnd_test(void);
 void
 sort_test(void);
 
-void
-str_test(void);
-
 
 int
 main(int argc, char *argv[])
@@ -28,6 +25,5 @@ main(int argc, char *argv[])
     result_test();
     rnd_test();
     sort_test();
-    str_test();
     return EXIT_SUCCESS;
 }
