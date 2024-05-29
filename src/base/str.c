@@ -24,23 +24,9 @@ str_alloc_formatted(char const *format, ...)
 
 
 bool
-str_empty(char const *str)
-{
-    return astr_is_empty(str);
-}
-
-
-bool
 str_eq(char const *str1, char const *str2)
 {
     return astr_eq(str1, str2);
-}
-
-
-bool
-str_not_empty(char const *str)
-{
-    return !str_empty(str);
 }
 
 

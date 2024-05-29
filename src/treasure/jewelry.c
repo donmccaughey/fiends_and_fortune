@@ -10,6 +10,7 @@
 #include <json/json.h>
 #include <mechanics/mechanics.h>
 
+#include "astr.h"
 #include "coins.h"
 
 
@@ -204,7 +205,7 @@ jewelry_alloc_true_description(struct jewelry *jewelry)
     int value_in_cp = jewelry_value_in_cp(jewelry);
     char *value_description = coins_alloc_gp_cp_description(value_in_cp);
 
-    char const *separator = str_not_empty(modifiers) ? ": " : "";
+    char const *separator = astr_is_empty(modifiers) ? "" : ": ";
     char *true_description = str_alloc_formatted("%s (%s%s%s)",
                                                  prefix,
                                                  modifiers,
@@ -237,7 +238,7 @@ jewelry_alloc_true_description_modifiers(struct jewelry *jewelry)
                                      jewelry->workmanship_bonus);
     }
     if (jewelry->exceptional_stone_bonus) {
-        if (str_not_empty(description)) {
+        if ( ! astr_is_empty(description)) {
             str_realloc_append_formatted(&description, ", ");
         }
         str_realloc_append_formatted(&description, "exceptional stone %+i",

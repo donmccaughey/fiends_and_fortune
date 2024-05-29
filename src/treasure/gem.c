@@ -8,6 +8,7 @@
 #include <json/json.h>
 #include <mechanics/mechanics.h>
 
+#include "astr.h"
 #include "coins.h"
 
 
@@ -607,7 +608,7 @@ gem_alloc_true_description(struct gem *gem)
     int value_in_cp = gem_value_in_cp(gem);
     char *value = coins_alloc_gp_cp_description(value_in_cp);
 
-    char const *separator = str_not_empty(modifiers) ? ": " : "";
+    char const *separator = astr_is_empty(modifiers) ? "" :  ": ";
     char *true_description = str_alloc_formatted("%s (%s%s%s)",
                                                  prefix, modifiers,
                                                  separator, value);

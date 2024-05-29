@@ -15,13 +15,7 @@ char *
 str_alloc_formatted(char const *format, ...);
 
 bool
-str_empty(char const *str);
-
-bool
 str_eq(char const *str1, char const *str2);
-
-bool
-str_not_empty(char const *str);
 
 void
 str_realloc_append_formatted(char **str, char const *format, ...);
