@@ -7,8 +7,6 @@ add_library(base STATIC
         int.c
         ptr_array.h
         ptr_array.c
-        result.h
-        result.c
         rnd.h
         rnd.c
         sort.h
@@ -27,7 +25,6 @@ add_executable(base_tests
         base_tests.c
         int_test.c
         ptr_array_test.c
-        result_test.c
         rnd_test.c
         sort_test.c
 )
