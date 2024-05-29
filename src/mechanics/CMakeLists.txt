@@ -1,5 +1,7 @@
 add_library(mechanics STATIC
+        dice.h
         dice.c
+        mechanics.h
         )
 target_include_directories(mechanics
         PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.."

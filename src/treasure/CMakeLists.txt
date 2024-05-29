@@ -1,10 +1,18 @@
 add_library(treasure STATIC
+        coins.h
         coins.c
+        gem.h
         gem.c
+        jewelry.h
         jewelry.c
+        magic_item.h
         magic_item.c
+        treasure.h
         treasure.c
+        treasure_map.h
         treasure_map.c
+        treasure_struct.h
+        treasure_type.h
         treasure_type.c
         )
 target_include_directories(treasure

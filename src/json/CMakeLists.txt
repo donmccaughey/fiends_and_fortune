@@ -1,4 +1,5 @@
 add_library(json STATIC
+        json.h
         json.c
         )
 target_include_directories(json

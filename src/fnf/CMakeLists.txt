@@ -1,6 +1,8 @@
 add_executable(fnf
+        action.h
         action.c
         main.c
+        options.h
         options.c
         )
 if(HAS_OPTRESET)

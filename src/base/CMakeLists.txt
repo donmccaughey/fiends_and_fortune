@@ -1,9 +1,17 @@
 add_library(base STATIC
+        array.h
+        base.h
+        fail.h
         fail.c
+        int.h
         int.c
+        ptr_array.h
         ptr_array.c
+        result.h
         result.c
+        rnd.h
         rnd.c
+        sort.h
         sort.c
 )
 if(HAS_REALLOCARRAY)
@@ -22,9 +30,9 @@ add_executable(base_tests
         base_tests.c
         int_test.c
         ptr_array_test.c
-        sort_test.c
         result_test.c
         rnd_test.c
+        sort_test.c
 )
 if(HAS_REALLOCARRAY)
         target_compile_definitions(base_tests PRIVATE HAS_REALLOCARRAY)

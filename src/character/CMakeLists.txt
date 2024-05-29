@@ -1,8 +1,14 @@
 add_library(character STATIC
+        abilities.h
         abilities.c
+        ability_score_generation_method.h
         ability_score_generation_method.c
+        ability_score_generation_type.h
+        ability_scores.h
         ability_scores.c
+        ability_sets.h
         ability_sets.c
+        character.h
         character.c
         )
 target_include_directories(character

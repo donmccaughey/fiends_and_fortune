@@ -1,7 +1,12 @@
 add_library(background STATIC
+        background.h
+        direction.h
         direction.c
+        language.h
         language.c
+        money.h
         money.c
+        orientation.h
         orientation.c
         )
 target_include_directories(background

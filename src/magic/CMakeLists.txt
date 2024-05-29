@@ -1,4 +1,6 @@
 add_library(magic STATIC
+        magic.h
+        spell.h
         spell.c
         )
 target_include_directories(magic
