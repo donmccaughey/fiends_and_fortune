@@ -25,17 +25,11 @@ str_alloc_formatted(char const *format, ...);
 char *
 str_alloc_formatted_from_va_list(char const *format, va_list arguments);
 
-inline bool
-str_empty(char const *str)
-{
-    return ! str || ! str[0];
-}
+bool
+str_empty(char const *str);
 
-inline bool
-str_eq(char const *str1, char const *str2)
-{
-    return 0 == strcmp(str1, str2);
-}
+bool
+str_eq(char const *str1, char const *str2);
 
 size_t
 str_formatted_length(char const *format, ...);
@@ -43,11 +37,8 @@ str_formatted_length(char const *format, ...);
 size_t
 str_formatted_length_from_va_list(char const *format, va_list arguments);
 
-inline bool
-str_not_empty(char const *str)
-{
-    return str && str[0];
-}
+bool
+str_not_empty(char const *str);
 
 void
 str_realloc_append_formatted(char **str, char const *format, ...);
