@@ -9,9 +9,6 @@
 
 
 char *
-str_alloc_empty(void);
-
-char *
 str_alloc_formatted(char const *format, ...);
 
 void

@@ -1,7 +1,6 @@
 #include "tiles_thumbnail.h"
 
-#include <base/base.h>
-
+#include "astr.h"
 #include "box.h"
 #include "text_rectangle.h"
 #include "tile.h"
@@ -78,7 +77,7 @@ print_tile_walls(struct text_rectangle *text_rectangle, struct tile *tile)
 static char *
 tiles_thumbnail_alloc(struct tile **tiles, int tiles_count, print_tile_fn print_tile)
 {
-    if (!tiles_count) return str_alloc_empty();
+    if (!tiles_count) return astr_empty();
 
     struct box box = box_make_unit(tiles[0]->point);
     for (int i = 0; i < tiles_count; ++i) {

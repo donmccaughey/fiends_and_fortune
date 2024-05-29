@@ -1,15 +1,16 @@
 #include "coins.h"
 
-#include <stdio.h>
 #include <base/base.h>
 #include <background/background.h>
 #include <json/json.h>
+
+#include "astr.h"
 
 
 char *
 coins_alloc_description(struct coins coins)
 {
-    char *description = str_alloc_empty();
+    char *description = astr_empty();
     char const *separator = "";
     if (coins.cp) {
         str_realloc_append_formatted(&description, "%d copper", coins.cp);

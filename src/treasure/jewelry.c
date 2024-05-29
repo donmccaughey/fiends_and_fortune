@@ -232,7 +232,7 @@ jewelry_alloc_true_description_prefix(struct jewelry *jewelry)
 static char *
 jewelry_alloc_true_description_modifiers(struct jewelry *jewelry)
 {
-    char *description = str_alloc_empty();
+    char *description = astr_empty();
     if (jewelry->workmanship_bonus) {
         str_realloc_append_formatted(&description, "workmanship %+i",
                                      jewelry->workmanship_bonus);

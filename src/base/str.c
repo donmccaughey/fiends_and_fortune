@@ -6,13 +6,6 @@
 
 
 char *
-str_alloc_empty(void)
-{
-    return astr_empty();
-}
-
-
-char *
 str_alloc_formatted(char const *format, ...)
 {
     va_list arguments;
