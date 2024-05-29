@@ -1,12 +1,8 @@
 #include "str.h"
 
-#include <assert.h>
 #include <stdio.h>
 
 #include "astr.h"
-#include "fail.h"
-#include "xmalloc.h"
-#include "xstdio.h"
 
 
 char *
@@ -17,15 +13,6 @@ str_alloc_centered_and_formatted(int width, char const *format, ...)
     char *str = astr_centered_f_va(width, format, arguments);
     va_end(arguments);
     return str;
-}
-
-
-char *
-str_alloc_centered_and_formatted_from_va_list(int width,
-                                              char const *format,
-                                              va_list arguments)
-{
-    return astr_centered_f_va(width, format, arguments);
 }
 
 
@@ -68,24 +55,6 @@ str_eq(char const *str1, char const *str2)
 }
 
 
-size_t
-str_formatted_length(char const *format, ...)
-{
-    va_list arguments;
-    va_start(arguments, format);
-    size_t length = astr_len_f_va(format, arguments);
-    va_end(arguments);
-    return length;
-}
-
-
-size_t
-str_formatted_length_from_va_list(char const *format, va_list arguments)
-{
-    return astr_len_f_va(format, arguments);
-}
-
-
 bool
 str_not_empty(char const *str)
 {
@@ -103,10 +72,3 @@ str_realloc_append_formatted(char **str, char const *format, ...)
 }
 
 
-void
-str_realloc_append_formatted_from_va_list(char **str,
-                                          char const *format,
-                                          va_list arguments)
-{
-    *str = astr_cat_f_va(*str, format, arguments);
-}

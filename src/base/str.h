@@ -12,11 +12,6 @@ char *
 str_alloc_centered_and_formatted(int width, char const *format, ...);
 
 char *
-str_alloc_centered_and_formatted_from_va_list(int width,
-                                              char const *format,
-                                              va_list arguments);
-
-char *
 str_alloc_empty(void);
 
 char *
@@ -31,22 +26,11 @@ str_empty(char const *str);
 bool
 str_eq(char const *str1, char const *str2);
 
-size_t
-str_formatted_length(char const *format, ...);
-
-size_t
-str_formatted_length_from_va_list(char const *format, va_list arguments);
-
 bool
 str_not_empty(char const *str);
 
 void
 str_realloc_append_formatted(char **str, char const *format, ...);
-
-void
-str_realloc_append_formatted_from_va_list(char **str,
-                                          char const *format,
-                                          va_list arguments);
 
 
 #endif
