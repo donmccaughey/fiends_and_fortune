@@ -13,7 +13,8 @@ target_include_directories(background
         PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.."
         )
 target_link_libraries(background
-        PUBLIC base mechanics
+        PUBLIC base
+        PUBLIC mechanics
         )
 
 add_executable(background_tests

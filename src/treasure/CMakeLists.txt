@@ -19,13 +19,12 @@ target_include_directories(treasure
         PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.."
         )
 target_link_libraries(treasure
-        PUBLIC
-            background
-            base
-            cJSON
-            json
-            magic
-            mechanics
+        PUBLIC background
+        PUBLIC base
+        PUBLIC cJSON
+        PUBLIC json
+        PUBLIC magic
+        PUBLIC mechanics
         )
 
 add_executable(treasure_tests

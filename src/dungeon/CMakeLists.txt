@@ -33,7 +33,9 @@ target_include_directories(dungeon
         PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.."
         )
 target_link_libraries(dungeon
-        PUBLIC background base mechanics
+        PUBLIC background
+        PUBLIC base
+        PUBLIC mechanics
         )
 
 add_executable(dungeon_tests

@@ -7,7 +7,8 @@ target_include_directories(magic
         PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.."
         )
 target_link_libraries(magic
-        PUBLIC base mechanics
+        PUBLIC base
+        PUBLIC mechanics
         )
 
 add_executable(magic_tests

@@ -15,7 +15,8 @@ target_include_directories(character
         PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.."
         )
 target_link_libraries(character
-        PUBLIC base mechanics
+        PUBLIC base
+        PUBLIC mechanics
         )
 
 add_executable(character_tests
