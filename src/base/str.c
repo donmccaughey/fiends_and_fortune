@@ -6,17 +6,6 @@
 
 
 char *
-str_alloc_centered_and_formatted(int width, char const *format, ...)
-{
-    va_list arguments;
-    va_start(arguments, format);
-    char *str = astr_centered_f_va(width, format, arguments);
-    va_end(arguments);
-    return str;
-}
-
-
-char *
 str_alloc_empty(void)
 {
     return astr_empty();

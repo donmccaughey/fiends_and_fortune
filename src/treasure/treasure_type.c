@@ -4,6 +4,7 @@
 #include <base/base.h>
 #include <mechanics/mechanics.h>
 
+#include "astr.h"
 #include "gem.h"
 #include "jewelry.h"
 #include "magic_item.h"
@@ -783,16 +784,14 @@ describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry *coins_gems_or_jewel
     if (coins_gems_or_jewelry->is_per_individual) {
         struct dice amount = dice_parse(coins_gems_or_jewelry->amount);
         char *range = dice_alloc_base_range_description(amount);
-        char *description = str_alloc_centered_and_formatted(9, "%s per",
-                                                             range);
+        char *description = astr_centered_f(9, "%s per", range);
         free(range);
         return description;
     } else {
         struct dice amount = dice_parse(coins_gems_or_jewelry->amount);
         char *range = dice_alloc_base_range_description(amount);
-        char *description = str_alloc_centered_and_formatted(9, "%s:%2i%%",
-                                                             range,
-                                                             coins_gems_or_jewelry->percent_chance);
+        char *description = astr_centered_f(9, "%s:%2i%%", range,
+                                            coins_gems_or_jewelry->percent_chance);
         free(range);
         return description;
     }
