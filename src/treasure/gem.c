@@ -609,9 +609,9 @@ gem_alloc_true_description(struct gem *gem)
     char *value = coins_alloc_gp_cp_description(value_in_cp);
 
     char const *separator = astr_is_empty(modifiers) ? "" :  ": ";
-    char *true_description = str_alloc_formatted("%s (%s%s%s)",
-                                                 prefix, modifiers,
-                                                 separator, value);
+    char *true_description = astr_f("%s (%s%s%s)",
+                                    prefix, modifiers,
+                                    separator, value);
 
     free(value);
     free(modifiers);
@@ -624,14 +624,14 @@ gem_alloc_true_description(struct gem *gem)
 static char *
 gem_alloc_true_description_prefix(struct gem *gem)
 {
-    return str_alloc_formatted("%s %s", gem_size_name(gem), gem_kind_name(gem));
+    return astr_f("%s %s", gem_size_name(gem), gem_kind_name(gem));
 }
 
 
 static char *
 gem_alloc_true_description_modifiers(struct gem *gem)
 {
-    char *description = str_alloc_formatted("%s", gem_type_name(gem));
+    char *description = astr_f("%s", gem_type_name(gem));
     if (gem->value_rank_modifier) {
         str_realloc_append_formatted(&description, ", rank %+i",
                                      gem->value_rank_modifier);
@@ -647,10 +647,10 @@ gem_alloc_true_description_modifiers(struct gem *gem)
 static char *
 gem_alloc_visible_description(struct gem *gem)
 {
-    return str_alloc_formatted("%s %s %s stone",
-                               gem_size_name(gem),
-                               gem_opacity_name(gem),
-                               gem->colors);
+    return astr_f("%s %s %s stone",
+                  gem_size_name(gem),
+                  gem_opacity_name(gem),
+                  gem->colors);
 }
 
 

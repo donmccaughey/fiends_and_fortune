@@ -747,14 +747,14 @@ treasure_type_alloc_description(struct treasure_type *treasure_type,
     char *jewelry = describe_coins_gems_or_jewelry(&treasure_type->jewelry);
     char *maps_or_magic = describe_maps_or_magic(&treasure_type->maps_or_magic);
     
-    letter = str_alloc_formatted(letter_format, treasure_type->letter);
+    letter = astr_f(letter_format, treasure_type->letter);
     
     char *format = "%s%s | %s | %s | %s | %s | %s | %s | %s | %s\n";
-    char *description = str_alloc_formatted(format,
-                                            (include_header ? header : ""),
-                                            letter, copper, silver, electrum,
-                                            gold, platinum, gems, jewelry,
-                                            maps_or_magic);
+    char *description = astr_f(format,
+                               (include_header ? header : ""),
+                               letter, copper, silver, electrum,
+                               gold, platinum, gems, jewelry,
+                               maps_or_magic);
     free(letter);
     free(copper);
     free(silver);
@@ -772,7 +772,7 @@ treasure_type_alloc_description(struct treasure_type *treasure_type,
 char *
 treasure_type_alloc_name(struct treasure_type *treasure_type)
 {
-    return str_alloc_formatted("%c", treasure_type->letter);
+    return astr_f("%c", treasure_type->letter);
 }
 
 
@@ -811,21 +811,21 @@ describe_maps_or_magic(struct maps_or_magic *maps_or_magic)
         struct dice amount = dice_parse(type->amount);
         char *range = dice_alloc_range_description(amount);
         if (!dice_has_constant_score(amount)) {
-            type_descriptions[i] = str_alloc_formatted("%s %ss",
-                                                       range, type_name);
+            type_descriptions[i] = astr_f("%s %ss",
+                                          range, type_name);
         } else if (   type->is_map_possible
                    && type->possible_magic_items == ANY_MAGIC_ITEM)
         {
-            type_descriptions[i] = str_alloc_formatted("any %s", range);
+            type_descriptions[i] = astr_f("any %s", range);
         } else if (type->possible_magic_items == NON_WEAPON_MAGIC) {
-            type_descriptions[i] = str_alloc_formatted("any %s except sword or misc weapon",
-                                                       range);
+            type_descriptions[i] = astr_f("any %s except sword or misc weapon",
+                                          range);
         } else if (type->possible_magic_items == ANY_MAGIC_ITEM) {
-            type_descriptions[i] = str_alloc_formatted("any %s magic", range);
+            type_descriptions[i] = astr_f("any %s magic", range);
         } else {
             char const *plural = (1 == dice_max_score(amount)) ? "" : "s";
-            type_descriptions[i] = str_alloc_formatted("%s %s%s", range,
-                                                       type_name, plural);
+            type_descriptions[i] = astr_f("%s %s%s", range,
+                                          type_name, plural);
         }
         free(range);
     }

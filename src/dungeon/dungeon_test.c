@@ -1,5 +1,5 @@
 #include <assert.h>
-
+#include <stdlib.h>
 #include <base/base.h>
 #include <dungeon/dungeon.h>
 

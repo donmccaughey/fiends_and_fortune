@@ -1,6 +1,7 @@
 #include "digger.h"
 
 #include <assert.h>
+#include <stdlib.h>
 #include <base/base.h>
 
 #include "astr.h"

@@ -1,5 +1,6 @@
 #include "ability_scores.h"
 
+#include <string.h>
 #include <base/base.h>
 #include <mechanics/mechanics.h>
 

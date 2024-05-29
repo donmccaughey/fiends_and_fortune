@@ -206,11 +206,11 @@ jewelry_alloc_true_description(struct jewelry *jewelry)
     char *value_description = coins_alloc_gp_cp_description(value_in_cp);
 
     char const *separator = astr_is_empty(modifiers) ? "" : ": ";
-    char *true_description = str_alloc_formatted("%s (%s%s%s)",
-                                                 prefix,
-                                                 modifiers,
-                                                 separator,
-                                                 value_description);
+    char *true_description = astr_f("%s (%s%s%s)",
+                                    prefix,
+                                    modifiers,
+                                    separator,
+                                    value_description);
 
     free(modifiers);
     free(value_description);
@@ -225,7 +225,7 @@ jewelry_alloc_true_description_prefix(struct jewelry *jewelry)
 {
     char const *format = jewelry_material_formats[jewelry->material];
     char const *name = jewelry_form_table[jewelry->form].name;
-    return str_alloc_formatted(format, name);
+    return astr_f(format, name);
 }
 
 

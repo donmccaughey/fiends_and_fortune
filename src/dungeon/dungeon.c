@@ -2,6 +2,7 @@
 
 #include <base/base.h>
 
+#include "astr.h"
 #include "area.h"
 #include "dungeon_options.h"
 #include "generator.h"
@@ -165,7 +166,7 @@ dungeon_alloc_descriptions_of_entrances_and_exits_for_level(struct dungeon *dung
         if (area_is_level_transition(area)) {
             char *location = point_alloc_xy(area_center_point(area));
             char *area_description = area_alloc_description(area);
-            char *description = str_alloc_formatted("%-12s %s", location, area_description);
+            char *description = astr_f("%-12s %s", location, area_description);
             ptr_array_add(descriptions, description);
             free(location);
             free(area_description);
@@ -185,7 +186,7 @@ dungeon_alloc_descriptions_of_chambers_and_rooms_for_level(struct dungeon *dunge
         if (area_is_chamber_or_room(area)) {
             char *location = point_alloc_xy(area_center_point(area));
             char *area_description = area_alloc_description(area);
-            char *description = str_alloc_formatted("%-12s %s", location, area_description);
+            char *description = astr_f("%-12s %s", location, area_description);
             ptr_array_add(descriptions, description);
             free(location);
             free(area_description);

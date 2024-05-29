@@ -2,6 +2,7 @@
 
 #include <ctype.h>
 #include <getopt.h>
+#include <string.h>
 #include <base/base.h>
 #include <dungeon/dungeon.h>
 

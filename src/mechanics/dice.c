@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <base/base.h>
 
+#include "astr.h"
+
 
 static inline double
 max_possible_total(struct dice dice);
@@ -26,11 +28,11 @@ char *
 dice_alloc_base_range_description(struct dice dice)
 {
     if (dice_has_constant_score(dice)) {
-        return str_alloc_formatted("%i", dice_min_base_score(dice));
+        return astr_f("%i", dice_min_base_score(dice));
     } else {
-        return str_alloc_formatted("%i-%i",
-                                   dice_min_base_score(dice),
-                                   dice_max_base_score(dice));
+        return astr_f("%i-%i",
+                      dice_min_base_score(dice),
+                      dice_max_base_score(dice));
     }
 }
 
@@ -62,9 +64,9 @@ char *
 dice_alloc_range_description(struct dice dice)
 {
     if (dice_has_constant_score(dice)) {
-        return str_alloc_formatted("%i", dice_min_score(dice));
+        return astr_f("%i", dice_min_score(dice));
     } else {
-        return str_alloc_formatted("%i-%i", dice_min_score(dice), dice_max_score(dice));
+        return astr_f("%i-%i", dice_min_score(dice), dice_max_score(dice));
     }
 }
 

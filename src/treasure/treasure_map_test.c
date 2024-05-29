@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <stdlib.h>
 #include <base/base.h>
 #include <json/json.h>
 #include <treasure/treasure.h>

@@ -2,7 +2,7 @@
 
 #include <base/base.h>
 
-#include "tile.h"
+#include "astr.h"
 #include "xstring.h"
 
 
@@ -14,7 +14,7 @@ static char *
 alloc_stairs_description(int level, enum area_type area_type)
 {
     char const *direction = area_type_stairs_down == area_type ? "down" : "up";
-    char *description = str_alloc_formatted("stairs %s to ", direction);
+    char *description = astr_f("stairs %s to ", direction);
     realloc_append_level_description(&description, level);
     return description;
 }
@@ -42,7 +42,7 @@ area_alloc_description(struct area const *area)
     char *description;
     switch (area->type) {
         case area_type_chamber:
-            description = str_alloc_formatted("%u' x %u' chamber", width, length);
+            description = astr_f("%u' x %u' chamber", width, length);
             break;
         case area_type_intersection:
             description = xstrdup("intersection");
@@ -50,12 +50,12 @@ area_alloc_description(struct area const *area)
         case area_type_passage: {
             enum orientation orientation = orientation_from_direction(area->direction);
             if (orientation_east_to_west == orientation) swap(&width, &length);
-            description = str_alloc_formatted("%u' passage %s", length,
+            description = astr_f("%u' passage %s", length,
                                               orientation_name(orientation));
             break;
         }
         case area_type_room:
-            description = str_alloc_formatted("%u' x %u' room", width, length);
+            description = astr_f("%u' x %u' room", width, length);
             break;
         case area_type_stairs_down:
             description = alloc_stairs_description(level + 1, area_type_stairs_down);
@@ -64,7 +64,7 @@ area_alloc_description(struct area const *area)
             description = alloc_stairs_description(level - 1, area_type_stairs_up);
             break;
         default:
-            description = str_alloc_formatted("%u' x %u' area", width, length);
+            description = astr_f("%u' x %u' area", width, length);
             break;
     }
     if (!area->features) return description;

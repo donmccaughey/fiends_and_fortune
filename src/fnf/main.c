@@ -1,10 +1,9 @@
 #include "options.h"
 
+#include <stdlib.h>
 #include <base/base.h>
-#include <character/character.h>
 #include <dungeon/dungeon.h>
 #include <json/json.h>
-#include <mechanics/mechanics.h>
 #include <treasure/treasure.h>
 
 

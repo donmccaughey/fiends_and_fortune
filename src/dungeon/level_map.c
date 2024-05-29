@@ -1,8 +1,7 @@
 #include "level_map.h"
 
 #include <assert.h>
-#include <background/background.h>
-#include <base/base.h>
+#include <string.h>
 
 #include "dungeon.h"
 #include "text_rectangle.h"

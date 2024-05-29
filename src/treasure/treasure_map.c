@@ -7,6 +7,7 @@
 #include <json/json.h>
 #include <mechanics/mechanics.h>
 
+#include "astr.h"
 #include "gem.h"
 #include "jewelry.h"
 #include "xmalloc.h"
@@ -424,21 +425,21 @@ treasure_map_generate(struct treasure_map *treasure_map, struct rnd *rnd)
         }
         
         char *description = treasure_alloc_description(&treasure_map->treasure);
-        treasure_map->true_description = str_alloc_formatted("%smap to %s of %s %i miles to the %s, %s",
-                                                             (treasure_map->is_false ? "false " : ""),
-                                                             treasure_map_types[treasure_map_type],
-                                                             description,
-                                                             miles,
-                                                             direction_name(direction),
-                                                             disposition);
+        treasure_map->true_description = astr_f("%smap to %s of %s %i miles to the %s, %s",
+                                                (treasure_map->is_false ? "false " : ""),
+                                                treasure_map_types[treasure_map_type],
+                                                description,
+                                                miles,
+                                                direction_name(direction),
+                                                disposition);
         free(description);
     } else {
         char *description = treasure_alloc_description(&treasure_map->treasure);
-        treasure_map->true_description = str_alloc_formatted("%smap to %s of %s in nearby labyrinth to the %s",
-                                                             (treasure_map->is_false ? "false " : ""),
-                                                             treasure_map_types[treasure_map_type],
-                                                             description,
-                                                             direction_name(direction));
+        treasure_map->true_description = astr_f("%smap to %s of %s in nearby labyrinth to the %s",
+                                                (treasure_map->is_false ? "false " : ""),
+                                                treasure_map_types[treasure_map_type],
+                                                description,
+                                                direction_name(direction));
         free(description);
     }
 }

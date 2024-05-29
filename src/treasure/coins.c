@@ -41,11 +41,11 @@ coins_alloc_gp_cp_description(int cp)
 {
     struct coins coins = coins_make_from_gp_cp(0, cp);
     if (coins.gp && coins.cp) {
-        return str_alloc_formatted("%i gp, %i cp", coins.gp, coins.cp);
+        return astr_f("%i gp, %i cp", coins.gp, coins.cp);
     } else if (coins.gp) {
-        return str_alloc_formatted("%i gp", coins.gp);
+        return astr_f("%i gp", coins.gp);
     } else {
-        return str_alloc_formatted("%i cp", coins.cp);
+        return astr_f("%i cp", coins.cp);
     }
 }
 

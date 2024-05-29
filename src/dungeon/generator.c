@@ -1,6 +1,7 @@
 #include "generator.h"
 
 #include <assert.h>
+#include <string.h>
 #include <base/base.h>
 
 #include "area.h"

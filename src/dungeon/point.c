@@ -2,7 +2,8 @@
 
 #include <assert.h>
 #include <limits.h>
-#include <base/base.h>
+
+#include "astr.h"
 
 
 struct point
@@ -16,7 +17,7 @@ point_above(struct point point)
 char *
 point_alloc_xy(struct point point)
 {
-    return str_alloc_formatted("(%i, %i)", point.x, point.y);
+    return astr_f("(%i, %i)", point.x, point.y);
 }
 
 

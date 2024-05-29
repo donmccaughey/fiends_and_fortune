@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <limits.h>
 #include <string.h>
+#include <stdlib.h>
 #include <base/base.h>
 #include <mechanics/mechanics.h>
 
