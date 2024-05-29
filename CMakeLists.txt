@@ -4,7 +4,7 @@ project(fiends_and_fortune
         DESCRIPTION "Fiends and Fortune"
         HOMEPAGE_URL https://github.com/donmccaughey/fiends_and_fortune
         LANGUAGES C CXX
-        )
+)
 
 
 include(CheckCXXCompilerFlag)
@@ -41,14 +41,14 @@ endif()
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     find_library(LIB_BSD
         NAMES bsd
-        )
+    )
     if(NOT LIB_BSD)
         message(FATAL_ERROR "Unable to locate bsd compatibility library")
     endif()
     find_path(LIB_BSD_PATH 
         "bsd.h" 
         PATH_SUFFIXES bsd
-        )
+    )
     if(NOT LIB_BSD_PATH)
         message(FATAL_ERROR "Unable to locate libbsd header files")
     endif()
@@ -103,7 +103,7 @@ add_custom_target(check
         COMMAND magic_tests
         COMMAND mechanics_tests
         COMMAND treasure_tests
-        )
+)
 add_dependencies(check
         fnf
         fnf_check
@@ -117,7 +117,7 @@ add_dependencies(check
         magic_tests
         mechanics_tests
         treasure_tests
-        )
+)
 
 
 # ----- generate a graph of build targets -----
@@ -126,5 +126,5 @@ if(GRAPH_TARGETS)
     add_custom_target(target_graph ALL
             COMMAND "${CMAKE_COMMAND}" "--graphviz=${CMAKE_BINARY_DIR}/fnf_targets.dot" .
             COMMAND dot -Tpng -o "${CMAKE_BINARY_DIR}/fnf_targets.png" "${CMAKE_BINARY_DIR}/fnf_targets.dot"
-            )
+    )
 endif()

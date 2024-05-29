@@ -49,21 +49,21 @@ add_executable(fiends
 
         views/text_rect_view.hpp
         views/text_rect_view.cpp
-        )
+)
 target_link_libraries(fiends
         base
         dungeon
         treasure
         tvision
-        )
+)
 if(HAS_NO_UNQUALIFIED_STD_CAST_CALL)
     target_compile_options(fiends
             PRIVATE -Wno-unqualified-std-cast-call  # to use `move()` w/o `std::`
-            )
+    )
 endif()
 
 
 add_executable(fiends_tests
         fiends_tests.cpp
-        )
+)
 add_test(fiends_tests fiends_tests)

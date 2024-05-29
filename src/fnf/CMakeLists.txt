@@ -4,7 +4,7 @@ add_executable(fnf
         main.c
         options.h
         options.c
-        )
+)
 if(HAS_OPTRESET)
         target_compile_definitions(base PRIVATE HAS_OPTRESET)
 endif()
@@ -18,7 +18,7 @@ target_link_libraries(fnf
         magic
         mechanics
         treasure
-        )
+)
 
 add_executable(fnf_tests
         action.c
@@ -26,7 +26,7 @@ add_executable(fnf_tests
         fnf_tests.c
         options.c
         options_test.c
-        )
+)
 target_link_libraries(fnf_tests
         background
         base
@@ -37,11 +37,11 @@ target_link_libraries(fnf_tests
         magic
         mechanics
         treasure
-        )
+)
 add_test(fnf_tests fnf_tests)
 
 add_custom_target(fnf_check
         COMMAND "./check"
-        )
+)
 configure_file(check check)
 add_test(fnf_check check)

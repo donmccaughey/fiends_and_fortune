@@ -10,14 +10,14 @@ add_library(character STATIC
         ability_sets.c
         character.h
         character.c
-        )
+)
 target_include_directories(character
         PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.."
-        )
+)
 target_link_libraries(character
         PUBLIC base
         PUBLIC mechanics
-        )
+)
 
 add_executable(character_tests
         abilities_test.c
@@ -25,6 +25,6 @@ add_executable(character_tests
         ability_scores_test.c
         ability_sets_test.c
         character_tests.c
-        )
+)
 target_link_libraries(character_tests character)
 add_test(character_tests character_tests)

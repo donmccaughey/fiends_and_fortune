@@ -28,15 +28,15 @@ add_library(dungeon STATIC
         tile.c
         tile_features.h
         tile_type.h
-        )
+)
 target_include_directories(dungeon
         PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.."
-        )
+)
 target_link_libraries(dungeon
         PUBLIC background
         PUBLIC base
         PUBLIC mechanics
-        )
+)
 
 add_executable(dungeon_tests
         area_test.c
@@ -53,6 +53,6 @@ add_executable(dungeon_tests
         tiles_thumbnail.h
         tiles_thumbnail.c
         tiles_thumbnail_test.c
-        )
+)
 target_link_libraries(dungeon_tests dungeon)
 add_test(dungeon_tests dungeon_tests)

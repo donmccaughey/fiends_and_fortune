@@ -14,10 +14,10 @@ add_library(treasure STATIC
         treasure_struct.h
         treasure_type.h
         treasure_type.c
-        )
+)
 target_include_directories(treasure
         PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.."
-        )
+)
 target_link_libraries(treasure
         PUBLIC background
         PUBLIC base
@@ -25,7 +25,7 @@ target_link_libraries(treasure
         PUBLIC json
         PUBLIC magic
         PUBLIC mechanics
-        )
+)
 
 add_executable(treasure_tests
         coins_test.c
@@ -36,6 +36,6 @@ add_executable(treasure_tests
         treasure_test.c
         treasure_tests.c
         treasure_type_test.c
-        )
+)
 target_link_libraries(treasure_tests treasure)
 add_test(treasure_tests treasure_tests)
