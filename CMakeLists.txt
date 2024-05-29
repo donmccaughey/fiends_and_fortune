@@ -74,6 +74,7 @@ check_symbol_exists(reallocarray "stdlib.h" HAS_REALLOCARRAY)
 
 # ----- add build files in subdirectories -----
 
+add_subdirectory(libs/astr)
 add_subdirectory(libs/cJSON)
 add_subdirectory(libs/tvision)
 add_subdirectory(libs/xmalloc)

@@ -1,0 +1,239 @@
+.Dd May 20, 2024
+.Dt ASTR 3
+.Os
+.Sh NAME
+.Nm astr_cat_f ,
+.Nm astr_cat_f_va ,
+.Nm astr_centered_f ,
+.Nm astr_centered_f_va ,
+.Nm astr_cmp ,
+.Nm astr_dup ,
+.Nm astr_empty ,
+.Nm astr_eq ,
+.Nm astr_f ,
+.Nm astr_f_va ,
+.Nm astr_is_empty ,
+.Nm astr_len ,
+.Nm astr_len_f ,
+.Nm astr_len_f_va
+.Nd functions for working with dynamically allocated strings.
+.Sh SYNOPSIS
+.In astr.h
+.Ft char *
+.Fn astr_cat_f "char *s" "char const *format"
+.Ft char *
+.Fn astr_cat_f_va "char *s" "char const *format" "va_list args"
+.Ft char *
+.Fn astr_centered_f "int width" "char const *format" "..."
+.Ft char *
+.Fn astr_centered_f_va "int width" "char const *format" "va_list args"
+.Ft int
+.Fn astr_cmp "char const *s1" "char const *s2"
+.Ft char *
+.Fn astr_dup "char const *s"
+.Ft char *
+.Fn astr_empty "void"
+.Ft bool
+.Fn astr_eq "char const *s1" "char const *s2"
+.Ft char *
+.Fn astr_f "char const *format" "..."
+.Ft char *
+.Fn astr_f_va "char const *format" "va_list args"
+.Ft bool
+.Fn astr_is_empty "char const *s"
+.Ft int
+.Fn astr_len "char const *s"
+.Ft int
+.Fn astr_len_f "char const *format" "..."
+.Ft int
+.Fn astr_len_f_va "char const *format" "va_list args"
+.Sh DESCRIPTION
+The
+.Nm astr
+library provides functions that make working with dynamically allocated strings
+easier and less error prone.
+All functions in
+.Nm astr
+accept
+.Dv NULL
+string pointers, treating them similarly to a zero-length string.
+Reallocating functions make string building easier by automatically resizing the
+string as needed.
+.Pp
+All functions in the
+.Nm astr
+library begin with the
+.Sy astr_
+prefix.
+Functions with
+.Sy _f
+in their name take a format string as specified for
+.Xr printf 3
+along with zero or more additional arguments as determined by the given format
+and produce formatted output.
+Functions with
+.Sy _cat
+in their name will add characters to the end of the given string, returning a
+new string.
+Functions that end with the suffix
+.Sy _va
+take a variable number of arguments as a
+.Sy va_list
+object defined in
+.Xr stdarg 3 .
+.Pp
+All
+.Nm astr
+functions that return a
+.Ft char *
+value are returning a dynamically allocated string; the caller is responsible
+for calling
+.Xr free 3
+on the returned pointer.
+It is not necessary to check these returned values for
+.Dv NULL ;
+.Nm astr
+checks all memory allocations and will call
+.Xr abort 3
+on memory exhaustion.
+If the first parameter of a function is a
+.Ft char *
+value, the address of that string may be invalid after the function is called.
+.Pp
+The
+.Fn astr_cat_f
+and
+.Fn astr_cat_f_va
+functions append formatted characters to a string.
+.Pp
+.Fn astr_centered_f
+and
+.Fn astr_centered_f_va
+allocate formatted strings of a given width and center the formatted output.
+.Pp
+.Fn astr_cmp
+compares the bytes of two strings.
+The string pointer arguments
+.Fa s1
+and
+.Fa s2
+may be
+.Dv NULL .
+.Pp
+.Fn astr_dup
+allocates a copy of a string.
+.Pp
+.Fn astr_empty
+allocates an empty string.
+.Pp
+.Fn astr_eq
+compares the bytes of two strings for equality.
+The string pointer arguments
+.Fa s1
+and
+.Fa s2
+may be
+.Dv NULL .
+.Pp
+.Fn astr_f
+and
+.Fn astr_f_va
+allocate formatted strings.
+.Pp
+.Fn astr_is_empty
+tests if a given string pointer is
+.Dv NULL
+or zero-length.
+.Pp
+The
+.Fn astr_len
+function calculates the length in bytes of a string.
+.Pp
+The
+.Fn astr_len_f
+and
+.Fn astr_len_f_va
+functions calculate the length in bytes required to hold the formatted string.
+.Sh RETURN VALUES
+On success,
+.Fn astr_cat_f
+and
+.Fn astr_cat_f_va
+return a new string.
+The address of the original string
+.Fa s
+may be invalid after these functions are called.
+On failure, these functions set
+.Va errno
+and return either the original string if non-NULL or a newly allocated empty
+string.
+.Pp
+.Fn astr_f ,
+.Fn astr_f_va ,
+.Fn astr_centered_f ,
+and
+.Fn astr_centered_f_va
+return a pointer to a formatted string on success.
+If there is an error, these functions return a newly allocated empty string and
+set
+.Va errno .
+.Pp
+.Fn astr_cmp
+returns a negative integer if
+.Fa s1
+is ordered before
+.Fa s2 ,
+a positive integer if
+.Fa s1
+is ordered after
+.Fa s2
+and zero if
+.Fa s1
+equals
+.Fa s2 .
+A
+.Dv NULL
+string pointer is ordered before all
+.Pf non- Dv NULL
+string pointers.
+.Pp
+.Fn astr_dup
+returns a pointer to a newly allocated copy of the given string.
+.Pp
+.Fn astr_empty
+returns a pointer to a zero-length string.
+.Pp
+.Fn astr_eq
+returns
+.Dv true
+if the two string pointers are equal or point to the same sequence of bytes.
+.Pp
+.Fn astr_is_empty
+returns
+.Dv true
+if the string pointer is
+.Dv NULL
+or points to an empty string.
+.Pp
+.Fn astr_len
+returns the number of bytes in the string or zero for NULL.
+.Pp
+.Fn astr_len_f
+and
+.Fn astr_len_f_va
+return the number of bytes needed to store the formatted string, not including
+the terminating null character on success.
+If there is an error, these functions return zero and set
+.Va errno .
+.Sh ERRORS
+In addition to the errors documented for the vsnprintf(3) function, *astr*
+formatting functions will set
+.Er EINVAL
+if the format string is NULL.
+.Sh SEE ALSO
+.Xr abort 3 ,
+.Xr free 3 ,
+.Xr printf 3 ,
+.Xr stdarg 3
+.Sh AUTHORS
+.An Don McCaughey

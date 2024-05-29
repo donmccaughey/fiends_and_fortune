@@ -1,0 +1,16 @@
+image: openbsd/latest
+packages:
+    - cmake
+sources:
+    - https://git.sr.ht/~donmcc/astr
+tasks:
+    - setup: |
+          cd astr
+          cmake -S . -B tmp -DWALL=ON
+    - build: |
+          cd astr
+          cmake --build tmp --target all test
+triggers:
+    - action: email
+      condition: failure
+      to: Don McCaughey <don@donm.cc>
