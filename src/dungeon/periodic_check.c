@@ -251,7 +251,7 @@ check_wall_for_secret_door(struct generator *generator,
             if (wall_type_solid != inside_tile->walls.west) return;
             break;
         default:
-            fail("Unrecognized direction %i", direction);
+            unreachable("Unrecognized direction %i", direction);
             break;
     }
     

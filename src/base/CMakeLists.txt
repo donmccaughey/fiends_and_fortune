@@ -1,8 +1,6 @@
 add_library(base STATIC
         array.h
         base.h
-        fail.h
-        fail.c
         int.h
         int.c
         ptr_array.h
@@ -11,6 +9,8 @@ add_library(base STATIC
         rnd.c
         sort.h
         sort.c
+        unreachable.h
+        unreachable.c
 )
 target_include_directories(base
         PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.."

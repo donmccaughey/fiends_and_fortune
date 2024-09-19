@@ -96,7 +96,7 @@ digger_dig_area(struct digger *digger,
             entrance_tile->walls.west = entrance_type;
             break;
         default:
-            fail("Unrecognized direction %i", digger->direction);
+            unreachable("Unrecognized direction %i", digger->direction);
             break;
     }
     

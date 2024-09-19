@@ -484,6 +484,6 @@ spell_determine(struct rnd *rnd,
             if (score <= range) return spells_table[i].name;
         }
     }
-    fail("Did not match table entry (score=%i, range=%i)", score, range);
+    unreachable("Did not match table entry (score=%i, range=%i)", score, range);
     return "(spell)";
 }

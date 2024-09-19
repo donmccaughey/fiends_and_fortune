@@ -970,8 +970,8 @@ possible_maps_or_magic_name(bool is_map_possible,
             case NO_MAGIC_ITEM: return "map";
             case ANY_MAGIC_ITEM: return "any";
             case NON_WEAPON_MAGIC: return "map or non weapon magic";
-            default: 
-                fail("possible_magic_items_t = %0x", possible_magic_items);
+            default:
+                unreachable("possible_magic_items_t = %0x", possible_magic_items);
                 return "(map or magic)";
         }
     } else {
@@ -987,8 +987,8 @@ possible_maps_or_magic_name(bool is_map_possible,
                 
             case ANY_MAGIC_ITEM: return "any magic";
             case MAGIC_WEAPON_OR_ARMOR: return "sword, armor or misc weapon";
-            default: 
-                fail("possible_magic_items_t = %0x", possible_magic_items);
+            default:
+                unreachable("possible_magic_items_t = %0x", possible_magic_items);
                 return "(magic)";
         }
     }

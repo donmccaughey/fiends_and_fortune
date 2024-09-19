@@ -96,6 +96,6 @@ language_determine(struct rnd *rnd,
             if (score <= range) return language_table[i].language;
         }
     }
-    fail("Did not match table entry (score=%i, range=%i)", score, range);
+    unreachable("Did not match table entry (score=%i, range=%i)", score, range);
     return NULL;
 }

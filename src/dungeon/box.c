@@ -154,7 +154,7 @@ box_for_area(struct point origin,
             box.size = size_make(-length - padding, width + (2 * padding), 1);
             break;
         default:
-            fail("Unrecognized direction %i", direction);
+            unreachable("Unrecognized direction %i", direction);
             break;
     }
     return box_normalize(box);

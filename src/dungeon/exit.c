@@ -85,7 +85,7 @@ exits_in_direction(struct generator *generator,
         case direction_west:
             return exits_west(generator, box, exits, exits_count);
         default:
-            fail("Unrecognized direction %i", direction);
+            unreachable("Unrecognized direction %i", direction);
             return 0;
     }
 }
@@ -254,7 +254,7 @@ possible_exits_in_direction(struct generator *generator,
         case direction_west:
             return possible_exits_west(generator, box, exits, exits_count);
         default:
-            fail("Unrecognized direction %i", direction);
+            unreachable("Unrecognized direction %i", direction);
             return 0;
     }
 }

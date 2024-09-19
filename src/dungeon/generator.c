@@ -399,7 +399,7 @@ generator_set_wall(struct generator *generator,
             tile->walls.west = wall_type;
             break;
         default:
-            fail("Unrecognized direction %i", direction);
+            unreachable("Unrecognized direction %i", direction);
             break;
     }
 }

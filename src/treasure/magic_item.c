@@ -587,7 +587,9 @@ static void generate_horn_of_valhalla(struct magic_item *magic_item,
             case 6: alignment = "chaotic evil"; break;
             case 7: alignment = "chaotic"; break;
             case 8: alignment = "chaotic good"; break;
-            default: fail("1d8 die roll is %i", score); break;
+            default:
+                unreachable("1d8 die roll is %i", score);
+                break;
         }
         magic_item->true_description = astr_f("%s horn of Valhalla (%s)",
                                               type, alignment);
@@ -708,7 +710,7 @@ void magic_item_generate(struct magic_item *magic_item,
             }
         }
     }
-    fail("Did not match table entry (score=%i, range=%i)", score, range);
+    unreachable("Did not match table entry (score=%i, range=%i)", score, range);
 }
 
 
@@ -1245,7 +1247,9 @@ generate_orb_of_dragonkind(struct magic_item *magic_item, struct rnd *rnd)
         case 6: type = "fire drake"; break;
         case 7: type = "elder wyrm"; break;
         case 8: type = "eternal grand dragon"; break;
-        default: fail("1d8 die roll is %i", score); break;
+        default:
+            unreachable("1d8 die roll is %i", score);
+            break;
     }
     magic_item->experience_points = 0;
     magic_item->true_value_in_cp = gp_to_cp(score * 10000);
