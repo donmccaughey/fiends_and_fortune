@@ -1,2 +1,4 @@
 ignore:
   - "libs"
+  - "**/*_test.c"
+  - "**/*_tests.c"
