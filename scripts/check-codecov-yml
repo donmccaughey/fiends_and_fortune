@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+cat .codecov.yml | curl --data-binary @- https://codecov.io/validate
