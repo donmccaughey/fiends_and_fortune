@@ -18,9 +18,12 @@ jobs:
           cmake --build ${{github.workspace}}/tmp --target all
           cd ${{github.workspace}}/tmp
           ctest --output-on-failure
-      - name: Coverage
-        run: |
-          bash <(curl -s https://codecov.io/bash)
+      - name: Upload Coverage
+        uses: codecov/codecov-action@v4
+        with:
+          codecov_yml_path: ${{github.workspace}}/.codecov.yml
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
   All-Tests-macOS:
     name: All Tests (macOS)
     runs-on: macos-latest
