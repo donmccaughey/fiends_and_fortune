@@ -1,0 +1,60 @@
+#!/bin/bash
+
+set -euo pipefail
+IFS=$'\n\t'
+
+function has_command() {
+    command -v "$1" &> /dev/null
+}
+
+if ! has_command lcov
+then
+    printf '`lcov` is required to generate the coverage report\n'
+    exit 1
+fi
+
+if ! has_command genhtml
+then
+    printf '`genhtml` is required to generate the coverage report\n'
+    exit 1
+fi
+
+if [ ! -d tmp ]
+then
+    printf 'No coverage data found\n'
+    exit 1
+fi
+
+if [ -e tmp/coverage.info ]
+then
+    rm tmp/coverage.info
+fi
+
+if [ -d tmp/coverage-report ]
+then
+    rm -rf tmp/coverage-report
+fi
+
+lcov \
+    --branch-coverage \
+    --capture \
+    --directory tmp \
+    --exclude '*_test.c' \
+    --exclude '*_tests.c' \
+    --include 'src/' \
+    --output-file tmp/coverage.info \
+    --parallel \
+    --quiet
+
+genhtml \
+    --header-title 'fiends_and_fortune' \
+    --hierarchical \
+    --quiet \
+    --output-directory tmp/coverage-report \
+    --parallel \
+    --title 'fiends_and_fortune' \
+    tmp/coverage.info
+
+printf 'Coverage report generated in tmp/coverage-report\n'
+
+open tmp/coverage-report/index.html

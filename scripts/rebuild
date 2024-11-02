@@ -8,5 +8,14 @@ then
     rm -rf tmp
 fi
 
-cmake -S . -B tmp -DADDRESS_SANITIZER=ON -DCOVERAGE=ON -DGRAPH_TARGETS=ON -DWALL=ON
-cmake --build tmp --target all test
+cmake \
+    -S . \
+    -B tmp \
+    -DADDRESS_SANITIZER=ON \
+    -DCOVERAGE=ON \
+    -DGRAPH_TARGETS=ON \
+    -DWALL=ON
+
+cmake \
+    --build tmp \
+    --target all test
