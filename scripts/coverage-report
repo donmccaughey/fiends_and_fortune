@@ -36,11 +36,13 @@ then
 fi
 
 lcov \
+    --all \
     --branch-coverage \
     --capture \
     --directory tmp \
     --exclude '*_test.c' \
     --exclude '*_tests.c' \
+    --ignore-errors gcov,inconsistent,inconsistent \
     --include 'src/' \
     --output-file tmp/coverage.info \
     --parallel \
@@ -49,9 +51,10 @@ lcov \
 genhtml \
     --header-title 'fiends_and_fortune' \
     --hierarchical \
-    --quiet \
+    --ignore-errors corrupt,inconsistent,inconsistent \
     --output-directory tmp/coverage-report \
     --parallel \
+    --quiet \
     --title 'fiends_and_fortune' \
     tmp/coverage.info
 
