@@ -352,6 +352,19 @@ static void cjson_functions_should_not_crash_with_null_pointers(void)
 {
     char buffer[10];
     cJSON *item = cJSON_CreateString("item");
+    cJSON *array = cJSON_CreateArray();
+    cJSON *item1 = cJSON_CreateString("item1");
+    cJSON *item2 = cJSON_CreateString("corrupted array item3");
+    cJSON *corruptedString = cJSON_CreateString("corrupted");
+    struct cJSON *originalPrev;
+
+    add_item_to_array(array, item1);
+    add_item_to_array(array, item2);
+
+    originalPrev = item2->prev;
+    item2->prev = NULL;
+    free(corruptedString->valuestring);
+    corruptedString->valuestring = NULL;
 
     cJSON_InitHooks(NULL);
     TEST_ASSERT_NULL(cJSON_Parse(NULL));
@@ -411,6 +424,8 @@ static void cjson_functions_should_not_crash_with_null_pointers(void)
     cJSON_DeleteItemFromObject(item, NULL);
     cJSON_DeleteItemFromObjectCaseSensitive(NULL, "item");
     cJSON_DeleteItemFromObjectCaseSensitive(item, NULL);
+    TEST_ASSERT_FALSE(cJSON_InsertItemInArray(array, 0, NULL));
+    TEST_ASSERT_FALSE(cJSON_InsertItemInArray(array, 1, item));
     TEST_ASSERT_FALSE(cJSON_InsertItemInArray(NULL, 0, item));
     TEST_ASSERT_FALSE(cJSON_InsertItemInArray(item, 0, NULL));
     TEST_ASSERT_FALSE(cJSON_ReplaceItemViaPointer(NULL, item, item));
@@ -427,10 +442,17 @@ static void cjson_functions_should_not_crash_with_null_pointers(void)
     TEST_ASSERT_NULL(cJSON_Duplicate(NULL, true));
     TEST_ASSERT_FALSE(cJSON_Compare(item, NULL, false));
     TEST_ASSERT_FALSE(cJSON_Compare(NULL, item, false));
+    TEST_ASSERT_NULL(cJSON_SetValuestring(NULL, "test"));
+    TEST_ASSERT_NULL(cJSON_SetValuestring(corruptedString, "test"));
+    TEST_ASSERT_NULL(cJSON_SetValuestring(item, NULL));
     cJSON_Minify(NULL);
     /* skipped because it is only used via a macro that checks for NULL */
     /* cJSON_SetNumberHelper(NULL, 0); */
 
+    /* restore corrupted item2 to delete it */
+    item2->prev = originalPrev;
+    cJSON_Delete(corruptedString);
+    cJSON_Delete(array);
     cJSON_Delete(item);
 }
 
@@ -710,6 +732,23 @@ static void cjson_set_bool_value_must_not_break_objects(void)
     cJSON_Delete(sobj);
 }
 
+static void deallocated_pointers_should_be_set_to_null(void)
+{
+    /* deallocated pointers should be set to null */
+    /* however, valgrind on linux reports when attempting to access a freed memory, we have to skip it */
+#ifndef ENABLE_VALGRIND
+    cJSON *string = cJSON_CreateString("item");
+    cJSON *root = cJSON_CreateObject();
+
+    cJSON_Delete(string);
+    free(string->valuestring);
+
+    cJSON_AddObjectToObject(root, "object");
+    cJSON_Delete(root->child);
+    free(root->child->string);
+#endif
+}
+
 int CJSON_CDECL main(void)
 {
     UNITY_BEGIN();
@@ -740,6 +779,7 @@ int CJSON_CDECL main(void)
     RUN_TEST(cjson_delete_item_from_array_should_not_broken_list_structure);
     RUN_TEST(cjson_set_valuestring_to_object_should_not_leak_memory);
     RUN_TEST(cjson_set_bool_value_must_not_break_objects);
+    RUN_TEST(deallocated_pointers_should_be_set_to_null);
 
     return UNITY_END();
 }

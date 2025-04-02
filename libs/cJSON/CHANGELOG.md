@@ -1,3 +1,20 @@
+1.7.18 (May 13, 2024)
+======
+Fixes:
+------
+* Add NULL check to cJSON_SetValuestring()(CVE-2024-31755), see #839 and #840
+* Remove non-functional list handling of compiler flags, see #851
+* Fix heap buffer overflow, see #852
+* remove misused optimization flag -01, see #854
+* Set free'd pointers to NULL whenever they are not reassigned immediately after, see #855 and #833
+
+1.7.17 (Dec 26, 2023)
+======
+Fixes:
+------
+* Fix null reference in cJSON_SetValuestring(CVE-2023-50472), see #809
+* Fix null reference in cJSON_InsertItemInArray(CVE-2023-50471), see #809 and #810
+
 1.7.16 (Jul 5, 2023)
 ======
 Features:

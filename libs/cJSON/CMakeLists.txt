@@ -1,3 +1,6 @@
+# Simplified CMakeLists.txt for cJSON
+# See CMakeLists.txt.original for the original version
+
 add_library(cJSON STATIC
         cJSON.c
 )

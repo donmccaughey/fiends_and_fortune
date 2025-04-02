@@ -79,7 +79,7 @@ Linux requires [`libbsd`][32] and [`libgpm`][33].
     cmake -S . -B tmp
     cmake --build tmp --target all test
 
-This repository contains a copy of the source code for [cJSON 1.7.16][34] and 
+This repository contains a copy of the source code for [cJSON 1.7.18][34] and 
 [tvision commit 9c9608e dated 2023-05-23][35].
 
 [31]: https://cmake.org
