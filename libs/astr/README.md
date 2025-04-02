@@ -4,10 +4,11 @@ A C99 library for working with dynamically allocated strings.
 
 [![builds.sr.ht status](https://builds.sr.ht/~donmcc/astr.svg)](https://builds.sr.ht/~donmcc/astr?)
 
+
 ## Overview
 
 *astr* is a library of functions that make working with dynamically allocated
-strings easier and less error prone.  All functions in *astr* accept `NULL`
+strings easier and less error-prone.  All functions in *astr* accept `NULL`
 string pointers, treating them similarly to a zero-length string.  Reallocating
 functions make string building easier by automatically resizing the string as
 needed.  All allocations are checked; *astr* will call [`abort()`][1] if memory
@@ -38,6 +39,7 @@ address of that string may be invalid after the function is called.
 
 [3]: http://man7.org/linux/man-pages/man3/free.3.html
 
+
 ## Functions
 
     char *
@@ -53,16 +55,10 @@ Allocate an empty string.
     char *
     astr_f(char const *format, ...);
 
-    char *
-    astr_f_va(char const *format, va_list args);
-
 Allocate a formatted string.
 
     char *
     astr_cat_f(char *s, char const *format, ...);
-
-    char *
-    astr_cat_f_va(char *s, char const *format, va_list args);
 
 Append formatted characters to the end of the given string, returning the
 new string; the address of the original string may be invalid after this
@@ -70,9 +66,6 @@ function is called.
 
     char *
     astr_centered_f(int width, char const *format, ...);
-
-    char *
-    astr_centered_f_va(int width, char const *format, va_list args);
 
 Allocate a formatted string centered in a string of the given width.  The
 formatted string is _not_ truncated if it is wider than `width`.
@@ -82,7 +75,7 @@ formatted string is _not_ truncated if it is wider than `width`.
 
 Compare the bytes of two strings; `s1` and `s2` may be `NULL`.  The return
 value is negative if `s1` is ordered before `s2`, positive if `s1` is ordered
-after `s2` and zero if `s1` equals `s2`.  A `NULL` string pointers is ordered 
+after `s2` and zero if `s1` equals `s2`.  A `NULL` string pointer is ordered 
 before all non-`NULL` string pointers.
 
     bool
@@ -93,7 +86,7 @@ Compare the bytes of two strings for equality; `s1` and `s2` may be `NULL`.
     bool
     astr_is_empty(char const *s);
 
-Check if a string is `NULL` or zero-length.
+Returns `true` if a string is `NULL` or zero-length.
 
     int
     astr_len(char const *s);
@@ -103,17 +96,47 @@ Calculate the length in bytes of a string; `s` may be `NULL`.
     int
     astr_len_f(char const *format, ...);
 
+Calculate the length in bytes needed for the formatted string.
+
+    char *
+    astr_f_va(char const *format, va_list args);
+
+    char *
+    astr_cat_f_va(char *s, char const *format, va_list args);
+
+    char *
+    astr_centered_f_va(int width, char const *format, va_list args);
+
     int
     astr_len_f_va(char const *format, va_list args);
 
-Calculate the length in bytes needed for the formatted string.
+Variable argument list versions of the variadic functions above.  Useful for
+building your own variadic functions.
+
+
+## Macros
+
+    ASTR_PRINTF(string_index, first_to_check)
+
+This macro evaluates to the `format` function attribute for the [GCC][20] and
+[Clang][21] compilers using the `printf` archetype.  For other compilers, this
+macro evaluates to nothing.
+
+The `string_index` macro parameter is the 1-based index of the modified
+function's format string parameter.  The `first_to_check` macro parameter is the
+1-based index of the start of the variable argument list in the modified
+function; use zero when there is no variable argument list, such as for a
+function with a `va_list` parameter.
+
+[20]: https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-format-function-attribute
+[21]: https://clang.llvm.org/docs/AttributeReference.html#format
 
 
 ## Dependencies
 
-Building requires [CMake 3.15][3] or later.
+Building requires [CMake 3.15][30] or later.
 
-[3]: https://cmake.org
+[30]: https://cmake.org
 
 
 ## Building from Repository Source
