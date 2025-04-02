@@ -29,6 +29,12 @@ add_library(dungeon STATIC
         tile_features.h
         tile_type.h
 )
+if(WALL)
+    target_compile_options(dungeon
+            PRIVATE -Wall
+            PRIVATE -Werror
+    )
+endif()
 target_include_directories(dungeon
         PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.."
 )
@@ -54,5 +60,11 @@ add_executable(dungeon_tests
         tiles_thumbnail.c
         tiles_thumbnail_test.c
 )
+if(WALL)
+    target_compile_options(dungeon_tests
+            PRIVATE -Wall
+            PRIVATE -Werror
+    )
+endif()
 target_link_libraries(dungeon_tests dungeon)
 add_test(dungeon_tests dungeon_tests)

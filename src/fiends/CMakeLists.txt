@@ -50,6 +50,12 @@ add_executable(fiends
         views/text_rect_view.hpp
         views/text_rect_view.cpp
 )
+if(WALL)
+    target_compile_options(fiends
+            PRIVATE -Wall
+            PRIVATE -Werror
+    )
+endif()
 target_link_libraries(fiends
         base
         dungeon
@@ -66,4 +72,10 @@ endif()
 add_executable(fiends_tests
         fiends_tests.cpp
 )
+if(WALL)
+    target_compile_options(fiends_tests
+            PRIVATE -Wall
+            PRIVATE -Werror
+    )
+endif()
 add_test(fiends_tests fiends_tests)

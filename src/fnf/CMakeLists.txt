@@ -6,7 +6,13 @@ add_executable(fnf
         options.c
 )
 if(HAS_OPTRESET)
-        target_compile_definitions(base PRIVATE HAS_OPTRESET)
+        target_compile_definitions(fnf PRIVATE HAS_OPTRESET)
+endif()
+if(WALL)
+    target_compile_options(fnf
+            PRIVATE -Wall
+            PRIVATE -Werror
+    )
 endif()
 target_link_libraries(fnf
         background
@@ -27,6 +33,12 @@ add_executable(fnf_tests
         options.c
         options_test.c
 )
+if(WALL)
+    target_compile_options(fnf_tests
+            PRIVATE -Wall
+            PRIVATE -Werror
+    )
+endif()
 target_link_libraries(fnf_tests
         background
         base

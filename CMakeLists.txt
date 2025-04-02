@@ -31,10 +31,6 @@ if(COVERAGE)
     add_link_options(--coverage)
 endif()
 
-if(WALL)
-    add_compile_options(-Wall -Werror -Wno-deprecated-declarations)
-endif()
-
 
 # ----- find external dependencies -----
 

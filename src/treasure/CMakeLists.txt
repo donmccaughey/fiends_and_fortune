@@ -15,6 +15,12 @@ add_library(treasure STATIC
         treasure_type.h
         treasure_type.c
 )
+if(WALL)
+    target_compile_options(treasure
+            PRIVATE -Wall
+            PRIVATE -Werror
+    )
+endif()
 target_include_directories(treasure
         PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.."
 )
@@ -37,5 +43,11 @@ add_executable(treasure_tests
         treasure_tests.c
         treasure_type_test.c
 )
+if(WALL)
+    target_compile_options(treasure_tests
+            PRIVATE -Wall
+            PRIVATE -Werror
+    )
+endif()
 target_link_libraries(treasure_tests treasure)
 add_test(treasure_tests treasure_tests)

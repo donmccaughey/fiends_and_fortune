@@ -11,6 +11,12 @@ add_library(character STATIC
         character.h
         character.c
 )
+if(WALL)
+    target_compile_options(character
+            PRIVATE -Wall
+            PRIVATE -Werror
+    )
+endif()
 target_include_directories(character
         PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/.."
 )
@@ -26,5 +32,11 @@ add_executable(character_tests
         ability_sets_test.c
         character_tests.c
 )
+if(WALL)
+    target_compile_options(character_tests
+            PRIVATE -Wall
+            PRIVATE -Werror
+    )
+endif()
 target_link_libraries(character_tests character)
 add_test(character_tests character_tests)
