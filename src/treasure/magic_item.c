@@ -235,7 +235,7 @@ generate_armor_or_shield(struct magic_item *magic_item, struct rnd *rnd)
     };
     static size_t const armor_and_shield_table_count = ARRAY_COUNT(armor_and_shield_table);
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     int range = 0;
     struct armor_or_shield const *armor_or_shield = NULL;
     for (int i = 0; i < armor_and_shield_table_count; ++i) {
@@ -252,7 +252,7 @@ generate_armor_or_shield(struct magic_item *magic_item, struct rnd *rnd)
     
     if (armor_or_shield->is_armor) {
         char const *armor_size;
-        score = roll("1d100", rnd);
+        score = xroll("1d100", rnd);
         if (score <= 65) {
             armor_size = "human sized";
         } else if (score <= 85) {
@@ -313,7 +313,7 @@ generate_artifact_or_relic(struct magic_item *magic_item, struct rnd *rnd)
     };
     size_t const artifacts_and_relics_table_count = ARRAY_COUNT(artifacts_and_relics_table);
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     int range = 0;
     struct artifact_or_relic const *artifactOrRelic = NULL;
     for (int i = 0; i < artifacts_and_relics_table_count; ++i) {
@@ -341,7 +341,7 @@ generate_bracers_of_defense(struct magic_item *magic_item, struct rnd *rnd)
 {
     int armor_class = 0;
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     if (score <= 5) {
         armor_class = 8;
     } else if (score <= 15) {
@@ -372,7 +372,7 @@ generate_bucknards_everfull_purse(struct magic_item *magic_item,
 {
     int type = 0;
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     if (score <= 50) {
         type = 1;
         magic_item->experience_points = 1500;
@@ -397,7 +397,7 @@ generate_cloak_of_protection(struct magic_item *magic_item, struct rnd *rnd)
 {
     int plus = 0;
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     if (score <= 35) {
         plus = 1;
     } else if (score <= 65) {
@@ -422,7 +422,7 @@ generate_crystal_ball(struct magic_item *magic_item, struct rnd *rnd)
 {
     char const *feature = "";
     
-    int dieRoll = roll("1d100", rnd);
+    int dieRoll = xroll("1d100", rnd);
     if (dieRoll <= 50) {
         magic_item->experience_points = 1000;
         magic_item->true_value_in_cp = gp_to_cp(5000);
@@ -449,7 +449,7 @@ generate_eyes_of_petrification(struct magic_item *magic_item, struct rnd *rnd)
 {
     char const *type;
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     if (score <= 25) {
         type = "others";
         magic_item->experience_points = 12500;
@@ -472,46 +472,46 @@ generate_figurine_of_wondrous_power(struct magic_item *magic_item,
     int hit_dice;
     char *type;
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     if (score <= 15) {
         hit_dice = 4;
-        type = astr_f("ebony fly (%i hp)", roll("4d8+4", rnd));
+        type = astr_f("ebony fly (%i hp)", xroll("4d8+4", rnd));
     } else if (score <= 30) {
         type = astr_f("two golden lions (%i/%i hp)",
-                      roll("5d8+2", rnd), roll("5d8+2", rnd));
+                      xroll("5d8+2", rnd), xroll("5d8+2", rnd));
         hit_dice = 10;
     } else if (score <= 40) {
         type = astr_f("three ivory goats (24/96/48 hp)");
         hit_dice = 4 + 16 + 8;
     } else if (score <= 55) {
-        score = roll("1d100", rnd);
+        score = xroll("1d100", rnd);
         if (score <= 50) {
             hit_dice = 10;
             type = astr_f("marble elephant, asiatic (%i hp)",
-                          roll("10d8", rnd));
+                          xroll("10d8", rnd));
         } else if (score <= 90) {
             hit_dice = 11;
             type = astr_f("marble elephant, african (%i hp)",
-                          roll("11d8", rnd));
+                          xroll("11d8", rnd));
         } else if (score <= 93) {
             hit_dice = 13;
             type = astr_f("marble elephant, mammoth (%i hp)",
-                          roll("13d8", rnd));
+                          xroll("13d8", rnd));
         } else {
             hit_dice = 12;
             type = astr_f("marble elephant, mastodon (%i hp)",
-                          roll("12d8", rnd));
+                          xroll("12d8", rnd));
         }
     } else if (score <= 65) {
         hit_dice = 6;
         type = astr_f("obsidian steed (%i hp)",
-                      roll("6d8+6", rnd));
+                      xroll("6d8+6", rnd));
     } else if (score <= 85) {
         hit_dice = 2;
-        type = astr_f("onyx dog (%i hp)", roll("2d8+2", rnd));
+        type = astr_f("onyx dog (%i hp)", xroll("2d8+2", rnd));
     } else {
         hit_dice = 4;
-        type = astr_f("serpentine owl (%i hp)", roll("4d8", rnd));
+        type = astr_f("serpentine owl (%i hp)", xroll("4d8", rnd));
     }
     
     magic_item->experience_points = hit_dice * 100;
@@ -528,7 +528,7 @@ generate_girdle_of_giant_strength(struct magic_item *magic_item,
 {
     char const *type;
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     if (score <= 30) {
         type = "hill";
     } else if (score <= 50) {
@@ -556,7 +556,7 @@ static void generate_horn_of_valhalla(struct magic_item *magic_item,
     char const *type;
     int multiplier;
     
-    int score = roll("1d20", rnd);
+    int score = xroll("1d20", rnd);
     if (score <= 8) {
         type = "silver";
         multiplier = 1;
@@ -575,9 +575,9 @@ static void generate_horn_of_valhalla(struct magic_item *magic_item,
     magic_item->true_value_in_cp = gp_to_cp(15000 * multiplier);
     
     char const *alignment = NULL;
-    score = roll("1d100", rnd);
+    score = xroll("1d100", rnd);
     if (score <= 50) {
-        score = roll("1d8", rnd);
+        score = xroll("1d8", rnd);
         switch (score) {
             case 1: alignment = "good"; break;
             case 2: alignment = "lawful good"; break;
@@ -588,7 +588,7 @@ static void generate_horn_of_valhalla(struct magic_item *magic_item,
             case 7: alignment = "chaotic"; break;
             case 8: alignment = "chaotic good"; break;
             default:
-                unreachable("1d8 die roll is %i", score);
+                unreachable("1d8 die xroll is %i", score);
                 break;
         }
         magic_item->true_description = astr_f("%s horn of Valhalla (%s)",
@@ -603,7 +603,7 @@ static void generate_horn_of_valhalla(struct magic_item *magic_item,
 static void
 generate_ioun_stones(struct magic_item *magic_item, struct rnd *rnd)
 {
-    int quantity = roll("1d10", rnd);
+    int quantity = xroll("1d10", rnd);
     /* TODO: generate types of stones */
     
     magic_item->experience_points = quantity * 300;
@@ -621,7 +621,7 @@ generate_instrument_of_the_bards(struct magic_item *magic_item, struct rnd *rnd)
     char const *name;
     int level;
     
-    int score = roll("1d20", rnd);
+    int score = xroll("1d20", rnd);
     if (score <= 5) {
         name = "Fochlucan Bandore";
         level = 1;
@@ -655,7 +655,7 @@ generate_instrument_of_the_bards(struct magic_item *magic_item, struct rnd *rnd)
 static void
 generate_jewel_of_flawlessness(struct magic_item *magic_item, struct rnd *rnd)
 {
-    int facets = roll("10d10", rnd);
+    int facets = xroll("10d10", rnd);
     
     magic_item->experience_points = 0;
     magic_item->true_value_in_cp = gp_to_cp(facets * 1000);
@@ -698,7 +698,7 @@ void magic_item_generate(struct magic_item *magic_item,
         }
     }
     
-    int score = dice_roll(dice_make(1, total), rnd, NULL);
+    int score = xdice_roll(xdice_make(1, total), rnd, NULL);
     int range = 0;
     for (int i = 0; i < magic_items_table_count; ++i) {
         if (possible_magic_items & magic_items_table[i].possible_magic_items) {
@@ -719,7 +719,7 @@ generate_medallion_of_ESP(struct magic_item *magic_item, struct rnd *rnd)
 {
     char const *type;
     
-    int score = roll("1d20", rnd);
+    int score = xroll("1d20", rnd);
     if (15 <= score) {
         type = "30 ft range";
         magic_item->experience_points = 1000;
@@ -783,7 +783,7 @@ generate_misc_magic_item_table1(struct magic_item *magic_item, struct rnd *rnd)
     };
     size_t const misc_magic_items_table_count = ARRAY_COUNT(misc_magic_items_table);
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     int range = 0;
     struct misc_magic_item const *misc_magic_item = NULL;
     for (int i = 0; i < misc_magic_items_table_count; ++i) {
@@ -843,7 +843,7 @@ generate_misc_magic_item_table2(struct magic_item *magic_item, struct rnd *rnd)
     };
     size_t const misc_magic_items_table_count = ARRAY_COUNT(misc_magic_items_table);
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     int range = 0;
     struct misc_magic_item const *misc_magic_item = NULL;
     for (int i = 0; i < misc_magic_items_table_count; ++i) {
@@ -906,7 +906,7 @@ generate_misc_magic_item_table3(struct magic_item *magic_item, struct rnd *rnd)
     };
     size_t const misc_magic_items_table_count = ARRAY_COUNT(misc_magic_items_table);
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     int range = 0;
     struct misc_magic_item const *misc_magic_item = NULL;
     for (int i = 0; i < misc_magic_items_table_count; ++i) {
@@ -972,7 +972,7 @@ generate_misc_magic_item_table4(struct magic_item *magic_item, struct rnd *rnd)
     };
     size_t const misc_magic_items_table_count = ARRAY_COUNT(misc_magic_items_table);
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     int range = 0;
     struct misc_magic_item const *misc_magic_item = NULL;
     for (int i = 0; i < misc_magic_items_table_count; ++i) {
@@ -1037,7 +1037,7 @@ generate_misc_magic_item_table5(struct magic_item *magic_item, struct rnd *rnd)
     };
     size_t const misc_magic_items_table_count = ARRAY_COUNT(misc_magic_items_table);
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     int range = 0;
     struct misc_magic_item const *misc_magic_item = NULL;
     for (int i = 0; i < misc_magic_items_table_count; ++i) {
@@ -1110,7 +1110,7 @@ generate_misc_weapon(struct magic_item *magic_item, struct rnd *rnd)
     };
     size_t const misc_weapons_table_count = ARRAY_COUNT(misc_weapons_table);
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     int range = 0;
     struct misc_weapon const *misc_weapon = NULL;
     for (int i = 0; i < misc_weapons_table_count; ++i) {
@@ -1122,7 +1122,7 @@ generate_misc_weapon(struct magic_item *magic_item, struct rnd *rnd)
     }
     assert(misc_weapon);
     
-    int quantity = roll(misc_weapon->quantity, rnd);
+    int quantity = xroll(misc_weapon->quantity, rnd);
     magic_item->experience_points = misc_weapon->experience_points * quantity;
     magic_item->true_value_in_cp = gp_to_cp(misc_weapon->sale_value_in_gp * quantity);
     
@@ -1143,7 +1143,7 @@ generate_necklace_of_missiles(struct magic_item *magic_item, struct rnd *rnd)
     char const *type;
     int total_hit_dice;
     
-    int score = roll("1d20", rnd);
+    int score = xroll("1d20", rnd);
     if (score <= 4) {
         type = "(1) 5 hd, (2) 3 hd";
         total_hit_dice = (1 * 5) + (2 * 3);
@@ -1180,9 +1180,9 @@ generate_necklace_of_prayer_beads(struct magic_item *magic_item, struct rnd *rnd
     int const types_count = 6;
     int special_bead_counts[types_count];
     memset(special_bead_counts, 0, sizeof special_bead_counts);
-    int special_bead_total = roll("1d4+2", rnd);
+    int special_bead_total = xroll("1d4+2", rnd);
     for (int i = 0; i < special_bead_total; ++i) {
-        int score = roll("1d20", rnd);
+        int score = xroll("1d20", rnd);
         if (score <= 5) {
             ++special_bead_counts[0];
         } else if (score <= 10) {
@@ -1224,7 +1224,7 @@ static void
 generate_nolzurs_marvelous_pigments(struct magic_item *magic_item,
                                     struct rnd *rnd)
 {
-    int quantity = roll("1d4", rnd);
+    int quantity = xroll("1d4", rnd);
     char const *plural = 1 == quantity ? "" : "s";
     magic_item->experience_points = quantity * 500;
     magic_item->true_value_in_cp = gp_to_cp(quantity * 3000);
@@ -1236,7 +1236,7 @@ generate_nolzurs_marvelous_pigments(struct magic_item *magic_item,
 static void
 generate_orb_of_dragonkind(struct magic_item *magic_item, struct rnd *rnd)
 {
-    int score = roll("1d8", rnd);
+    int score = xroll("1d8", rnd);
     char const *type = NULL;
     switch (score) {
         case 1: type = "hatchling"; break;
@@ -1248,7 +1248,7 @@ generate_orb_of_dragonkind(struct magic_item *magic_item, struct rnd *rnd)
         case 7: type = "elder wyrm"; break;
         case 8: type = "eternal grand dragon"; break;
         default:
-            unreachable("1d8 die roll is %i", score);
+            unreachable("1d8 die xroll is %i", score);
             break;
     }
     magic_item->experience_points = 0;
@@ -1264,7 +1264,7 @@ generate_pearl_of_power(struct magic_item *magic_item, struct rnd *rnd)
     int spell_quantity = 1;
     int spell_level;
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     if (score <= 25) {
         spell_level = 1;
     } else if (score <= 45) {
@@ -1285,11 +1285,11 @@ generate_pearl_of_power(struct magic_item *magic_item, struct rnd *rnd)
         spell_level = 9;
     } else {
         spell_quantity = 2;
-        spell_level = roll("1d6", rnd);
+        spell_level = xroll("1d6", rnd);
     }
     
     char const *effect;
-    if (1 == roll("1d20", rnd)) {
+    if (1 == xroll("1d20", rnd)) {
         effect = "(cursed) forget";
     } else {
         effect = "recall";
@@ -1354,7 +1354,7 @@ generate_potion(struct magic_item *magic_item, struct rnd *rnd)
     };
     size_t const potions_table_count = ARRAY_COUNT(potions_table);
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     int range = 0;
     struct potion const *potion = NULL;
     for (int i = 0; i < potions_table_count; ++i) {
@@ -1383,7 +1383,7 @@ generate_potion_of_dragon_control(struct magic_item *magic_item,
 {
     char const *type;
     
-    int score = roll("1d20", rnd);
+    int score = xroll("1d20", rnd);
     if (score <= 2) {
         type = "white";
         magic_item->experience_points = 500;
@@ -1445,7 +1445,7 @@ generate_potion_of_giant_control(struct magic_item *magic_item, struct rnd *rnd)
     char const *type;
     int level;
     
-    int score = roll("1d20", rnd);
+    int score = xroll("1d20", rnd);
     if (score <= 5) {
         type = "hill";
         level = 1;
@@ -1480,7 +1480,7 @@ generate_potion_of_giant_strength(struct magic_item *magic_item,
     char const *type;
     int level;
     
-    int score = roll("1d20", rnd);
+    int score = xroll("1d20", rnd);
     if (score <= 6) {
         type ="hill";
         level = 1;
@@ -1513,7 +1513,7 @@ generate_quaals_feather_token(struct magic_item *magic_item, struct rnd *rnd)
 {
     char const *type;
     
-    int score = roll("1d20", rnd);
+    int score = xroll("1d20", rnd);
     if (score <= 4) {
         type = "anchor";
         magic_item->experience_points = 500;
@@ -1584,7 +1584,7 @@ generate_ring(struct magic_item *magic_item, struct rnd *rnd)
     };
     size_t const rings_table_count = ARRAY_COUNT(rings_table);
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     int range = 0;
     struct ring const *ring = NULL;
     for (int i = 0; i < rings_table_count; ++i) {
@@ -1612,7 +1612,7 @@ generate_ring_of_protection(struct magic_item *magic_item, struct rnd *rnd)
 {
     char const *type;
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     if (score <= 70) {
         type = "+1";
         magic_item->experience_points = 2000;
@@ -1685,7 +1685,7 @@ generate_rod_staff_or_wand(struct magic_item *magic_item, struct rnd *rnd)
     };
     size_t const rods_staves_and_wands_table_count = ARRAY_COUNT(rods_staves_and_wands_table);
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     int range = 0;
     struct rod_staff_or_wand const *rod_staff_or_wand = NULL;
     for (int i = 0; i < rods_staves_and_wands_table_count; ++i) {
@@ -1744,7 +1744,7 @@ generate_scroll(struct magic_item *magic_item, struct rnd *rnd)
     };
     size_t const scrolls_table_count = ARRAY_COUNT(scrolls_table);
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     int range = 0;
     struct scroll const *scroll = NULL;
     for (int i = 0; i < scrolls_table_count; ++i) {
@@ -1763,9 +1763,9 @@ generate_scroll(struct magic_item *magic_item, struct rnd *rnd)
         enum spell_type spell_type;
         char const *spell_type_name;
         char const *spell_level_range = scroll->clerical_spell_level_range;
-        score = roll("1d100", rnd);
+        score = xroll("1d100", rnd);
         if (score <= 70) {
-            if (roll("1d100", rnd) <= 10) {
+            if (xroll("1d100", rnd) <= 10) {
                 spell_type = spell_type_illusionist;
                 spell_type_name = "illusionist";
             } else {
@@ -1774,7 +1774,7 @@ generate_scroll(struct magic_item *magic_item, struct rnd *rnd)
                 spell_level_range = scroll->magic_user_spell_level_range;
             }
         } else {
-            if (roll("1d100", rnd) <= 25) {
+            if (xroll("1d100", rnd) <= 25) {
                 spell_type = spell_type_drudical;
                 spell_type_name = "druidical";
             } else {
@@ -1785,7 +1785,7 @@ generate_scroll(struct magic_item *magic_item, struct rnd *rnd)
         
         int spell_levels = 0;
         for (int i = 0; i < scroll->spell_count; ++i) {
-            int spell_level = roll(spell_level_range, rnd);
+            int spell_level = xroll(spell_level_range, rnd);
             char const *spell_name = spell_determine(rnd, spell_type, spell_level);
             magic_item->true_details[i] = astr_f("level %i: %s",
                                                  spell_level,
@@ -1858,7 +1858,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
     };
     size_t const swords_table_count = ARRAY_COUNT(swords_table);
     
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     int range = 0;
     struct sword const *sword = NULL;
     for (int i = 0; i < swords_table_count; ++i) {
@@ -1874,7 +1874,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
     magic_item->true_value_in_cp = gp_to_cp(sword->sale_value_in_gp);
     
     char const *sword_type;
-    score = roll("1d100", rnd);
+    score = xroll("1d100", rnd);
     if (score <= 70) {
         sword_type = "longsword";
     } else if (score <= 90) {
@@ -1906,7 +1906,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
     int extraordinary_power_count = 0;
     char const *communication = NULL;
     
-    score = roll("1d100", rnd);
+    score = xroll("1d100", rnd);
     if (score <= 75) {
         /* not an unusual magic sword */
         return;
@@ -1972,7 +1972,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
     assert(detail_count < detail_capacity);
     
     char const *alignment;
-    score = roll("1d100", rnd);
+    score = xroll("1d100", rnd);
     if (score <= 5) {
         alignment = "chaotic good";
     } else if (score <= 15) {
@@ -2014,7 +2014,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
         int max_score = 100;
         int rolls = 1;
         do {
-            score = dice_roll(dice_make(1, max_score), rnd, NULL);
+            score = xdice_roll(xdice_make(1, max_score), rnd, NULL);
             --rolls;
             if (score <= 11) {
                 ++primary_abilities.count;
@@ -2133,7 +2133,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
         bool choose_one_possible = true;
         bool special_purpose_possible = true;
         do {
-            score = dice_roll(dice_make(1, max_score), rnd, NULL);
+            score = xdice_roll(xdice_make(1, max_score), rnd, NULL);
             --rolls;
             if (score <= 7) {
                 ++extraordinary_powers.count;
@@ -2291,7 +2291,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
     if (has_special_purpose) {
         ego += 5;
         char const *special_purpose;
-        score = roll("1d100", rnd);
+        score = xroll("1d100", rnd);
         if (score <= 10) {
             if (0 == strcmp(alignment, "neutral")) {
                 special_purpose = "preserve the balance by defeating/slaying powerful beings of extreme alignment (LG, LE, CG, CE)";
@@ -2322,7 +2322,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
         
         char const *special_purpose_power;
         char const *format = "special purpose power: %s on a hit unless save vs magic";
-        score = roll("1d100", rnd);
+        score = xroll("1d100", rnd);
         if (score <= 10) {
             special_purpose_power = "blindness for 2-12 rounds";
         } else if (score <= 20) {
@@ -2352,7 +2352,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
         int language_count = 0;
         int min_language_count = 0;
         do {
-            score = dice_roll(dice_make(1, max_score), rnd, NULL);
+            score = xdice_roll(xdice_make(1, max_score), rnd, NULL);
             --rolls;
             if (score <= 40) {
                 language_count += 1;
@@ -2412,7 +2412,7 @@ generate_sword(struct magic_item *magic_item, struct rnd *rnd)
 static void
 generate_teeth_of_dahlver_nar(struct magic_item *magic_item, struct rnd *rnd)
 {
-    int tooth_number = roll("1d32", rnd);
+    int tooth_number = xroll("1d32", rnd);
     
     magic_item->experience_points = 0;
     magic_item->true_value_in_cp = gp_to_cp(5000);

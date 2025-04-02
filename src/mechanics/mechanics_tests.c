@@ -4,12 +4,12 @@
 
 
 void
-dice_test(void);
+xdice_test(void);
 
 
 int
 main(int argc, char *argv[])
 {
-    dice_test();
+    xdice_test();
     return EXIT_SUCCESS;
 }

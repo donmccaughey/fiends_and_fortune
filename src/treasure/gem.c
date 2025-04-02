@@ -702,7 +702,7 @@ gem_value_in_cp(struct gem *gem)
 void
 gem_generate(struct gem *gem, struct rnd *rnd)
 {
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     if (score <= 25) {
         gem->type = gem_type_ornamental_stone;
         gem->kind = rnd_next_uniform_value_in_range(rnd,
@@ -735,7 +735,7 @@ gem_generate(struct gem *gem, struct rnd *rnd)
                                                     gem_kind_ruby);
     }
     
-    score = roll("1d100", rnd);
+    score = xroll("1d100", rnd);
     if (score <= 25) {
         gem->size = gem_size_very_small;
     } else if (score <= 50) {
@@ -751,7 +751,7 @@ gem_generate(struct gem *gem, struct rnd *rnd)
     }
     
     do {
-        score = roll("1d10", rnd);
+        score = xroll("1d10", rnd);
         if (score == 1) {
             if (gem->value_rank_modifier >= 0 && gem->value_rank_modifier < 7) {
                 ++gem->value_rank_modifier;
@@ -759,11 +759,11 @@ gem_generate(struct gem *gem, struct rnd *rnd)
         } else if (score == 2) {
             gem->value_percent_modifier = 200;
         } else if (score == 3) {
-            gem->value_percent_modifier = 100 + (roll("1d6", rnd) * 10);
+            gem->value_percent_modifier = 100 + (xroll("1d6", rnd) * 10);
         } else if (score <= 8) {
             /* no change */
         } else if (score == 9) {
-            gem->value_percent_modifier = 100 - (roll("1d4", rnd) * 10);
+            gem->value_percent_modifier = 100 - (xroll("1d4", rnd) * 10);
         } else {
             if (   gem->value_rank_modifier > -5
                 && gem->value_rank_modifier <= 0)

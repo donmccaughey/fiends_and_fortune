@@ -88,7 +88,7 @@ language_determine(struct rnd *rnd,
         }
     }
     
-    int score = dice_roll(dice_make(1, total), rnd, NULL);
+    int score = xdice_roll(xdice_make(1, total), rnd, NULL);
     int range = 0;
     for (int i = 0; i < language_table_count; ++i) {
         if (!contains(exclude, exclude_count, language_table[i].language)) {

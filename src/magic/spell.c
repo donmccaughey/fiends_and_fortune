@@ -474,7 +474,7 @@ spell_determine(struct rnd *rnd,
     }
     assert(total);
     
-    int score = dice_roll(dice_make(1, total), rnd, NULL);
+    int score = xdice_roll(xdice_make(1, total), rnd, NULL);
     int range = 0;
     for (int i = 0; i < spells_table_count; ++i) {
         if (   spells_table[i].type == spell_type

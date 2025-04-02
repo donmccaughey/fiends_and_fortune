@@ -1,6 +1,6 @@
 add_library(mechanics STATIC
-        dice.h
-        dice.c
+        xdice.h
+        xdice.c
         mechanics.h
 )
 target_include_directories(mechanics
@@ -11,7 +11,7 @@ target_link_libraries(mechanics
 )
 
 add_executable(mechanics_tests
-        dice_test.c
+        xdice_test.c
         mechanics_tests.c
 )
 target_link_libraries(mechanics_tests mechanics)

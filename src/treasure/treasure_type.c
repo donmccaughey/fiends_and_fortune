@@ -782,14 +782,14 @@ describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry *coins_gems_or_jewel
     if (!coins_gems_or_jewelry->percent_chance) return xstrdup("   nil   ");
 
     if (coins_gems_or_jewelry->is_per_individual) {
-        struct dice amount = dice_parse(coins_gems_or_jewelry->amount);
-        char *range = dice_alloc_base_range_description(amount);
+        struct xdice amount = xdice_parse(coins_gems_or_jewelry->amount);
+        char *range = xdice_alloc_base_range_description(amount);
         char *description = astr_centered_f(9, "%s per", range);
         free(range);
         return description;
     } else {
-        struct dice amount = dice_parse(coins_gems_or_jewelry->amount);
-        char *range = dice_alloc_base_range_description(amount);
+        struct xdice amount = xdice_parse(coins_gems_or_jewelry->amount);
+        char *range = xdice_alloc_base_range_description(amount);
         char *description = astr_centered_f(9, "%s:%2i%%", range,
                                             coins_gems_or_jewelry->percent_chance);
         free(range);
@@ -808,9 +808,9 @@ describe_maps_or_magic(struct maps_or_magic *maps_or_magic)
         struct maps_or_magic_type *type = &maps_or_magic->types[i];
         char const *type_name = possible_maps_or_magic_name(type->is_map_possible,
                                                             type->possible_magic_items);
-        struct dice amount = dice_parse(type->amount);
-        char *range = dice_alloc_range_description(amount);
-        if (!dice_has_constant_score(amount)) {
+        struct xdice amount = xdice_parse(type->amount);
+        char *range = xdice_alloc_range_description(amount);
+        if (!xdice_has_constant_score(amount)) {
             type_descriptions[i] = astr_f("%s %ss",
                                           range, type_name);
         } else if (   type->is_map_possible
@@ -823,7 +823,7 @@ describe_maps_or_magic(struct maps_or_magic *maps_or_magic)
         } else if (type->possible_magic_items == ANY_MAGIC_ITEM) {
             type_descriptions[i] = astr_f("any %s magic", range);
         } else {
-            char const *plural = (1 == dice_max_score(amount)) ? "" : "s";
+            char const *plural = (1 == xdice_max_score(amount)) ? "" : "s";
             type_descriptions[i] = astr_f("%s %s%s", range,
                                           type_name, plural);
         }
@@ -869,11 +869,11 @@ generate_coins(int *coins,
     *coins = 0;
     if (!coins_type->percent_chance) return;
     if (coins_type->is_per_individual) {
-        *coins += roll(coins_type->amount, rnd);
+        *coins += xroll(coins_type->amount, rnd);
     } else {
-        int percent_score = roll("1d100", rnd);
+        int percent_score = xroll("1d100", rnd);
         if (percent_score <= coins_type->percent_chance) {
-            *coins = roll(coins_type->amount, rnd);
+            *coins = xroll(coins_type->amount, rnd);
         }
     }
 }
@@ -885,9 +885,9 @@ generate_gems(struct treasure *treasure, struct rnd *rnd)
     treasure->gems = NULL;
     treasure->gems_count = 0;
     if (!treasure->type->gems.percent_chance) return;
-    int percent_score = roll("1d100", rnd);
+    int percent_score = xroll("1d100", rnd);
     if (percent_score <= treasure->type->gems.percent_chance) {
-        treasure->gems_count = roll(treasure->type->gems.amount, rnd);
+        treasure->gems_count = xroll(treasure->type->gems.amount, rnd);
         treasure->gems = xcalloc(treasure->gems_count, sizeof(struct gem));
         for (int i = 0; i < treasure->gems_count; ++i) {
             gem_initialize(&treasure->gems[i]);
@@ -903,9 +903,9 @@ generate_jewelry(struct treasure *treasure, struct rnd *rnd)
     treasure->jewelry = NULL;
     treasure->jewelry_count = 0;
     if (!treasure->type->jewelry.percent_chance) return;
-    int percent_score = roll("1d100", rnd);
+    int percent_score = xroll("1d100", rnd);
     if (percent_score <= treasure->type->jewelry.percent_chance) {
-        treasure->jewelry_count = roll(treasure->type->jewelry.amount, rnd);
+        treasure->jewelry_count = xroll(treasure->type->jewelry.amount, rnd);
         treasure->jewelry = xcalloc(treasure->jewelry_count,
                                     sizeof(struct jewelry));
         for (int i = 0; i < treasure->jewelry_count; ++i) {
@@ -920,7 +920,7 @@ static void
 generate_maps_or_magic(struct treasure *treasure, struct rnd *rnd)
 {
     if (!treasure->type->maps_or_magic.percent_chance) return;
-    int percent_score = roll("1d100", rnd);
+    int percent_score = xroll("1d100", rnd);
     if (percent_score <= treasure->type->maps_or_magic.percent_chance) {
         for (int i = 0; i < treasure->type->maps_or_magic.types_count; ++i) {
             struct maps_or_magic_type *type = &treasure->type->maps_or_magic.types[i];
@@ -935,14 +935,14 @@ generate_maps_or_magic_items(struct maps_or_magic_type *type,
                              struct treasure *treasure,
                              struct rnd *rnd)
 {
-    int amount = roll(type->amount, rnd);
+    int amount = xroll(type->amount, rnd);
     int magic_items_count = 0;
     int maps_count = 0;
     for (int i = 0; i < amount; ++i) {
         if (type->is_map_possible) {
             bool is_magic_item_possible = type->possible_magic_items & ANY_MAGIC_ITEM;
             if (is_magic_item_possible) {
-                (roll("1d100", rnd) <= 10) ? ++maps_count : ++magic_items_count;
+                (xroll("1d100", rnd) <= 10) ? ++maps_count : ++magic_items_count;
             } else {
                 ++maps_count;
             }

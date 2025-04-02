@@ -102,7 +102,7 @@ treasure_map_finalize(struct treasure_map *treasure_map)
 static void
 generate_combined_hoard(struct treasure *treasure, struct rnd *rnd)
 {
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     if (score <= 20) {
         generate_monetary_treasure_1_to_2_copper_and_silver(treasure, rnd);
         generate_magic_treasure_1_to_5_item_and_potions(treasure, rnd);
@@ -164,7 +164,7 @@ generate_combined_hoard(struct treasure *treasure, struct rnd *rnd)
 static void
 generate_magic_treasure(struct treasure *treasure, struct rnd *rnd)
 {
-    int score = roll("1d20", rnd);
+    int score = xroll("1d20", rnd);
     if (score <= 5) {
         generate_magic_treasure_1_to_5_item_and_potions(treasure, rnd);
     } else if (score <= 8) {
@@ -253,7 +253,7 @@ generate_monetary_treasure(struct treasure *treasure, struct rnd *rnd)
     int multiple_rolls = 0;
     int max_score = 20;
     do {
-        int score = dice_roll(dice_make(1, max_score), rnd, NULL);
+        int score = xdice_roll(xdice_make(1, max_score), rnd, NULL);
         if (score <= 2) {
             generate_monetary_treasure_1_to_2_copper_and_silver(treasure, rnd);
             --multiple_rolls;
@@ -294,8 +294,8 @@ static void
 generate_monetary_treasure_1_to_2_copper_and_silver(struct treasure *treasure,
                                                     struct rnd *rnd)
 {
-    treasure->coins.cp += roll("2d4", rnd) * 10000;
-    treasure->coins.sp += (roll("1d4", rnd) + 1) * 10000;
+    treasure->coins.cp += xroll("2d4", rnd) * 10000;
+    treasure->coins.sp += (xroll("1d4", rnd) + 1) * 10000;
 }
 
 
@@ -303,7 +303,7 @@ static void
 generate_monetary_treasure_3_to_5_electrum(struct treasure *treasure,
                                            struct rnd *rnd)
 {
-    treasure->coins.ep += roll("5d6", rnd) * 1000;
+    treasure->coins.ep += xroll("5d6", rnd) * 1000;
 }
 
 
@@ -311,7 +311,7 @@ static void
 generate_monetary_treasure_6_to_10_gold(struct treasure *treasure,
                                         struct rnd *rnd)
 {
-    treasure->coins.gp += roll("3d6", rnd) * 1000;
+    treasure->coins.gp += xroll("3d6", rnd) * 1000;
 }
 
 
@@ -319,7 +319,7 @@ static void
 generate_monetary_treasure_11_to_12_platinum(struct treasure *treasure,
                                              struct rnd *rnd)
 {
-    treasure->coins.pp += roll("5d4", rnd) * 100;
+    treasure->coins.pp += xroll("5d4", rnd) * 100;
 }
 
 
@@ -327,7 +327,7 @@ static void
 generate_monetary_treasure_13_to_15_gems(struct treasure *treasure,
                                          struct rnd *rnd)
 {
-    int count = roll("1d10", rnd) * 10;
+    int count = xroll("1d10", rnd) * 10;
     treasure->gems = xreallocarray(treasure->gems,
                                    treasure->gems_count + count,
                                    sizeof(struct gem));
@@ -344,7 +344,7 @@ static void
 generate_monetary_treasure_16_to_17_jewelry(struct treasure *treasure,
                                             struct rnd *rnd)
 {
-    int count = roll("5d10", rnd);
+    int count = xroll("5d10", rnd);
     treasure->jewelry = xreallocarray(treasure->jewelry,
                                       treasure->jewelry_count + count,
                                       sizeof(struct jewelry));
@@ -378,7 +378,7 @@ void
 treasure_map_generate(struct treasure_map *treasure_map, struct rnd *rnd)
 {
     enum treasure_map_type treasure_map_type;
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     if (score <= 5) {
         treasure_map_type = treasure_map_type_false_map;
         treasure_map->is_false = true;
@@ -395,21 +395,21 @@ treasure_map_generate(struct treasure_map *treasure_map, struct rnd *rnd)
     }
     
     int miles;
-    score = roll("1d100", rnd);
+    score = xroll("1d100", rnd);
     if (score <= 20) {
         miles = 0;
     } else if (score <= 60) {
-        miles = roll("1d4", rnd) + 4;
+        miles = xroll("1d4", rnd) + 4;
     } else if (score <= 90) {
-        miles = roll("1d4", rnd) * 10;
+        miles = xroll("1d4", rnd) * 10;
     } else {
-        miles = roll("1d10", rnd) * 50;
+        miles = xroll("1d10", rnd) * 50;
     }
     
     enum direction direction = direction_random(rnd);
     if (miles) {
         char const *disposition;
-        score = roll("1d100", rnd);
+        score = xroll("1d100", rnd);
         if (score <= 10) {
             disposition = "buried and unguarded";
         } else if (score <= 20) {

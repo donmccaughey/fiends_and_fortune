@@ -77,7 +77,7 @@ chambers(struct digger *digger, enum wall_type entrance_type)
     int length = 0;
     int width = 0;
     struct area *chamber = NULL;
-    int score = roll("1d20", digger->generator->rnd);
+    int score = xroll("1d20", digger->generator->rnd);
     if (score <= 2) {
         // square 20x20
         length = 2;
@@ -204,7 +204,7 @@ check_for_chute_down_one_level(struct digger *digger, struct area *area)
 {
     if (digger->point.z == generator_max_level(digger->generator)) return;
     
-    int score = roll("1d6", digger->generator->rnd);
+    int score = xroll("1d6", digger->generator->rnd);
     if (score == 1) {
         area->features |= area_features_chute_entrance;
         struct digger *chute_digger = generator_copy_digger(digger->generator, digger);
@@ -255,7 +255,7 @@ check_wall_for_secret_door(struct generator *generator,
             break;
     }
     
-    int score = roll("1d4", generator->rnd);
+    int score = xroll("1d4", generator->rnd);
     if (score == 1) {
         if (tile_type_empty == outside_tile->type) {
             generator_set_wall(generator,
@@ -435,7 +435,7 @@ doors(struct digger *digger)
                      &door_left, &door_right, &door_ahead);
     if (!door_ahead) {
         // repeat periodic check
-        int score = roll("1d20", digger->generator->rnd);
+        int score = xroll("1d20", digger->generator->rnd);
         if (score >= 3 && score <= 5) {
             // TODO: ensure a second location is chosen?
             location_of_door(digger->generator->rnd,
@@ -471,7 +471,7 @@ static struct digger *
 exit_location(struct digger *digger, struct area *chamber_or_room)
 {
     enum direction *directions;
-    int score = roll("1d20", digger->generator->rnd);
+    int score = xroll("1d20", digger->generator->rnd);
     if (score <= 7) {
         // opposite wall
         directions = (enum direction[]){
@@ -541,7 +541,7 @@ exit_location_in_direction(struct digger *digger,
 static void
 location_of_door(struct rnd *rnd, bool *left, bool *right, bool *ahead)
 {
-    int score = roll("1d20", rnd);
+    int score = xroll("1d20", rnd);
     if (score <= 6) {
         *left = true;
     } else if (score <= 12) {
@@ -572,7 +572,7 @@ number_of_exits(struct rnd *rnd,
     }
     *check_for_secret_doors = false;
     int area = box_area(chamber_or_room->box);
-    int score = roll("1d20", rnd);
+    int score = xroll("1d20", rnd);
     if (score <= 3) {
         *default_exit_count = (area <= 6) ? 1 : 2;
     } else if (score <= 6) {
@@ -594,7 +594,7 @@ number_of_exits(struct rnd *rnd,
             *default_exit_count = 1;
         }
     } else if (score <= 18) {
-        *default_exit_count = roll("1d4", rnd);
+        *default_exit_count = xroll("1d4", rnd);
     } else {
         *other_exit_count = 1;
     }
@@ -604,7 +604,7 @@ number_of_exits(struct rnd *rnd,
 bool
 periodic_check(struct digger *digger)
 {
-    int score = roll("1d20", digger->generator->rnd);
+    int score = xroll("1d20", digger->generator->rnd);
     if (score <= 2) {
         return digger_dig_passage(digger, 6, wall_type_none);
     } else if (score <= 5) {
@@ -635,7 +635,7 @@ rooms(struct digger *digger, enum wall_type entrance_type)
     int length = 0;
     int width = 0;
     struct area *room = NULL;
-    int score = roll("1d20", digger->generator->rnd);
+    int score = xroll("1d20", digger->generator->rnd);
     if (score <= 2) {
         // square 10x10
         length = 1;
@@ -730,7 +730,7 @@ rooms(struct digger *digger, enum wall_type entrance_type)
 static bool
 side_passages(struct digger *digger)
 {
-    int score = roll("1d20", digger->generator->rnd);
+    int score = xroll("1d20", digger->generator->rnd);
     if (score <= 2) {
         // left 90 degrees
         if (!digger_dig_intersection(digger)) return false;
@@ -904,7 +904,7 @@ space_beyond_door(struct digger *digger,
                   enum wall_type door_type,
                   bool is_straight_ahead)
 {
-    int score = roll("1d20", digger->generator->rnd);
+    int score = xroll("1d20", digger->generator->rnd);
     if (score <= 4) {
         // parallel passage or 10x10 room
         if (is_straight_ahead) {
@@ -976,7 +976,7 @@ space_beyond_door(struct digger *digger,
 static bool
 stairs(struct digger *digger)
 {
-    int score = roll("1d20", digger->generator->rnd);
+    int score = xroll("1d20", digger->generator->rnd);
     if (score <= 5) {
         // down 1 level
         // 1 in 20 has a door which closes egress for the day
@@ -1089,7 +1089,7 @@ stairs_up_one_level(struct digger *digger)
 static bool
 turns(struct digger *digger)
 {
-    int score = roll("1d20", digger->generator->rnd);
+    int score = xroll("1d20", digger->generator->rnd);
     if (score <= 8) {
         digger_turn_90_degrees_left(digger);
         return digger_dig_passage(digger, 3, wall_type_none);

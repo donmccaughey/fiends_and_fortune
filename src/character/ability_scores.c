@@ -16,9 +16,9 @@ ability_scores_alloc_method_1(struct rnd *rnd)
 {
     struct ability_scores *scores = xcalloc(1, sizeof(struct ability_scores));
     size_t count = sizeof scores->values / sizeof scores->values[0];
-    struct dice dice = dice_make(4, 6);
+    struct xdice dice = xdice_make(4, 6);
     for (size_t i = 0; i < count; ++i) {
-        scores->values[i] = dice_roll_and_drop_lowest(dice, rnd);
+        scores->values[i] = xdice_roll_and_drop_lowest(dice, rnd);
     }
     qsort(scores->values, count, sizeof scores->values[0],
           compare_ability_scores);
@@ -32,7 +32,7 @@ ability_scores_alloc_method_2(struct rnd *rnd)
     int characteristics[12];
     size_t count = sizeof characteristics / sizeof characteristics[0];
     for (size_t i = 0; i < count; ++i) {
-        characteristics[i] = roll("3d6", rnd);
+        characteristics[i] = xroll("3d6", rnd);
     }
     qsort(characteristics, count, sizeof characteristics[0],
           compare_ability_scores);

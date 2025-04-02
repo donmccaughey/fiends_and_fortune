@@ -297,7 +297,7 @@ void
 jewelry_generate(struct jewelry *jewelry, struct rnd *rnd)
 {
     int rank;
-    int score = roll("1d100", rnd);
+    int score = xroll("1d100", rnd);
     if (score <= 10) {
         rank = 1;
     } else if (score <= 20) {
@@ -321,15 +321,15 @@ jewelry_generate(struct jewelry *jewelry, struct rnd *rnd)
     if (jewelry_ranks[rank].materials_count == 1) {
         jewelry->material = jewelry_ranks[rank].materials[0];
     } else {
-        struct dice dice = dice_make(1, jewelry_ranks[rank].materials_count);
-        score = dice_roll(dice, rnd, NULL);
+        struct xdice dice = xdice_make(1, jewelry_ranks[rank].materials_count);
+        score = xdice_roll(dice, rnd, NULL);
         jewelry->material = jewelry_ranks[rank].materials[score - 1];
     }
     
-    score = roll(jewelry_ranks[rank].base_value, rnd);
+    score = xroll(jewelry_ranks[rank].base_value, rnd);
     jewelry->value_in_cp = score * jewelry_ranks[rank].base_value_multiplier;
     
-    score = roll("1d100", rnd);
+    score = xroll("1d100", rnd);
     for (int i = 0; i < jewelry_form_table_count; ++i) {
         if (score <= jewelry_form_table[i].score) {
             jewelry->form = jewelry_form_table[i].form;
@@ -339,30 +339,30 @@ jewelry_generate(struct jewelry *jewelry, struct rnd *rnd)
     
     int const max_workmanship_bonus = 12;
     do {
-        score = roll("1d10", rnd);
+        score = xroll("1d10", rnd);
         if (score == 1) {
             ++jewelry->workmanship_bonus;
         }
     } while (score == 1 && jewelry->workmanship_bonus < max_workmanship_bonus);
     for (int i = 0; i < jewelry->workmanship_bonus; ++i) {
-        int max_value_in_cp = dice_max_score(dice_parse(jewelry_ranks[rank].base_value))
-                            * jewelry_ranks[rank].base_value_multiplier;
+        int max_value_in_cp = xdice_max_score(xdice_parse(jewelry_ranks[rank].base_value))
+                              * jewelry_ranks[rank].base_value_multiplier;
         if (jewelry->value_in_cp < max_value_in_cp) {
             jewelry->value_in_cp = max_value_in_cp;
         } else if (rank < jewelry_max_rank) {
             ++rank;
-            score = roll(jewelry_ranks[rank].base_value, rnd);
+            score = xroll(jewelry_ranks[rank].base_value, rnd);
             jewelry->value_in_cp = score * jewelry_ranks[rank].base_value_multiplier;
         }
     }
     
     int const max_exceptional_stone_bonus = 128;
     if (jewelry->has_gems) {
-        score = roll("1d8", rnd);
+        score = xroll("1d8", rnd);
         if (score == 1) {
             jewelry->exceptional_stone_bonus = 1;
             do {
-                score = roll("1d6", rnd);
+                score = xroll("1d6", rnd);
                 if (score == 1) jewelry->exceptional_stone_bonus *= 2;
             } while (   score == 1
                      && jewelry->exceptional_stone_bonus < max_exceptional_stone_bonus);
