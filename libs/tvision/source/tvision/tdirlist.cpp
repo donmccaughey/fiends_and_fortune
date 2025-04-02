@@ -47,29 +47,13 @@ TDirListBox::~TDirListBox()
 
 void TDirListBox::getText( char *text, short item, short maxChars )
 {
-    strncpy( text, list()->at(item)->text(), maxChars );
-    text[maxChars] = '\0';
+    strnzcpy( text, list()->at(item)->text(), maxChars + 1 );
 }
 
 void TDirListBox::selectItem( short item )
 {
     message( owner, evCommand, cmChangeDir, list()->at(item) );
 }
-
-/*
-void TDirListBox::handleEvent( TEvent& event )
-{
-    if( event.what == evMouseDown && (event.mouse.eventFlags & meDoubleClick) )
-        {
-        event.what = evCommand;
-        event.message.command = cmChangeDir;
-        putEvent( event );
-        clearEvent( event );
-        }
-    else
-       TListBox::handleEvent( event );
-}
-*/
 
 Boolean TDirListBox::isSelected( short item )
 {
@@ -131,27 +115,35 @@ void TDirListBox::showDirs( TDirCollection *dirs )
     strcpy( org, pathDir );
 
     char *curDir = dir;
-    char *end = dir + 3;
-    char hold = *end;
-    *end = EOS;         // mark end of drive name
-    strcpy( name, curDir );
-    dirs->insert( new TDirEntry( org, name ) );
+    char *end;
 
-    *end = hold;        // restore full path
-    curDir = end;
+    // Show root directory.
+    if( (end = strchr( curDir, '\\' )) != 0 )
+        {
+        char hold = *(++end);
+        *end = EOS;
+        strcpy( name, curDir );
+        dirs->insert( new TDirEntry( org, dir ) );
+        *end = hold;
+        curDir = end;
+        }
+    else
+        return;
+
+    // Show directories up to the current one.
     while( (end = strchr( curDir, '\\' )) != 0 )
         {
         *end = EOS;
-        strncpy( name, curDir, size_t(end-curDir) );
-        name[size_t(end-curDir)] = EOS;
+        strcpy( name, curDir );
         dirs->insert( new TDirEntry( org - indent, dir ) );
         *end = '\\';
-        curDir = end+1;
+        curDir = end + 1;
         indent += indentSize;
         }
 
     cur = dirs->getCount() - 1;
 
+    // Show subdirectories.
     end = strrchr( dir, '\\' );
     char path[MAXPATH];
     strncpy( path, dir, size_t(end-dir+1) );
@@ -198,7 +190,10 @@ void TDirListBox::newDirectory( TStringView str )
 {
     strnzcpy( dir, str, sizeof(dir) );
     TDirCollection *dirs = new TDirCollection( 5, 5 );
+#if !defined( _TV_UNIX )
+    // Add 'Drives' entry.
     dirs->insert( new TDirEntry( drives, drives ) );
+#endif
     if( str == drives )
         showDrives( dirs );
     else

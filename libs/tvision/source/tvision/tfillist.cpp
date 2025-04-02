@@ -320,7 +320,7 @@ static int getPathDrive( const char *path )
 {
     if( path[0] && path[1] == ':' )
     {
-        int drive = toupper(path[0]) - 'A';
+        int drive = (char) toupper((uchar) path[0]) - 'A';
         if (0 <= drive && drive <= 'Z' - 'A')
             return drive;
     }
@@ -329,6 +329,8 @@ static int getPathDrive( const char *path )
 
 Boolean getHomeDir( char *drive, char *dir ) noexcept
 {
+    (void) drive;
+    (void) dir;
 #ifdef _WIN32
     const char *homedrive = getenv( "HOMEDRIVE" );
     const char *homepath = getenv( "HOMEPATH" );
@@ -346,8 +348,6 @@ Boolean getHomeDir( char *drive, char *dir ) noexcept
         return True;
         }
 #endif
-    (void) drive;
-    (void) dir;
     return False;
 }
 

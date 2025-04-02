@@ -4,38 +4,40 @@
 #include <internal/platform.h>
 #ifdef _TV_UNIX
 
+#include <internal/errredir.h>
+
 namespace tvision
 {
 
-class ScreenLifetime;
+class ConsoleCtl;
 class SigwinchHandler;
 struct InputState;
-class DisplayBuffer;
 
-class UnixConsoleStrategy : public ConsoleStrategy
+class UnixConsoleAdapter final : public ConsoleAdapter
 {
-    StdioCtl &io;
+    StderrRedirector errRedir;
+
+    ConsoleCtl &con;
     DisplayBuffer &displayBuf;
-    ScreenLifetime &scrl;
     InputState &inputState;
     SigwinchHandler *sigwinch;
+    InputAdapter &input;
 
-    UnixConsoleStrategy( DisplayStrategy &, InputStrategy &, StdioCtl &,
-                         DisplayBuffer &, ScreenLifetime &, InputState &,
-                         SigwinchHandler * ) noexcept;
+    UnixConsoleAdapter( DisplayAdapter &, InputAdapter &, ConsoleCtl &,
+                        DisplayBuffer &, InputState &,
+                        SigwinchHandler * ) noexcept;
 
 public:
 
-    // The lifetime of 'io' and 'displayBuf' must exceed that of the returned object.
-    // Takes ownership over 'scrl', 'inputState', 'display' and 'input'.
-    static UnixConsoleStrategy &create( StdioCtl &io,
-                                        DisplayBuffer &displayBuf,
-                                        ScreenLifetime &scrl,
-                                        InputState &inputState,
-                                        DisplayStrategy &display,
-                                        InputStrategy &input ) noexcept;
+    // The lifetime of 'con' and 'displayBuf' must exceed that of the returned object.
+    // Takes ownership over 'inputState', 'display' and 'input'.
+    static UnixConsoleAdapter &create( ConsoleCtl &con,
+                                       DisplayBuffer &displayBuf,
+                                       InputState &inputState,
+                                       DisplayAdapter &display,
+                                       InputAdapter &input ) noexcept;
 
-    ~UnixConsoleStrategy();
+    ~UnixConsoleAdapter();
 
     bool setClipboardText(TStringView) noexcept override;
     bool requestClipboardText(void (&)(TStringView)) noexcept override;

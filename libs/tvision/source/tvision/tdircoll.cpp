@@ -18,6 +18,10 @@
 #define Uses_ipstream
 #include <tvision/tv.h>
 
+#if !defined( __CTYPE_H )
+#include <ctype.h>
+#endif  // __CTYPE_H
+
 #if !defined( __DIR_H )
 #include <dir.h>
 #endif  // __DIR_H
@@ -30,11 +34,15 @@
 #include <dos.h>
 #endif  // __DOS_H
 
+#if defined( __FLAT__ )
+#include <tvision/compat/windows/windows.h>
+#endif
+
 #pragma warn -asc
 
 Boolean driveValid( char drive ) noexcept
 {
-#ifdef _WIN32
+#if defined( __BORLANDC__ ) || defined( _WIN32 )
 #if !defined( __FLAT__ )
 I       MOV     AH, 19H     // Save the current drive in BL
 I       INT     21H
@@ -56,9 +64,9 @@ __1:
 I       XCHG    AX, CX      // Put the return value into AX
     return Boolean(_AX);
 #else
-    drive = (char) toupper( drive );
+    drive = toupper((uchar) drive);
     DWORD mask = 0x01 << (drive - 'A');
-    return (Boolean) (GetLogicalDrives() & mask);
+    return Boolean( (GetLogicalDrives() & mask) != 0 );
 #endif
 #else
     // Unless otherwise necessary, we will emulate there's only one disk:

@@ -2,10 +2,6 @@
 #define Uses_THardwareInfo
 #include <tvision/tv.h>
 
-#if !defined( __BORLANDC__ )
-#include <chrono>
-#endif
-
 static TTimePoint systemTimeMs()
 {
 #if !defined( __FLAT__ )
@@ -19,10 +15,10 @@ static TTimePoint systemTimeMs()
 
 struct TTimer
 {
-    void *collectId;
     TTimePoint expiresAt;
     int32_t period;
     TTimer *next;
+    void *collectId;
 };
 
 TTimerQueue::TTimerQueue() noexcept :
@@ -80,17 +76,27 @@ void TTimerQueue::killTimer(TTimerId id)
     }
 }
 
-void TTimerQueue::collectTimeouts(void (&func)(TTimerId, void *), void *args)
+static TTimePoint calcNextExpiresAt(TTimePoint expiresAt, TTimePoint now, int32_t period)
+// Pre: expiresAt <= now && period > 0.
+{
+    return (1 + (now - expiresAt + period)/period)*period + expiresAt - period;
+}
+
+void TTimerQueue::collectExpiredTimers(void (&func)(TTimerId, void *), void *args)
 {
     if (first == 0)
         return;
 
+    // Given that the timer list may be mutated while we process expired timers,
+    // we iterate it from the beginning every time. In order to know which
+    // timers have already been processed, we mark them with a 'collectId'
+    // which identifies the current invocation of 'collectExpiredTimers'.
     void *collectId = &collectId;
     TTimePoint now = getTimeMs();
     while (True)
     {
         TTimer **p = &first;
-        while (*p != 0 && ((*p)->collectId == collectId || now < (*p)->expiresAt))
+        while (*p != 0 && ((*p)->collectId != 0 || now < (*p)->expiresAt))
             p = &(*p)->next;
         if (*p == 0)
             break;
@@ -100,9 +106,7 @@ void TTimerQueue::collectTimeouts(void (&func)(TTimerId, void *), void *args)
         {
             (*p)->collectId = collectId;
             if ((*p)->period > 0)
-                (*p)->expiresAt =
-                    (1 + (now - (*p)->expiresAt + (*p)->period)/(*p)->period)*(*p)->period +
-                    (*p)->expiresAt - (*p)->period;
+                (*p)->expiresAt = calcNextExpiresAt((*p)->expiresAt, now, (*p)->period);
         }
         else // One-shot timer
         {
@@ -123,12 +127,12 @@ void TTimerQueue::collectTimeouts(void (&func)(TTimerId, void *), void *args)
     }
 }
 
-int32_t TTimerQueue::timeUntilTimeout()
+int32_t TTimerQueue::timeUntilNextTimeout()
 {
     if (first == 0)
         return -1;
     TTimePoint now = getTimeMs();
-    uint32_t maxValue = (uint32_t) -1 >> 1;
+    uint32_t maxValue = uint32_t(-1) >> 1;
     int32_t timeout = maxValue;
     TTimer *timer = first;
     do

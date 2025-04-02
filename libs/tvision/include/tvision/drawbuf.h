@@ -35,14 +35,13 @@ public:
 
     void moveChar( ushort indent, char c, TColorAttr attr, ushort count ) noexcept;
     ushort moveStr( ushort indent, TStringView str, TColorAttr attr ) noexcept;
-    ushort moveStr( ushort indent, TStringView str, TColorAttr attr, ushort width, ushort begin = 0 ) noexcept;
+    ushort moveStr( ushort indent, TStringView str, TColorAttr attr, ushort maxWidth, ushort strOffset = 0 ) noexcept;
     ushort moveCStr( ushort indent, TStringView str, TAttrPair attrs ) noexcept;
-    ushort moveCStr( ushort indent, TStringView str, TAttrPair attrs, ushort width, ushort begin = 0 ) noexcept;
+    ushort moveCStr( ushort indent, TStringView str, TAttrPair attrs, ushort maxWidth, ushort strOffset = 0 ) noexcept;
     void moveBuf( ushort indent, const void _FAR *source, TColorAttr attr, ushort count ) noexcept;
 
     void putAttribute( ushort indent, TColorAttr attr ) noexcept;
     void putChar( ushort indent, uchar c ) noexcept;
-    size_t length() const noexcept;
 
 #ifdef __FLAT__
     TDrawBuffer() noexcept;
@@ -52,12 +51,12 @@ public:
 protected:
 
 #ifdef __FLAT__
-    static TSpan<TScreenCell> allocData() noexcept;
-
     const TSpan<TScreenCell> data;
 #else
     TScreenCell data[maxViewWidth];
 #endif
+
+    size_t length() const noexcept;
 
 };
 

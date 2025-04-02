@@ -1,5 +1,5 @@
-#ifndef TVISION_STDIOCTL_H
-#define TVISION_STDIOCTL_H
+#ifndef TVISION_CONCTL_H
+#define TVISION_CONCTL_H
 
 #include <tvision/tv.h>
 #include <stdio.h>
@@ -11,7 +11,7 @@
 namespace tvision
 {
 
-class StdioCtl final
+class ConsoleCtl
 {
 #ifdef _WIN32
     enum { input = 0, startupOutput = 1, activeOutput = 2 };
@@ -22,17 +22,26 @@ class StdioCtl final
     } cn[3];
     bool ownsConsole {false};
 #else
-    int ttyfd {-1};
     int fds[2] {-1, -1};
-    FILE *infile {nullptr};
-    FILE *outfile {nullptr};
+    FILE *files[2] {nullptr, nullptr};
+    bool ownsFiles {false};
 #endif // _WIN32
 
+    static ConsoleCtl *instance;
+
+    ConsoleCtl() noexcept;
+    ~ConsoleCtl();
 
 public:
 
-    StdioCtl() noexcept;
-    ~StdioCtl();
+    // On Windows, the ConsoleCtl instance is created every time the alternate
+    // screen buffer is enabled and it is destroyed when restoring the console.
+    // On Unix, the ConsoleCtl instance is created just once.
+
+    // Creates a global instance if none exists, and returns it.
+    static ConsoleCtl &getInstance() noexcept;
+    // Destroys the global instance if it exists.
+    static void destroyInstance() noexcept;
 
     void write(const char *data, size_t bytes) const noexcept;
     TPoint getSize() const noexcept;
@@ -44,8 +53,8 @@ public:
 #else
     int in() const noexcept { return fds[0]; }
     int out() const noexcept { return fds[1]; }
-    FILE *fin() const noexcept { return infile; }
-    FILE *fout() const noexcept { return outfile; }
+    FILE *fin() const noexcept { return files[0]; }
+    FILE *fout() const noexcept { return files[1]; }
 #ifdef __linux__
     bool isLinuxConsole() const noexcept;
 #endif
@@ -54,4 +63,4 @@ public:
 
 } //namespace tvision
 
-#endif // TVISION_STDIOCTL_H
+#endif // TVISION_CONCTL_H

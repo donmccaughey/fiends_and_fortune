@@ -56,17 +56,19 @@ struct TCellChar
     enum : uint8_t { fWide = 0x1, fTrail = 0x2 };
 
     char _text[15];
-    uint8_t _flags;
+    uint8_t
+        _textLength : 4,
+        _flags : 4;
 
     TCellChar() = default;
     inline void moveChar(char ch);
-    inline void moveInt(uint32_t mbc, bool wide=false);
-    inline void moveStr(TStringView mbc, bool wide=false);
+    inline void moveMultiByteChar(uint32_t mbc, bool wide = false);
+    inline void moveMultiByteChar(TStringView mbc, bool wide = false);
     inline void moveWideCharTrail();
 
     constexpr inline bool isWide() const;
     constexpr inline bool isWideCharTrail() const;
-    constexpr inline void appendZeroWidth(TStringView mbc);
+    constexpr inline void appendZeroWidthChar(TStringView mbc);
     constexpr inline TStringView getText() const;
     constexpr inline size_t size() const;
 
@@ -76,23 +78,35 @@ struct TCellChar
 
 inline void TCellChar::moveChar(char ch)
 {
-    moveInt((uchar) ch);
+    memset(this, 0, sizeof(*this));
+    _text[0] = ch;
+    _textLength = 1;
 }
 
-inline void TCellChar::moveInt(uint32_t mbc, bool wide)
+inline void TCellChar::moveMultiByteChar(uint32_t mbc, bool wide)
+// Pre: 'mbc' is a bit-casted multibyte-encoded character.
 {
     memset(this, 0, sizeof(*this));
-    // CAUTION: Assumes Little Endian.
     memcpy(_text, &mbc, sizeof(mbc));
     _flags = -int(wide) & fWide;
+#ifndef TV_BIG_ENDIAN
+    _textLength = 1 + ((mbc & 0xFF00) != 0) +
+                      ((mbc & 0xFF0000) != 0) +
+                      ((mbc & 0xFF000000) != 0);
+#else
+    _textLength = 1 + ((mbc & 0xFF0000) != 0) +
+                      ((mbc & 0xFF00) != 0) +
+                      ((mbc & 0xFF) != 0);
+#endif
 }
 
-inline void TCellChar::moveStr(TStringView mbc, bool wide)
+inline void TCellChar::moveMultiByteChar(TStringView mbc, bool wide)
 {
-    static_assert(sizeof(_text) >= 4, "");
-    if (mbc.size() <= 4)
+    static_assert(sizeof(_text) >= maxCharSize, "");
+    memset(this, 0, sizeof(*this));
+    if (0 < mbc.size() && mbc.size() <= maxCharSize)
     {
-        memset(this, 0, sizeof(*this));
+        _flags |= -int(wide) & fWide;
         switch (mbc.size())
         {
             case 4: _text[3] = mbc[3];
@@ -100,7 +114,7 @@ inline void TCellChar::moveStr(TStringView mbc, bool wide)
             case 2: _text[1] = mbc[1];
             case 1: _text[0] = mbc[0];
         }
-        _flags |= -int(wide) & fWide;
+        _textLength = mbc.size();
     }
 }
 
@@ -120,13 +134,13 @@ constexpr inline bool TCellChar::isWideCharTrail() const
     return _flags & fTrail;
 }
 
-constexpr inline void TCellChar::appendZeroWidth(TStringView mbc)
+constexpr inline void TCellChar::appendZeroWidthChar(TStringView mbc)
 // Pre: !isWideCharTrail();
 {
     size_t sz = size();
     if (mbc.size() <= sizeof(_text) - sz)
     {
-        if (!mbc[0])
+        if (_text[0] == '\0')
             _text[0] = ' ';
         switch (mbc.size())
         {
@@ -135,6 +149,7 @@ constexpr inline void TCellChar::appendZeroWidth(TStringView mbc)
             case 2: _text[sz + 1] = mbc[1];
             case 1: _text[sz] = mbc[0];
         }
+        _textLength = sz + mbc.size();
     }
 }
 
@@ -145,9 +160,9 @@ constexpr inline TStringView TCellChar::getText() const
 
 constexpr inline size_t TCellChar::size() const
 {
-    size_t i = 0;
-    while (++i < sizeof(_text) && _text[i]);
-    return i;
+    // There is always at least one character, even if it is a null byte and
+    // '_textLength' is zero (e.g. because the TCellChar was zero-initialized).
+    return max(_textLength, 1);
 }
 
 constexpr inline char& TCellChar::operator[](size_t i)
@@ -167,9 +182,6 @@ constexpr inline const char& TCellChar::operator[](size_t i) const
 // with text.
 //
 // Considerations:
-// * '_wide' indicates the width of the text in '_ch' minus one. In practice,
-//   the only possible character widths are 0, 1 and 2, and the text in a
-//   TCellChar is at least one column wide. So 'wide' will be either 0 or 1.
 // * In order for a double-width character to be displayed entirely, its cell
 //   must be followed by another containing a wide char trail. If it is not,
 //   or if a wide char trail is not preceded by a double-width character,
@@ -238,43 +250,6 @@ inline void setCell(TScreenCell &cell, char ch, const TColorAttr &attr)
     ::setChar(cell, ch);
     ::setAttr(cell, attr);
 }
-
-#ifdef SCRNCELL_DEBUG
-#include <type_traits>
-
-namespace scrncell
-{
-    template <class T>
-    inline void check_trivial()
-    {
-        static_assert(std::is_trivial<T>(), "");
-    }
-
-    template<class C, class T = typename C::trivial_t>
-    static void check_convertible()
-    {
-        scrncell::check_trivial<C>();
-        static_assert(sizeof(C) == sizeof(T), "");
-        static_assert(alignof(C) == alignof(T), "");
-    }
-
-    inline void check_assumptions()
-    {
-        check_trivial<TColorDesired>();
-        check_trivial<TColorAttr>();
-        check_trivial<TAttrPair>();
-        check_trivial<TCellChar>();
-        check_trivial<TScreenCell>();
-        check_convertible<TColorBIOS>();
-        check_convertible<TColorRGB>();
-        check_convertible<TColorXTerm>();
-        static_assert(sizeof(TScreenCell) == 24, "");
-        static_assert(sizeof(TColorDesired) == 4, "");
-        static_assert(sizeof(TColorAttr) == 8, "");
-    }
-}
-
-#endif // SCRNCELL_DEBUG
 
 #endif // __BORLANDC__
 

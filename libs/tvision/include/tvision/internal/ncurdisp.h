@@ -1,49 +1,47 @@
 #ifndef TVISION_NCURDISP_H
 #define TVISION_NCURDISP_H
 
-#include <internal/termdisp.h>
+#include <internal/platform.h>
 
 #ifdef HAVE_NCURSES
 
-#include <unordered_map>
+#include <internal/ansiwrit.h>
 #include <ncurses.h>
+
+// Undefine troublesome Ncurses macros.
+#ifdef scroll
+#undef scroll
+#endif
 
 namespace tvision
 {
 
-class NcursesDisplay : public TerminalDisplay
+class NcursesDisplay final : public DisplayAdapter
 {
-    SCREEN *term;
-
-    bool hasColors;
-    std::unordered_map<ushort, int> pairIdentifiers;
-    ushort definedPairs;
-
-    bool usesNcursesDraw;
-
-    void getCaretPosition(int &x, int &y) noexcept;
-    uint translateAttributes(TColorAttr attr) noexcept;
-    uint getColorPair(uchar pairKey) noexcept;
-
 public:
 
-    // The lifetime of 'aIo' exceeds that of 'this'.
-    NcursesDisplay(StdioCtl &io) noexcept;
+    // The lifetime of 'con' exceeds that of the returned object.
+    static NcursesDisplay &create(ConsoleCtl &con) noexcept;
     ~NcursesDisplay();
 
-    void reloadScreenInfo() noexcept override;
-    TPoint getScreenSize() noexcept override;
-    int getCaretSize() noexcept override;
+private:
+
+    ConsoleCtl &con;
+    SCREEN *term;
+    AnsiScreenWriter ansiScreenWriter;
+
+    NcursesDisplay(ConsoleCtl &, SCREEN *) noexcept;
+
+    TPoint reloadScreenInfo() noexcept override;
+
     int getColorCount() noexcept override;
+    TPoint getFontSize() noexcept override;
 
+    void writeCell(TPoint, TStringView, TColorAttr, bool) noexcept override;
+    void setCaretPosition(TPoint) noexcept override;
+    void setCaretSize(int) noexcept override;
     void clearScreen() noexcept override;
-
-protected:
-
-    void lowlevelWriteChars(TStringView chars, TColorAttr attr) noexcept override;
-    void lowlevelMoveCursor(uint x, uint y) noexcept override;
-    void lowlevelCursorSize(int size) noexcept override;
-    void lowlevelFlush() noexcept override;
+    void flush() noexcept override;
 };
 
 } // namespace tvision
@@ -53,7 +51,7 @@ protected:
 namespace tvision
 {
 
-class NcursesDisplay : public DisplayStrategy {};
+class NcursesDisplay : public DisplayAdapter {};
 
 } // namespace tvision
 

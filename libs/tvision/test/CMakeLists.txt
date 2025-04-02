@@ -19,6 +19,14 @@ if (TV_BUILD_TESTS)
         ${GTEST_MAIN}
     )
 
+    if (NOT WIN32)
+        find_library(PTHREAD pthread REQUIRED)
+        tv_message(STATUS "Found 'pthread': ${PTHREAD}")
+        target_link_libraries(${PROJECT_NAME}-test PRIVATE
+            ${PTHREAD}
+        )
+    endif()
+
     add_custom_command(
         OUTPUT ${PROJECT_NAME}-test-passed
         COMMAND ${PROJECT_NAME}-test
@@ -28,4 +36,8 @@ if (TV_BUILD_TESTS)
     )
     add_custom_target(${PROJECT_NAME}-test-run ALL DEPENDS ${PROJECT_NAME}-test-passed)
 
+    if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.16.0" AND TV_OPTIMIZE_BUILD)
+        target_precompile_headers(${PROJECT_NAME}-test PRIVATE "${CMAKE_CURRENT_LIST_DIR}/test.h")
+        tv_enable_unity(${PROJECT_NAME}-test)
+    endif()
 endif()

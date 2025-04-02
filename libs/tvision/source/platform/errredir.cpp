@@ -1,4 +1,4 @@
-#include <internal/scrlife.h>
+#include <internal/errredir.h>
 
 #ifdef _TV_UNIX
 

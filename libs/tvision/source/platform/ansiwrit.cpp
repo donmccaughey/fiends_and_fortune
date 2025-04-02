@@ -1,6 +1,8 @@
-#include <internal/ansidisp.h>
-#include <internal/stdioctl.h>
+#include <internal/ansiwrit.h>
+#include <internal/platform.h>
 #include <internal/strings.h>
+#include <internal/conctl.h>
+#include <internal/getenv.h>
 #include <stdlib.h>
 
 #define CSI "\x1B["
@@ -8,38 +10,72 @@
 namespace tvision
 {
 
-inline AnsiDisplayBase::Buffer::~Buffer()
+TermCap TermCap::getDisplayCapabilities( ConsoleCtl &con,
+                                         DisplayAdapter &display ) noexcept
+{
+    TermCap termcap {};
+    auto colorterm = getEnv<TStringView>("COLORTERM");
+    if (colorterm == "truecolor" || colorterm == "24bit")
+        termcap.colors = Direct;
+    else
+    {
+        int colors = display.getColorCount();
+        if (colors >= 256*256*256)
+            termcap.colors = Direct;
+        else if (colors >= 256)
+            termcap.colors = Indexed256;
+        else if (colors >= 16)
+            termcap.colors = Indexed16;
+        else if (colors >= 8)
+        {
+            termcap.colors = Indexed8;
+            termcap.quirks |= qfBoldIsBright;
+#ifdef __linux__
+            if (con.isLinuxConsole())
+                termcap.quirks |= qfBlinkIsBright | qfNoItalic | qfNoUnderline;
+            else
+#endif // __linux__
+            if (getEnv<TStringView>("TERM") == "xterm")
+                // Let's assume all terminals disguising themselves as 'xterm'
+                // support at least 16 colors.
+                termcap.colors = Indexed16;
+        }
+    }
+    return termcap;
+}
+
+inline AnsiScreenWriter::Buffer::~Buffer()
 {
     free(head);
 }
 
-inline char *AnsiDisplayBase::Buffer::data() noexcept
+inline char *AnsiScreenWriter::Buffer::data() noexcept
 {
     return head;
 }
 
-inline size_t AnsiDisplayBase::Buffer::size() const noexcept
+inline size_t AnsiScreenWriter::Buffer::size() const noexcept
 {
     return tail - head;
 }
 
-inline void AnsiDisplayBase::Buffer::clear() noexcept
+inline void AnsiScreenWriter::Buffer::clear() noexcept
 {
     tail = head;
 }
 
-inline void AnsiDisplayBase::Buffer::push(TStringView s) noexcept
+inline void AnsiScreenWriter::Buffer::push(TStringView s) noexcept
 {
     memcpy(tail, s.data(), s.size());
     tail += s.size();
 }
 
-inline void AnsiDisplayBase::Buffer::push(char c) noexcept
+inline void AnsiScreenWriter::Buffer::push(char c) noexcept
 {
     *tail++ = c;
 }
 
-inline void AnsiDisplayBase::Buffer::reserve(size_t extraCapacity) noexcept
+void AnsiScreenWriter::Buffer::reserve(size_t extraCapacity) noexcept
 {
     size_t oldSize = size();
     if (oldSize + extraCapacity > capacity)
@@ -51,71 +87,77 @@ inline void AnsiDisplayBase::Buffer::reserve(size_t extraCapacity) noexcept
     }
 }
 
-AnsiDisplayBase::~AnsiDisplayBase()
+AnsiScreenWriter::~AnsiScreenWriter()
 {
-    clearAttributes();
-    lowlevelFlush();
+    reset();
+    flush();
 }
 
-inline void AnsiDisplayBase::bufWriteCSI1(uint a, char F) noexcept
+inline void AnsiScreenWriter::bufWriteCSI1(int a, char F) noexcept
 {
     // CSI a F
     buf.reserve(32);
     buf.push(CSI);
-    buf.tail = fast_utoa(a, buf.tail);
+    buf.tail = fast_utoa((uint) a, buf.tail);
     buf.push(F);
 }
 
-inline void AnsiDisplayBase::bufWriteCSI2(uint a, uint b, char F) noexcept
+inline void AnsiScreenWriter::bufWriteCSI2(int a, int b, char F) noexcept
 {
     // CSI a ; b F
     buf.reserve(32);
     buf.push(CSI);
-    buf.tail = fast_utoa(a, buf.tail);
+    buf.tail = fast_utoa((uint) a, buf.tail);
     buf.push(';');
-    buf.tail = fast_utoa(b, buf.tail);
+    buf.tail = fast_utoa((uint) b, buf.tail);
     buf.push(F);
 }
 
-void AnsiDisplayBase::clearAttributes() noexcept
+void AnsiScreenWriter::reset() noexcept
 {
     buf.reserve(4);
     buf.push(CSI "0m");
+    caretPos = {-1, -1};
     lastAttr = {};
 }
 
-void AnsiDisplayBase::clearScreen() noexcept
+void AnsiScreenWriter::clearScreen() noexcept
 {
-    buf.reserve(4);
-    buf.push(CSI "2J");
+    buf.reserve(8);
+    buf.push(CSI "0m" CSI "2J");
+    lastAttr = {};
 }
 
 static char *convertAttributes(const TColorAttr &, TermAttr &, const TermCap &, char*) noexcept;
 
-void AnsiDisplayBase::lowlevelWriteChars( TStringView chars, TColorAttr attr,
-                                          const TermCap &termcap ) noexcept
+void AnsiScreenWriter::writeCell( TPoint pos, TStringView text, TColorAttr attr,
+                                  bool doubleWidth ) noexcept
 {
     buf.reserve(256);
+
+    // Move caret. When the movement is only horizontal, we can use a
+    // shorter sequence.
+    if (pos.y != caretPos.y)
+        bufWriteCSI2(pos.y + 1, pos.x + 1, 'H');
+    else if (pos.x != caretPos.x)
+        bufWriteCSI1(pos.x + 1, 'G');
+
     buf.tail = convertAttributes(attr, lastAttr, termcap, buf.tail);
-    buf.push(chars);
+    buf.push(text);
+
+    caretPos = {pos.x + 1 + doubleWidth, pos.y};
 }
 
-void AnsiDisplayBase::lowlevelMoveCursorX(uint x, uint) noexcept
-{
-    // Optimized case where the cursor only moves horizontally.
-    bufWriteCSI1(x + 1, 'G');
-}
-
-void AnsiDisplayBase::lowlevelMoveCursor(uint x, uint y) noexcept
+void AnsiScreenWriter::setCaretPosition(TPoint pos) noexcept
 {
     buf.reserve(32);
-//     buf.push('\r'); // Make dumps readable.
-    bufWriteCSI2(y + 1, x + 1, 'H');
+    bufWriteCSI2(pos.y + 1, pos.x + 1, 'H');
+    caretPos = pos;
 }
 
-void AnsiDisplayBase::lowlevelFlush() noexcept
+void AnsiScreenWriter::flush() noexcept
 {
-    io.write(buf.data(), buf.size());
+    con.write(buf.data(), buf.size());
     buf.clear();
 }
 
@@ -158,7 +200,11 @@ struct alignas(8) colorconv_r
     colorconv_r() = default;
     colorconv_r(TermColor aColor, TColorAttr::Style aExtraFlags=0) noexcept
     {
+        // Optimization: do bit-casting manually, just like with TermColor.
         uint64_t val = aColor | (uint64_t(aExtraFlags) << 32);
+#ifdef TV_BIG_ENDIAN
+        reverseBytes(val);
+#endif
         memcpy(this, &val, 8);
         static_assert(sizeof(*this) == 8, "");
     }
@@ -217,15 +263,13 @@ static inline void writeFlag( char *&p, TermAttr attr, TermAttr lastAttr,
     }
 }
 
-typedef const char *c_str;
-
-static constexpr c_str
-    boldOnOff[2] =      { "1", "22"},
-    italicOnOff[2] =    { "3", "23"},
-    underlineOnOff[2] = { "4", "24"},
-    blinkOnOff[2] =     { "5", "25"},
-    reverseOnOff[2] =   { "7", "27"},
-    strikeOnOff[2] =    { "9", "29"};
+static constexpr const char
+    *boldOnOff[2] =      { "1", "22" },
+    *italicOnOff[2] =    { "3", "23" },
+    *underlineOnOff[2] = { "4", "24" },
+    *blinkOnOff[2] =     { "5", "25" },
+    *reverseOnOff[2] =   { "7", "27" },
+    *strikeOnOff[2] =    { "9", "29" };
 
 static inline char *writeAttributes( const TermAttr &attr,
                                      const TermAttr &lastAttr, char *p ) noexcept

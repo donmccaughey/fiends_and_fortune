@@ -3,6 +3,8 @@
 #include <internal/linuxcon.h>
 #include <internal/win32con.h>
 #include <internal/sighandl.h>
+#include <internal/codepage.h>
+#include <internal/conctl.h>
 #include <locale.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -10,42 +12,58 @@
 namespace tvision
 {
 
-// This is used by TText. It is a global function pointer (instead of a
-// Platform instance method) so that it can be still used after
-// Platform::instance has been destroyed.
-int (*Platform::charWidth)(uint32_t) noexcept = &Platform::errorCharWidth;
+Platform *Platform::instance;
 
-int Platform::errorCharWidth(uint32_t) noexcept
+// This is used by TText. It is a global function pointer (instead of an
+// instance method) so that it can be used regardless of whether the global
+// Platform instance has been created or not.
+int (*Platform::charWidth)(uint32_t) noexcept = &Platform::initAndGetCharWidth;
+
+int Platform::initAndGetCharWidth(uint32_t wc) noexcept
 {
-    fputs( "Cannot measure character widths before the platform module is "
-           "loaded.\nAvoid invoking TText methods during static initialization.\n",
-           stderr );
-    abort();
+    initEncodingStuff();
+    return charWidth(wc);
 }
 
-Platform Platform::instance;
-
-Platform::Platform() noexcept
+void Platform::initEncodingStuff() noexcept
 {
+    static int init = [] ()
+    {
+        CpTranslator::init();
 #ifdef _WIN32
-    setlocale(LC_ALL, ".utf8");
-    charWidth = &Win32ConsoleStrategy::charWidth;
+        setlocale(LC_ALL, ".utf8");
+        charWidth = &Win32ConsoleAdapter::charWidth;
 #else
-    setlocale(LC_ALL, "");
-    charWidth =
+        setlocale(LC_ALL, "");
 #ifdef __linux__
-        io.isLinuxConsole() ? &LinuxConsoleStrategy::charWidth :
+        auto &con = ConsoleCtl::getInstance();
+        if (con.isLinuxConsole())
+            charWidth = &LinuxConsoleAdapter::charWidth;
+        else
 #endif // __linux__
-        &UnixConsoleStrategy::charWidth;
+            charWidth = &UnixConsoleAdapter::charWidth;
 #endif // _WIN32
+
+        (void) init;
+        return 0;
+    }();
 }
 
-Platform::~Platform()
+Platform &Platform::getInstance() noexcept
 {
-    restoreConsole();
+    static int init = [] ()
+    {
+        instance = new Platform;
+        initEncodingStuff();
+
+        (void) init;
+        return 0;
+    }();
+
+    return *instance;
 }
 
-void Platform::restoreConsole(ConsoleStrategy *&c) noexcept
+void Platform::restoreConsole(ConsoleAdapter *&c) noexcept
 {
     if (c != &dummyConsole)
     {
@@ -56,6 +74,9 @@ void Platform::restoreConsole(ConsoleStrategy *&c) noexcept
         SignalHandler::disable();
         delete c;
         c = &dummyConsole;
+#ifdef _WIN32
+        ConsoleCtl::destroyInstance();
+#endif
     }
 }
 

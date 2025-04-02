@@ -116,18 +116,12 @@ static void *getModuleProc(const char *modName, const char *procName)
 
 // These methods are not available on DPMI32 and cannot be linked statically.
 
-static BOOL (WINAPI * pSetConsoleActiveScreenBuffer)(HANDLE) =
-    (BOOL (WINAPI *)(HANDLE)) getModuleProc("KERNEL32", "SetConsoleActiveScreenBuffer");
-static BOOL (WINAPI * pOpenClipboard)(HWND) =
-    (BOOL (WINAPI *)(HWND)) getModuleProc("USER32", "OpenClipboard");
-static BOOL (WINAPI * pCloseClipboard)() =
-    (BOOL (WINAPI *)()) getModuleProc("USER32", "CloseClipboard");
-static HANDLE (WINAPI * pSetClipboardData)(UINT, HANDLE) =
-    (HANDLE (WINAPI *)(UINT, HANDLE)) getModuleProc("USER32", "SetClipboardData");
-static HANDLE (WINAPI * pGetClipboardData)(UINT) =
-    (HANDLE (WINAPI *)(UINT)) getModuleProc("USER32", "GetClipboardData");
-static BOOL (WINAPI * pEmptyClipboard)() =
-    (BOOL (WINAPI *)()) getModuleProc("USER32", "EmptyClipboard");
+static BOOL (WINAPI * pSetConsoleActiveScreenBuffer)(HANDLE);
+static BOOL (WINAPI * pOpenClipboard)(HWND);
+static BOOL (WINAPI * pCloseClipboard)();
+static HANDLE (WINAPI * pSetClipboardData)(UINT, HANDLE);
+static HANDLE (WINAPI * pGetClipboardData)(UINT);
+static BOOL (WINAPI * pEmptyClipboard)();
 
 // Constructor for 16-bit version is in HARDWARE.ASM
 
@@ -169,6 +163,19 @@ THardwareInfo::THardwareInfo()
     consoleMode |= ENABLE_WINDOW_INPUT; // Report changes in buffer size
     consoleMode &= ~ENABLE_PROCESSED_INPUT; // Report CTRL+C and SHIFT+Arrow events.
     SetConsoleMode( consoleHandle[cnInput], consoleMode );
+
+    pSetConsoleActiveScreenBuffer =
+        (BOOL (WINAPI *)(HANDLE)) getModuleProc("KERNEL32", "SetConsoleActiveScreenBuffer");
+    pOpenClipboard =
+        (BOOL (WINAPI *)(HWND)) getModuleProc("USER32", "OpenClipboard");
+    pCloseClipboard =
+        (BOOL (WINAPI *)()) getModuleProc("USER32", "CloseClipboard");
+    pSetClipboardData =
+        (HANDLE (WINAPI *)(UINT, HANDLE)) getModuleProc("USER32", "SetClipboardData");
+    pGetClipboardData =
+        (HANDLE (WINAPI *)(UINT)) getModuleProc("USER32", "GetClipboardData");
+    pEmptyClipboard =
+        (BOOL (WINAPI *)()) getModuleProc("USER32", "EmptyClipboard");
 }
 
 THardwareInfo::~THardwareInfo()
@@ -335,17 +342,25 @@ BOOL THardwareInfo::getKeyEvent( TEvent& event )
 
                 if( event.keyDown.keyCode == 0x2A00 || event.keyDown.keyCode == 0x1D00 ||
                     event.keyDown.keyCode == 0x3600 || event.keyDown.keyCode == 0x3800 ||
-                    event.keyDown.keyCode == 0x3A00 )
-                    // Discard standalone Shift, Ctrl, Alt, Caps Lock keys.
+                    event.keyDown.keyCode == 0x3A00 || event.keyDown.keyCode == 0x5B00 ||
+                    event.keyDown.keyCode == 0x5C00 )
+                    // Discard standalone Shift, Ctrl, Alt, Caps Lock, Windows keys.
+                    event.keyDown.keyCode = kbNoKey;
+                else if( (event.keyDown.controlKeyState & kbLeftCtrl) &&
+                         (event.keyDown.controlKeyState & kbRightAlt) &&
+                         event.keyDown.charScan.charCode == '\0' )
+                    // We cannot tell for sure if the right Alt key is AltGr, since
+                    // that depends on the keyboard layout, but it is certain that
+                    // AltGr automatically adds the left Ctrl flag.
+                    // If both of these are set but no text is produced, discard the
+                    // whole event since we don't want AltGr to be handled as Ctrl+Alt.
                     event.keyDown.keyCode = kbNoKey;
                 else if( (event.keyDown.controlKeyState & kbCtrlShift) &&
-                         (event.keyDown.controlKeyState & kbAltShift) ) // Ctrl+Alt is AltGr.
-                    {
-                    // When AltGr+Key does not produce a character, a
-                    // keyCode with unwanted effects may be read instead.
-                    if( !event.keyDown.charScan.charCode )
-                        event.keyDown.keyCode = kbNoKey;
-                    }
+                         (event.keyDown.controlKeyState & kbAltShift) &&
+                         event.keyDown.charScan.charCode != '\0' )
+                    // If Ctrl+Alt produces text, we are dealing with AltGr. In this case,
+                    // discard the Ctrl and Alt modifiers.
+                    event.keyDown.controlKeyState &= ~(kbCtrlShift | kbAltShift);
                 else if( irBuffer.Event.KeyEvent.wVirtualScanCode < 89 )
                     {
                     // Convert NT style virtual scan codes to PC BIOS codes.
@@ -385,14 +400,16 @@ BOOL THardwareInfo::getKeyEvent( TEvent& event )
     return False;
 }
 
-void THardwareInfo::waitForEvent( int timeoutMs )
+void THardwareInfo::waitForEvents( int timeoutMs )
 {
     if (!pendingEvent)
         WaitForSingleObject( consoleHandle[cnInput], timeoutMs < 0 ? INFINITE : timeoutMs );
 }
 
-void THardwareInfo::stopEventWait()
+void THardwareInfo::interruptEventWait()
 {
+    // Not implemented. This would only be necessary if writing a multi-threaded
+    // application using Borland C++.
 }
 
 BOOL THardwareInfo::setClipboardText( TStringView text )

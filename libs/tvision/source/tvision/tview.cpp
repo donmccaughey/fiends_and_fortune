@@ -508,12 +508,12 @@ void TView::getEvent( TEvent& event )
 
 void TView::getEvent( TEvent& event, int timeoutMs )
 {
-    int saveTimeout = TProgram::eventTimeout;
-    TProgram::eventTimeout = timeoutMs;
+    int saveTimeout = TProgram::eventTimeoutMs;
+    TProgram::eventTimeoutMs = timeoutMs;
 
     getEvent( event );
 
-    TProgram::eventTimeout = saveTimeout;
+    TProgram::eventTimeoutMs = saveTimeout;
 }
 
 TRect TView::getExtent() const noexcept
@@ -725,12 +725,13 @@ void TView::putInFrontOf( TView *Target )
 
 void TView::select()
 {
-    if( ! (options & ofSelectable))
-	return;
-    if( (options & ofTopSelect) != 0 )
-        makeFirst();
-    else if( owner != 0 )
-        owner->setCurrent( this, normalSelect );
+    if( (options & ofSelectable) != 0 && owner != 0 )
+        {
+        if( (options & ofTopSelect) != 0 )
+            makeFirst();
+        else
+            owner->setCurrent( this, normalSelect );
+        }
 }
 
 void TView::setBounds( const TRect& bounds ) noexcept

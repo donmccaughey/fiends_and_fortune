@@ -173,12 +173,18 @@ inline constexpr const char _FAR & TStringView::back() const
 
 inline constexpr TStringView TStringView::substr(size_t pos) const
 {
-    return TStringView(str + pos, len - pos);
+    if (pos >= len)
+        return TStringView(str + len, 0);
+    else
+        return TStringView(str + pos, len - pos);
 }
 
 inline constexpr TStringView TStringView::substr(size_t pos, size_t n) const
 {
-    return TStringView(str + pos, n <= len - pos ? n : len - pos);
+    if (pos >= len)
+        return TStringView(str + len, 0);
+    else
+        return TStringView(str + pos, n <= len - pos ? n : len - pos);
 }
 
 inline constexpr const char _FAR * TStringView::begin() const
@@ -204,15 +210,15 @@ inline constexpr const char _FAR * TStringView::cend() const
 #if defined(TVISION_STL) && (__cplusplus >= 201703L || __cpp_lib_constexpr_char_traits)
 inline constexpr Boolean operator==(TStringView a, TStringView b)
 {
-    return a.size() == b.size()
-      ? std::char_traits<char>::compare(a.data(), b.data(), b.size()) == 0
-      : False;
+    if (a.size() == b.size())
+        return Boolean( std::char_traits<char>::compare(a.data(), b.data(), b.size()) == 0 );
+    return False;
 }
 #else
 inline Boolean operator==(TStringView a, TStringView b)
 {
     if (a.size() == b.size())
-        return Boolean( memcmp(a.data(), b.data(), b.size()) == 0 );
+        return Boolean( b.size() == 0 || memcmp(a.data(), b.data(), b.size()) == 0 );
     return False;
 }
 #endif

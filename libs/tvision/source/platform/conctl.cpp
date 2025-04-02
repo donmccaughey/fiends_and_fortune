@@ -1,9 +1,28 @@
 #define Uses_TPoint
 #include <tvision/tv.h>
 
-#include <internal/stdioctl.h>
+#include <internal/conctl.h>
 #include <internal/getenv.h>
-#include <initializer_list>
+
+namespace tvision
+{
+
+ConsoleCtl *ConsoleCtl::instance = nullptr;
+
+ConsoleCtl &ConsoleCtl::getInstance() noexcept
+{
+    if (!instance)
+        instance = new ConsoleCtl;
+    return *instance;
+}
+
+void ConsoleCtl::destroyInstance() noexcept
+{
+    delete instance;
+    instance = nullptr;
+}
+
+} // namespace tvision
 
 #ifdef _TV_UNIX
 
@@ -17,64 +36,52 @@
 namespace tvision
 {
 
-StdioCtl::StdioCtl() noexcept
+ConsoleCtl::ConsoleCtl() noexcept
 {
-    if (getEnv<TStringView>("TVISION_USE_STDIO").empty())
+    if ( getEnv<TStringView>("TVISION_USE_STDIO").empty()
+         && (files[0] = fopen("/dev/tty", "r")) != nullptr
+         && (files[1] = fopen("/dev/tty", "w")) != nullptr )
     {
-        for (int fd : {0, 1, 2})
-            if (auto *name = ::ttyname(fd))
-                if ((ttyfd = ::open(name, O_RDWR)) != -1)
-                    break;
-        // Last resort, although this may lead to 100% CPU usage because
-        // /dev/tty is not supported by macOS's poll(),
-        if (ttyfd == -1)
-            ttyfd = ::open("/dev/tty", O_RDWR);
-    }
-
-    if (ttyfd != -1)
-    {
-        for (auto &fd : fds)
-            fd = ttyfd;
-        int ttyfd2 = dup(ttyfd);
-        if (ttyfd2 == -1)
-            ttyfd2 = ttyfd; // This is wrong, but aborting is worse.
-        infile = ::fdopen(ttyfd, "r");
-        outfile = ::fdopen(ttyfd2, "w");
-        fcntl(ttyfd, F_SETFD, FD_CLOEXEC);
-        fcntl(ttyfd2, F_SETFD, FD_CLOEXEC);
+        ownsFiles = true;
+        fds[0] = fileno(files[0]);
+        fds[1] = fileno(files[1]);
+        // Subprocesses must not inherit these file descriptors.
+        for (int fd : fds)
+            fcntl(fd, F_SETFD, FD_CLOEXEC);
     }
     else
     {
-        for (int i = 0; i < 2; ++i)
-            fds[i] = i;
-        infile = stdin;
-        outfile = stdout;
+        for (FILE *file : files)
+            if (file != nullptr)
+                fclose(file);
+        fds[0] = STDIN_FILENO;
+        fds[1] = STDOUT_FILENO;
+        files[0] = stdin;
+        files[1] = stdout;
     }
 }
 
-StdioCtl::~StdioCtl()
+ConsoleCtl::~ConsoleCtl()
 {
-    if (ttyfd != -1)
-    {
-        ::fclose(infile);
-        ::fclose(outfile);
-    }
+    if (ownsFiles)
+        for (FILE *file : files)
+            fclose(file);
 }
 
-void StdioCtl::write(const char *data, size_t bytes) const noexcept
+void ConsoleCtl::write(const char *data, size_t bytes) const noexcept
 {
     fflush(fout());
     size_t written = 0;
     int r;
-    while ( 0 <= (r = ::write(out(), data + written, bytes - written)) &&
-            (written += r) < bytes )
-        ;
+    while ( written < bytes &&
+            0 <= (r = ::write(out(), data + written, bytes - written)) )
+        written += r;
 }
 
-TPoint StdioCtl::getSize() const noexcept
+TPoint ConsoleCtl::getSize() const noexcept
 {
     struct winsize w;
-    for (int fd : {in(), out()})
+    for (int fd : fds)
     {
         if (ioctl(fd, TIOCGWINSZ, &w) != -1)
         {
@@ -89,13 +96,13 @@ TPoint StdioCtl::getSize() const noexcept
     return {0, 0};
 }
 
-TPoint StdioCtl::getFontSize() const noexcept
+TPoint ConsoleCtl::getFontSize() const noexcept
 {
 #ifdef KDFONTOP
     struct console_font_op cfo {};
     cfo.op = KD_FONT_OP_GET;
     cfo.width = cfo.height = 32;
-    for (int fd : {in(), out()})
+    for (int fd : fds)
         if (ioctl(fd, KDFONTOP, &cfo) != -1)
             return {
                 max(cfo.width, 0),
@@ -103,7 +110,7 @@ TPoint StdioCtl::getFontSize() const noexcept
             };
 #endif
     struct winsize w;
-    for (int fd : {in(), out()})
+    for (int fd : fds)
         if (ioctl(fd, TIOCGWINSZ, &w) != -1)
             return {
                 w.ws_xpixel / max(w.ws_col, 1),
@@ -114,11 +121,11 @@ TPoint StdioCtl::getFontSize() const noexcept
 
 #ifdef __linux
 
-bool StdioCtl::isLinuxConsole() const noexcept
+bool ConsoleCtl::isLinuxConsole() const noexcept
 {
     // This is the same function used to get the Shift/Ctrl/Alt modifiers
     // on the console. It only succeeds if a console file descriptor is used.
-    for (int fd : {in(), out()})
+    for (int fd : fds)
     {
         char subcode = 6;
         if (ioctl(fd, TIOCLINUX, &subcode) != -1)
@@ -138,23 +145,27 @@ bool StdioCtl::isLinuxConsole() const noexcept
 namespace tvision
 {
 
-namespace stdioctl
+
+static bool isValid(HANDLE h)
 {
+    return h && h != INVALID_HANDLE_VALUE;
+}
 
-    static bool isValid(HANDLE h)
-    {
-        return h && h != INVALID_HANDLE_VALUE;
-    }
+static bool isConsole(HANDLE h)
+{
+    DWORD mode;
+    return GetConsoleMode(h, &mode);
+}
 
-    static bool isConsole(HANDLE h)
-    {
-        DWORD mode;
-        return GetConsoleMode(h, &mode);
-    }
+static COORD windowSize(SMALL_RECT srWindow)
+{
+    return {
+        short(srWindow.Right - srWindow.Left + 1),
+        short(srWindow.Bottom - srWindow.Top + 1),
+    };
+}
 
-} // namespace stdioctl
-
-StdioCtl::StdioCtl() noexcept
+ConsoleCtl::ConsoleCtl() noexcept
 {
     // The console can be accessed in two ways: through GetStdHandle() or through
     // CreateFile(). GetStdHandle() will be unable to return a console handle
@@ -172,7 +183,7 @@ StdioCtl::StdioCtl() noexcept
     //    still work.
     //
     // So, in order to find out if a console needs to be allocated, we
-    // check whether at least of the standard handles is a console. If none
+    // check whether at least one of the standard handles is a console. If none
     // of them is, we allocate a new console. Yes, this will always spawn a
     // console if all three standard handles are redirected, but this is not
     // a common use case.
@@ -190,7 +201,6 @@ StdioCtl::StdioCtl() noexcept
     // We also need to remember whether we allocated a console or not, so that
     // we can free it when tearing down. If we don't, weird things may happen.
 
-    using namespace stdioctl;
     static constexpr struct { DWORD std; int index; } channels[] =
     {
         {STD_INPUT_HANDLE, input},
@@ -251,8 +261,7 @@ StdioCtl::StdioCtl() noexcept
         // Force the screen buffer size to match the window size.
         // The Console API guarantees this, but some implementations
         // are not compliant (e.g. Wine).
-        sbInfo.dwSize.X = sbInfo.srWindow.Right - sbInfo.srWindow.Left + 1;
-        sbInfo.dwSize.Y = sbInfo.srWindow.Bottom - sbInfo.srWindow.Top + 1;
+        sbInfo.dwSize = windowSize(sbInfo.srWindow);
         SetConsoleScreenBufferSize(cn[activeOutput].handle, sbInfo.dwSize);
     }
     SetConsoleActiveScreenBuffer(cn[activeOutput].handle);
@@ -264,8 +273,41 @@ StdioCtl::StdioCtl() noexcept
         }
 }
 
-StdioCtl::~StdioCtl()
+ConsoleCtl::~ConsoleCtl()
 {
+    CONSOLE_SCREEN_BUFFER_INFO activeSbInfo {};
+    GetConsoleScreenBufferInfo(cn[activeOutput].handle, &activeSbInfo);
+    CONSOLE_SCREEN_BUFFER_INFO startupSbInfo {};
+    GetConsoleScreenBufferInfo(cn[startupOutput].handle, &startupSbInfo);
+
+    COORD activeWindowSize = windowSize(activeSbInfo.srWindow);
+    COORD startupWindowSize = windowSize(startupSbInfo.srWindow);
+
+    // Preserve the current window size.
+    if ( activeWindowSize.X != startupWindowSize.X ||
+         activeWindowSize.Y != startupWindowSize.Y )
+    {
+        // The buffer is not allowed to be smaller than the window, so enlarge
+        // it if necessary. But do not shrink it in the opposite case, to avoid
+        // loss of data.
+        COORD dwSize = startupSbInfo.dwSize;
+        if (dwSize.X < activeWindowSize.X)
+            dwSize.X = activeWindowSize.X;
+        if (dwSize.Y < activeWindowSize.Y)
+            dwSize.Y = activeWindowSize.Y;
+        SetConsoleScreenBufferSize(cn[startupOutput].handle, dwSize);
+        // Get the updated cursor position, in case it changed after the resize.
+        GetConsoleScreenBufferInfo(cn[startupOutput].handle, &startupSbInfo);
+        // Make sure the cursor is visible. If possible, show it in the bottom row.
+        SMALL_RECT srWindow = startupSbInfo.srWindow;
+        COORD dwCursorPosition = startupSbInfo.dwCursorPosition;
+        srWindow.Right = max(dwCursorPosition.X, activeWindowSize.X - 1);
+        srWindow.Left = srWindow.Right - (activeWindowSize.X - 1);
+        srWindow.Bottom = max(dwCursorPosition.Y, activeWindowSize.Y - 1);
+        srWindow.Top = srWindow.Bottom - (activeWindowSize.Y - 1);
+        SetConsoleWindowInfo(cn[startupOutput].handle, TRUE, &srWindow);
+    }
+
     SetConsoleActiveScreenBuffer(cn[startupOutput].handle);
     for (auto &c : cn)
         if (c.owning)
@@ -274,7 +316,7 @@ StdioCtl::~StdioCtl()
         FreeConsole();
 }
 
-void StdioCtl::write(const char *data, size_t bytes) const noexcept
+void ConsoleCtl::write(const char *data, size_t bytes) const noexcept
 {
     // Writing 0 bytes causes the cursor to become invisible for a short time
     // in old versions of the Windows console.
@@ -282,7 +324,7 @@ void StdioCtl::write(const char *data, size_t bytes) const noexcept
         WriteConsoleA(out(), data, bytes, nullptr, nullptr);
 }
 
-TPoint StdioCtl::getSize() const noexcept
+TPoint ConsoleCtl::getSize() const noexcept
 {
     CONSOLE_SCREEN_BUFFER_INFO sbInfo;
     auto &srWindow = sbInfo.srWindow;
@@ -294,7 +336,7 @@ TPoint StdioCtl::getSize() const noexcept
     return {0, 0};
 }
 
-TPoint StdioCtl::getFontSize() const noexcept
+TPoint ConsoleCtl::getFontSize() const noexcept
 {
     CONSOLE_FONT_INFO fontInfo;
     if (GetCurrentConsoleFont(out(), FALSE, &fontInfo))

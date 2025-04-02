@@ -5,12 +5,11 @@
 #define Uses_TEvent
 #include <tvision/tv.h>
 
-#include <ncurses.h>
+#include <internal/ncurdisp.h>
 #include <internal/ncursinp.h>
-#include <internal/terminal.h>
 #include <internal/getenv.h>
 #include <internal/utf8.h>
-#include <internal/stdioctl.h>
+#include <internal/conctl.h>
 #include <internal/codepage.h>
 #include <internal/constmap.h>
 #include <string>
@@ -256,24 +255,24 @@ static const auto fromCursesHighKey =
     { "kc2",        {{kbDown},          0} },
 });
 
-static class NcursesInputGetter : public InputGetter
+int NcursesInputGetter::get() noexcept
 {
-    int get() noexcept override
-    {
-        int k = wgetch(stdscr);
-        return k != ERR ? k : -1;
-    }
+    int k = wgetch(stdscr);
+    if (pendingCount > 0)
+        --pendingCount;
+    return k != ERR ? k : -1;
+}
 
-    void unget(int k) noexcept override
-    {
-        ungetch(k);
-    }
-} ncInputGetter;
+void NcursesInputGetter::unget(int k) noexcept
+{
+    if (ungetch(k) != ERR)
+        ++pendingCount;
+}
 
-NcursesInput::NcursesInput( StdioCtl &aIo, NcursesDisplay &,
+NcursesInput::NcursesInput( ConsoleCtl &aCon, NcursesDisplay &,
                             InputState &aState, bool mouse ) noexcept :
-    InputStrategy(aIo.in()),
-    io(aIo),
+    InputAdapter(aCon.in()),
+    con(aCon),
     state(aState),
     mouseEnabled(mouse)
 {
@@ -288,54 +287,41 @@ NcursesInput::NcursesInput( StdioCtl &aIo, NcursesDisplay &,
     // Make getch practically non-blocking. Some terminals may feed input slowly.
     // Note that we only risk blocking when reading multibyte characters
     // or parsing escape sequences.
-    wtimeout(stdscr, readTimeout);
+    wtimeout(stdscr, readTimeoutMs);
     /* Do not delay too much on ESC key presses, as the Alt modifier works well
      * in most modern terminals. Still, this delay helps ncurses distinguish
      * special key sequences, I believe. */
-    set_escdelay(getEnv<int>("TVISION_ESCDELAY", 10));
+    set_escdelay(getEnv<int>("ESCDELAY", 10));
 
-    TermIO::keyModsOn(io);
+    TermIO::keyModsOn(con);
     if (mouseEnabled)
-        TermIO::mouseOn(io);
+        TermIO::mouseOn(con);
 }
 
 NcursesInput::~NcursesInput()
 {
     if (mouseEnabled)
-        TermIO::mouseOff(io);
-    TermIO::keyModsOff(io, *this, state);
-    consumeUnprocessedInput();
+        TermIO::mouseOff(con);
+    TermIO::keyModsOff(con);
+    TermIO::consumeUnprocessedInput(con, in, state);
 }
 
-int NcursesInput::getButtonCount() noexcept
-{
-    // The exact button count is not really important. Turbo Vision
-    // only checks whether it is non-zero.
-    return mouseEnabled ? 2 : 0;
-}
-
-int NcursesInput::getch_nb() noexcept
+int NcursesInput::getChNb() noexcept
 {
     wtimeout(stdscr, 0);
-    int k = wgetch(stdscr);
-    wtimeout(stdscr, readTimeout);
+    int k = in.get();
+    wtimeout(stdscr, readTimeoutMs);
     return k;
 }
 
 bool NcursesInput::hasPendingEvents() noexcept
 {
-    int k = getch_nb();
-    if (k != ERR)
-    {
-        ungetch(k);
-        return true;
-    }
-    return false;
+    return in.pendingCount > 0;
 }
 
 bool NcursesInput::getEvent(TEvent &ev) noexcept
 {
-    GetChBuf buf(ncInputGetter);
+    GetChBuf buf(in);
     switch (TermIO::parseEvent(buf, ev, state))
     {
         case Rejected: buf.reject(); break;
@@ -343,7 +329,7 @@ bool NcursesInput::getEvent(TEvent &ev) noexcept
         case Ignored: return false;
     }
 
-    int k = wgetch(stdscr);
+    int k = in.get();
 
     if (k == KEY_RESIZE)
         return false; // Handled by SigwinchHandler.
@@ -377,7 +363,7 @@ bool NcursesInput::getEvent(TEvent &ev) noexcept
 
         if (Alt)
         {
-            ev.keyDown.controlKeyState |= kbAltShift;
+            ev.keyDown.controlKeyState |= kbLeftAlt;
             TermIO::normalizeKey(ev.keyDown);
         }
         if (state.bracketedPaste)
@@ -394,7 +380,7 @@ void NcursesInput::detectAlt(int keys[4], bool &Alt) noexcept
  * we check if another character has been received. If it has, we consider this
  * an Alt+Key combination. Of course, many other things sent by the terminal
  * begin with ESC, but ncurses already identifies most of them. */
-    int k = getch_nb();
+    int k = getChNb();
     if (k != ERR)
     {
         keys[0] = k;
@@ -423,7 +409,7 @@ void NcursesInput::readUtf8Char(int keys[4], int &num_keys) noexcept
  * have to predict the number of bytes it is composed of, then read as many. */
     num_keys += Utf8BytesLeft((char) keys[0]);
     for (int i = 1; i < num_keys; ++i)
-        if ( ERR == (keys[i] = wgetch(stdscr)) )
+        if ((keys[i] = in.get()) == -1)
         {
             num_keys = i;
             break;
@@ -472,7 +458,7 @@ bool NcursesInput::parseCursesMouse(TEvent &ev) noexcept
         for (auto &parseMouse : {TermIO::parseSGRMouse,
                                  TermIO::parseX10Mouse})
         {
-            GetChBuf buf(ncInputGetter);
+            GetChBuf buf(in);
             switch (parseMouse(buf, ev, state))
             {
                 case Rejected: buf.reject(); break;
@@ -482,20 +468,6 @@ bool NcursesInput::parseCursesMouse(TEvent &ev) noexcept
         }
         return false;
     }
-}
-
-void NcursesInput::consumeUnprocessedInput() noexcept
-{
-    // This may be useful if the terminal has sent us events right before we
-    // disabled keyboard and mouse extensions, or if we have been killed by
-    // a signal.
-    TEvent ev;
-    wtimeout(stdscr, 0);
-    auto begin = steady_clock::now();
-    while ( getEvent(ev) &&
-            steady_clock::now() - begin <= milliseconds(readTimeout) )
-        ;
-    wtimeout(stdscr, readTimeout);
 }
 
 } // namespace tvision

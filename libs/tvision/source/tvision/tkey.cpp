@@ -256,7 +256,7 @@ TKey::TKey(ushort keyCode, ushort shiftState) noexcept
     const TKeyCodeLookupEntry *entry = 0;
     if (keyCode <= kbCtrlZ || isRawCtrlKey(scanCode, charCode))
         entry = &ctrlKeyLookup[charCode];
-    else if ((keyCode & 0xFF) == 0)
+    else if (charCode == 0)
     {
         if (scanCode < extKeyLookupSize)
             entry = &extKeyLookup[scanCode];

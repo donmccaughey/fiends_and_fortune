@@ -27,57 +27,32 @@
 #pragma argsused
 TTextDevice::TTextDevice( const TRect& bounds,
                           TScrollBar *aHScrollBar,
-                          TScrollBar *aVScrollBar,
-                          ushort aBufSize ) noexcept :
-    TScroller(bounds,aHScrollBar,aVScrollBar)
+                          TScrollBar *aVScrollBar ) noexcept :
+    TScroller(bounds, aHScrollBar, aVScrollBar)
 {
-    // Borland's streambuf::sputn is wrong and never invokes overflow().
-    // So leave the device unbuffered when compiling with Borland C++.
-#ifndef __BORLANDC__
-    if( aBufSize )
-        {
-        char *buffer = new char[aBufSize];
-        setp( buffer, buffer + aBufSize );
-        }
-    else
-#endif
-        {
-        setp( 0, 0 );
-        }
-}
-
-TTextDevice::~TTextDevice()
-{
-    delete[] pbase();
 }
 
 int TTextDevice::overflow( int c )
 {
     if( c != EOF )
         {
-        if( pptr() > pbase() )
-            {
-            sync();
-            sputc(c);
-            }
-        else
-            {
-            char b = c;
-            do_sputn( &b, 1 );
-            }
+        char b = c;
+        do_sputn( &b, 1 );
         }
     return 1;
 }
 
-int TTextDevice::sync()
+#if !defined( __BORLANDC__ )
+// The 'xsputn' method in modern STL is the equivalent of 'do_sputn' in
+// Borland's RTL. We must invoke 'do_sputn' here in order to replicate
+// the original behaviour. Otherwise, the default 'xsputn' will fall back on
+// 'overflow' and the inserted characters will be processed one by one,
+// which in the case of TTerminal may lead to performance issues.
+std::streamsize TTextDevice::xsputn(const char *s, std::streamsize count)
 {
-    if( pptr() > pbase() )
-        {
-        do_sputn( pbase(), pptr() - pbase() );
-        setp( pbase(), epptr() );
-        }
-    return 0;
+    return (std::streamsize) do_sputn(s, (int) count);
 }
+#endif
 
 TTerminal::TTerminal( const TRect& bounds,
                       TScrollBar *aHScrollBar,
@@ -124,45 +99,32 @@ Boolean TTerminal::canInsert( ushort amount )
     return Boolean( queBack > T );
 }
 
-#ifdef __FLAT__
-
-#define DRAW_DYNAMIC_STR 1
-#define resizeStr(_len) \
-    slen = _len; \
-    if (slen > scap) { \
-        char *ss = (char *) ::realloc(s, (scap = max(slen, 2*scap))); \
-        if (ss) \
-            s = ss; \
-        else { \
-            ::free(s); \
-            return; \
-        } \
-    }
-
+static void discardPossiblyTruncatedCharsAtEnd( const char (&s)[256],
+                                                size_t &sLen )
+{
+#if !defined( __BORLANDC__ )
+    if( sLen == sizeof(s) )
+        {
+        sLen = 0;
+        while( sLen < sizeof(s) - (maxCharSize - 1) )
+            sLen += TText::next( TStringView( &s[sLen], sizeof(s) - sLen ) );
+        }
 #else
-
-#define DRAW_DYNAMIC_STR 0
-#define resizeStr(_len) \
-    slen = _len;
-
-#endif // __FLAT__
+    (void) s, (void) sLen;
+#endif
+}
 
 void TTerminal::draw()
 {
-#if DRAW_DYNAMIC_STR
-    size_t scap = 256;
-    char *s = (char*) ::malloc(scap);
-    TScreenCell *_b = (TScreenCell*) alloca(size.x*sizeof(TScreenCell));
-#else
+    TDrawBuffer b;
     char s[256];
-    TScreenCell _b[maxViewWidth];
-#endif
-    size_t slen = 0;
-    TSpan<TScreenCell> b(_b, size.x);
-    short  i;
-    ushort begLine, endLine;
+    size_t sLen;
+    int x, y;
+    ushort begLine, endLine, linePos;
     ushort bottomLine;
     TColorAttr color = mapColor(1);
+
+    setCursor( -1, -1 );
 
     bottomLine = size.y + delta.y;
     if( limit.y > bottomLine )
@@ -174,54 +136,61 @@ void TTerminal::draw()
         endLine = queFront;
 
     if( limit.y > size.y )
-        i = size.y - 1;
+        y = size.y - 1;
     else
         {
-        for( i = limit.y; i <= size.y - 1; i++ )
-            writeChar(0, i, ' ', 1, size.x);
-        i =  limit.y -  1;
+        for( y = limit.y; y < size.y; y++ )
+            writeChar(0, y, ' ', 1, size.x);
+        y = limit.y - 1;
         }
 
-    for( ; i >= 0; i-- )
+    for( ; y >= 0; y-- )
         {
+        x = 0;
         begLine = prevLines(endLine, 1);
-        if (endLine >= begLine)
+        linePos = begLine;
+        while( linePos != endLine )
             {
-            int T = int( endLine - begLine );
-            resizeStr(T);
-            memcpy( s, &buffer[begLine], T );
-            }
-        else
-            {
-            int T = int( bufSize - begLine);
-            resizeStr(T + endLine);
-            memcpy( s, &buffer[begLine], T );
-            memcpy( s+T, buffer, endLine );
+            if( endLine >= linePos )
+                {
+                size_t cpyLen = min( endLine - linePos, sizeof(s) );
+                memcpy( s, &buffer[linePos], cpyLen );
+                sLen = cpyLen;
+                }
+            else
+                {
+                size_t fstCpyLen = min( bufSize - linePos, sizeof(s) );
+                size_t sndCpyLen = min( endLine, sizeof(s) - fstCpyLen );
+                memcpy( s, &buffer[linePos], fstCpyLen );
+                memcpy( &s[fstCpyLen], buffer, sndCpyLen );
+                sLen = fstCpyLen + sndCpyLen;
+                }
+
+            discardPossiblyTruncatedCharsAtEnd(s, sLen);
+            if( linePos >= bufSize - sLen )
+                linePos = sLen - (bufSize - linePos);
+            else
+                linePos += sLen;
+
+            x += b.moveStr( x, TStringView( s, sLen ), color );
             }
 
-        int w = TText::drawStr(b, TStringView(s, slen), color);
-        TText::drawChar(b.subspan(w), ' ', color);
-        writeBuf( 0, i, size.x, 1, b.data() );
+        b.moveChar( x, ' ', color, max( size.x - x, 0 ) );
+        writeBuf( 0, y, size.x, 1, b );
+        // Draw the cursor when this is the last line.
+        if( endLine == queFront )
+            setCursor( x, y );
         endLine = begLine;
         bufDec( endLine );
         }
-#if DRAW_DYNAMIC_STR
-    ::free(s);
-#endif
 }
-
-#undef DRAW_DYNAMIC_STR
-#undef resizeStr
 
 ushort TTerminal::nextLine( ushort pos )
 {
+    while( pos != queFront && buffer[pos] != '\n' )
+        bufInc( pos );
     if( pos != queFront )
-        {
-        while( buffer[pos] != '\n' && pos != queFront )
-            bufInc(pos);
-        if( pos != queFront )
-            bufInc( pos );
-        }
+        bufInc( pos );
     return pos;
 }
 
@@ -229,6 +198,13 @@ int TTerminal::do_sputn( const char *s, int count )
 {
     ushort screenLines = limit.y;
     ushort i;
+
+    if( count > bufSize - 1 )
+        {
+        s += count - (bufSize - 1);
+        count = bufSize - 1;
+        }
+
     for( i = 0; i < count; i++ )
         if( s[i] == '\n' )
             screenLines++;
@@ -236,7 +212,8 @@ int TTerminal::do_sputn( const char *s, int count )
     while( !canInsert( count ) )
         {
         queBack = nextLine( queBack );
-        screenLines--;
+        if( screenLines > 1 )
+            screenLines--;
         }
 
     if( queFront + count >= bufSize )
@@ -258,12 +235,6 @@ int TTerminal::do_sputn( const char *s, int count )
     scrollTo( 0, screenLines + 1 );
     drawLock--;
 
-    i = prevLines( queFront, 1 );
-    if( i <= queFront )
-        i = queFront - i;
-    else
-        i = bufSize - (i - queFront);
-    setCursor( i, screenLines - delta.y - 1 );
     drawView();
     return count;
 }

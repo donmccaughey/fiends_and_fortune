@@ -5,10 +5,7 @@
 #include <internal/platform.h>
 #include <internal/codepage.h>
 #include <internal/getenv.h>
-#include <internal/cursor.h>
 #include <chrono>
-using std::chrono::microseconds;
-using std::chrono::steady_clock;
 
 #ifdef _MSC_VER
 #define __builtin_expect(x, y) x
@@ -16,8 +13,6 @@ using std::chrono::steady_clock;
 
 namespace tvision
 {
-
-DisplayBuffer *DisplayBuffer::instance = 0;
 
 DisplayBuffer::DisplayBuffer() noexcept :
     // This could be checked at runtime, but for now this is as much as I know.
@@ -27,24 +22,17 @@ DisplayBuffer::DisplayBuffer() noexcept :
     wideOverlapping(true)
 #endif
 {
-    instance = this;
     // Check if FPS shall be limited.
     int fps = getEnv<int>("TVISION_MAX_FPS", defaultFPS);
     limitFPS = (fps > 0);
     if (limitFPS)
-        flushDelay = microseconds((int) 1e6/fps);
+        flushDelay = std::chrono::microseconds((int) 1e6/fps);
 }
 
-DisplayBuffer::~DisplayBuffer()
+TScreenCell *DisplayBuffer::reloadScreenInfo(DisplayAdapter &display) noexcept
 {
-    instance = 0;
-}
-
-TScreenCell *DisplayBuffer::reloadScreenInfo(DisplayStrategy &display) noexcept
-{
-    display.reloadScreenInfo();
-    size = display.getScreenSize();
-    caretSize = display.getCaretSize();
+    size = display.reloadScreenInfo();
+    caretSize = -1;
     resizeBuffer();
     return buffer.data();
 }
@@ -61,14 +49,14 @@ void DisplayBuffer::resizeBuffer() noexcept
     rowDamage.resize(size.y, {INT_MAX, INT_MIN});
 }
 
-void DisplayBuffer::clearScreen(DisplayStrategy &display) noexcept
+void DisplayBuffer::clearScreen(DisplayAdapter &display) noexcept
 {
     display.clearScreen();
-    display.lowlevelFlush();
+    display.flush();
     resizeBuffer();
 }
 
-void DisplayBuffer::redrawScreen(DisplayStrategy &display) noexcept
+void DisplayBuffer::redrawScreen(DisplayAdapter &display) noexcept
 {
     screenTouched = true;
     lastFlush = {};
@@ -86,18 +74,27 @@ void DisplayBuffer::setCaretSize(int size) noexcept
 void DisplayBuffer::setCaretPosition(int x, int y) noexcept
 {
     caretPosition = {x, y};
-    caretMoved = true;
+    caretOrCursorChanged = true;
 }
 
 void DisplayBuffer::screenWrite(int x, int y, TScreenCell *buf, int len) noexcept
 {
-    if (inBounds(x, y) && len)
+    if (inBounds(x, y) && len > 0)
     {
         len = min(len, size.x - x);
-        // Since 'buffer' is used as 'TScreen::screenBuffer' and is written to
-        // directly, we can avoid a copy operation in most cases.
-        if (buf < buffer.data() || buf >= buffer.data() + buffer.size())
-            memcpy(&buffer[y*size.x + x], buf, len*sizeof(TScreenCell));
+        TScreenCell *dst = &buffer[y*size.x + x];
+        // Since 'buffer' is also used as 'TScreen::screenBuffer' and is
+        // directly written into by 'TView::writeView', we can avoid a copy
+        // operation in most cases because the data is already there.
+        if (buf == dst)
+            ; // No need to copy anything.
+        // But since 'TScreen::screenBuffer' is public, it is also possible
+        // (theoretically) that the source and destination regions overlap each
+        // other. Turbo Vision does not do this, but handle this case anyway.
+        else if (max(buf, dst) <= min(&buf[len], &dst[len]))
+            memmove(dst, buf, len*sizeof(TScreenCell)); // Copy between overlapping regions.
+        else
+            memcpy(dst, buf, len*sizeof(TScreenCell));
 
         setDirty(x, y, len);
         screenTouched = true;
@@ -119,77 +116,112 @@ bool DisplayBuffer::timeToFlush() noexcept
     // Avoid flushing faster than the maximum FPS.
     if (limitFPS)
     {
-        auto now = steady_clock::now();
-        if (now - lastFlush >= flushDelay)
+        auto now = Clock::now();
+        auto flushTime = lastFlush + flushDelay;
+        if (flushTime <= now)
+        {
             lastFlush = now;
+            pendingFlush = TimePoint();
+        }
         else
+        {
+            pendingFlush = flushTime;
             return false;
+        }
     }
     return true;
 }
 
-void DisplayBuffer::drawCursors() noexcept
+int DisplayBuffer::timeUntilPendingFlushMs() noexcept
 {
-    for (auto* cursor : cursors)
-        if (cursor->isVisible())
-        {
-            auto pos = cursor->getPos();
-            auto x = pos.x, y = pos.y;
-            if (inBounds(x, y))
-            {
-                auto *cell = &buffer[y*size.x + x];
-                if ( cell->_ch.isWideCharTrail() &&
-                     x > 0 && (cell - 1)->isWide() )
-                    --cell, --x;
-                cursor->apply(cell->attr);
-                setDirty(x, y, 1);
-            }
-        }
+    using namespace std::chrono;
+    if (pendingFlush == TimePoint())
+        return -1;
+    auto now = Clock::now();
+    if (pendingFlush < now)
+        return 0;
+    return duration_cast<milliseconds>(pendingFlush - now).count();
 }
 
-void DisplayBuffer::undrawCursors() noexcept
+void DisplayBuffer::setCursorPosition(int x, int y) noexcept
 {
-    for (const auto* cursor : cursors)
-        if (cursor->isVisible())
+    TPoint pos {x, y};
+    if (cursorVisible && cursorPosition != pos)
+        caretOrCursorChanged = true;
+    cursorPosition = pos;
+}
+
+void DisplayBuffer::setCursorVisibility(bool visible) noexcept
+{
+    if (cursorVisible != visible)
+        caretOrCursorChanged = true;
+    cursorVisible = visible;
+}
+
+static TColorAttr negateAttribute(TColorAttr attr) noexcept
+{
+    return attr.toBIOS() ^ 0x77;
+}
+
+void DisplayBuffer::drawCursor() noexcept
+{
+    if (cursorVisible)
+    {
+        auto x = cursorPosition.x, y = cursorPosition.y;
+        if (inBounds(x, y))
         {
-            auto pos = cursor->getPos();
-            auto x = pos.x, y = pos.y;
-            if (inBounds(x, y))
-            {
-                auto *cell = &buffer[y*size.x + x];
-                if ( cell->_ch.isWideCharTrail() &&
-                     x > 0 && (cell - 1)->isWide() )
-                    --cell, --x;
-                cursor->restore(cell->attr);
-                setDirty(x, y, 1);
-            }
+            auto *cell = &buffer[y*size.x + x];
+            if ( cell->_ch.isWideCharTrail() &&
+                    x > 0 && (cell - 1)->isWide() )
+                --cell, --x;
+            attrUnderCursor = cell->attr;
+            cell->attr = negateAttribute(cell->attr);
+            setDirty(x, y, 1);
         }
+    }
+}
+
+void DisplayBuffer::undrawCursor() noexcept
+{
+    if (cursorVisible)
+    {
+        auto x = cursorPosition.x, y = cursorPosition.y;
+        if (inBounds(x, y))
+        {
+            auto *cell = &buffer[y*size.x + x];
+            if ( cell->_ch.isWideCharTrail() &&
+                    x > 0 && (cell - 1)->isWide() )
+                --cell, --x;
+            cell->attr = attrUnderCursor;
+            setDirty(x, y, 1);
+        }
+    }
 }
 
 bool DisplayBuffer::needsFlush() const noexcept
 {
-    return screenTouched || caretMoved || caretSize != newCaretSize;
+    return screenTouched || caretOrCursorChanged || caretSize != newCaretSize;
 }
 
 namespace
 {
-void flushScreenAlgorithm(DisplayBuffer &, DisplayStrategy &) noexcept;
+void flushScreenAlgorithm(DisplayBuffer &, DisplayAdapter &) noexcept;
 }
 
-void DisplayBuffer::flushScreen(DisplayStrategy &display) noexcept
+void DisplayBuffer::flushScreen(DisplayAdapter &display) noexcept
 {
     if (needsFlush() && timeToFlush())
     {
-        drawCursors();
+        drawCursor();
         flushScreenAlgorithm(*this, display);
         if (caretPosition.x != -1)
-            display.lowlevelMoveCursor(caretPosition.x, caretPosition.y);
-        undrawCursors();
+            display.setCaretPosition(caretPosition);
+        undrawCursor();
         if (caretSize != newCaretSize)
-            display.lowlevelCursorSize(newCaretSize);
-        display.lowlevelFlush();
+            display.setCaretSize(newCaretSize);
+        display.flush();
         screenTouched = false;
-        caretMoved = false;
+        caretOrCursorChanged = false;
         caretSize = newCaretSize;
     }
 }
@@ -197,14 +229,14 @@ void DisplayBuffer::flushScreen(DisplayStrategy &display) noexcept
 inline void DisplayBuffer::validateCell(TScreenCell &cell) const noexcept
 {
     auto &ch = cell._ch;
-    if (!ch[1]) // size 1
+    if (ch[1] == '\0') // size 1
     {
         uchar c = ch[0];
         if (c == '\0')
             ch[0] = ' ';
         else if (c < ' ' || 0x7F <= c)
             // Translate from codepage as fallback.
-            ch.moveInt(CpTranslator::toUtf8Int(c));
+            ch.moveMultiByteChar(CpTranslator::toPackedUtf8(c));
     }
 }
 
@@ -217,9 +249,8 @@ namespace
 struct FlushScreenAlgorithm
 {
     DisplayBuffer &disp;
-    DisplayStrategy &display;
+    DisplayAdapter &display;
     TPoint size;
-    TPoint last;
     int x, y, rowOffs;
     TScreenCell *cell;
     DisplayBuffer::Range damage;
@@ -275,7 +306,7 @@ inline bool FlushScreenAlgorithm::wideCanOverlap() const noexcept
     return disp.wideOverlapping;
 }
 
-inline void flushScreenAlgorithm(DisplayBuffer &disp, DisplayStrategy &display) noexcept
+inline void flushScreenAlgorithm(DisplayBuffer &disp, DisplayAdapter &display) noexcept
 {
     FlushScreenAlgorithm {disp, display}.run();
 }
@@ -283,7 +314,6 @@ inline void flushScreenAlgorithm(DisplayBuffer &disp, DisplayStrategy &display) 
 inline void FlushScreenAlgorithm::run() noexcept
 {
     size = disp.size;
-    last = {INT_MIN, INT_MIN};
     rowOffs = 0;
     for (y = 0; y < size.y; ++y, rowOffs += size.x)
     {
@@ -340,24 +370,15 @@ inline void FlushScreenAlgorithm::writeCell() noexcept
 inline void FlushScreenAlgorithm::writeSpace() noexcept
 {
     TCellChar ch;
-    ch.moveInt(' ');
+    ch.moveChar(' ');
     writeCell(ch, cell->attr, 0);
 }
 
-inline void FlushScreenAlgorithm::writeCell( const TCellChar &Char,
-                                             const TColorAttr &Attr,
+inline void FlushScreenAlgorithm::writeCell( const TCellChar &ch,
+                                             const TColorAttr &attr,
                                              bool wide ) noexcept
 {
-    // 'last' is the last written cell occupied by text.
-    // That is, the hardware cursor is located at {last.x + 1, last.y}.
-
-    if (y != last.y)
-        display.lowlevelMoveCursor(x, y);
-    else if (x != last.x + 1)
-        display.lowlevelMoveCursorX(x, y);
-
-    display.lowlevelWriteChars(Char.getText(), Attr);
-    last = {x + wide, y};
+    display.writeCell({x, y}, ch.getText(), attr, wide);
 }
 
 void FlushScreenAlgorithm::handleWideCharSpill() noexcept

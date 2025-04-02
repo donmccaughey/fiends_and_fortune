@@ -3,9 +3,9 @@
 
 #include <tvision/tv.h>
 #include <compat/windows/windows.h>
-#include <internal/stdioctl.h>
-#include <internal/termdisp.h>
-#include <internal/terminal.h>
+#include <internal/platform.h>
+#include <internal/termio.h>
+#include <internal/ansiwrit.h>
 
 namespace tvision
 {
@@ -15,26 +15,29 @@ void getWin32Mouse(const MOUSE_EVENT_RECORD &, TEvent &, InputState &) noexcept;
 
 #ifdef _WIN32
 
-class Win32Input;
-class Win32Display;
+class ConsoleCtl;
 
-class Win32ConsoleStrategy final : public ConsoleStrategy
+class Win32ConsoleAdapter final : public ConsoleAdapter
 {
-    StdioCtl &io;
+    ConsoleCtl &con;
+    InputAdapter &input;
+    DWORD startupMode;
     UINT cpInput, cpOutput;
 
-    Win32ConsoleStrategy( StdioCtl &aIo,
-                          UINT cpInput, UINT cpOutput,
-                          DisplayStrategy &aDisplay,
-                          InputStrategy &aInput ) noexcept :
-        ConsoleStrategy(aDisplay, aInput, {&aInput}),
-        io(aIo),
+    Win32ConsoleAdapter( ConsoleCtl &aCon, DWORD aStartupMode,
+                         UINT cpInput, UINT cpOutput,
+                         DisplayAdapter &aDisplay,
+                         InputAdapter &aInput ) noexcept :
+        ConsoleAdapter(aDisplay, {&aInput}),
+        con(aCon),
+        input(aInput),
+        startupMode(aStartupMode),
         cpInput(cpInput),
         cpOutput(cpOutput)
     {
     }
 
-    ~Win32ConsoleStrategy();
+    ~Win32ConsoleAdapter();
 
     bool isAlive() noexcept override;
     bool setClipboardText(TStringView) noexcept override;
@@ -42,13 +45,13 @@ class Win32ConsoleStrategy final : public ConsoleStrategy
 
 public:
 
-    static Win32ConsoleStrategy &create() noexcept;
+    static Win32ConsoleAdapter &create() noexcept;
     static int charWidth(uint32_t) noexcept;
 };
 
-class Win32Input final : public InputStrategy
+class Win32Input final : public InputAdapter
 {
-    StdioCtl &io;
+    ConsoleCtl &con;
     InputState state;
 
     bool getEvent(const INPUT_RECORD &, TEvent &ev) noexcept;
@@ -56,48 +59,43 @@ class Win32Input final : public InputStrategy
 
 public:
 
-    // The lifetime of 'aIo' must exceed that of 'this'.
-    Win32Input(StdioCtl &aIo) noexcept :
-        InputStrategy(aIo.in()),
-        io(aIo)
-    {
-    }
+    // The lifetime of 'con' must exceed that of 'this'.
+    Win32Input(ConsoleCtl &aCon) noexcept;
 
     bool getEvent(TEvent &ev) noexcept override;
-    int getButtonCount() noexcept override;
-    void cursorOn() noexcept override;
-    void cursorOff() noexcept override;
 };
 
-class Win32Display : public TerminalDisplay
+class Win32Display final : public DisplayAdapter
 {
-    TPoint size {};
-    uchar lastAttr {'\x00'};
-    std::vector<char> buf;
-    CONSOLE_FONT_INFO lastFontInfo {};
-
 public:
 
-    // The lifetime of 'aIo' must exceed that of 'this'.
-    Win32Display(StdioCtl &aIo) noexcept :
-        TerminalDisplay(aIo)
-    {
-        initCapabilities();
-    }
+    // The lifetime of 'con' must exceed that of 'this'.
+    Win32Display(ConsoleCtl &con, bool useAnsi) noexcept;
+    ~Win32Display();
 
-    void reloadScreenInfo() noexcept override;
-    TPoint getScreenSize() noexcept override;
-    int getCaretSize() noexcept override;
+private:
+
+    ConsoleCtl &con;
+
+    TPoint size {};
+    CONSOLE_FONT_INFO lastFontInfo {};
+
+    AnsiScreenWriter *ansiScreenWriter {nullptr};
+
+    TPoint caretPos {-1, -1};
+    uchar lastAttr {'\x00'};
+    std::vector<char> buf;
+
+    TPoint reloadScreenInfo() noexcept override;
+
     int getColorCount() noexcept override;
+    TPoint getFontSize() noexcept override;
+
+    void writeCell(TPoint, TStringView, TColorAttr, bool) noexcept override;
+    void setCaretPosition(TPoint) noexcept override;
+    void setCaretSize(int) noexcept override;
     void clearScreen() noexcept override;
-    bool screenChanged() noexcept override;
-
-protected:
-
-    void lowlevelWriteChars(TStringView chars, TColorAttr attr) noexcept override;
-    void lowlevelMoveCursor(uint x, uint y) noexcept override;
-    void lowlevelCursorSize(int size) noexcept override;
-    void lowlevelFlush() noexcept override;
+    void flush() noexcept override;
 };
 
 #endif // _WIN32

@@ -31,42 +31,56 @@
 
 #if !defined( __CTYPE_H )
 #include <ctype.h>
-#endif	// __CTYPE_H
+#endif  // __CTYPE_H
 
 #if !defined( __STRING_H )
 #include <string.h>
 #endif  // __STRING_H
-
-#if !defined( __STRSTREAM_H )
-#include <strstrea.h>
-#endif
 
 TChDirDialog::TChDirDialog( ushort opts, ushort histId ) noexcept :
     TWindowInit( &TChDirDialog::initFrame ),
     TDialog( TRect( 16, 2, 64, 20 ), changeDirTitle )
 {
     options |= ofCentered;
+    flags |= wfGrow;
 
-    dirInput = new TInputLine( TRect( 3, 3, 30, 4 ), 68 );
+    dirInput = new TInputLine( TRect( 3, 3, 42, 4 ), MAXPATH-1 );
+    dirInput->growMode = gfGrowHiX;
     insert( dirInput );
     insert( new TLabel( TRect( 2, 2, 17, 3 ), dirNameText, dirInput ));
-    insert( new THistory( TRect( 30, 3, 33, 4 ), dirInput, histId ) );
+    THistory *history = new THistory( TRect( 42, 3, 45, 4 ), dirInput, histId );
+    history->growMode = gfGrowLoX | gfGrowHiX;
+    insert( history );
 
     TScrollBar *sb = new TScrollBar( TRect( 32, 6, 33, 16 ) );
     insert( sb );
     dirList = new TDirListBox( TRect( 3, 6, 32, 16 ), sb );
+    dirList->growMode = gfGrowHiX | gfGrowHiY;
     insert( dirList );
     insert( new TLabel( TRect( 2, 5, 17, 6 ), dirTreeText, dirList ) );
 
     okButton = new TButton( TRect( 35, 6, 45, 8 ), okText, cmOK, bfDefault );
+    okButton->growMode = gfGrowLoX | gfGrowHiX;
     insert( okButton );
+
     chDirButton = new TButton( TRect( 35, 9, 45, 11 ), chdirText, cmChangeDir, bfNormal );
+    chDirButton->growMode = gfGrowLoX | gfGrowHiX;
     insert( chDirButton );
-    insert( new TButton( TRect( 35, 12, 45, 14 ), revertText, cmRevert, bfNormal ) );
+
+    TButton *revertButton = new TButton( TRect( 35, 12, 45, 14 ), revertText, cmRevert, bfNormal );
+    revertButton->growMode = gfGrowLoX | gfGrowHiX;
+    insert( revertButton );
+
     if( (opts & cdHelpButton) != 0 )
-        insert( new TButton( TRect( 35, 15, 45, 17 ), helpText, cmHelp, bfNormal ) );
+        {
+        TButton *helpButton = new TButton( TRect( 35, 15, 45, 17 ), helpText, cmHelp, bfNormal );
+        helpButton->growMode = gfGrowLoX | gfGrowHiX;
+        insert( helpButton );
+        }
+
     if( (opts & cdNoLoadDir) == 0 )
         setUpDialog();
+
     selectNext( False );
 }
 
@@ -84,6 +98,13 @@ void TChDirDialog::shutDown()
     TDialog::shutDown();
 }
 
+void TChDirDialog::sizeLimits( TPoint& min, TPoint& max )
+{
+    TDialog::sizeLimits( min, max );
+    min.x = 48;
+    min.y = 18;
+}
+
 void TChDirDialog::getData( void * )
 {
 }
@@ -97,6 +118,15 @@ static void trimEndSeparator(char *path)
         path[len-1] = EOS;
 }
 
+static void getCurrentDir( char *dir )
+{
+    getCurDir( dir );
+#if defined( _TV_UNIX )
+    // Remove drive letter.
+    memmove(dir, dir + 2, strlen(dir) - 2 + 1);
+#endif
+}
+
 void TChDirDialog::handleEvent( TEvent& event )
 {
     TDialog::handleEvent( event );
@@ -108,7 +138,7 @@ void TChDirDialog::handleEvent( TEvent& event )
             switch( event.message.command )
                 {
                 case cmRevert:
-                    getCurDir( curDir );
+                    getCurrentDir( curDir );
                     break;
                 case cmChangeDir:
                     {
@@ -116,7 +146,7 @@ void TChDirDialog::handleEvent( TEvent& event )
                     strcpy( curDir, p->dir() );
                     if( strcmp( curDir, drivesText ) == 0 )
                         break;
-                    else if( driveValid( curDir[0] ) )
+                    else if( isSeparator( curDir[0] ) || driveValid( curDir[0] ) )
                         {
                         int len = strlen( curDir );
                         if( !isSeparator(curDir[len-1]) )
@@ -131,7 +161,7 @@ void TChDirDialog::handleEvent( TEvent& event )
                 }
             dirList->newDirectory( curDir );
             trimEndSeparator( curDir );
-            strcpy( dirInput->data, curDir );
+            strnzcpy( dirInput->data, curDir, dirInput->maxLen + 1 );
             dirInput->drawView();
             dirList->select();
             clearEvent( event );
@@ -150,12 +180,12 @@ void TChDirDialog::setUpDialog()
     if( dirList != 0 )
         {
         char curDir[MAXPATH];
-        getCurDir( curDir );
+        getCurrentDir( curDir );
         dirList->newDirectory( curDir );
         if( dirInput != 0 )
             {
             trimEndSeparator( curDir );
-            strcpy( dirInput->data, curDir );
+            strnzcpy( dirInput->data, curDir, dirInput->maxLen + 1 );
             dirInput->drawView();
             }
         }
@@ -164,7 +194,7 @@ void TChDirDialog::setUpDialog()
 static int changeDir( const char *path )
 {
     if( path[1] == ':' )
-        setdisk( toupper(path[0]) - 'A' );
+        setdisk( (char) toupper((uchar) path[0]) - 'A' );
     return chdir( path );
 }
 
@@ -174,18 +204,14 @@ Boolean TChDirDialog::valid( ushort command )
         return True;
 
     char path[MAXPATH];
-    strcpy( path, dirInput->data );
+    strnzcpy( path, dirInput->data, MAXPATH );
     fexpand( path );
 
     trimEndSeparator( path );
 
     if( changeDir( path ) != 0 )
         {
-        char buf[256];
-        ostrstream os( buf, sizeof( buf )-1 );
-        os << invalidText << ": '" << path << "'." << ends;
-        buf[sizeof( buf )-1] = '\0';
-        messageBox( buf, mfError | mfOKButton );
+        messageBox( mfError | mfOKButton, "%s: '%s'.", invalidText, path );
         return False;
         }
     return True;

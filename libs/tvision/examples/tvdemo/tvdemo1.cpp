@@ -55,8 +55,6 @@
 //   opening.
 //
 
-extern TPoint shadowSize;
-
 int main(int argc, char **argv)
 {
     TVDemo *demoProgram = new TVDemo(argc, argv);
@@ -90,9 +88,9 @@ TVDemo::TVDemo( int argc, char **argv ) :
     insert(clock);
 
     r = getExtent();                            // Create the heap view.
-    r.a.x = r.b.x - 23; r.b.x = r.a.x + 13; r.b.y = r.a.y + 1;
+    r.a.x = r.b.x - 13;     r.a.y = r.b.y - 1;
     heap = new THeapView( r );
-    heap->growMode = gfGrowLoX | gfGrowHiX;
+    heap->growMode = gfGrowAll;
     insert(heap);
 
     while (--argc > 0)                              // Display files specified
@@ -154,14 +152,10 @@ void TVDemo::getEvent(TEvent &event)
                 helpInUse = False;
                 }
             else if (event.message.command == cmVideoMode)
-            {
+                {
                 int newMode = TScreen::screenMode ^ TDisplay::smFont8x8;
-                if ((newMode & TDisplay::smFont8x8) != 0)
-                    shadowSize.x = 1;
-                else
-                    shadowSize.x = 2;
                 setScreenMode((ushort)newMode);
-            }
+                }
             break;
         case evMouseDown:
             if (event.mouse.buttons == mbRightButton)

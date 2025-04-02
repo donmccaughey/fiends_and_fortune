@@ -10,38 +10,46 @@
 #define Uses_TEvent
 #include <tvision/tv.h>
 
+#include <internal/termio.h>
+
 namespace tvision
 {
 
 class NcursesDisplay;
-struct InputState;
 
-class NcursesInput : public InputStrategy
+struct NcursesInputGetter final : public InputGetter
+{
+    size_t pendingCount {0};
+
+    int get() noexcept override;
+    void unget(int k) noexcept override;
+};
+
+class NcursesInput : public InputAdapter
 {
     enum : char { KEY_ESC = '\x1B' };
-    enum { readTimeout = 10 };
+    enum { readTimeoutMs = 10 };
 
-    StdioCtl &io;
+    ConsoleCtl &con;
     InputState &state;
     bool mouseEnabled;
+    NcursesInputGetter in;
 
-    static int getch_nb() noexcept;
+    int getChNb() noexcept;
     void detectAlt(int keys[4], bool &Alt) noexcept;
     void parsePrintableChar(TEvent &ev, int keys[4], int &num_keys) noexcept;
     void readUtf8Char(int keys[4], int &num_keys) noexcept;
 
     bool parseCursesMouse(TEvent&) noexcept;
-    void consumeUnprocessedInput() noexcept;
 
 public:
 
-    // Lifetimes of 'io', 'display' and 'state' must exceed that of 'this'.
-    NcursesInput(StdioCtl &io, NcursesDisplay &display, InputState &state, bool mouse) noexcept;
+    // Lifetimes of 'con', 'display' and 'state' must exceed that of 'this'.
+    NcursesInput(ConsoleCtl &con, NcursesDisplay &display, InputState &state, bool mouse) noexcept;
     ~NcursesInput();
 
-    bool getEvent(TEvent &ev) noexcept;
-    int getButtonCount() noexcept;
-    bool hasPendingEvents() noexcept;
+    bool getEvent(TEvent &ev) noexcept override;
+    bool hasPendingEvents() noexcept override;
 };
 
 } // namespace tvision

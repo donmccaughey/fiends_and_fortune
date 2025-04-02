@@ -54,7 +54,7 @@ endforeach()
 
 if (TV_USE_STATIC_RTL) # Implies MSVC
     target_compile_options(${PROJECT_NAME} PUBLIC
-        /MT$<$<CONFIG:Debug>:d>
+        /MT$<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:d>
     )
 endif()
 
@@ -63,12 +63,27 @@ if (WIN32)
         _CRT_NONSTDC_NO_WARNINGS
         _CRT_SECURE_NO_WARNINGS
     )
+    target_compile_definitions(${PROJECT_NAME} PRIVATE
+        # Windows Vista is the minimum supported version.
+        _WIN32_WINNT=0x0600
+    )
 endif()
 
 target_compile_definitions(${PROJECT_NAME} PRIVATE
     # Do not include unnecessary STL headers to speed up compilation.
     TVISION_NO_STL
 )
+
+include(TestBigEndian)
+
+TEST_BIG_ENDIAN(IS_BIG_ENDIAN)
+
+if (IS_BIG_ENDIAN)
+    tv_message(STATUS "Big endian system detected")
+    target_compile_definitions(${PROJECT_NAME} PUBLIC
+        TV_BIG_ENDIAN
+    )
+endif()
 
 # Dependencies
 
@@ -138,14 +153,14 @@ tv_set_output_dir(${PROJECT_NAME})
 #
 install(TARGETS ${PROJECT_NAME}
     EXPORT ${PROJECT_NAME}-config
-    ARCHIVE DESTINATION lib
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     COMPONENT library
 )
 
 # package configuration
 
 install(EXPORT ${PROJECT_NAME}-config
-    DESTINATION lib/cmake/${PROJECT_NAME}
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
     NAMESPACE ${PROJECT_NAME}::
     FILE ${PROJECT_NAME}-config.cmake
     COMPONENT library
@@ -154,7 +169,7 @@ install(EXPORT ${PROJECT_NAME}-config
 # includes
 # ./include/tvision and children copied to destination/include/tvision etc...
 #
-install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/tvision" DESTINATION include)
+install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/tvision" DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # Build optimization
 
@@ -168,6 +183,7 @@ if (CMAKE_VERSION VERSION_GREATER_EQUAL "3.16.0" AND TV_OPTIMIZE_BUILD)
         file(GLOB_RECURSE TVSOURCE_NOUNITY "${CMAKE_CURRENT_LIST_DIR}/tvision/s*.cpp")
         list(APPEND TVSOURCE_NOUNITY "${CMAKE_CURRENT_LIST_DIR}/tvision/new.cpp")
         list(REMOVE_ITEM TVSOURCE_NOUNITY
+            "${CMAKE_CURRENT_LIST_DIR}/tvision/snprintf.cpp"
             "${CMAKE_CURRENT_LIST_DIR}/tvision/stddlg.cpp"
             "${CMAKE_CURRENT_LIST_DIR}/tvision/strmstat.cpp"
             "${CMAKE_CURRENT_LIST_DIR}/tvision/syserr.cpp"

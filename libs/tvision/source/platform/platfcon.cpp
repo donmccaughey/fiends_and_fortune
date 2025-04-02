@@ -1,43 +1,41 @@
+#define Uses_TScreen
+#include <tvision/tv.h>
+
 #include <internal/platform.h>
 #include <internal/unixcon.h>
 #include <internal/linuxcon.h>
 #include <internal/win32con.h>
 #include <internal/ncurdisp.h>
-#include <internal/ansidisp.h>
+#include <internal/ansiwrit.h>
 #include <internal/ncursinp.h>
 #include <internal/sighandl.h>
-#include <internal/terminal.h>
-#include <internal/scrlife.h>
-#include <internal/getenv.h>
+#include <internal/conctl.h>
+#include <internal/termio.h>
 
 namespace tvision
 {
 
 // These methods are defined in a separate transaction unit so that the
 // Platform can be referenced by the application without having to link all the
-// console strategies.
+// console adapters.
 
-ConsoleStrategy &Platform::createConsole() noexcept
+ConsoleAdapter &Platform::createConsole() noexcept
 {
 #ifdef _WIN32
-    return Win32ConsoleStrategy::create();
+    return Win32ConsoleAdapter::create();
 #else
-    ScreenLifetime &scrl = *new ScreenLifetime;
+    auto &con = ConsoleCtl::getInstance();
     InputState &inputState = *new InputState;
-    NcursesDisplay *display;
-    if (getEnv<TStringView>("TVISION_DISPLAY") == "ncurses")
-        display = new NcursesDisplay(io);
-    else
-        display = new AnsiDisplay<NcursesDisplay>(io);
+    NcursesDisplay &display = NcursesDisplay::create(con);
 #ifdef __linux__
-    if (io.isLinuxConsole())
-        return LinuxConsoleStrategy::create(io, scrl, inputState, *display, *new NcursesInput(io, *display, inputState, false));
+    if (con.isLinuxConsole())
+        return LinuxConsoleAdapter::create(con, displayBuf, inputState, display, *new NcursesInput(con, display, inputState, false));
 #endif // __linux__
-    return UnixConsoleStrategy::create(io, displayBuf, scrl, inputState, *display, *new NcursesInput(io, *display, inputState, true));
+    return UnixConsoleAdapter::create(con, displayBuf, inputState, display, *new NcursesInput(con, display, inputState, true));
 #endif // _WIN32
 }
 
-void Platform::setUpConsole(ConsoleStrategy *&c) noexcept
+void Platform::setUpConsole(ConsoleAdapter *&c) noexcept
 {
     if (c == &dummyConsole)
     {
@@ -51,7 +49,7 @@ void Platform::setUpConsole(ConsoleStrategy *&c) noexcept
 
 void Platform::checkConsole() noexcept
 {
-    console.lock([&] (ConsoleStrategy *&c) {
+    console.lock([&] (ConsoleAdapter *&c) {
         if (!c->isAlive())
         {
             // The console likely crashed (Windows).
@@ -61,29 +59,55 @@ void Platform::checkConsole() noexcept
     });
 }
 
-bool Platform::getEvent(TEvent &ev) noexcept
+void Platform::waitForEvents(int ms) noexcept
 {
-    if ( waiter.getEvent(ev)
-         && (ev.what != evCommand || ev.message.command != cmScreenChanged) )
-        return true;
-    if (screenChanged())
-    {
-        ev.what = evCommand;
-        ev.message.command = cmScreenChanged;
-        return true;
-    }
-    return false;
+    checkConsole();
+
+    int waitTimeoutMs = ms;
+    // When the DisplayBuffer has pending changes, ensure we wake up so that
+    // they can be flushed in time.
+    int flushTimeoutMs = displayBuf.timeUntilPendingFlushMs();
+    if (ms < 0)
+        waitTimeoutMs = flushTimeoutMs;
+    else if (flushTimeoutMs >= 0)
+        waitTimeoutMs = min(ms, flushTimeoutMs);
+
+    waiter.waitForEvents(waitTimeoutMs);
+}
+
+ushort Platform::getScreenMode() noexcept
+{
+    return console.lock([] (ConsoleAdapter *c) {
+        ushort mode;
+
+        int colorCount = c->display.getColorCount();
+        if (colorCount == 0)
+            mode = TDisplay::smMono;
+        else
+            mode = TDisplay::smCO80;
+
+        if (colorCount >= 256)
+            mode |= TDisplay::smColor256;
+        if (colorCount >= 256*256*256)
+            mode |= TDisplay::smColorHigh;
+
+        TPoint fontSize = c->display.getFontSize();
+        if (fontSize.x > 0 && fontSize.y > 0 && fontSize.x >= fontSize.y)
+            mode |= TDisplay::smFont8x8;
+
+        return mode;
+    });
 }
 
 void Platform::signalCallback(bool enter) noexcept
 {
-    if (!instance.console.lockedByThisThread())
+    if (instance && !instance->console.lockedByCurrentThread())
     {
         // FIXME: these are not signal safe!
         if (enter)
-            instance.restoreConsole();
+            instance->restoreConsole();
         else
-            instance.setUpConsole();
+            instance->setUpConsole();
     }
 }
 

@@ -9,26 +9,28 @@
 #define Uses_TEvent
 #include <tvision/tv.h>
 
-#include <internal/cursor.h>
 #include <gpm.h>
 
 namespace tvision
 {
 
-class GpmInput final : public InputStrategy
-{
-    NegativeScreenCursor cursor;
-    uchar buttonState;
+class DisplayBuffer;
 
-    static void fitEvent(Gpm_Event&) noexcept;
-    GpmInput() noexcept;
+class GpmInput final : public InputAdapter
+{
+    uchar buttonState {0};
+    DisplayBuffer &displayBuf;
+
+    GpmInput(DisplayBuffer &) noexcept;
+    void fitEvent(Gpm_Event &) noexcept;
 
 public:
 
-    static GpmInput *create() noexcept;
+    // Pre: The lifetime of 'displayBuf' must exceed that of the returned object.
+    static GpmInput *create(DisplayBuffer &displayBuf) noexcept;
     ~GpmInput();
-    bool getEvent(TEvent &ev) noexcept;
-    int getButtonCount() noexcept;
+
+    bool getEvent(TEvent &ev) noexcept override;
 };
 
 } // namespace tvision
@@ -38,10 +40,10 @@ public:
 namespace tvision
 {
 
-class GpmInput : public InputStrategy
+class GpmInput : public InputAdapter
 {
 public:
-    static GpmInput *create() noexcept { return nullptr; }
+    static GpmInput *create(DisplayBuffer &) noexcept { return nullptr; }
 };
 
 } // namespace tvision

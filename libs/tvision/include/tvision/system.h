@@ -57,18 +57,9 @@ const int mwRight   = 0x08;
 
 /* Mouse event flags */
 
-#if !defined( __FLAT__ )
 const int meMouseMoved = 0x01;
 const int meDoubleClick = 0x02;
-#else
-#if !defined( __WINDOWS_H )
-#include <tvision/compat/windows/windows.h>
-#endif
-const int meMouseMoved = MOUSE_MOVED;       // NT values from WINDOWS.H
-const int meDoubleClick = DOUBLE_CLICK;
-#endif
-// 0x04 and 0x08 are reserved by NT (MOUSE_WHEELED, MOUSE_HWHEELED).
-const int meTripleClick = 0x10;
+const int meTripleClick = 0x04;
 
 #endif  // __EVENT_CODES
 
@@ -92,10 +83,10 @@ protected:
     THWMouse() noexcept;
     THWMouse( const THWMouse& ) noexcept {};
     ~THWMouse();
-public:
+
     static void show() noexcept;
     static void hide() noexcept;
-protected:
+
     static void setRange( ushort, ushort ) noexcept;
     static void getEvent( MouseEventType& ) noexcept;
     static Boolean present() noexcept;
@@ -187,8 +178,15 @@ inline void TMouse::registerHandler( unsigned mask, void (_FAR *func)() )
 
 struct CharScanType
 {
+#if !defined( TV_BIG_ENDIAN )
     uchar charCode;
     uchar scanCode;
+#else
+    // Due to the reverse byte order, swap the fields in order to preserve
+    // the aliasing with KeyDownEvent::keyCode.
+    uchar scanCode;
+    uchar charCode;
+#endif
 };
 
 struct KeyDownEvent
@@ -199,7 +197,7 @@ struct KeyDownEvent
         CharScanType charScan;
         };
     ushort controlKeyState;
-    char text[4];               // NOT null-terminated.
+    char text[maxCharSize];     // NOT null-terminated.
     uchar textLength;
 
     TStringView getText() const;
@@ -222,11 +220,21 @@ struct MessageEvent
     union
         {
         void *infoPtr;
+#if !defined( TV_BIG_ENDIAN )
         int32_t infoLong;
         ushort infoWord;
         short infoInt;
         uchar infoByte;
         char infoChar;
+#else
+        // Due to the reverse byte order, add padding at the beginning to
+        // preserve the aliasing with infoPtr.
+        struct { intptr_t  : 8*sizeof(infoPtr) - 32, infoLong : 32; };
+        struct { uintptr_t : 8*sizeof(infoPtr) - 16, infoWord : 16; };
+        struct { intptr_t  : 8*sizeof(infoPtr) - 16, infoInt  : 16; };
+        struct { uintptr_t : 8*sizeof(infoPtr) - 8,  infoByte : 8;  };
+        struct { intptr_t  : 8*sizeof(infoPtr) - 8,  infoChar : 8;  };
+#endif
         };
 };
 
@@ -242,8 +250,6 @@ struct TEvent
 
     void getMouseEvent() noexcept;
     void getKeyEvent() noexcept;
-    static void waitForEvent(int timeoutMs) noexcept;
-    static void putNothing() noexcept;
 };
 
 #endif  // Uses_TEvent
@@ -261,20 +267,19 @@ public:
     static void getKeyEvent( TEvent& ) noexcept;
     static void suspend() noexcept;
     static void resume() noexcept;
-    static void waitForEvent( int ) noexcept;
+    static void waitForEvents( int timeoutMs ) noexcept;
+    static void wakeUp() noexcept;
 
     friend class TView;
-    friend class TProgram;
     friend void genRefs();
 
     static ushort _NEAR doubleDelay;
     static Boolean _NEAR mouseReverse;
 
-    static void putPaste( TStringView ) noexcept;
+    static void setPasteText( TStringView ) noexcept;
 
 private:
 
-    static TMouse * _NEAR mouse;
     static Boolean getMouseState( TEvent& ) noexcept;
     static Boolean getPasteEvent( TEvent& ) noexcept;
     static void getKeyOrPasteEvent( TEvent& ) noexcept;
@@ -290,9 +295,8 @@ private:
 #endif
 
     static MouseEventType _NEAR lastMouse;
-public:
     static MouseEventType _NEAR curMouse;
-private:
+
     static MouseEventType _NEAR downMouse;
     static ushort _NEAR downTicks;
 
@@ -300,9 +304,7 @@ private:
     static TEvent _NEAR eventQueue[ eventQSize ];
     static TEvent * _NEAR eventQHead;
     static TEvent * _NEAR eventQTail;
-public:
     static Boolean _NEAR mouseIntFlag;
-private:
     static ushort _NEAR eventCount;
 #endif
 
@@ -317,10 +319,10 @@ private:
     static size_t _NEAR pasteTextLength;
     static size_t _NEAR pasteTextIndex;
 
-    static TEvent _NEAR keyEventQueue[ keyEventQSize ];
+    static TEvent _NEAR keyEventQueue[ minPasteEventCount ];
     static size_t _NEAR keyEventCount;
     static size_t _NEAR keyEventIndex;
-    static Boolean _NEAR keyPasteState;
+    static Boolean _NEAR pasteState;
 };
 
 inline void TEvent::getMouseEvent() noexcept
@@ -351,8 +353,8 @@ public:
 
     TTimerId setTimer(uint32_t timeoutMs, int32_t periodMs = -1);
     void killTimer(TTimerId id);
-    void collectTimeouts(void (&func)(TTimerId, void *), void *args);
-    int32_t timeUntilTimeout();
+    void collectExpiredTimers(void (&func)(TTimerId, void *), void *args);
+    int32_t timeUntilNextTimeout();
 
 private:
 
@@ -404,7 +406,7 @@ public:
         smFont8x8   = 0x0100,
         smColor256  = 0x0200,
         smColorHigh = 0x0400,
-        smChanged   = 0x1000
+        smUpdate    = 0x8000,
         };
 
     static void clearScreen( uchar, uchar ) noexcept;

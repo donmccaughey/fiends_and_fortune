@@ -41,38 +41,6 @@ inline TColorAttr reverseAttribute(TColorAttr attr)
 
 #include <string.h>
 
-// Helper class for trivial types.
-
-namespace colors
-{
-
-    template<class T, T mask = static_cast<T>(-1)>
-    struct alignas(T) trivially_convertible
-    {
-
-        using trivial_t = T;
-
-        // If you want the derived classes to be trivial, make sure you also
-        // define a trivial default constructor in them.
-        trivially_convertible() = default;
-
-        trivially_convertible(T asT)
-        {
-            asT &= mask;
-            memcpy(this, &asT, sizeof(T));
-        }
-
-        operator T() const
-        {
-            T asT;
-            memcpy(&asT, this, sizeof(T));
-            return asT & mask;
-        }
-
-    };
-
-} // namespace colors
-
 //// Color Formats
 
 ////// TColorRGB
@@ -86,24 +54,37 @@ namespace colors
 // When doing so, the unused bits are discarded:
 //     uint32_t(TColorRGB(0xAABBCCDD)) == 0xBBCCDD;
 
-struct TColorRGB : colors::trivially_convertible<uint32_t, 0xFFFFFF>
+struct TColorRGB
 {
     uint32_t
+#ifndef TV_BIG_ENDIAN
         b       : 8,
         g       : 8,
         r       : 8,
         _unused : 8;
+#else
+        _unused : 8,
+        r       : 8,
+        g       : 8,
+        b       : 8;
+#endif
 
-    using trivially_convertible::trivially_convertible;
-    TColorRGB() = default;
+    TV_TRIVIALLY_CONVERTIBLE(TColorRGB, uint32_t, 0xFFFFFF)
     constexpr inline TColorRGB(uint8_t r, uint8_t g, uint8_t b);
 };
 
 constexpr inline TColorRGB::TColorRGB(uint8_t r, uint8_t g, uint8_t b) :
+#ifndef TV_BIG_ENDIAN
     b(b),
     g(g),
     r(r),
     _unused(0)
+#else
+    _unused(0),
+    r(r),
+    g(g),
+    b(b)
+#endif
 {
 }
 
@@ -120,17 +101,24 @@ constexpr inline TColorRGB::TColorRGB(uint8_t r, uint8_t g, uint8_t b) :
 // When doing so, the unused bits are discarded:
 //     uint8_t(TColorBIOS(0xAB)) == 0xB;
 
-struct TColorBIOS : colors::trivially_convertible<uint8_t, 0xF>
+struct TColorBIOS
 {
     uint8_t
+#ifndef TV_BIG_ENDIAN
         b       : 1,
         g       : 1,
         r       : 1,
         bright  : 1,
         _unused : 4;
+#else
+        _unused : 4,
+        bright  : 1,
+        r       : 1,
+        g       : 1,
+        b       : 1;
+#endif
 
-    using trivially_convertible::trivially_convertible;
-    TColorBIOS() = default;
+    TV_TRIVIALLY_CONVERTIBLE(TColorBIOS, uint8_t, 0xF)
 };
 
 ////// TColorXTerm
@@ -148,12 +136,11 @@ struct TColorBIOS : colors::trivially_convertible<uint8_t, 0xF>
 //     TColorXTerm xterm = 0xFE;
 //     uint8_t asChar = xterm;
 
-struct TColorXTerm : colors::trivially_convertible<uint8_t>
+struct TColorXTerm
 {
     uint8_t idx;
 
-    using trivially_convertible::trivially_convertible;
-    TColorXTerm() = default;
+    TV_TRIVIALLY_CONVERTIBLE(TColorXTerm, uint8_t, 0xFF)
 };
 
 //// Color Conversion Functions
@@ -318,7 +305,7 @@ struct TColorDesired
     constexpr inline TColorDesired(char bios);   // e.g. {'\xF'}
     constexpr inline TColorDesired(uchar bios);
     constexpr inline TColorDesired(int rgb);     // e.g. {0x7F00BB}
-    // Use zero-initialization for for type Default: {}
+    // Use zero-initialization for type Default: {}
 
     // Constructors with explicit type names.
 

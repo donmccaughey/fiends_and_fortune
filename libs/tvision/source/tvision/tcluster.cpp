@@ -69,12 +69,12 @@ TCluster::~TCluster()
     destroy( (TCollection *)strings );
 }
 
-ushort  TCluster::dataSize()
+ushort TCluster::dataSize()
 {
     // value is now a long, but for compatibility with earlier TV,
-    // return size of short; TMultiCheckBoxes returns sizeof(long).
+    // return size of short; TMultiCheckBoxes returns sizeof(uint32_t).
 
-    return sizeof(short);
+    return sizeof(ushort);
 }
 
 void TCluster::drawBox( const char *icon, char marker)
@@ -102,9 +102,7 @@ void TCluster::drawMultiBox( const char *icon, const char* marker)
             if( cur < strings->getCount() )
             {
                 int col = column( cur );
-
-                if ( ((col+cstrlen((const char*)strings->at(cur))+5)
-                    < (int) b.length()) &&  (col < size.x))
+                if( col < size.x )
                 {
                     if(!buttonState( cur ))
                         color = cDis;
@@ -122,7 +120,6 @@ void TCluster::drawMultiBox( const char *icon, const char* marker)
                         b.putChar( col, specialChars[0] );
                         b.putChar( column(cur+size.y)-1, specialChars[1] );
                     }
-
                 }
             }
         }
@@ -267,7 +264,7 @@ void TCluster::handleEvent( TEvent& event )
                               (state & sfFocused) != 0
                             ) &&
                             c != 0 &&
-                            toupper(event.keyDown.charScan.charCode) == c
+                            c == (char) toupper(event.keyDown.charScan.charCode)
                           )
                         )
                       )

@@ -16,10 +16,12 @@ TEvent THardwareInfo::eventQ[];
 size_t THardwareInfo::eventCount = 0;
 
 static bool alwaysFlush;
+static tvision::Platform *platf;
 
 THardwareInfo::THardwareInfo() noexcept
 {
     using namespace tvision;
+    platf = &Platform::getInstance();
     pendingEvent = 0;
     alwaysFlush = getEnv<int>("TVISION_MAX_FPS", 0) < 0;
 }
@@ -28,9 +30,6 @@ THardwareInfo::~THardwareInfo()
 {
 }
 
-// For brevity.
-static constexpr auto *platf = &tvision::Platform::instance;
-
 void THardwareInfo::setCaretSize( ushort size ) noexcept { platf->setCaretSize(size); }
 void THardwareInfo::setCaretPosition( ushort x, ushort y ) noexcept { platf->setCaretPosition(x, y); }
 ushort THardwareInfo::getCaretSize() noexcept { return platf->getCaretSize(); }
@@ -38,8 +37,8 @@ BOOL THardwareInfo::isCaretVisible() noexcept { return platf->isCaretVisible(); 
 ushort THardwareInfo::getScreenRows() noexcept { return platf->getScreenRows(); }
 ushort THardwareInfo::getScreenCols() noexcept { return platf->getScreenCols(); }
 ushort THardwareInfo::getScreenMode() noexcept { return platf->getScreenMode(); }
-void THardwareInfo::setScreenMode( ushort mode ) noexcept {}
-void THardwareInfo::clearScreen( ushort w, ushort h ) noexcept { platf->clearScreen(); }
+void THardwareInfo::setScreenMode( ushort ) noexcept {}
+void THardwareInfo::clearScreen( ushort, ushort ) noexcept { platf->clearScreen(); }
 void THardwareInfo::screenWrite( ushort x, ushort y, TScreenCell *buf, DWORD len ) noexcept
 {
     platf->screenWrite(x, y, buf, len);
@@ -47,10 +46,11 @@ void THardwareInfo::screenWrite( ushort x, ushort y, TScreenCell *buf, DWORD len
         flushScreen();
 }
 TScreenCell *THardwareInfo::allocateScreenBuffer() noexcept { return platf->reloadScreenInfo(); }
-void THardwareInfo::freeScreenBuffer( TScreenCell *buffer ) noexcept {}
-DWORD THardwareInfo::getButtonCount() noexcept { return platf->getButtonCount(); }
-void THardwareInfo::cursorOn() noexcept { platf->cursorOn(); }
-void THardwareInfo::cursorOff() noexcept { platf->cursorOff(); }
+void THardwareInfo::freeScreenBuffer(TScreenCell *) noexcept { platf->freeScreenBuffer(); }
+// Turbo Vision only checks whether this is non-zero.
+DWORD THardwareInfo::getButtonCount() noexcept { return 2; }
+void THardwareInfo::cursorOn() noexcept {}
+void THardwareInfo::cursorOff() noexcept {}
 void THardwareInfo::flushScreen() noexcept { platf->flushScreen(); }
 void THardwareInfo::setUpConsole() noexcept { platf->setUpConsole(); }
 void THardwareInfo::restoreConsole() noexcept { platf->restoreConsole(); }
@@ -105,20 +105,20 @@ void THardwareInfo::readEvents() noexcept
             ++eventCount;
 }
 
-void THardwareInfo::waitForEvent( int timeoutMs ) noexcept
+void THardwareInfo::waitForEvents( int timeoutMs ) noexcept
 {
     if (!eventCount)
     {
         // Flush the screen once for every time all events have been processed,
         // only when blocking for events.
         flushScreen();
-        platf->waitForEvent(timeoutMs);
+        platf->waitForEvents(timeoutMs);
     }
 }
 
-void THardwareInfo::stopEventWait() noexcept
+void THardwareInfo::interruptEventWait() noexcept
 {
-    platf->stopEventWait();
+    platf->interruptEventWait();
 }
 
 BOOL THardwareInfo::setClipboardText( TStringView text ) noexcept
