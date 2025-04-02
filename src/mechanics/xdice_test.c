@@ -52,39 +52,6 @@ xdice_alloc_base_range_description_test(void)
 
 
 static void
-xdice_alloc_description_test(void)
-{
-    char *description = xdice_alloc_description(xdice_make(0, 6));
-    assert(0 == strcmp("0", description));
-    free(description);
-
-    description = xdice_alloc_description(xdice_make(5, 1));
-    assert(0 == strcmp("5", description));
-    free(description);
-
-    description = xdice_alloc_description(xdice_make(3, 6));
-    assert(0 == strcmp("3d6", description));
-    free(description);
-
-    description = xdice_alloc_description(xdice_make_plus(2, 8, 1));
-    assert(0 == strcmp("2d8+1", description));
-    free(description);
-
-    description = xdice_alloc_description(xdice_make_plus(2, 4, -1));
-    assert(0 == strcmp("2d4-1", description));
-    free(description);
-
-    description = xdice_alloc_description(xdice_make_plus_times(1, 10, 0, 10));
-    assert(0 == strcmp("1d10x10", description));
-    free(description);
-
-    description = xdice_alloc_description(xdice_make_plus_times(1, 4, 1, 10000));
-    assert(0 == strcmp("1d4+1x10000", description));
-    free(description);
-}
-
-
-static void
 xdice_alloc_range_description_test(void)
 {
     char *description = xdice_alloc_range_description(xdice_make(0, 6));
@@ -467,7 +434,6 @@ void
 xdice_test(void)
 {
     xdice_alloc_base_range_description_test();
-    xdice_alloc_description_test();
     xdice_alloc_range_description_test();
     xdice_has_constant_score_test();
     xdice_is_valid_test();

@@ -20,9 +20,6 @@ char *
 xdice_alloc_base_range_description(struct xdice dice);
 
 char *
-xdice_alloc_description(struct xdice dice);
-
-char *
 xdice_alloc_range_description(struct xdice dice);
 
 bool

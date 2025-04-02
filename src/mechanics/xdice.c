@@ -38,29 +38,6 @@ xdice_alloc_base_range_description(struct xdice dice)
 
 
 char *
-xdice_alloc_description(struct xdice dice)
-{
-    assert(xdice_is_valid(dice));
-
-    char *description = NULL;
-    if (!dice.count || !dice.sides) {
-        description = astr_cat_f(description, "0");
-    } else if (1 == dice.sides) {
-        description = astr_cat_f(description, "%i", dice.count);
-    } else {
-        description = astr_cat_f(description, "%id%i", dice.count, dice.sides);
-    }
-    if (dice.modifier) {
-        description = astr_cat_f(description, "%+i", dice.modifier);
-    }
-    if (1 != dice.multiplier) {
-        description = astr_cat_f(description, "x%i", dice.multiplier);
-    }
-    return description;
-}
-
-
-char *
 xdice_alloc_range_description(struct xdice dice)
 {
     if (xdice_has_constant_score(dice)) {
