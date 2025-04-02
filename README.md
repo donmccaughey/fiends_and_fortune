@@ -1,4 +1,4 @@
-# Fiends And Fortune
+
 
 _Fiends And Fortune_ is a translation of paper and pencil role playing rules
 into code.  Like the games that inspired this project, these programs are 
@@ -100,16 +100,6 @@ To build with the [AddressSanitizer][44] enabled, set the `ADDRESS_SANITIZER`
 option to `ON`.
 
     cmake -S . -B tmp -DADDRESS_SANITIZER=ON
-
-Mac users note that the `clang` that ships with Xcode support the 
-`-fsanitize=address` flag, but doesn't support [LeakSanitizer][44] on
-[Apple Silicon][45].
-
-    % ASAN_OPTIONS=detect_leaks=1 tmp/src/fiends/fiends
-    ==43188==AddressSanitizer: detect_leaks is not supported on this platform.
-    zsh: abort      ASAN_OPTIONS=detect_leaks=1 tmp/src/fiends/fiends
-
-(Last checked on macOS Ventura 13.4, Xcode 14.3, Apple clang version 14.0.3.)
 
 Set the `COVERAGE` option to `ON` to generate coverage files.
 
