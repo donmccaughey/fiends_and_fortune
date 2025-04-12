@@ -1,4 +1,5 @@
 .DS_Store
+.nvmrc
 build
 cmake-build-debug
 project.xcworkspace
