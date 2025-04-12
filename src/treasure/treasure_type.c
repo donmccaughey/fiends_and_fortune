@@ -703,7 +703,7 @@ static struct treasure_type treasure_types[] = {
 
 
 static char *
-describe_base_range(struct amount *amount);
+describe_base_range(struct amount const *amount);
 
 static char *
 describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry *coins_gems_or_jewelry);
@@ -731,14 +731,14 @@ generate_maps_or_magic_items(struct maps_or_magic_type *type,
                              struct rnd *rnd);
 
 static int
-max_amount(struct amount *amount);
+max_amount(struct amount const *amount);
 
 static char const *
 possible_maps_or_magic_name(bool is_map_possible,
                             possible_magic_items_t possible_magic_items);
 
 static int
-xroll_amount(struct amount *amount, struct rnd *rnd);
+xroll_amount(struct amount const *amount, struct rnd *rnd);
 
 
 char *
@@ -824,7 +824,7 @@ treasure_type_by_letter(char letter)
 
 
 static char *
-describe_base_range(struct amount *amount)
+describe_base_range(struct amount const *amount)
 {
     assert(amount);
     if (amount->is_constant) {
@@ -1002,7 +1002,7 @@ generate_maps_or_magic_items(struct maps_or_magic_type *type,
 
 
 static int
-max_amount(struct amount *amount)
+max_amount(struct amount const *amount)
 {
     assert(amount);
     if (amount->is_constant) {
@@ -1048,7 +1048,7 @@ possible_maps_or_magic_name(bool is_map_possible,
 
 
 static int
-xroll_amount(struct amount *amount, struct rnd *rnd)
+xroll_amount(struct amount const *amount, struct rnd *rnd)
 {
     assert(amount);
     assert(rnd);
