@@ -797,6 +797,32 @@ treasure_type_alloc_name(struct treasure_type *treasure_type)
 }
 
 
+void
+treasure_type_generate(struct treasure_type *treasure_type,
+                       struct rnd *rnd,
+                       struct treasure *treasure)
+{
+    treasure->type = treasure_type;
+
+    generate_coins(&treasure->coins.cp, rnd, &treasure_type->copper);
+    generate_coins(&treasure->coins.sp, rnd, &treasure_type->silver);
+    generate_coins(&treasure->coins.ep, rnd, &treasure_type->electrum);
+    generate_coins(&treasure->coins.gp, rnd, &treasure_type->gold);
+    generate_coins(&treasure->coins.pp, rnd, &treasure_type->platinum);
+    generate_gems(treasure, rnd);
+    generate_jewelry(treasure, rnd);
+    generate_maps_or_magic(treasure, rnd);
+}
+
+
+struct treasure_type *
+treasure_type_by_letter(char letter)
+{
+    assert(letter >= 'A' && letter <= 'Z');
+    return &treasure_types[letter - 'A'];
+}
+
+
 static char *
 describe_base_range(struct amount *amount)
 {
@@ -872,24 +898,6 @@ describe_maps_or_magic(struct maps_or_magic *maps_or_magic)
     description = astr_cat_f(description, ": %i%%",
                              maps_or_magic->percent_chance);
     return description;
-}
-
-
-void
-treasure_type_generate(struct treasure_type *treasure_type,
-                       struct rnd *rnd,
-                       struct treasure *treasure)
-{
-    treasure->type = treasure_type;
-    
-    generate_coins(&treasure->coins.cp, rnd, &treasure_type->copper);
-    generate_coins(&treasure->coins.sp, rnd, &treasure_type->silver);
-    generate_coins(&treasure->coins.ep, rnd, &treasure_type->electrum);
-    generate_coins(&treasure->coins.gp, rnd, &treasure_type->gold);
-    generate_coins(&treasure->coins.pp, rnd, &treasure_type->platinum);
-    generate_gems(treasure, rnd);
-    generate_jewelry(treasure, rnd);
-    generate_maps_or_magic(treasure, rnd);
 }
 
 
@@ -1036,14 +1044,6 @@ possible_maps_or_magic_name(bool is_map_possible,
                 return "(magic)";
         }
     }
-}
-
-
-struct treasure_type *
-treasure_type_by_letter(char letter)
-{
-    assert(letter >= 'A' && letter <= 'Z');
-    return &treasure_types[letter - 'A'];
 }
 
 
