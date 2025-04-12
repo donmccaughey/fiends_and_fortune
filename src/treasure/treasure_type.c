@@ -711,10 +711,8 @@ describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry const *coins_gems_or
 static char *
 describe_maps_or_magic(struct maps_or_magic const *maps_or_magic);
 
-static void
-generate_coins(int *coins,
-               struct rnd *rnd,
-               struct coins_gems_or_jewelry *coins_type);
+static int
+generate_coins(struct coins_gems_or_jewelry const *coins_type, struct rnd *rnd);
 
 static void
 generate_gems(struct treasure *treasure, struct rnd *rnd);
@@ -804,11 +802,11 @@ treasure_type_generate(struct treasure_type *treasure_type,
 {
     treasure->type = treasure_type;
 
-    generate_coins(&treasure->coins.cp, rnd, &treasure_type->copper);
-    generate_coins(&treasure->coins.sp, rnd, &treasure_type->silver);
-    generate_coins(&treasure->coins.ep, rnd, &treasure_type->electrum);
-    generate_coins(&treasure->coins.gp, rnd, &treasure_type->gold);
-    generate_coins(&treasure->coins.pp, rnd, &treasure_type->platinum);
+    treasure->coins.cp = generate_coins(&treasure_type->copper, rnd);
+    treasure->coins.sp = generate_coins(&treasure_type->silver, rnd);
+    treasure->coins.ep = generate_coins(&treasure_type->electrum, rnd);
+    treasure->coins.gp = generate_coins(&treasure_type->gold, rnd);
+    treasure->coins.pp = generate_coins(&treasure_type->platinum, rnd);
     generate_gems(treasure, rnd);
     generate_jewelry(treasure, rnd);
     generate_maps_or_magic(treasure, rnd);
@@ -901,20 +899,22 @@ describe_maps_or_magic(struct maps_or_magic const *maps_or_magic)
 }
 
 
-static void
-generate_coins(int *coins,
-               struct rnd *rnd,
-               struct coins_gems_or_jewelry *coins_type)
+static int
+generate_coins(struct coins_gems_or_jewelry const *coins_type, struct rnd *rnd)
 {
-    *coins = 0;
-    if ( ! coins_type->percent_chance) return;
+    if ( ! coins_type->percent_chance) {
+        return 0;
+    }
+
     if (coins_type->is_per_individual) {
-        *coins += xroll_amount(&coins_type->amount, rnd);
+        return xroll_amount(&coins_type->amount, rnd);
+    }
+
+    int percent_score = xroll("1d100", rnd);
+    if (percent_score <= coins_type->percent_chance) {
+        return xroll_amount(&coins_type->amount, rnd);
     } else {
-        int percent_score = xroll("1d100", rnd);
-        if (percent_score <= coins_type->percent_chance) {
-            *coins = xroll_amount(&coins_type->amount, rnd);
-        }
+        return 0;
     }
 }
 

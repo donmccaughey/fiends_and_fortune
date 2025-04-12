@@ -31,6 +31,7 @@
 - dungeon: when a chute down is generated, make sure there is a way back up?
 - dungeon: add asserts for int overflow to point_move()
 
+- treasure: generate treasure per individual
 - treasure: generate description of treasure for false treasure map
 - treasure: for combined hoard treasure map, generate maps to other treasures
 - treasure: in gem_initialize_from_json_object(), constrain colors to to those
