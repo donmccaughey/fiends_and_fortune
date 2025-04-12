@@ -16,15 +16,6 @@ struct xdice {
 };
 
 
-char *
-xdice_alloc_base_range_description(struct xdice dice);
-
-char *
-xdice_alloc_range_description(struct xdice dice);
-
-bool
-xdice_has_constant_score(struct xdice dice);
-
 bool
 xdice_is_valid(struct xdice dice);
 
@@ -42,12 +33,6 @@ xdice_max_base_score(struct xdice dice);
 
 int
 xdice_max_score(struct xdice dice);
-
-int
-xdice_min_base_score(struct xdice dice);
-
-int
-xdice_min_score(struct xdice dice);
 
 struct xdice
 xdice_parse(char const *dice_string);

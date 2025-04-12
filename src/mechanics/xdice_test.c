@@ -11,98 +11,6 @@ xdice_test(void);
 
 
 static void
-xdice_alloc_base_range_description_test(void)
-{
-    char *description = xdice_alloc_base_range_description(xdice_make(0, 6));
-    assert(0 == strcmp("0", description));
-    free(description);
-
-    description = xdice_alloc_base_range_description(xdice_make_plus(0, 6, 2));
-    assert(0 == strcmp("2", description));
-    free(description);
-
-    description = xdice_alloc_base_range_description(xdice_make_plus_times(0, 4, 4, 10));
-    assert(0 == strcmp("4", description));
-    free(description);
-
-    description = xdice_alloc_base_range_description(xdice_make(3, 1));
-    assert(0 == strcmp("3", description));
-    free(description);
-
-    description = xdice_alloc_base_range_description(xdice_make(3, 6));
-    assert(0 == strcmp("3-18", description));
-    free(description);
-
-    description = xdice_alloc_base_range_description(xdice_make_plus(2, 8, 1));
-    assert(0 == strcmp("3-17", description));
-    free(description);
-
-    description = xdice_alloc_base_range_description(xdice_make_plus(2, 4, -1));
-    assert(0 == strcmp("1-7", description));
-    free(description);
-
-    description = xdice_alloc_base_range_description(xdice_make_plus_times(1, 10, 0, 10));
-    assert(0 == strcmp("1-10", description));
-    free(description);
-
-    description = xdice_alloc_base_range_description(xdice_make_plus_times(1, 4, 1, 10000));
-    assert(0 == strcmp("2-5", description));
-    free(description);
-}
-
-
-static void
-xdice_alloc_range_description_test(void)
-{
-    char *description = xdice_alloc_range_description(xdice_make(0, 6));
-    assert(0 == strcmp("0", description));
-    free(description);
-
-    description = xdice_alloc_range_description(xdice_make_plus(0, 6, 2));
-    assert(0 == strcmp("2", description));
-    free(description);
-
-    description = xdice_alloc_range_description(xdice_make_plus_times(0, 4, 4, 10));
-    assert(0 == strcmp("40", description));
-    free(description);
-
-    description = xdice_alloc_range_description(xdice_make(3, 1));
-    assert(0 == strcmp("3", description));
-    free(description);
-
-    description = xdice_alloc_range_description(xdice_make(3, 6));
-    assert(0 == strcmp("3-18", description));
-    free(description);
-
-    description = xdice_alloc_range_description(xdice_make_plus(2, 8, 1));
-    assert(0 == strcmp("3-17", description));
-    free(description);
-
-    description = xdice_alloc_range_description(xdice_make_plus(2, 4, -1));
-    assert(0 == strcmp("1-7", description));
-    free(description);
-
-    description = xdice_alloc_range_description(xdice_make_plus_times(1, 10, 0, 10));
-    assert(0 == strcmp("10-100", description));
-    free(description);
-
-    description = xdice_alloc_range_description(xdice_make_plus_times(1, 4, 1, 10000));
-    assert(0 == strcmp("20000-50000", description));
-    free(description);
-}
-
-
-static void
-xdice_has_constant_score_test(void)
-{
-    assert( !xdice_has_constant_score(xdice_make(2, 6)));
-
-    assert(xdice_has_constant_score(xdice_make(0, 6)));
-    assert(xdice_has_constant_score(xdice_make(2, 1)));
-}
-
-
-static void
 xdice_is_valid_test(void)
 {
     assert( !xdice_is_valid(xdice_make(-1, 6)));
@@ -164,22 +72,6 @@ xdice_max_score_test(void)
 {
     struct xdice dice = xdice_make_plus_times(2, 4, 10, 100);
     assert(1800 == xdice_max_score(dice));
-}
-
-
-static void
-xdice_min_base_score_test(void)
-{
-    struct xdice dice = xdice_make_plus(2, 4, 10);
-    assert(12 == xdice_min_base_score(dice));
-}
-
-
-static void
-xdice_min_score_test(void)
-{
-    struct xdice dice = xdice_make_plus_times(2, 4, 10, 100);
-    assert(1200 == xdice_min_score(dice));
 }
 
 
@@ -433,17 +325,12 @@ xroll_test(void)
 void
 xdice_test(void)
 {
-    xdice_alloc_base_range_description_test();
-    xdice_alloc_range_description_test();
-    xdice_has_constant_score_test();
     xdice_is_valid_test();
     xdice_make_test();
     xdice_make_plus_test();
     xdice_make_plus_times_test();
     xdice_max_base_score_test();
     xdice_max_score_test();
-    xdice_min_base_score_test();
-    xdice_min_score_test();
     xdice_parse_test();
     xdice_roll_test();
     xdice_roll_and_adjust_upwards_test();

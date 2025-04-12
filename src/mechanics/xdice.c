@@ -24,38 +24,6 @@ compare_die_scores(void const *item1, void const *item2)
 }
 
 
-char *
-xdice_alloc_base_range_description(struct xdice dice)
-{
-    if (xdice_has_constant_score(dice)) {
-        return astr_f("%i", xdice_min_base_score(dice));
-    } else {
-        return astr_f("%i-%i",
-                      xdice_min_base_score(dice),
-                      xdice_max_base_score(dice));
-    }
-}
-
-
-char *
-xdice_alloc_range_description(struct xdice dice)
-{
-    if (xdice_has_constant_score(dice)) {
-        return astr_f("%i", xdice_min_score(dice));
-    } else {
-        return astr_f("%i-%i", xdice_min_score(dice), xdice_max_score(dice));
-    }
-}
-
-
-bool
-xdice_has_constant_score(struct xdice dice)
-{
-    assert(xdice_is_valid(dice));
-    return dice.count == 0 || dice.sides == 1;
-}
-
-
 bool
 xdice_is_valid(struct xdice dice)
 {
@@ -105,22 +73,6 @@ xdice_max_score(struct xdice dice)
 {
     assert(xdice_is_valid(dice));
     return xdice_max_base_score(dice) * dice.multiplier;
-}
-
-
-int
-xdice_min_base_score(struct xdice dice)
-{
-    assert(xdice_is_valid(dice));
-    return dice.count + dice.modifier;
-}
-
-
-int
-xdice_min_score(struct xdice dice)
-{
-    assert(xdice_is_valid(dice));
-    return xdice_min_base_score(dice) * dice.multiplier;
 }
 
 

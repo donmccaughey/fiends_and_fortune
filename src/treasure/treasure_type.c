@@ -12,15 +12,23 @@
 #include "xstring.h"
 
 
+struct amount {
+    int count;
+    int sides;
+    int multiplier;
+    bool is_constant;
+};
+
+
 struct coins_gems_or_jewelry {
-    char const *amount;
+    struct amount amount;
     int percent_chance;
     bool is_per_individual;
 };
 
 
 struct maps_or_magic_type {
-    char const *amount;
+    struct amount amount;
     bool is_map_possible;
     possible_magic_items_t possible_magic_items;
 };
@@ -50,38 +58,38 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='A',
         .copper={
-            .amount="1d6x1000",
+            .amount={.count=1, .sides=6, .multiplier=1000},
             .percent_chance=25,
         },
         .silver={
-            .amount="1d6x1000",
+            .amount={.count=1, .sides=6, .multiplier=1000},
             .percent_chance=30,
         },
         .electrum={
-            .amount="1d6x1000",
+            .amount={.count=1, .sides=6, .multiplier=1000},
             .percent_chance=35,
         },
         .gold={
-            .amount="1d10x1000",
+            .amount={.count=1, .sides=10, .multiplier=1000},
             .percent_chance=40,
         },
         .platinum={
-            .amount="1d4x100",
+            .amount={.count=1, .sides=4, .multiplier=100},
             .percent_chance=25,
         },
         .gems={
-            .amount="4d10",
+            .amount={.count=4, .sides=10},
             .percent_chance=60,
         },
         .jewelry={
-            .amount="3d10",
+            .amount={.count=3, .sides=10},
             .percent_chance=50,
         },
         .maps_or_magic={
             .percent_chance=30,
             .types={
                 {
-                    .amount="3",
+                    .amount={.count=3, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 }
@@ -92,38 +100,37 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='B',
         .copper={
-            .amount="1d8x1000",
+            .amount={.count=1, .sides=8, .multiplier=1000},
             .percent_chance=50
         },
         .silver={
-            .amount="1d6x1000",
+            .amount={.count=1, .sides=6, .multiplier=1000},
             .percent_chance=25
         },
         .electrum={
-            .amount="1d4x1000",
+            .amount={.count=1, .sides=4, .multiplier=1000},
             .percent_chance=25
         },
         .gold={
-            .amount="1d3x1000",
+            .amount={.count=1, .sides=3, .multiplier=1000},
             .percent_chance=25
         },
         .platinum={
-            .amount="",
             .percent_chance=0
         },
         .gems={
-            .amount="1d8",
+            .amount={.count=1, .sides=8},
             .percent_chance=30
         },
         .jewelry={
-            .amount="1d4",
+            .amount={.count=1, .sides=4},
             .percent_chance=20
         },
         .maps_or_magic={
             .percent_chance=10,
             .types={
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .possible_magic_items=MAGIC_WEAPON_OR_ARMOR
                 }
             },
@@ -133,30 +140,30 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='C',
         .copper={
-            .amount="1d12x1000",
+            .amount={.count=1, .sides=12, .multiplier=1000},
             .percent_chance=20
         },
         .silver={
-            .amount="1d6x1000",
+            .amount={.count=1, .sides=6, .multiplier=1000},
             .percent_chance=30
         },
         .electrum={
-            .amount="1d4x1000",
+            .amount={.count=1, .sides=4, .multiplier=1000},
             .percent_chance=10
         },
         .gems={
-            .amount="1d6",
+            .amount={.count=1, .sides=6},
             .percent_chance=25
         },
         .jewelry={
-            .amount="1d3",
+            .amount={.count=1, .sides=3},
             .percent_chance=20
         },
         .maps_or_magic={
             .percent_chance=10,
             .types={
                 {
-                    .amount="2",
+                    .amount={.count=2, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 }
@@ -167,39 +174,39 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='D',
         .copper={
-            .amount="1d8x1000",
+            .amount={.count=1, .sides=8, .multiplier=1000},
             .percent_chance=10
         },
         .silver={
-            .amount="1d12x1000",
+            .amount={.count=1, .sides=12, .multiplier=1000},
             .percent_chance=15
         },
         .electrum={
-            .amount="1d8x1000",
+            .amount={.count=1, .sides=8, .multiplier=1000},
             .percent_chance=15
         },
         .gold={
-            .amount="1d6x1000",
+            .amount={.count=1, .sides=6, .multiplier=1000},
             .percent_chance=50
         },
         .gems={
-            .amount="1d10",
+            .amount={.count=1, .sides=10},
             .percent_chance=30
         },
         .jewelry={
-            .amount="1d6",
+            .amount={.count=1, .sides=6},
             .percent_chance=25
         },
         .maps_or_magic={
             .percent_chance=15,
             .types={
                 {
-                    .amount="2",
+                    .amount={.count=2, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 },
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .possible_magic_items=POTION
                 }
             },
@@ -209,39 +216,39 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='E',
         .copper={
-            .amount="1d10x1000",
+            .amount={.count=1, .sides=10, .multiplier=1000},
             .percent_chance=5
         },
         .silver={
-            .amount="1d12x1000",
+            .amount={.count=1, .sides=12, .multiplier=1000},
             .percent_chance=25
         },
         .electrum={
-            .amount="1d6x1000",
+            .amount={.count=1, .sides=6, .multiplier=1000},
             .percent_chance=25
         },
         .gold={
-            .amount="1d8x1000",
+            .amount={.count=1, .sides=8, .multiplier=1000},
             .percent_chance=25
         },
         .gems={
-            .amount="1d12",
+            .amount={.count=1, .sides=12},
             .percent_chance=15
         },
         .jewelry={
-            .amount="1d8",
+            .amount={.count=1, .sides=8},
             .percent_chance=10
         },
         .maps_or_magic={
             .percent_chance=25,
             .types={
                 {
-                    .amount="3",
+                    .amount={.count=3, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 },
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .possible_magic_items=SCROLL
                 }
             },
@@ -251,43 +258,43 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='F',
         .silver={
-            .amount="1d20x1000",
+            .amount={.count=1, .sides=20, .multiplier=1000},
             .percent_chance=10
         },
         .electrum={
-            .amount="1d12x1000",
+            .amount={.count=1, .sides=12, .multiplier=1000},
             .percent_chance=15
         },
         .gold={
-            .amount="1d10x1000",
+            .amount={.count=1, .sides=10, .multiplier=1000},
             .percent_chance=40
         },
         .platinum={
-            .amount="1d8x100",
+            .amount={.count=1, .sides=8, .multiplier=100},
             .percent_chance=35
         },
         .gems={
-            .amount="3d10",
+            .amount={.count=3, .sides=10},
             .percent_chance=20
         },
         .jewelry={
-            .amount="1d10",
+            .amount={.count=1, .sides=10},
             .percent_chance=10
         },
         .maps_or_magic={
             .percent_chance=30,
             .types={
                 {
-                    .amount="3",
+                    .amount={.count=3, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=NON_WEAPON_MAGIC
                 },
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .possible_magic_items=POTION
                 },
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .possible_magic_items=SCROLL
                 }
             },
@@ -297,31 +304,31 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='G',
         .gold={
-            .amount="10d4x1000",
+            .amount={.count=10, .sides=4, .multiplier=1000},
             .percent_chance=50
         },
         .platinum={
-            .amount="1d20x100",
+            .amount={.count=1, .sides=20, .multiplier=100},
             .percent_chance=50
         },
         .gems={
-            .amount="5d4",
+            .amount={.count=5, .sides=4},
             .percent_chance=30
         },
         .jewelry={
-            .amount="1d10",
+            .amount={.count=1, .sides=10},
             .percent_chance=25
         },
         .maps_or_magic={
             .percent_chance=35,
             .types={
                 {
-                    .amount="4",
+                    .amount={.count=4, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 },
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .possible_magic_items=SCROLL
                 }
             },
@@ -331,47 +338,47 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='H',
         .copper={
-            .amount="5d6x1000",
+            .amount={.count=5, .sides=6, .multiplier=1000},
             .percent_chance=25
         },
         .silver={
-            .amount="1d100x1000",
+            .amount={.count=1, .sides=100, .multiplier=1000},
             .percent_chance=40
         },
         .electrum={
-            .amount="10d4x1000",
+            .amount={.count=10, .sides=4, .multiplier=1000},
             .percent_chance=40
         },
         .gold={
-            .amount="10d6x1000",
+            .amount={.count=10, .sides=6, .multiplier=1000},
             .percent_chance=55
         },
         .platinum={
-            .amount="5d10x100",
+            .amount={.count=5, .sides=10, .multiplier=100},
             .percent_chance=25
         },
         .gems={
-            .amount="1d100",
+            .amount={.count=1, .sides=100},
             .percent_chance=50
         },
         .jewelry={
-            .amount="10d4",
+            .amount={.count=10, .sides=4},
             .percent_chance=50
         },
         .maps_or_magic={
             .percent_chance=15,
             .types={
                 {
-                    .amount="4",
+                    .amount={.count=4, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 },
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .possible_magic_items=POTION
                 },
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .possible_magic_items=SCROLL
                 }
             },
@@ -381,22 +388,22 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='I',
         .platinum={
-            .amount="3d6x100",
+            .amount={.count=3, .sides=6, .multiplier=100},
             .percent_chance=30
         },
         .gems={
-            .amount="2d10",
+            .amount={.count=2, .sides=10},
             .percent_chance=55
         },
         .jewelry={
-            .amount="1d12",
+            .amount={.count=1, .sides=12},
             .percent_chance=50
         },
         .maps_or_magic={
             .percent_chance=15,
             .types={
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 }
@@ -407,7 +414,7 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='J',
         .copper={
-            .amount="3d8",
+            .amount={.count=3, .sides=8},
             .percent_chance=100,
             .is_per_individual=true
         },
@@ -415,7 +422,7 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='K',
         .silver={
-            .amount="3d6",
+            .amount={.count=3, .sides=6},
             .percent_chance=100,
             .is_per_individual=true
         },
@@ -423,7 +430,7 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='L',
         .electrum={
-            .amount="2d6",
+            .amount={.count=2, .sides=6},
             .percent_chance=100,
             .is_per_individual=true
         },
@@ -431,7 +438,7 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='M',
         .gold={
-            .amount="2d4",
+            .amount={.count=2, .sides=4},
             .percent_chance=100,
             .is_per_individual=true
         },
@@ -439,7 +446,7 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='N',
         .platinum={
-            .amount="1d6",
+            .amount={.count=1, .sides=6},
             .percent_chance=100,
             .is_per_individual=true
         },
@@ -447,48 +454,48 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='O',
         .copper={
-            .amount="1d4x1000",
+            .amount={.count=1, .sides=4, .multiplier=1000},
             .percent_chance=25
         },
         .silver={
-            .amount="1d3x1000",
+            .amount={.count=1, .sides=3, .multiplier=1000},
             .percent_chance=20
         },
     },
     {
         .letter='P',
         .silver={
-            .amount="1d6x1000",
+            .amount={.count=1, .sides=6, .multiplier=1000},
             .percent_chance=30
         },
         .electrum={
-            .amount="1d2x1000",
+            .amount={.count=1, .sides=2, .multiplier=1000},
             .percent_chance=25
         },
     },
     {
         .letter='Q',
         .gems={
-            .amount="1d4",
+            .amount={.count=1, .sides=4},
             .percent_chance=50
         },
     },
     {
         .letter='R',
         .gold={
-            .amount="2d4x1000",
+            .amount={.count=2, .sides=4, .multiplier=1000},
             .percent_chance=40
         },
         .platinum={
-            .amount="10d6x100",
+            .amount={.count=10, .sides=6, .multiplier=100},
             .percent_chance=50
         },
         .gems={
-            .amount="4d8",
+            .amount={.count=4, .sides=8},
             .percent_chance=55
         },
         .jewelry={
-            .amount="1d12",
+            .amount={.count=1, .sides=12},
             .percent_chance=45
         },
     },
@@ -498,7 +505,7 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=40,
             .types={
                 {
-                    .amount="2D4",
+                    .amount={.count=2, .sides=4},
                     .possible_magic_items=POTION
                 }
             },
@@ -511,7 +518,7 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=50,
             .types={
                 {
-                    .amount="1D4",
+                    .amount={.count=1, .sides=4},
                     .possible_magic_items=SCROLL
                 }
             },
@@ -521,38 +528,38 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='U',
         .gems={
-            .amount="10d8",
+            .amount={.count=10, .sides=8},
             .percent_chance=90
         },
         .jewelry={
-            .amount="5d6",
+            .amount={.count=5, .sides=6},
             .percent_chance=80
         },
         .maps_or_magic={
             .percent_chance=70,
             .types={
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .possible_magic_items=RING
                 },
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .possible_magic_items=ROD_STAFF_WAND
                 },
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .possible_magic_items=MISC_MAGIC
                 },
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .possible_magic_items=ARMOR_SHIELD
                 },
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .possible_magic_items=SWORD
                 },
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .possible_magic_items=MISC_WEAPON
                 }
             },
@@ -565,27 +572,27 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=85,
             .types={
                 {
-                    .amount="2",
+                    .amount={.count=2, .is_constant=true},
                     .possible_magic_items=RING
                 },
                 {
-                    .amount="2",
+                    .amount={.count=2, .is_constant=true},
                     .possible_magic_items=ROD_STAFF_WAND
                 },
                 {
-                    .amount="2",
+                    .amount={.count=2, .is_constant=true},
                     .possible_magic_items=MISC_MAGIC
                 },
                 {
-                    .amount="2",
+                    .amount={.count=2, .is_constant=true},
                     .possible_magic_items=ARMOR_SHIELD
                 },
                 {
-                    .amount="2",
+                    .amount={.count=2, .is_constant=true},
                     .possible_magic_items=SWORD
                 },
                 {
-                    .amount="2",
+                    .amount={.count=2, .is_constant=true},
                     .possible_magic_items=MISC_WEAPON
                 }
             },
@@ -595,26 +602,26 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='W',
         .gold={
-            .amount="5d6x1000",
+            .amount={.count=5, .sides=6, .multiplier=1000},
             .percent_chance=60
         },
         .platinum={
-            .amount="1d8x100",
+            .amount={.count=1, .sides=8, .multiplier=100},
             .percent_chance=15
         },
         .gems={
-            .amount="10d8",
+            .amount={.count=10, .sides=8},
             .percent_chance=60
         },
         .jewelry={
-            .amount="5d8",
+            .amount={.count=5, .sides=8},
             .percent_chance=50
         },
         .maps_or_magic={
             .percent_chance=55,
             .types={
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=NO_MAGIC_ITEM
                 }
@@ -628,11 +635,11 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=60,
             .types={
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .possible_magic_items=MISC_MAGIC
                 },
                 {
-                    .amount="1",
+                    .amount={.count=1, .is_constant=true},
                     .possible_magic_items=POTION
                 }
             },
@@ -642,45 +649,45 @@ static struct treasure_type treasure_types[] = {
     {
         .letter='Y',
         .gold={
-            .amount="2d6x1000",
+            .amount={.count=2, .sides=6, .multiplier=1000},
             .percent_chance=70
         },
     },
     {
         .letter='Z',
         .copper={
-            .amount="1d3x1000",
+            .amount={.count=1, .sides=3, .multiplier=1000},
             .percent_chance=20
         },
         .silver={
-            .amount="1d4x1000",
+            .amount={.count=1, .sides=4, .multiplier=1000},
             .percent_chance=25
         },
         .electrum={
-            .amount="1d4x1000",
+            .amount={.count=1, .sides=4, .multiplier=1000},
             .percent_chance=25
         },
         .gold={
-            .amount="1d4x1000",
+            .amount={.count=1, .sides=4, .multiplier=1000},
             .percent_chance=30
         },
         .platinum={
-            .amount="1d6x100",
+            .amount={.count=1, .sides=6, .multiplier=100},
             .percent_chance=30
         },
         .gems={
-            .amount="10d6",
+            .amount={.count=10, .sides=6},
             .percent_chance=55
         },
         .jewelry={
-            .amount="5d6",
+            .amount={.count=5, .sides=6},
             .percent_chance=50
         },
         .maps_or_magic={
             .percent_chance=50,
             .types={
                 {
-                    .amount="3",
+                    .amount={.count=3, .is_constant=true},
                     .possible_magic_items=ANY_MAGIC_ITEM
                 }
             },
@@ -689,6 +696,9 @@ static struct treasure_type treasure_types[] = {
     }
 };
 
+
+static char *
+describe_base_range(struct amount *amount);
 
 static char *
 describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry *coins_gems_or_jewelry);
@@ -715,9 +725,15 @@ generate_maps_or_magic_items(struct maps_or_magic_type *type,
                              struct treasure *treasure,
                              struct rnd *rnd);
 
+static int
+max_amount(struct amount *amount);
+
 static char const *
 possible_maps_or_magic_name(bool is_map_possible,
                             possible_magic_items_t possible_magic_items);
+
+static int
+xroll_amount(struct amount *amount, struct rnd *rnd);
 
 
 char *
@@ -777,19 +793,31 @@ treasure_type_alloc_name(struct treasure_type *treasure_type)
 
 
 static char *
+describe_base_range(struct amount *amount)
+{
+    assert(amount);
+    if (amount->is_constant) {
+        return astr_f("%i", amount->count);
+    } else {
+        int low = amount->count;
+        int high = amount->count * amount->sides;
+        return astr_f("%i-%i", low, high);
+    }
+}
+
+
+static char *
 describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry *coins_gems_or_jewelry)
 {
-    if (!coins_gems_or_jewelry->percent_chance) return xstrdup("   nil   ");
+    if ( ! coins_gems_or_jewelry->percent_chance) return xstrdup("   nil   ");
 
     if (coins_gems_or_jewelry->is_per_individual) {
-        struct xdice amount = xdice_parse(coins_gems_or_jewelry->amount);
-        char *range = xdice_alloc_base_range_description(amount);
+        char *range = describe_base_range(&coins_gems_or_jewelry->amount);
         char *description = astr_centered_f(9, "%s per", range);
         free(range);
         return description;
     } else {
-        struct xdice amount = xdice_parse(coins_gems_or_jewelry->amount);
-        char *range = xdice_alloc_base_range_description(amount);
+        char *range = describe_base_range(&coins_gems_or_jewelry->amount);
         char *description = astr_centered_f(9, "%s:%2i%%", range,
                                             coins_gems_or_jewelry->percent_chance);
         free(range);
@@ -801,16 +829,15 @@ describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry *coins_gems_or_jewel
 static char *
 describe_maps_or_magic(struct maps_or_magic *maps_or_magic)
 {
-    if (!maps_or_magic->percent_chance) return xstrdup("   nil   ");
-    
+    if ( ! maps_or_magic->percent_chance) return xstrdup("   nil   ");
+
     char *type_descriptions[6] = {};
     for (int i = 0; i < maps_or_magic->types_count; ++i) {
         struct maps_or_magic_type *type = &maps_or_magic->types[i];
         char const *type_name = possible_maps_or_magic_name(type->is_map_possible,
                                                             type->possible_magic_items);
-        struct xdice amount = xdice_parse(type->amount);
-        char *range = xdice_alloc_range_description(amount);
-        if (!xdice_has_constant_score(amount)) {
+        char *range = describe_base_range(&type->amount);
+        if ( ! type->amount.is_constant) {
             type_descriptions[i] = astr_f("%s %ss",
                                           range, type_name);
         } else if (   type->is_map_possible
@@ -823,7 +850,7 @@ describe_maps_or_magic(struct maps_or_magic *maps_or_magic)
         } else if (type->possible_magic_items == ANY_MAGIC_ITEM) {
             type_descriptions[i] = astr_f("any %s magic", range);
         } else {
-            char const *plural = (1 == xdice_max_score(amount)) ? "" : "s";
+            char const *plural = (1 == max_amount(&type->amount)) ? "" : "s";
             type_descriptions[i] = astr_f("%s %s%s", range,
                                           type_name, plural);
         }
@@ -867,13 +894,13 @@ generate_coins(int *coins,
                struct coins_gems_or_jewelry *coins_type)
 {
     *coins = 0;
-    if (!coins_type->percent_chance) return;
+    if ( ! coins_type->percent_chance) return;
     if (coins_type->is_per_individual) {
-        *coins += xroll(coins_type->amount, rnd);
+        *coins += xroll_amount(&coins_type->amount, rnd);
     } else {
         int percent_score = xroll("1d100", rnd);
         if (percent_score <= coins_type->percent_chance) {
-            *coins = xroll(coins_type->amount, rnd);
+            *coins = xroll_amount(&coins_type->amount, rnd);
         }
     }
 }
@@ -884,10 +911,10 @@ generate_gems(struct treasure *treasure, struct rnd *rnd)
 {
     treasure->gems = NULL;
     treasure->gems_count = 0;
-    if (!treasure->type->gems.percent_chance) return;
+    if ( ! treasure->type->gems.percent_chance) return;
     int percent_score = xroll("1d100", rnd);
     if (percent_score <= treasure->type->gems.percent_chance) {
-        treasure->gems_count = xroll(treasure->type->gems.amount, rnd);
+        treasure->gems_count = xroll_amount(&treasure->type->gems.amount, rnd);
         treasure->gems = xcalloc(treasure->gems_count, sizeof(struct gem));
         for (int i = 0; i < treasure->gems_count; ++i) {
             gem_initialize(&treasure->gems[i]);
@@ -902,10 +929,10 @@ generate_jewelry(struct treasure *treasure, struct rnd *rnd)
 {
     treasure->jewelry = NULL;
     treasure->jewelry_count = 0;
-    if (!treasure->type->jewelry.percent_chance) return;
+    if ( ! treasure->type->jewelry.percent_chance) return;
     int percent_score = xroll("1d100", rnd);
     if (percent_score <= treasure->type->jewelry.percent_chance) {
-        treasure->jewelry_count = xroll(treasure->type->jewelry.amount, rnd);
+        treasure->jewelry_count = xroll_amount(&treasure->type->jewelry.amount, rnd);
         treasure->jewelry = xcalloc(treasure->jewelry_count,
                                     sizeof(struct jewelry));
         for (int i = 0; i < treasure->jewelry_count; ++i) {
@@ -919,7 +946,7 @@ generate_jewelry(struct treasure *treasure, struct rnd *rnd)
 static void
 generate_maps_or_magic(struct treasure *treasure, struct rnd *rnd)
 {
-    if (!treasure->type->maps_or_magic.percent_chance) return;
+    if ( ! treasure->type->maps_or_magic.percent_chance) return;
     int percent_score = xroll("1d100", rnd);
     if (percent_score <= treasure->type->maps_or_magic.percent_chance) {
         for (int i = 0; i < treasure->type->maps_or_magic.types_count; ++i) {
@@ -935,7 +962,7 @@ generate_maps_or_magic_items(struct maps_or_magic_type *type,
                              struct treasure *treasure,
                              struct rnd *rnd)
 {
-    int amount = xroll(type->amount, rnd);
+    int amount = xroll_amount(&type->amount, rnd);
     int magic_items_count = 0;
     int maps_count = 0;
     for (int i = 0; i < amount; ++i) {
@@ -957,6 +984,18 @@ generate_maps_or_magic_items(struct maps_or_magic_type *type,
     if (magic_items_count) {
         treasure_generate_magic_items(treasure, rnd, magic_items_count,
                                       type->possible_magic_items);
+    }
+}
+
+
+static int
+max_amount(struct amount *amount)
+{
+    assert(amount);
+    if (amount->is_constant) {
+        return amount->count;
+    } else {
+        return amount->count * amount->sides * amount->multiplier;
     }
 }
 
@@ -1000,4 +1039,22 @@ treasure_type_by_letter(char letter)
 {
     assert(letter >= 'A' && letter <= 'Z');
     return &treasure_types[letter - 'A'];
+}
+
+
+static int
+xroll_amount(struct amount *amount, struct rnd *rnd)
+{
+    assert(amount);
+    assert(rnd);
+
+    if (amount->is_constant) {
+        return amount->count;
+    }
+
+    struct xdice dice = xdice_make_plus_times(amount->count,
+                                              amount->sides,
+                                              0,
+                                              amount->multiplier ? amount->multiplier : 1);
+    return xdice_roll(dice, rnd, NULL);
 }
