@@ -706,10 +706,10 @@ static char *
 describe_base_range(struct amount const *amount);
 
 static char *
-describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry *coins_gems_or_jewelry);
+describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry const *coins_gems_or_jewelry);
 
 static char *
-describe_maps_or_magic(struct maps_or_magic *maps_or_magic);
+describe_maps_or_magic(struct maps_or_magic const *maps_or_magic);
 
 static void
 generate_coins(int *coins,
@@ -838,7 +838,7 @@ describe_base_range(struct amount const *amount)
 
 
 static char *
-describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry *coins_gems_or_jewelry)
+describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry const *coins_gems_or_jewelry)
 {
     if ( ! coins_gems_or_jewelry->percent_chance) return xstrdup("   nil   ");
 
@@ -858,13 +858,13 @@ describe_coins_gems_or_jewelry(struct coins_gems_or_jewelry *coins_gems_or_jewel
 
 
 static char *
-describe_maps_or_magic(struct maps_or_magic *maps_or_magic)
+describe_maps_or_magic(struct maps_or_magic const *maps_or_magic)
 {
     if ( ! maps_or_magic->percent_chance) return xstrdup("   nil   ");
 
     char *type_descriptions[6] = {};
     for (int i = 0; i < maps_or_magic->types_count; ++i) {
-        struct maps_or_magic_type *type = &maps_or_magic->types[i];
+        struct maps_or_magic_type const *type = &maps_or_magic->types[i];
         char const *type_name = possible_maps_or_magic_name(type->is_map_possible,
                                                             type->possible_magic_items);
         char *range = describe_base_range(&type->amount);
