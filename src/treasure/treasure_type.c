@@ -13,10 +13,15 @@
 
 
 struct amount {
-    int count;
-    int sides;
-    int multiplier;
     bool is_constant;
+    union {
+        struct {
+            int count;
+            int sides;
+            int multiplier;
+        };
+        int value;
+    };
 };
 
 
@@ -89,7 +94,7 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=30,
             .types={
                 {
-                    .amount={.count=3, .is_constant=true},
+                    .amount={.value=3, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 }
@@ -130,7 +135,7 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=10,
             .types={
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .possible_magic_items=MAGIC_WEAPON_OR_ARMOR
                 }
             },
@@ -163,7 +168,7 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=10,
             .types={
                 {
-                    .amount={.count=2, .is_constant=true},
+                    .amount={.value=2, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 }
@@ -201,12 +206,12 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=15,
             .types={
                 {
-                    .amount={.count=2, .is_constant=true},
+                    .amount={.value=2, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 },
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .possible_magic_items=POTION
                 }
             },
@@ -243,12 +248,12 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=25,
             .types={
                 {
-                    .amount={.count=3, .is_constant=true},
+                    .amount={.value=3, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 },
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .possible_magic_items=SCROLL
                 }
             },
@@ -285,16 +290,16 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=30,
             .types={
                 {
-                    .amount={.count=3, .is_constant=true},
+                    .amount={.value=3, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=NON_WEAPON_MAGIC
                 },
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .possible_magic_items=POTION
                 },
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .possible_magic_items=SCROLL
                 }
             },
@@ -323,12 +328,12 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=35,
             .types={
                 {
-                    .amount={.count=4, .is_constant=true},
+                    .amount={.value=4, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 },
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .possible_magic_items=SCROLL
                 }
             },
@@ -369,16 +374,16 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=15,
             .types={
                 {
-                    .amount={.count=4, .is_constant=true},
+                    .amount={.value=4, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 },
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .possible_magic_items=POTION
                 },
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .possible_magic_items=SCROLL
                 }
             },
@@ -403,7 +408,7 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=15,
             .types={
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=ANY_MAGIC_ITEM
                 }
@@ -539,27 +544,27 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=70,
             .types={
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .possible_magic_items=RING
                 },
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .possible_magic_items=ROD_STAFF_WAND
                 },
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .possible_magic_items=MISC_MAGIC
                 },
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .possible_magic_items=ARMOR_SHIELD
                 },
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .possible_magic_items=SWORD
                 },
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .possible_magic_items=MISC_WEAPON
                 }
             },
@@ -572,27 +577,27 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=85,
             .types={
                 {
-                    .amount={.count=2, .is_constant=true},
+                    .amount={.value=2, .is_constant=true},
                     .possible_magic_items=RING
                 },
                 {
-                    .amount={.count=2, .is_constant=true},
+                    .amount={.value=2, .is_constant=true},
                     .possible_magic_items=ROD_STAFF_WAND
                 },
                 {
-                    .amount={.count=2, .is_constant=true},
+                    .amount={.value=2, .is_constant=true},
                     .possible_magic_items=MISC_MAGIC
                 },
                 {
-                    .amount={.count=2, .is_constant=true},
+                    .amount={.value=2, .is_constant=true},
                     .possible_magic_items=ARMOR_SHIELD
                 },
                 {
-                    .amount={.count=2, .is_constant=true},
+                    .amount={.value=2, .is_constant=true},
                     .possible_magic_items=SWORD
                 },
                 {
-                    .amount={.count=2, .is_constant=true},
+                    .amount={.value=2, .is_constant=true},
                     .possible_magic_items=MISC_WEAPON
                 }
             },
@@ -621,7 +626,7 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=55,
             .types={
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .is_map_possible=true,
                     .possible_magic_items=NO_MAGIC_ITEM
                 }
@@ -635,11 +640,11 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=60,
             .types={
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .possible_magic_items=MISC_MAGIC
                 },
                 {
-                    .amount={.count=1, .is_constant=true},
+                    .amount={.value=1, .is_constant=true},
                     .possible_magic_items=POTION
                 }
             },
@@ -687,7 +692,7 @@ static struct treasure_type treasure_types[] = {
             .percent_chance=50,
             .types={
                 {
-                    .amount={.count=3, .is_constant=true},
+                    .amount={.value=3, .is_constant=true},
                     .possible_magic_items=ANY_MAGIC_ITEM
                 }
             },
@@ -797,7 +802,7 @@ describe_base_range(struct amount *amount)
 {
     assert(amount);
     if (amount->is_constant) {
-        return astr_f("%i", amount->count);
+        return astr_f("%i", amount->value);
     } else {
         int low = amount->count;
         int high = amount->count * amount->sides;
@@ -993,7 +998,7 @@ max_amount(struct amount *amount)
 {
     assert(amount);
     if (amount->is_constant) {
-        return amount->count;
+        return amount->value;
     } else {
         return amount->count * amount->sides * amount->multiplier;
     }
@@ -1049,12 +1054,14 @@ xroll_amount(struct amount *amount, struct rnd *rnd)
     assert(rnd);
 
     if (amount->is_constant) {
-        return amount->count;
+        return amount->value;
+    } else {
+        int multiplier = amount->multiplier ? amount->multiplier : 1;
+        int modifier = 0;
+        struct xdice dice = xdice_make_plus_times(amount->count,
+                                                  amount->sides,
+                                                  modifier,
+                                                  multiplier);
+        return xdice_roll(dice, rnd, NULL);
     }
-
-    struct xdice dice = xdice_make_plus_times(amount->count,
-                                              amount->sides,
-                                              0,
-                                              amount->multiplier ? amount->multiplier : 1);
-    return xdice_roll(dice, rnd, NULL);
 }
