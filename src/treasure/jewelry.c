@@ -3,7 +3,6 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <base/base.h>
 #include <background/background.h>
@@ -21,9 +20,15 @@ struct jewelry_form_table {
 };
 
 
+struct base_value {
+    int count;
+    int sides;
+    int times;
+};
+
+
 struct jewelry_rank {
-    char const *base_value;
-    int base_value_multiplier;
+    struct base_value base_value;
     bool has_gems;
     enum jewelry_material materials[3];
     int materials_count;
@@ -103,15 +108,13 @@ static char const *const jewelry_material_formats[] = {
 
 static struct jewelry_rank const jewelry_ranks[] = {
     {
-        .base_value="",
-        .base_value_multiplier=0,
+        .base_value = {.count=0, .sides=0, .times=0},
         .has_gems=false,
         .materials={},
         .materials_count=0
     },
     {
-        .base_value="1d10",
-        .base_value_multiplier=gp_to_cp(100),
+        .base_value = {.count=1, .sides=10, .times=gp_to_cp(100)},
         .has_gems=false,
         .materials={
             jewelry_material_ivory,
@@ -120,8 +123,7 @@ static struct jewelry_rank const jewelry_ranks[] = {
         .materials_count=2
     },
     {
-        .base_value="2d6",
-        .base_value_multiplier=gp_to_cp(100),
+        .base_value = {.count=2, .sides=6, .times=gp_to_cp(100)},
         .has_gems=false,
         .materials={
             jewelry_material_silver_and_gold
@@ -129,8 +131,7 @@ static struct jewelry_rank const jewelry_ranks[] = {
         .materials_count=1
     },
     {
-        .base_value="3d6",
-        .base_value_multiplier=gp_to_cp(100),
+        .base_value = {.count=3, .sides=6, .times=gp_to_cp(100)},
         .has_gems=false,
         .materials={
             jewelry_material_gold
@@ -138,8 +139,7 @@ static struct jewelry_rank const jewelry_ranks[] = {
         .materials_count=1
     },
     {
-        .base_value="5d6",
-        .base_value_multiplier=gp_to_cp(100),
+        .base_value = {.count=5, .sides=6, .times=gp_to_cp(100)},
         .has_gems=false,
         .materials={
             jewelry_material_jade,
@@ -149,8 +149,7 @@ static struct jewelry_rank const jewelry_ranks[] = {
         .materials_count=3
     },
     {
-        .base_value="1d6",
-        .base_value_multiplier=gp_to_cp(1000),
+        .base_value = {.count=1, .sides=6, .times=gp_to_cp(1000)},
         .has_gems=true,
         .materials={
             jewelry_material_silver_with_gems
@@ -158,8 +157,7 @@ static struct jewelry_rank const jewelry_ranks[] = {
         .materials_count=1
     },
     {
-        .base_value="2d4",
-        .base_value_multiplier=gp_to_cp(1000),
+        .base_value = {.count=2, .sides=4, .times=gp_to_cp(1000)},
         .has_gems=true,
         .materials={
             jewelry_material_gold_with_gems
@@ -167,8 +165,7 @@ static struct jewelry_rank const jewelry_ranks[] = {
         .materials_count=1
     },
     {
-        .base_value="2d6",
-        .base_value_multiplier=gp_to_cp(1000),
+        .base_value = {.count=2, .sides=6, .times=gp_to_cp(1000)},
         .has_gems=true,
         .materials={
             jewelry_material_platinum_with_gems
@@ -195,6 +192,12 @@ jewelry_material_for_name(char const *name, int default_value);
 
 static char const *
 jewelry_material_name(struct jewelry *jewelry);
+
+static int
+max_base_value(struct base_value const *base_value);
+
+static int
+xroll_base_value(struct base_value const *base_value, struct rnd *rnd);
 
 
 static char *
@@ -326,8 +329,7 @@ jewelry_generate(struct jewelry *jewelry, struct rnd *rnd)
         jewelry->material = jewelry_ranks[rank].materials[score - 1];
     }
     
-    score = xroll(jewelry_ranks[rank].base_value, rnd);
-    jewelry->value_in_cp = score * jewelry_ranks[rank].base_value_multiplier;
+    jewelry->value_in_cp = xroll_base_value(&jewelry_ranks[rank].base_value, rnd);
     
     score = xroll("1d100", rnd);
     for (int i = 0; i < jewelry_form_table_count; ++i) {
@@ -345,14 +347,12 @@ jewelry_generate(struct jewelry *jewelry, struct rnd *rnd)
         }
     } while (score == 1 && jewelry->workmanship_bonus < max_workmanship_bonus);
     for (int i = 0; i < jewelry->workmanship_bonus; ++i) {
-        int max_value_in_cp = xdice_max_score(xdice_parse(jewelry_ranks[rank].base_value))
-                              * jewelry_ranks[rank].base_value_multiplier;
+        int max_value_in_cp = max_base_value(&jewelry_ranks[rank].base_value);
         if (jewelry->value_in_cp < max_value_in_cp) {
             jewelry->value_in_cp = max_value_in_cp;
         } else if (rank < jewelry_max_rank) {
             ++rank;
-            score = xroll(jewelry_ranks[rank].base_value, rnd);
-            jewelry->value_in_cp = score * jewelry_ranks[rank].base_value_multiplier;
+            jewelry->value_in_cp = xroll_base_value(&jewelry_ranks[rank].base_value, rnd);
         }
     }
     
@@ -426,4 +426,31 @@ int
 jewelry_value_in_cp(struct jewelry *jewelry)
 {
     return jewelry->value_in_cp;
+}
+
+
+static int
+max_base_value(struct base_value const *base_value)
+{
+    assert(base_value);
+    return (base_value->count * base_value->sides) * base_value->times;
+}
+
+
+static int
+xroll_base_value(struct base_value const *base_value, struct rnd *rnd)
+{
+    assert(base_value);
+    assert(rnd);
+
+    if ( ! base_value->count || ! base_value->sides || ! base_value->times) {
+        return 0;
+    }
+
+    int modifier = 0;
+    struct xdice dice = xdice_make_plus_times(base_value->count,
+                                              base_value->sides,
+                                              modifier,
+                                              base_value->times);
+    return xdice_roll(dice, rnd, NULL);
 }
