@@ -60,22 +60,6 @@ xdice_make_plus_times(int count, int sides, int modifier, int multiplier)
 }
 
 
-int
-xdice_max_base_score(struct xdice dice)
-{
-    assert(xdice_is_valid(dice));
-    return (dice.count * dice.sides) + dice.modifier;
-}
-
-
-int
-xdice_max_score(struct xdice dice)
-{
-    assert(xdice_is_valid(dice));
-    return xdice_max_base_score(dice) * dice.multiplier;
-}
-
-
 struct xdice
 xdice_parse(char const *dice_string)
 {

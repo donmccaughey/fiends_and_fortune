@@ -60,22 +60,6 @@ xdice_make_plus_times_test(void)
 
 
 static void
-xdice_max_base_score_test(void)
-{
-    struct xdice dice = xdice_make_plus(2, 4, 10);
-    assert(18 == xdice_max_base_score(dice));
-}
-
-
-static void
-xdice_max_score_test(void)
-{
-    struct xdice dice = xdice_make_plus_times(2, 4, 10, 100);
-    assert(1800 == xdice_max_score(dice));
-}
-
-
-static void
 xdice_parse_test(void)
 {
     struct xdice dice;
@@ -329,8 +313,6 @@ xdice_test(void)
     xdice_make_test();
     xdice_make_plus_test();
     xdice_make_plus_times_test();
-    xdice_max_base_score_test();
-    xdice_max_score_test();
     xdice_parse_test();
     xdice_roll_test();
     xdice_roll_and_adjust_upwards_test();

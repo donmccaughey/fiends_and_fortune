@@ -28,12 +28,6 @@ xdice_make_plus(int count, int sides, int modifier);
 struct xdice
 xdice_make_plus_times(int count, int sides, int modifier, int multiplier);
 
-int
-xdice_max_base_score(struct xdice dice);
-
-int
-xdice_max_score(struct xdice dice);
-
 struct xdice
 xdice_parse(char const *dice_string);
 
