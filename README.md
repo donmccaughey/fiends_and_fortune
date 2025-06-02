@@ -1,9 +1,7 @@
-
-
 _Fiends And Fortune_ is a translation of paper and pencil role playing rules
 into code.  Like the games that inspired this project, these programs are 
-old-school, command-line oriented and text based.  The core code is C99; I 
-grudgingly use C++14 for the [TUI][1].
+old-school, command-line oriented and text-based.  The core code is C99; I 
+use C++14 for the [TUI][1].
 
 [1]: https://en.wikipedia.org/wiki/Text-based_user_interface
 
@@ -65,7 +63,7 @@ interface.
 
 ![`fiends` Screen Shot][21]
 
-[21]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/docs/images/fiends-screenshot-1.png
+[21]: docs/images/fiends-screenshot-1.png
 
 
 ## Building From Source
@@ -127,15 +125,30 @@ use this option.
 [47]: https://graphviz.org
 
 
+## Documentation and Notes
+
+- [API Conventions][51]
+- Relationships between [`dungeon` Struct][52]
+- [Random dungeon generation][53] notes
+- [Sample dungeon][54]
+- [Treasure][55] generation notes
+
+[51]: docs/api_conventions.md
+[52]: docs/dungeon_structs.md
+[53]: docs/random_dungeon_generation.md
+[54]: docs/sample_dungeon.md
+[55]: docs/treasure.md
+
+
 ## License
 
 _Fiends And Fortune_ is available under a BSD-style license.  See the
-[`LICENSE`][51] file for details.  The [_cJSON_ library][52] is available under 
-an [MIT license][53].  The code in the [_tvision_ library][54] is available
-under a [variety of permissive licenses][55].
+[`LICENSE`][91] file for details.  The [_cJSON_ library][92] is available under 
+an [MIT license][93].  The code in the [_tvision_ library][94] is available
+under a [variety of permissive licenses][95].
 
-[51]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/LICENSE
-[52]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/libs/cJSON
-[53]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/libs/cJSON/LICENSE
-[54]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/libs/tvision
-[55]: https://github.com/donmccaughey/fiends_and_fortune/blob/main/libs/tvision/COPYRIGHT
+[91]: LICENSE
+[92]: libs/cJSON
+[93]: cJSON/LICENSE
+[94]: tvision
+[95]: tvision/COPYRIGHT
